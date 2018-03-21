@@ -22,20 +22,20 @@ class SuperAgent extends Model
           $builder->whereRaw('codice=u_capoa');
         });
 
-      switch (Registry::get('role')) {
+      switch (session('user.role')) {
         case 'agent':
           static::addGlobalScope('agent', function(Builder $builder) {
-              $builder->where('codice', Registry::get('codag'));
+              $builder->where('codice', session('user.codag'));
           });
           break;
         case 'superAgent':
           static::addGlobalScope('superAgent', function(Builder $builder) {
-              $builder->where('codice', Registry::get('codag'));
+              $builder->where('codice', session('user.codag'));
           });
           break;
         case 'client':
           static::addGlobalScope('client', function(Builder $builder) {
-              $builder->where('codice', Registry::get('codcli'));
+              $builder->where('codice', session('user.codcli'));
           });
           break;
 
@@ -49,7 +49,7 @@ class SuperAgent extends Model
       parent::__construct($attributes);
       //Imposto la Connessione al Database
       // dd(Registry::get('ditta_DB'));
-      $this->setConnection(Registry::get('ditta_DB'));
+      $this->setConnection(session('user.ditta_DB'));
     }
 
     // JOIN Tables

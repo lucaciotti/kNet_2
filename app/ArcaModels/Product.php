@@ -33,7 +33,7 @@ class Product extends Model
     parent::__construct($attributes);
     //Imposto la Connessione al Database
     // dd(Registry::get('ditta_DB'));
-    $this->setConnection(Registry::get('ditta_DB'));
+    $this->setConnection(session('user.ditta_DB'));
   }
 
   //Accessors

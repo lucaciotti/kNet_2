@@ -18,28 +18,28 @@ class StatABC extends Model
     parent::__construct($attributes);
     //Imposto la Connessione al Database
     // dd(Registry::get('ditta_DB'));
-    $this->setConnection(Registry::get('ditta_DB'));
+    $this->setConnection(session('user.ditta_DB'));
   }
 
   protected static function boot() {
     parent::boot();
 
-    switch (Registry::get('role')) {
+    switch (session('user.role')) {
       case 'agent':
         static::addGlobalScope('agent', function(Builder $builder) {
-            $builder->where('codag', Registry::get('codag'));
+            $builder->where('codag', session('user.codag'));
         });
         break;
       case 'superAgent':
         static::addGlobalScope('superAgent', function(Builder $builder) {
           $builder->whereHas('agent', function ($query){
-              $query->where('u_capoa', Registry::get('codag'));
+              $query->where('u_capoa', session('user.codag'));
             });
         });
         break;
       case 'client':
         static::addGlobalScope('client', function(Builder $builder) {
-            $builder->where('codicecf', Registry::get('codcli'));
+            $builder->where('codicecf', session('user.codcli'));
         });
         break;
 
