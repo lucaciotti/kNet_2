@@ -4,19 +4,18 @@ namespace knet;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Laratrust\Traits\LaratrustUserTrait;
 
 class User extends Authenticatable
 {
     use Notifiable;
+    use LaratrustUserTrait;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'nickname', 'email', 'password', 'ditta'
     ];
+
+    protected $username = 'name';
 
     /**
      * The attributes that should be hidden for arrays.
@@ -26,4 +25,16 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    public function client(){
+      return $this->hasOne('knet\ArcaModels\Client', 'codice', 'codcli');
+    }
+
+    public function agent(){
+      return $this->hasOne('knet\ArcaModels\Agent', 'codice', 'codag');
+    }
+    /* 
+    public function roles(){
+        return $this->belongsToMany('knet\Role');
+    } */
 }
