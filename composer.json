@@ -16,6 +16,7 @@
         "laravelista/ekko": "^1.5",
         "maatwebsite/excel": "^3.0",
         "santigarcor/laratrust": "5.0.*",
+        "spatie/laravel-activitylog": "^2.5",
         "torann/currency": "^1.0"
     },
     "require-dev": {

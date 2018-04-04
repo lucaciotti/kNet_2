@@ -5,7 +5,9 @@ namespace knet\WebModels;
 use Illuminate\Database\Eloquent\Model;
 use Torann\Registry\Facades\Registry;
 
-class wDocRow extends Model  implements LogsActivityInterface
+use Spatie\Activitylog\Traits\LogsActivity;
+
+class wDocRow extends Model
 {
   use LogsActivity;
 

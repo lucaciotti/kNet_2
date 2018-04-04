@@ -5,10 +5,9 @@ namespace knet\WebModels;
 use Illuminate\Database\Eloquent\Model;
 use Torann\Registry\Facades\Registry;
 
-use Spatie\Activitylog\LogsActivityInterface;
-use Spatie\Activitylog\LogsActivity;
+use Spatie\Activitylog\Traits\LogsActivity;
 
-class wVisit extends Model implements LogsActivityInterface
+class wVisit extends Model
 {
   use LogsActivity;
 

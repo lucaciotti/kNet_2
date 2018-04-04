@@ -7,10 +7,9 @@ use Illuminate\Database\Eloquent\Builder;
 use Torann\Registry\Facades\Registry;
 use Auth;
 
-use Spatie\Activitylog\LogsActivityInterface;
-use Spatie\Activitylog\LogsActivity;
+use Spatie\Activitylog\Traits\LogsActivity;
 
-class wDocCli extends Model implements LogsActivityInterface
+class wDocCli extends Model 
 {
   use LogsActivity;
 

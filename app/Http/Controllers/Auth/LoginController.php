@@ -2,7 +2,7 @@
 
 namespace knet\Http\Controllers\Auth;
 
-use App\Http\Controllers\Controller;
+use knet\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 
@@ -30,7 +30,7 @@ class LoginController extends Controller
      */
     public function showLoginForm()
     {
-        return view('adminlte::auth.login');
+        return view('auth.login');
     }
 
     /**
@@ -39,6 +39,7 @@ class LoginController extends Controller
      * @var string
      */
     protected $redirectTo = '/home';
+    /* protected $username = 'nickname'; */
 
     /**
      * Create a new controller instance.

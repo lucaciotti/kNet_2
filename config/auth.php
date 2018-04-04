@@ -68,6 +68,7 @@ return [
         'users' => [
             'driver' => 'eloquent',
             'model' => knet\User::class,
+            'field' => 'nickname',
         ],
 
         // 'users' => [

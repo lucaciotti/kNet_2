@@ -2,9 +2,9 @@
 
 namespace knet\Http\Controllers\Auth;
 
-use App\User;
+use knet\User;
 use Validator;
-use App\Http\Controllers\Controller;
+use knet\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\RegistersUsers;
 
 /**
