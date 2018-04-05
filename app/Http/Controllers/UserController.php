@@ -143,4 +143,8 @@ class UserController extends Controller
       $user->save();
       return redirect()->action('UserController@show', $user->id);
     }
+
+    public function allUsers(Request $req){
+      return User::with('roles')->all();
+    }
 }
