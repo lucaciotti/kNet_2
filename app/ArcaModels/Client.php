@@ -5,9 +5,9 @@ namespace knet\ArcaModels;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
-use Torann\Registry\Facades\Registry;
+/* use Torann\Registry\Facades\Registry; */
 
-use Auth;
+use Request;
 // use knet\User;
 
 class Client extends Model
@@ -27,7 +27,7 @@ class Client extends Model
             $builder->where('codice', 'like', 'C%');
         });
 
-        switch (session('user.role')) {
+        switch (Request::user()->role_name) {
           case 'agent':
             static::addGlobalScope('agent', function(Builder $builder) {
                 $builder->where('agente', session('user.codag'));
@@ -57,7 +57,7 @@ class Client extends Model
       parent::__construct($attributes);
       //Imposto la Connessione al Database
       // dd(Registry::get('ditta_DB'));
-      $this->setConnection(session('user.ditta_DB'));
+      $this->setConnection(Request::user()->ditta);
     }
 
     // JOIN Tables

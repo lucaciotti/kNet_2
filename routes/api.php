@@ -24,4 +24,5 @@ Route::group(['prefix' => 'v1','middleware' => 'auth:api'], function () {
     #adminlte_api_routes
 });
 
-Route::get('users', 'UserConstroller@allUsers')->middleware('auth:api');
+Route::get('users', 'UserController@allUsers')->middleware('auth:api');
+Route::get('clients', 'ClientController@allCustomers')->middleware('auth:api');

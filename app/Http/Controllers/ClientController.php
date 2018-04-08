@@ -31,8 +31,8 @@ class ClientController extends Controller
 
     public function index (Request $req){
 
-      if(Auth::user()->hasRole('client')){
-        return redirect()->action('ClientController@detail', Auth::user()->codcli);
+      if($req->user()->role_name=='client'){
+        return redirect()->action('ClientController@detail', $req-user()->codcli);
       }
       // on($this->connection)->
       $clients = Client::where('statocf', 'T')->where('agente', '!=', '');
@@ -127,4 +127,7 @@ class ClientController extends Controller
       ]);
     }
 
+    public function allCustomers (Request $req){
+      return Client::paginate();
+    }
 }

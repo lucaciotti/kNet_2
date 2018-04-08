@@ -145,6 +145,6 @@ class UserController extends Controller
     }
 
     public function allUsers(Request $req){
-      return User::with('roles')->all();
+      return User::with('roles')->get();
     }
 }

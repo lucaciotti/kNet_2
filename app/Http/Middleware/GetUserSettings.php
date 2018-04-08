@@ -18,13 +18,13 @@ class GetUserSettings
     {
         $request->session()->regenerate();
         if (Auth::check() && !$request->session()->has('user')){
-          $user = Auth::user();
+          $user = $request->user();
           switch ($user->ditta) {
-            case 'it':
+            case 'kNet_it':
               $settings = [
                 'user.ditta_DB' => env('DB_CNCT_IT', 'kNet_it'),
                 'user.location' => 'it',
-                'user.role' => $user->roles()->first()->name,
+                'user.role' => $user->role_name,
                 'user.codag' => (string)$user->codag,
                 'user.codcli' => (string)$user->codcli,
                 'user.lang' => (string)$user->lang,
