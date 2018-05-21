@@ -5,10 +5,14 @@ namespace knet\ArcaModels;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
+<<<<<<< HEAD
 use Torann\Registry\Facades\Registry;
 use RedisUser;
+=======
+/* use Torann\Registry\Facades\Registry; */
+>>>>>>> cd52286ed1228a5e60a886d81a27432272cff6d0
 
-use Auth;
+use Request;
 // use knet\User;
 
 class Client extends Model
@@ -28,7 +32,11 @@ class Client extends Model
             $builder->where('codice', 'like', 'C%');
         });
 
+<<<<<<< HEAD
         switch (RedisUser::get('role')) {
+=======
+        switch (Request::user()->role_name) {
+>>>>>>> cd52286ed1228a5e60a886d81a27432272cff6d0
           case 'agent':
             static::addGlobalScope('agent', function(Builder $builder) {
                 $builder->where('agente', RedisUser::get('codag'));
@@ -58,7 +66,11 @@ class Client extends Model
       parent::__construct($attributes);
       //Imposto la Connessione al Database
       // dd(Registry::get('ditta_DB'));
+<<<<<<< HEAD
       $this->setConnection(RedisUser::get('ditta_DB'));
+=======
+      $this->setConnection(Request::user()->ditta);
+>>>>>>> cd52286ed1228a5e60a886d81a27432272cff6d0
     }
 
     // JOIN Tables

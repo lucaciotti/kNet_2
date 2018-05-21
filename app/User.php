@@ -27,6 +27,16 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
+    protected $appends = ['role_name'];
+
+    public function getRoleNameAttribute(){
+        return $this->roles()->first()->name;
+    }
+
+    public function getDittaAttribute($value){
+        return 'kNet_'.$value;
+    }
+
     public function client(){
       return $this->hasOne('knet\ArcaModels\Client', 'codice', 'codcli');
     }
