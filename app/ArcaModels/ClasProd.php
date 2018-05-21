@@ -5,6 +5,7 @@ namespace knet\ArcaModels;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Torann\Registry\Facades\Registry;
+use RedisUser;
 
 class ClasProd extends Model
 {
@@ -19,7 +20,7 @@ class ClasProd extends Model
     parent::__construct($attributes);
     //Imposto la Connessione al Database
     // dd(Registry::get('ditta_DB'));
-    $this->setConnection(session('user.ditta_DB'));
+    $this->setConnection(RedisUser::get('ditta_DB'));
   }
 
   // JOIN Tables LEN(column_name)

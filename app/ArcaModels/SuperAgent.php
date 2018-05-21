@@ -5,6 +5,7 @@ namespace knet\ArcaModels;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Torann\Registry\Facades\Registry;
+use RedisUser;
 
 class SuperAgent extends Model
 {
@@ -22,20 +23,20 @@ class SuperAgent extends Model
           $builder->whereRaw('codice=u_capoa');
         });
 
-      switch (session('user.role')) {
+      switch (RedisUser::get('role')) {
         case 'agent':
           static::addGlobalScope('agent', function(Builder $builder) {
-              $builder->where('codice', session('user.codag'));
+              $builder->where('codice', RedisUser::get('codag'));
           });
           break;
         case 'superAgent':
           static::addGlobalScope('superAgent', function(Builder $builder) {
-              $builder->where('codice', session('user.codag'));
+              $builder->where('codice', RedisUser::get('codag'));
           });
           break;
         case 'client':
           static::addGlobalScope('client', function(Builder $builder) {
-              $builder->where('codice', session('user.codcli'));
+              $builder->where('codice', RedisUser::get('codcli'));
           });
           break;
 
@@ -49,7 +50,7 @@ class SuperAgent extends Model
       parent::__construct($attributes);
       //Imposto la Connessione al Database
       // dd(Registry::get('ditta_DB'));
-      $this->setConnection(session('user.ditta_DB'));
+      $this->setConnection(RedisUser::get('ditta_DB'));
     }
 
     // JOIN Tables

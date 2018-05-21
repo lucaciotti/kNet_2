@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Torann\Registry\Facades\Registry;
 
 use Spatie\Activitylog\Traits\LogsActivity;
+use RedisUser;
 
 class wVisit extends Model
 {
@@ -21,7 +22,7 @@ class wVisit extends Model
     parent::__construct($attributes);
     //Imposto la Connessione al Database
     // dd(Registry::get('ditta_DB'));
-    $this->setConnection(session('user.ditta_DB'));
+    $this->setConnection(RedisUser::get('ditta_DB'));
   }
 
   public function user(){

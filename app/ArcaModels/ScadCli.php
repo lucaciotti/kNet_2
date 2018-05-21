@@ -5,6 +5,7 @@ namespace knet\ArcaModels;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Torann\Registry\Facades\Registry;
+use RedisUser;
 
 use Auth;
 
@@ -27,22 +28,22 @@ class ScadCli extends Model
           $builder->where('codcf', 'like', 'C%');
       });
 
-      switch (session('user.role')) {
+      switch (RedisUser::get('role')) {
         case 'agent':
           static::addGlobalScope('agent', function(Builder $builder) {
-              $builder->where('codag', session('user.codag'));
+              $builder->where('codag', RedisUser::get('codag'));
           });
           break;
         case 'superAgent':
           static::addGlobalScope('superAgent', function(Builder $builder) {
             $builder->whereHas('agent', function ($query){
-                $query->where('u_capoa', session('user.codag'));
+                $query->where('u_capoa', RedisUser::get('codag'));
               });
           });
           break;
         case 'client':
           static::addGlobalScope('client', function(Builder $builder) {
-              $builder->where('codcf', session('user.codcli'));
+              $builder->where('codcf', RedisUser::get('codcli'));
           });
           break;
 
@@ -57,7 +58,7 @@ class ScadCli extends Model
     parent::__construct($attributes);
     //Imposto la Connessione al Database
     // dd(Registry::get('ditta_DB'));
-    $this->setConnection(session('user.ditta_DB'));
+    $this->setConnection(RedisUser::get('ditta_DB'));
   }
 
   public function getDescPagAttribute()

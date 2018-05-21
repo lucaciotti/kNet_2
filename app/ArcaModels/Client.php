@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
 use Torann\Registry\Facades\Registry;
+use RedisUser;
 
 use Auth;
 // use knet\User;
@@ -27,22 +28,22 @@ class Client extends Model
             $builder->where('codice', 'like', 'C%');
         });
 
-        switch (session('user.role')) {
+        switch (RedisUser::get('role')) {
           case 'agent':
             static::addGlobalScope('agent', function(Builder $builder) {
-                $builder->where('agente', session('user.codag'));
+                $builder->where('agente', RedisUser::get('codag'));
             });
             break;
           case 'superAgent':
             static::addGlobalScope('superAgent', function(Builder $builder) {
               $builder->whereHas('agent', function ($query){
-                  $query->where('u_capoa', session('user.codag'));
+                  $query->where('u_capoa', RedisUser::get('codag'));
                 });
             });
             break;
           case 'client':
             static::addGlobalScope('client', function(Builder $builder) {
-                $builder->where('codice', session('user.codcli'));
+                $builder->where('codice', RedisUser::get('codcli'));
             });
             break;
 
@@ -57,7 +58,7 @@ class Client extends Model
       parent::__construct($attributes);
       //Imposto la Connessione al Database
       // dd(Registry::get('ditta_DB'));
-      $this->setConnection(session('user.ditta_DB'));
+      $this->setConnection(RedisUser::get('ditta_DB'));
     }
 
     // JOIN Tables

@@ -16,6 +16,7 @@
         "laravel/tinker": "^1.0",
         "laravelista/ekko": "^1.5",
         "maatwebsite/excel": "^3.0",
+        "predis/predis": "^1.1",
         "santigarcor/laratrust": "5.0.*",
         "spatie/laravel-activitylog": "^2.5",
         "torann/currency": "^1.0"

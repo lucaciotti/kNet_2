@@ -159,6 +159,7 @@ return [
         // knet\Providers\BroadcastServiceProvider::class,
         knet\Providers\EventServiceProvider::class,
         knet\Providers\RouteServiceProvider::class,
+        knet\Providers\RedisUserServiceProvider::class,
 
     ],
 
@@ -208,6 +209,7 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
+        'RedisUser' => knet\Helpers\RedisUser::class,
 
     ],
 
