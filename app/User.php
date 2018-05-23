@@ -33,9 +33,9 @@ class User extends Authenticatable
         return $this->roles()->first()->name;
     }
 
-    public function getDittaAttribute($value){
+    /* public function getDittaAttribute($value){
         return 'kNet_'.$value;
-    }
+    } */
 
     public function client(){
       return $this->hasOne('knet\ArcaModels\Client', 'codice', 'codcli');

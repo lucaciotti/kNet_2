@@ -4,6 +4,7 @@ namespace knet\Http\Middleware;
 
 use Closure;
 use App;
+use Auth;
 use knet\LogLocation;
 use RedisUser;
 
@@ -39,7 +40,12 @@ class Localization
           $request->session()->put('located', $log->id);
           $request->session()->save();
         } */
-        $lang = RedisUser::get('lang')!==null && RedisUser::get('lang')!='' ? RedisUser::get('lang') : App::getLocale(); // $locationLang;
+        /* $lang = RedisUser::get('lang')!==null && RedisUser::get('lang')!='' ? RedisUser::get('lang') : App::getLocale(); // $locationLang;
+        App::setLocale($lang); */
+        $lang = App::getLocale();
+        if (Auth::check() && RedisUser::exist()){
+            $lang = RedisUser::get('lang')!==null && RedisUser::get('lang')!='' ? RedisUser::get('lang') : App::getLocale(); // $locationLang;
+        }
         App::setLocale($lang);
         return $next($request);
     }

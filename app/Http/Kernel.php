@@ -37,11 +37,13 @@ class Kernel extends HttpKernel
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
             \knet\Http\Middleware\GetUserSettings::class,
             \knet\Http\Middleware\Localization::class,
+            \Torann\Currency\Middleware\CurrencyMiddleware::class,
         ],
 
         'api' => [
             'throttle:60,1',
             'bindings',
+            \knet\Http\Middleware\GetUserSettings::class,
         ],
     ];
 

@@ -3,6 +3,7 @@
 namespace knet\Http\Middleware;
 
 use Auth;
+use App;
 use RedisUser;
 use Closure;
 
@@ -18,7 +19,7 @@ class GetUserSettings
     public function handle($request, Closure $next)
     {
         if (Auth::check() && !RedisUser::exist()){
-          RedisUser::store();  
+            RedisUser::store();  
         }
         return $next($request);
     }
