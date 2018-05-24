@@ -16,7 +16,7 @@ class Update extends Command
     protected $signature = 'currency:update
                                 {--o|openexchangerates : Get rates from OpenExchangeRates.org}
                                 {--g|google : Get rates from Google Finance}
-                                {--f|freecurrencies : Get rates from Free Currencies}';
+                                {--f|freecurrency : Get rates from Free Currency}';
 
     /**
      * The console command description.
@@ -78,9 +78,9 @@ class Update extends Command
             return $this->updateFromOpenExchangeRates($defaultCurrency, $api);
         }
 
-        if ($this->input->getOption('freecurrencies')) {
+        if ($this->input->getOption('freecurrency')) {
             // Get rates from FreeCurrencies
-            return $this->updateFromFreeCurrencies($defaultCurrency);
+            return $this->updateFromFreeCurrency($defaultCurrency);
         }
     }
 
@@ -155,22 +155,18 @@ class Update extends Command
     /**
      * MADE BY LUCA CIOTTI
      */
-    private function updateFromFreeCurrencies($defaultCurrency)
+    private function updateFromFreeCurrency($defaultCurrency)
     {
         $this->info('Updating currency exchange rates from free.currencyconverterapi.com...');
         foreach ($this->currency->getDriver()->all() as $code => $value) {
-            // Don't update the default currency, the value is always 1
+            /* // Don't update the default currency, the value is always 1
             if ($code === $defaultCurrency) {
                 continue;
-            }
+            }  */           
 
-            $content = json_decode($this->request('https://free.currencyconverterapi.com/api/v5/convert?q=EUR_USD'));
-             $this->warn($content);
-            /* $content = json_decode($this->request('https://free.currencyconverterapi.com/api/v5/convert?q=' . $defaultCurrency . '_' . $code . ''));
-
-            if (isset($content->results)) {
-                $this->warn($content->result->val);
-            }
+            $q=$defaultCurrency.'_'.$code;
+            $content = json_decode($this->request('http://free.currencyconverterapi.com/api/v5/convert?q=' . $q . '&compact=ultra'));
+            
             // Error getting content?
             if (empty($content)){
                 $this->warn('Can\'t update rate for ' . $code);
@@ -179,23 +175,20 @@ class Update extends Command
             if (isset($content->error)) {
                 $this->error($content->description);
                 return;
-            } */
+            }
 
             // Parse timestamp for DB
             $timestamp = (new DateTime());
 
-            // Update each rate
-            /* $q=$defaultCurrency.'_'.$code
-            if(isset($content->q)) {
-                $this->info($content->$q);
-            }
-            foreach ($content as $key => $value) {
+            // Update rate
+            if(isset($content->$q)) {
+                //without (compact=ultra) --> $this->info($content->results->$q->val);
                 $this->currency->getDriver()->update($code, [
-                    'exchange_rate' => $value,
+                    'exchange_rate' => $content->$q,
                     'updated_at' => $timestamp,
                 ]);
-                $this->info($defaultCurrency.' to '.$code.' -> '.$value);
-            } */
+                $this->info($defaultCurrency.' to '.$code.' -> '.$content->$q);
+            }
         }
 
         $this->currency->clearCache();
