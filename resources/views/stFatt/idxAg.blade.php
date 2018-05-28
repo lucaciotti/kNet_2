@@ -40,7 +40,7 @@
                   @if($agent->agente==$agente)
                       selected
                   @endif
-                  >{{ $agent->agent->descrizion }}</option>
+                  >{{ $agent->agent->descrizion or "Error $agent->agente - No Description" }}</option>
               @endforeach
             </select>
           </div>

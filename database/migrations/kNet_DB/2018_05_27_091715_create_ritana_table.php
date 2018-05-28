@@ -13,7 +13,7 @@ class CreateRitanaTable extends Migration
      */
     public function up()
     {
-        Schema::create('ritana', function (Blueprint $table) {
+        Schema::create('rit_ana', function (Blueprint $table) {
             $table->string('codfor', 6)->primary();
             $table->string('sesso', 1)->nullable();
             $table->date('datanasc', 8)->nullable();
@@ -27,8 +27,8 @@ class CreateRitanaTable extends Migration
             $table->float('pcdefrit')->nullable();
             $table->double('percimp')->nullable();
             $table->string('codtributo', 4)->nullable();
-            $table->int('tipoage')->nullable();
-            $table->double('perendti')->nullable();
+            $table->integer('tipoage')->nullable();
+            $table->double('perendit')->nullable();
             $table->double('perenage')->nullable();
             $table->double('impmin')->nullable();
             $table->double('impmax')->nullable();
@@ -55,6 +55,6 @@ class CreateRitanaTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('ritana');
+        Schema::dropIfExists('rit_ana');
     }
 }

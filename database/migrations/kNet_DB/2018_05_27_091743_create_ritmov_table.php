@@ -13,9 +13,18 @@ class CreateRitmovTable extends Migration
      */
     public function up()
     {
-        Schema::create('ritmov', function (Blueprint $table) {
-            $table->increments('id');
-            $table->timestamps();
+        Schema::create('rit_mov', function (Blueprint $table) {
+            $table->increments('id')->comment('');
+            $table->string('codfor',6)->nullable()->comment('');
+            $table->date('ftdatadoc')->nullable()->comment('');
+            $table->string('ftnumdoc', 10)->nullable()->comment('');
+            $table->double('totfattura')->nullable()->comment('');
+            $table->double('compensi')->nullable()->comment('');
+            $table->double('perendit')->nullable()->comment('');
+            $table->double('impendit')->nullable()->comment('');
+            $table->double('perenage')->nullable()->comment('');
+            $table->double('impenage')->nullable()->comment('');
+            $table->timestamp('timestamp')->nullable()->comment('');
         });
     }
 
@@ -26,6 +35,6 @@ class CreateRitmovTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('ritmov');
+        Schema::dropIfExists('rit_mov');
     }
 }
