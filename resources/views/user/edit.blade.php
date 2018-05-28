@@ -87,7 +87,7 @@
 
             <div class="form-group">
               <label>{{ trans('user.refDitta') }}</label>
-              @if (Registry::get('role')=='admin')
+              @if (RedisUser::get('role')=='admin')
                 <select name="ditta" class="form-control" style="width: 100%;">
                   <option value="it" @if ($user->ditta=='it') selected="selected" @endif>kNet Italia</option>
                   <option value="es" @if ($user->ditta=='es') selected="selected" @endif>kNet Spagna</option>

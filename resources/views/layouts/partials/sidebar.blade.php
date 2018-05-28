@@ -33,8 +33,8 @@
             <!-- Optionally, you can add icons to the links -->
             <li class="{{ Ekko::isActiveURL('home') }}"><a href="{{ url('/home') }}"><i class='fa fa-home'></i> <span>{{ trans('_menu.home') }}</span></a></li>
 
-            @if (!in_array(session('user.role'), ['user']))
-              @if (in_array(session('user.role'), ['client']))
+            @if (!in_array(RedisUser::get('role'), ['user']))
+              @if (in_array(RedisUser::get('role'), ['client']))
                 <li class="{{ Ekko::isActiveRoute('client::*') }}"><a href="{{ route('client::list') }}"><i class='fa fa-user'></i> <span>{{ trans('_menu.anagClient') }}</span></a></li>
               @else
                 <li class="{{ Ekko::isActiveRoute('client::*') }}"><a href="{{ route('client::list') }}"><i class='fa fa-users'></i> <span>{{ trans('_menu.listClients') }}</span></a></li>
@@ -52,7 +52,7 @@
               <li><i class='fa fa-empty'></i></li>
 
               {{-- @if (!Auth::user()->hasRole('client')) --}}
-              @if (!in_array(session('user.role'), ['client']))
+              @if (!in_array(RedisUser::get('role'), ['client']))
               <li class="header">Funzioni Web</li>
               {{-- <li class=""><a href="{{ route('doc::list', 'O') }}"><i class='fa fa-pencil-square-o'></i> <span>Pre-Ordini via Web</span></a></li> --}}
               <li class="{{ Ekko::isActiveRoute('visit::*') }}"><a href="{{ route('visit::insert') }}"><i class='fa fa-weixin'></i> <span>{{ trans('_menu.insVisits') }}</span></a></li>
@@ -64,13 +64,13 @@
                   <ul class="treeview-menu">
                       <li class="{{ Ekko::isActiveRoute('stFatt::idxAg') }}"><a href="{{ route('stFatt::idxAg') }}">{{ trans('_menu.agent') }}</a></li>
                       <li class="{{ Ekko::isActiveRoute('stFatt::idxCli') }}"><a href="{{ route('stFatt::idxCli') }}">{{ trans('_menu.client') }}</a></li>
-                      @if (!in_array(session('user.role'), ['agent']))
+                      @if (!in_array(RedisUser::get('role'), ['agent']))
                         <li class="{{ Ekko::isActiveRoute('stFatt::idxZone') }}"><a href="{{ route('stFatt::idxZone') }}">{{ trans('_menu.zone') }}</a></li>
                         <li class="{{ Ekko::isActiveRoute('stFatt::idxManager') }}"><a href="{{ route('stFatt::idxManager') }}">{{ trans('_menu.superAgent') }}</a></li>
                       @endif
                   </ul>
               </li>
-              {{-- <li class="treeview {{ Ekko::isActiveRoute('stAbc::*') }}">
+              <li class="treeview {{ Ekko::isActiveRoute('stAbc::*') }}">
                   <a href="{{ route('stAbc::idxAg') }}"><i class='fa fa-sort-alpha-asc'></i> <span>{{ trans('_menu.statsAbc') }}</span> <i class="fa fa-angle-left pull-right"></i></a>
                   <ul class="treeview-menu">
                       <li class="{{ Ekko::isActiveRoute('stAbc::idxAg') }}"><a href="{{ route('stAbc::idxAg') }}">{{ trans('_menu.agent') }}</a></li>
@@ -79,7 +79,7 @@
                       <li class="{{ Ekko::isActiveRoute('stAbc::idxManager') }}"><a href="{{ route('stAbc::idxManager') }}">{{ trans('_menu.superAgent') }}</a></li>
                   </ul>
               </li>
-              <li><i class='fa fa-empty'></i></li> --}}
+              <li><i class='fa fa-empty'></i></li>
 
               {{-- <li class="header">Forecast & Target</li>
               <li class="treeview {{ Ekko::isActiveRoute('target::*') }}">

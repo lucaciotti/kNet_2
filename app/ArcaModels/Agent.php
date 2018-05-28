@@ -3,7 +3,6 @@
 namespace knet\ArcaModels;
 
 use Illuminate\Database\Eloquent\Model;
-use Torann\Registry\Facades\Registry;
 use RedisUser;
 
 class Agent extends Model
@@ -18,7 +17,6 @@ class Agent extends Model
     {
       parent::__construct($attributes);
       //Imposto la Connessione al Database
-      //$this->setConnection(Registry::get('ditta_DB'));
       $this->setConnection(RedisUser::get('ditta_DB'));
     }
 

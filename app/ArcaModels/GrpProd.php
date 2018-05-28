@@ -4,7 +4,6 @@ namespace knet\ArcaModels;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
-use Torann\Registry\Facades\Registry;
 use RedisUser;
 
 class GrpProd extends Model
@@ -29,7 +28,6 @@ class GrpProd extends Model
     self::boot();
     parent::__construct($attributes);
     //Imposto la Connessione al Database
-    // dd(Registry::get('ditta_DB'));
     $this->setConnection(RedisUser::get('ditta_DB'));
   }
 

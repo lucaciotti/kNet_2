@@ -3,7 +3,6 @@
 namespace knet\ArcaModels;
 
 use Illuminate\Database\Eloquent\Model;
-use Torann\Registry\Facades\Registry;
 use RedisUser;
 
 use Auth;
@@ -20,7 +19,6 @@ class Settore extends Model
     {
       parent::__construct($attributes);
       //Imposto la Connessione al Database
-      // dd(Registry::get('ditta_DB'));
       $this->setConnection(RedisUser::get('ditta_DB'));
     }
 

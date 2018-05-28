@@ -8,13 +8,13 @@ use Carbon\Carbon;
 use Illuminate\Support\Collection;
 
 use knet\Http\Requests;
-use Torann\Registry\Facades\Registry;
 
 use knet\ArcaModels\StatFatt;
 use knet\ArcaModels\Client;
 use knet\ArcaModels\Agent;
 use knet\ArcaModels\SuperAgent;
 use knet\ArcaModels\Nazione;
+use knet\ArcaModels\GrpProd;
 
 class StFattController extends Controller
 {
@@ -36,6 +36,7 @@ class StFattController extends Controller
                           ->get();
       $codAg = ($req->input('codag')) ? $req->input('codag') : $codAg;
       $agente = (!empty($codAg)) ? $codAg : $agents->first()->agente;
+      $thisYear = (string)(Carbon::now()->year);
       $fatDet = StatFatt::select('agente', 'tipologia', 'gruppo',
                                   DB::raw('MAX(prodotto) as prodotto'),
                                   DB::raw('MAX(LEFT(gruppo,1)) as grp'),
@@ -54,8 +55,16 @@ class StFattController extends Controller
                                 )
                           ->where('codicecf', 'CTOT')
                           ->where('agente', $agente)
-                          ->where('esercizio', '2017')
-                          ->where('tipologia', 'FATTURATO')
+                          ->where('esercizio', $thisYear);
+      if($req->input('gruppo')) {
+        $fatDet = $fatDet->whereIn('gruppo', $req->input('gruppo'));
+      }
+      if(!empty($req->input('optTipoDoc'))) {
+        $fatDet = $fatDet->where('prodotto', $req->input('optTipoDoc'));
+      } else {
+        $fatDet = $fatDet->whereIn('prodotto', ['KRONA', 'KOBLENZ', 'KUBIKA']);
+      }                   
+      $fatDet = $fatDet->where('tipologia', 'FATTURATO')
                           ->groupBy(['agente', 'tipologia', 'gruppo'])
                           ->with([
                             'agent' => function($query){
@@ -82,16 +91,24 @@ class StFattController extends Controller
                                 )
                           ->where('codicecf', 'CTOT')
                           ->where('agente', $agente)
-                          ->where('esercizio', '2017')
-                          ->whereIn('prodotto', ['KRONA', 'KOBLENZ', 'KUBIKA'])
-                          ->where('tipologia', 'FATTURATO')
-                          ->groupBy(['agente', 'tipologia'])
+                          ->where('esercizio', $thisYear)
+                          ->where('tipologia', 'FATTURATO');
+      if($req->input('gruppo')) {
+        $fatTot = $fatTot->whereIn('gruppo', $req->input('gruppo'));
+      }
+      if(!empty($req->input('optTipoDoc'))) {
+        $fatTot = $fatTot->where('prodotto', $req->input('optTipoDoc'));
+      } else {
+        $fatTot = $fatTot->whereIn('prodotto', ['KRONA', 'KOBLENZ', 'KUBIKA']);
+      }          
+      $fatTot = $fatTot->groupBy(['agente', 'tipologia'])
                           ->with([
                             'agent' => function($query){
                               $query->select('codice', 'descrizion');
                             }
                             ])
                           ->get();
+      // dd($fatTot);
       $target = StatFatt::where('codicecf', 'CTOT')
                           ->where('agente', $agente)
                           ->where('esercizio', '2017')
@@ -105,9 +122,19 @@ class StFattController extends Controller
                             }
                             ])
                           ->get();
+
+      $gruppi = GrpProd::where('codice', 'NOT LIKE', '1%')
+                ->where('codice', 'NOT LIKE', 'DIC%')
+                ->where('codice', 'NOT LIKE', '0%')
+                ->where('codice', 'NOT LIKE', '2%')
+                ->orderBy('codice')
+                ->get();
+
       $prevMonth = (Carbon::now()->month);
       $valMese = 'valore' . $prevMonth;
-      $prevMonth = ($fatTot->first()->$valMese == 0) ? $prevMonth-1 : $prevMonth;
+      if(!empty($fatTot->first())){
+        $prevMonth = ($fatTot->first()->$valMese == 0) ? $prevMonth-1 : $prevMonth;
+      }
       $stats = $this->makeFatTgtJson($fatTot, $target, $prevMonth);
       return view('stFatt.idxAg', [
         'agents' => $agents,
@@ -117,6 +144,7 @@ class StFattController extends Controller
         'target' => $target,
         'stats' => $stats,
         'prevMonth' => $prevMonth,
+        'gruppi' => $gruppi
       ]);
     }
 

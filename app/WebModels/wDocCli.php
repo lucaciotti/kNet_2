@@ -4,7 +4,6 @@ namespace knet\WebModels;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
-use Torann\Registry\Facades\Registry;
 use Auth;
 
 use Spatie\Activitylog\Traits\LogsActivity;
@@ -23,7 +22,6 @@ class wDocCli extends Model
       self::boot();
       parent::__construct($attributes);
       //Imposto la Connessione al Database
-      // dd(Registry::get('ditta_DB'));
       $this->setConnection(RedisUser::get('ditta_DB'));
     }
 

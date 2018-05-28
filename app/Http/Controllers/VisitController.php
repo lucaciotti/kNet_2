@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\Redirect;
 use Carbon\Carbon;
 
 use knet\Http\Requests;
-use Torann\Registry\Facades\Registry;
 
 use knet\ArcaModels\Client;
 use knet\WebModels\wVisit;

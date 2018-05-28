@@ -9,7 +9,8 @@ use Illuminate\Support\Facades\Input;
 use Session;
 use knet\Jobs\ImportUsersExcel;
 use Illuminate\Support\Facades\DB;
-use Torann\Registry\Facades\Registry;
+
+use RedisUser;
 
 use knet\Http\Requests;
 use Auth;
@@ -33,7 +34,7 @@ class UserController extends Controller
 
       $agents = User::with(['roles', 'agent'])
                 ->whereHas('roles', function($q){$q->whereIn('name',['agent', 'superAgent']);})
-                ->where('ditta', Registry::get('location'))
+                ->where('ditta', RedisUser::get('location'))
                 ->orderBy('id')->get();
 
       return view('user.index', [
@@ -46,7 +47,7 @@ class UserController extends Controller
       // $clients = User::with(['roles'])
       $clients = User::with(['roles', 'client'])
                 ->whereHas('roles', function($q){$q->whereIn('name',['agent', 'client']);})
-                ->where('ditta', Registry::get('location'))
+                ->where('ditta', RedisUser::get('location'))
                 ->orderBy('id')->get();
 
       return view('user.indexCli', [

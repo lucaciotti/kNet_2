@@ -11,7 +11,6 @@ use knet\ArcaModels\DocCli;
 use knet\ArcaModels\Destinaz;
 use knet\ArcaModels\DocRow;
 use knet\WebModels\wDdtOk;
-use Torann\Registry\Facades\Registry;
 
 class DocCliController extends Controller
 {
