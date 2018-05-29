@@ -35,9 +35,11 @@ class StFattController extends Controller
                             ])
                           ->get();
       $codAg = ($req->input('codag')) ? $req->input('codag') : $codAg;
-      $agente = (!empty($codAg)) ? $codAg : $agents->first()->agente;
+      // dd($req->input());
+      $agente = (string)(!empty($codAg)) ? $codAg : $agents->first()->agente;
+      $descrAg = (!empty($agents->whereStrict('agente', $agente)->first()->agent) ? $agents->whereStrict('agente', $agente)->first()->agent->descrizion : "");
       $thisYear = (string)(Carbon::now()->year);
-      $fatDet = StatFatt::select('agente', 'tipologia', 'gruppo',
+      /* $fatDet = StatFatt::select('agente', 'tipologia', 'gruppo',
                                   DB::raw('MAX(prodotto) as prodotto'),
                                   DB::raw('MAX(LEFT(gruppo,1)) as grp'),
                                   DB::raw('SUM(valore1) as valore1'),
@@ -73,7 +75,7 @@ class StFattController extends Controller
                               $query->select('codice', 'descrizion');
                             }
                             ])
-                          ->get();
+                          ->get(); */
       $fatTot = StatFatt::select('agente', 'tipologia',
                                   DB::raw('ROUND(SUM(valore1),2) as valore1'),
                                   DB::raw('ROUND(SUM(valore2),2) as valore2'),
@@ -90,7 +92,7 @@ class StFattController extends Controller
                                   DB::raw('ROUND(SUM(fattmese),2) as fattmese')
                                 )
                           ->where('codicecf', 'CTOT')
-                          ->where('agente', $agente)
+                          ->where('agente', $agente)->where(DB::raw('LENGTH(agente)'), strlen($agente))
                           ->where('esercizio', $thisYear)
                           ->where('tipologia', 'FATTURATO');
       if($req->input('gruppo')) {
@@ -98,9 +100,9 @@ class StFattController extends Controller
       }
       if(!empty($req->input('optTipoDoc'))) {
         $fatTot = $fatTot->where('prodotto', $req->input('optTipoDoc'));
-      } else {
+      } /* else {
         $fatTot = $fatTot->whereIn('prodotto', ['KRONA', 'KOBLENZ', 'KUBIKA']);
-      }          
+      } */          
       $fatTot = $fatTot->groupBy(['agente', 'tipologia'])
                           ->with([
                             'agent' => function($query){
@@ -109,7 +111,7 @@ class StFattController extends Controller
                             ])
                           ->get();
       // dd($fatTot);
-      $target = StatFatt::where('codicecf', 'CTOT')
+      /* $target = StatFatt::where('codicecf', 'CTOT')
                           ->where('agente', $agente)
                           ->where('esercizio', '2017')
                           ->where('tipologia', 'TARGET')
@@ -118,6 +120,39 @@ class StFattController extends Controller
                             'agent' => function($query){
                               $query->select('codice', 'descrizion');
                             }, 'grpProd' => function($query){
+                              $query->select('codice', 'descrizion');
+                            }
+                            ])
+                          ->get(); */
+      $prevYear = (string)((Carbon::now()->year)-1);
+      $target = StatFatt::select('agente', 'tipologia',
+                                  DB::raw('ROUND(SUM(valore1),2) as valore1'),
+                                  DB::raw('ROUND(SUM(valore2),2) as valore2'),
+                                  DB::raw('ROUND(SUM(valore3),2) as valore3'),
+                                  DB::raw('ROUND(SUM(valore4),2) as valore4'),
+                                  DB::raw('ROUND(SUM(valore5),2) as valore5'),
+                                  DB::raw('ROUND(SUM(valore6),2) as valore6'),
+                                  DB::raw('ROUND(SUM(valore7),2) as valore7'),
+                                  DB::raw('ROUND(SUM(valore8),2) as valore8'),
+                                  DB::raw('ROUND(SUM(valore9),2) as valore9'),
+                                  DB::raw('ROUND(SUM(valore10),2) as valore10'),
+                                  DB::raw('ROUND(SUM(valore11),2) as valore11'),
+                                  DB::raw('ROUND(SUM(valore12),2) as valore12'),
+                                  DB::raw('ROUND(SUM(fattmese),2) as fattmese')
+                                )
+                          ->where('codicecf', 'CTOT')
+                          ->where('agente', $agente)->where(DB::raw('LENGTH(agente)'), strlen($agente))
+                          ->where('esercizio', $prevYear)
+                          ->where('tipologia', 'FATTURATO');
+      if($req->input('gruppo')) {
+        $target = $target->whereIn('gruppo', $req->input('gruppo'));
+      }
+      if(!empty($req->input('optTipoDoc'))) {
+        $target = $target->where('prodotto', $req->input('optTipoDoc'));
+      }          
+      $target = $target->groupBy(['agente', 'tipologia'])
+                          ->with([
+                            'agent' => function($query){
                               $query->select('codice', 'descrizion');
                             }
                             ])
@@ -136,15 +171,20 @@ class StFattController extends Controller
         $prevMonth = ($fatTot->first()->$valMese == 0) ? $prevMonth-1 : $prevMonth;
       }
       $stats = $this->makeFatTgtJson($fatTot, $target, $prevMonth);
+      // dd($stats);
       return view('stFatt.idxAg', [
         'agents' => $agents,
         'agente' => $agente,
         'fatTot' => $fatTot,
-        'fatDet' => $fatDet,
+        //'fatDet' => $fatDet,
         'target' => $target,
         'stats' => $stats,
         'prevMonth' => $prevMonth,
-        'gruppi' => $gruppi
+        'gruppi' => $gruppi,
+        'grpSelected' => $req->input('gruppo'),
+        'descrAg' => $descrAg,
+        'thisYear' => $thisYear,
+        'prevYear' => $prevYear
       ]);
     }
 
@@ -485,11 +525,12 @@ class StFattController extends Controller
     protected function makeFatTgtJson($fat, $tgt, $mese){
       $collect = collect([]);
       $fatM = 0;
+      $tgtM = 0;
       for($i=1; $i<=$mese; $i++){
         $valMese = 'valore' . $i;
-        $fatM += $fat->isEmpty() ? 0 : $fat->first()->$valMese;
-        $tgtM = $tgt->isEmpty() ? 0 : $tgt->first()->$valMese;
-        $dt = Carbon::createFromDate(null, $i, null);
+        $fatM += round($fat->isEmpty() ? 0 : $fat->first()->$valMese, 0);
+        $tgtM += round($tgt->isEmpty() ? 0 : $tgt->first()->$valMese, 0);
+        $dt = Carbon::createFromDate(null, $i, 1);
         $data = [
           'm' => $dt->year.'-'.$dt->month,
           'a' => $fatM,

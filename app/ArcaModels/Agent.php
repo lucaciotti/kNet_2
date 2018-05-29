@@ -19,7 +19,11 @@ class Agent extends Model
       //Imposto la Connessione al Database
       $this->setConnection(RedisUser::get('ditta_DB'));
     }
-
+/* 
+    public function getCodiceAttribute($value){
+      return (string)$value;
+    }
+ */
     // JOIN Tables
     public function client(){
       return $this->hasMany('knet\ArcaModels\Client', 'codice', 'agente');

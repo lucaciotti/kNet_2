@@ -9,16 +9,16 @@
   <thead>
     <tr>
       <th rowspan="2">&nbsp;</th>
-      <th colspan="3" style="text-align: center;">{{ trans('stFatt.monthly') }}</th>
-      <th colspan="3" style="text-align: center;">{{ trans('stFatt.cumulative') }}</th>
+      <th colspan="3" style="text-align: center;">{{ trans('stFatt.monthly') }} {{ trans('stFatt.revenue')}}</th>
+      <th colspan="3" style="text-align: center;">{{ trans('stFatt.cumulative') }} {{ trans('stFatt.revenue')}}</th>
     </tr>
     <tr>
-      <th style="text-align: center;">{{ strtoupper(trans('stFatt.revenue')) }}</th>
-      <th style="text-align: center;">{{ strtoupper(trans('stFatt.target')) }}</th>
+      <th style="text-align: center;">{{ $thisYear }}</th>
+      <th style="text-align: center;">{{ $prevYear }}</th>
       <th style="text-align: center;">% {{ trans('stFatt.missing') }}</th>
 
-      <th style="text-align: center;">{{ strtoupper(trans('stFatt.revenue')) }}</th>
-      <th style="text-align: center;">{{ strtoupper(trans('stFatt.target')) }}</th>
+      <th style="text-align: center;">{{ $thisYear }}</th>
+      <th style="text-align: center;">{{ $prevYear }}</th>
       <th style="text-align: center;">% {{ trans('stFatt.missing') }}</th>
     </tr>
   </thead>
@@ -48,7 +48,7 @@
     </tr>
     @php
       $fatMese = empty($fat) ? 0 : $fat->valore2;
-      $tgtMese = empty($tgt) ? 0 : $tgt->valore2 - $tgtProg;
+      $tgtMese = empty($tgt) ? 0 : $tgt->valore2;
       $fatProg += $fatMese;
       $tgtProg += $tgtMese;
       $deltaMese = $tgtMese==0 ? 0 : round((($tgtMese-$fatMese) / $tgtMese) * 100,2);
@@ -69,7 +69,7 @@
     </tr>
     @php
       $fatMese = empty($fat) ? 0 : $fat->valore3;
-      $tgtMese = empty($tgt) ? 0 : $tgt->valore3 - $tgtProg;
+      $tgtMese = empty($tgt) ? 0 : $tgt->valore3;
       $fatProg += $fatMese;
       $tgtProg += $tgtMese;
       $deltaMese = $tgtMese==0 ? 0 : round((($tgtMese-$fatMese) / $tgtMese) * 100,2);
@@ -90,7 +90,7 @@
     </tr>
     @php
       $fatMese = empty($fat) ? 0 : $fat->valore4;
-      $tgtMese = empty($tgt) ? 0 : $tgt->valore4 - $tgtProg;
+      $tgtMese = empty($tgt) ? 0 : $tgt->valore4;
       $fatProg += $fatMese;
       $tgtProg += $tgtMese;
       $deltaMese = $tgtMese==0 ? 0 : round((($tgtMese-$fatMese) / $tgtMese) * 100,2);
@@ -111,7 +111,7 @@
     </tr>
     @php
       $fatMese = empty($fat) ? 0 : $fat->valore5;
-      $tgtMese = empty($tgt) ? 0 : $tgt->valore5 - $tgtProg;
+      $tgtMese = empty($tgt) ? 0 : $tgt->valore5;
       $fatProg += $fatMese;
       $tgtProg += $tgtMese;
       $deltaMese = $tgtMese==0 ? 0 : round((($tgtMese-$fatMese) / $tgtMese) * 100,2);
@@ -132,7 +132,7 @@
     </tr>
     @php
       $fatMese = empty($fat) ? 0 : $fat->valore6;
-      $tgtMese = empty($tgt) ? 0 : $tgt->valore6 - $tgtProg;
+      $tgtMese = empty($tgt) ? 0 : $tgt->valore6;
       $fatProg += $fatMese;
       $tgtProg += $tgtMese;
       $deltaMese = $tgtMese==0 ? 0 : round((($tgtMese-$fatMese) / $tgtMese) * 100,2);
@@ -153,7 +153,7 @@
     </tr>
     @php
       $fatMese = empty($fat) ? 0 : $fat->valore7;
-      $tgtMese = empty($tgt) ? 0 : $tgt->valore7 - $tgtProg;
+      $tgtMese = empty($tgt) ? 0 : $tgt->valore7;
       $fatProg += $fatMese;
       $tgtProg += $tgtMese;
       $deltaMese = $tgtMese==0 ? 0 : round((($tgtMese-$fatMese) / $tgtMese) * 100,2);
@@ -174,7 +174,7 @@
     </tr>
     @php
       $fatMese = empty($fat) ? 0 : $fat->valore8;
-      $tgtMese = empty($tgt) ? 0 : $tgt->valore8 - $tgtProg;
+      $tgtMese = empty($tgt) ? 0 : $tgt->valore8;
       $fatProg += $fatMese;
       $tgtProg += $tgtMese;
       $deltaMese = $tgtMese==0 ? 0 : round((($tgtMese-$fatMese) / $tgtMese) * 100,2);
@@ -195,7 +195,7 @@
     </tr>
     @php
       $fatMese = empty($fat) ? 0 : $fat->valore9;
-      $tgtMese = empty($tgt) ? 0 : $tgt->valore9 - $tgtProg;
+      $tgtMese = empty($tgt) ? 0 : $tgt->valore9;
       $fatProg += $fatMese;
       $tgtProg += $tgtMese;
       $deltaMese = $tgtMese==0 ? 0 : round((($tgtMese-$fatMese) / $tgtMese) * 100,2);
@@ -216,7 +216,7 @@
     </tr>
     @php
       $fatMese = empty($fat) ? 0 : $fat->valore10;
-      $tgtMese = empty($tgt) ? 0 : $tgt->valore10 - $tgtProg;
+      $tgtMese = empty($tgt) ? 0 : $tgt->valore10;
       $fatProg += $fatMese;
       $tgtProg += $tgtMese;
       $deltaMese = $tgtMese==0 ? 0 : round((($tgtMese-$fatMese) / $tgtMese) * 100,2);
@@ -237,7 +237,7 @@
     </tr>
     @php
       $fatMese = empty($fat) ? 0 : $fat->valore11;
-      $tgtMese = empty($tgt) ? 0 : $tgt->valore11 - $tgtProg;
+      $tgtMese = empty($tgt) ? 0 : $tgt->valore11;
       $fatProg += $fatMese;
       $tgtProg += $tgtMese;
       $deltaMese = $tgtMese==0 ? 0 : round((($tgtMese-$fatMese) / $tgtMese) * 100,2);
@@ -258,7 +258,7 @@
     </tr>
     @php
       $fatMese = empty($fat) ? 0 : $fat->valore12;
-      $tgtMese = empty($tgt) ? 0 : $tgt->valore12 - $tgtProg;
+      $tgtMese = empty($tgt) ? 0 : $tgt->valore12;
       $fatProg += $fatMese;
       $tgtProg += $tgtMese;
       $deltaMese = $tgtMese==0 ? 0 : round((($tgtMese-$fatMese) / $tgtMese) * 100,2);

@@ -91,8 +91,8 @@
     <div class="nav-tabs-custom">
       <ul class="nav nav-tabs pull-right">
         <li class="active"><a href="#StatTot" data-toggle="tab" aria-expanded="true">{{ strtoupper(trans('stFatt.total')) }}</a></li>
-        <li class=""><a href="#StatDet" data-toggle="tab" aria-expanded="false">{{ trans('stFatt.detailed') }}</a></li>
-        <li class="pull-left header"><i class="fa fa-th"></i> {{ trans('stFatt.statsTitle') }}</li>
+        {{-- <li class=""><a href="#StatDet" data-toggle="tab" aria-expanded="false">{{ trans('stFatt.detailed') }}</a></li> --}}
+      <li class="pull-left header"><i class="fa fa-th"></i> {{ trans('stFatt.statsTitle') }} - {{ $descrAg or "..." }}</li>
       </ul>
       <div class="tab-content">
         <div class="tab-pane active" id="StatTot">
@@ -100,10 +100,12 @@
           'fatturato' => $fatTot,
           'target' => $target,
           'prevMonth' => $prevMonth,
+          'thisYear' => $thisYear,
+          'prevYear' => $prevYear
         ])
         </div>
 
-        <div class="tab-pane" id="StatDet">
+        {{-- <div class="tab-pane" id="StatDet">
 
           <div class="nav-tabs-custom">
             <ul class="nav nav-tabs">
@@ -146,7 +148,7 @@
             </div>
           </div>
 
-        </div>
+        </div> --}}
       </div>
     </div>
   </div>
@@ -180,7 +182,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
   <script src="{{ asset('/plugins/morris/morris.min.js') }}"></script>
   <script>
-  $(function () {
+  $( document ).ready(function () {
     /* jQueryKnob */
     $(".knob").knob({
       /*change : function (value) {
@@ -202,8 +204,7 @@
     var data = {!! $stats !!};
     var revenueLabel = "{!! trans('stFatt.revenue') !!}";
     var targetLabel = "{!! trans('stFatt.target') !!}";
-    var area = new Morris.Line({
-      element: 'revenue-chart',
+    var config = {
       resize: true,
       data: data,
       xkey: 'm',
@@ -211,6 +212,7 @@
       labels: [revenueLabel, targetLabel],
       lineColors: ['#227a03', '#cd6402'],
       hideHover: 'auto',
+      xLabels: 'month',
       xLabelFormat: function(x) { // <--- x.getMonth() returns valid index
         var month = months[x.getMonth()];
         return month;
@@ -219,7 +221,9 @@
         var month = months[new Date(x).getMonth()];
         return month;
       },
-    });
+    };
+    config.element = 'revenue-chart';
+    var area = new Morris.Line(config);
   });
 </script>
 @endpush
