@@ -18,6 +18,7 @@
         "maatwebsite/excel": "^3.0",
         "predis/predis": "^1.1",
         "santigarcor/laratrust": "5.0.*",
+        "spatie/array-to-xml": "^2.7",
         "spatie/laravel-activitylog": "^2.5",
         "torann/currency": "^1.0"
     },

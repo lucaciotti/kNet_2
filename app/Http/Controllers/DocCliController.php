@@ -12,6 +12,9 @@ use knet\ArcaModels\Destinaz;
 use knet\ArcaModels\DocRow;
 use knet\WebModels\wDdtOk;
 
+use Spatie\ArrayToXml\ArrayToXml;
+use File;
+
 class DocCliController extends Controller
 {
 
@@ -284,6 +287,50 @@ class DocCliController extends Controller
       'tipomodulo' => $tipomodulo,
       'descModulo' => $descModulo,
     ]);
+  }
+
+  public function downloadXML(Request $req, $id_testa){
+    $tipoDoc = DocCli::select('tipomodulo')->findOrFail($id_testa);
+    $head = DocCli::with(['client' => function($query) {
+      $query
+      ->withoutGlobalScope('agent')
+      ->withoutGlobalScope('superAgent')
+      ->withoutGlobalScope('client');
+    }]);
+    if ($tipoDoc->tipomodulo=='F'){
+        $head = $head->with(['scadenza' => function($query) {
+          $query
+          ->withoutGlobalScope('agent')
+          ->withoutGlobalScope('superAgent')
+          ->withoutGlobalScope('client');
+        }]);
+    } elseif ($tipoDoc->tipomodulo=='B') {
+        $head = $head->with('vettore', 'detBeni');
+    }
+    $head = $head->findOrFail($id_testa);
+    if ($tipoDoc->tipomodulo == 'B'){
+      $destDiv = Destinaz::where('codicecf', $head->codicecf)->where('codicedes', $head->destdiv)->first();
+      $ddtOk = wDdtOk::where('id_testa', $head->id)->first();
+    } else {
+      $destDiv = null;
+      $ddtOk = null;
+    }
+    $rows = DocRow::where('id_testa', $id_testa)->orderBy('numeroriga', 'asc')->get();
+
+    $array = [
+        'Head' => $head->toArray(),
+        'Rows' => $rows->toArray()
+    ];
+
+    $result = ArrayToXml::convert($array, "DocRoot");
+    $headers = [
+              'Content-Type' => 'application/xml',
+           ];
+           $file = time() . '_file.xml';
+      $destinationPath=public_path()."/upload/xml/";
+      if (!is_dir($destinationPath)) {  mkdir($destinationPath,0777,true);  }
+      File::put($destinationPath.$file,$result);
+      return response()->download($destinationPath.$file);
   }
 
 }

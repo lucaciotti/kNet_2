@@ -170,6 +170,24 @@
       <!-- /.tab-content -->
     </div>
 
+    <div class="box box-default collapsed-box">
+      <div class="box-header with-border">
+        <h3 class="box-title" data-widget="collapse"><i class='fa fa-cloud-download'> </i> Download</h3>
+        <div class="box-tools pull-right">
+          <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i></button>
+        </div>
+      </div>
+      <div class="box-body">
+        <a type="button" class="btn btn-default btn-block" href="{{ route('doc::downloadXML', $head->id) }}">
+         <strong> XML File</strong>
+        </a>
+        <hr>
+        <a type="button" class="btn btn-default btn-block" href="{{-- {{ route('doc::detail', $doc->id) }} --}}">
+          <strong> Excel File</strong>
+        </a>
+      </div>
+    </div>
+
     @if($head->tipomodulo == 'F')
       <div class="box box-warning">
         <div class="box-header with-border">
