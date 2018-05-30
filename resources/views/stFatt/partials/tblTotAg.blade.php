@@ -13,12 +13,12 @@
       <th colspan="3" style="text-align: center;">{{ trans('stFatt.cumulative') }} {{ trans('stFatt.revenue')}}</th>
     </tr>
     <tr>
-      <th style="text-align: center;">{{ $thisYear }}</th>
-      <th style="text-align: center;">{{ $prevYear }}</th>
+      <th style="text-align: center;">{{ $thisYear or ""}}</th>
+      <th style="text-align: center;">{{ $prevYear or "" }}</th>
       <th style="text-align: center;">% {{ trans('stFatt.missing') }}</th>
 
-      <th style="text-align: center;">{{ $thisYear }}</th>
-      <th style="text-align: center;">{{ $prevYear }}</th>
+      <th style="text-align: center;">{{ $thisYear or "" }}</th>
+      <th style="text-align: center;">{{ $prevYear or "" }}</th>
       <th style="text-align: center;">% {{ trans('stFatt.missing') }}</th>
     </tr>
   </thead>

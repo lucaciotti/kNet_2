@@ -81,6 +81,17 @@
               </li>
               <li><i class='fa fa-empty'></i></li>
 
+              <li class="treeview {{ Ekko::isActiveRoute('stAbc::*') }}">
+                  <a href="{{ route('stAbc::idxAg') }}"><i class='fa fa-stack-overflow'></i> <span>Portafoglio</span> <i class="fa fa-angle-left pull-right"></i></a>
+                  <ul class="treeview-menu">
+                      <li class="{{ Ekko::isActiveRoute('stAbc::idxAg') }}"><a href="{{ route('stAbc::idxAg') }}">{{ trans('_menu.agent') }}</a></li>
+                      <li class="{{ Ekko::isActiveRoute('stAbc::idxCli') }}"><a href="{{ route('stAbc::idxCli') }}">{{ trans('_menu.client') }}</a></li>
+                      <li class="{{ Ekko::isActiveRoute('stAbc::idxZone') }}"><a href="{{ route('stAbc::idxZone') }}">{{ trans('_menu.zone') }}</a></li>
+                      <li class="{{ Ekko::isActiveRoute('stAbc::idxManager') }}"><a href="{{ route('stAbc::idxManager') }}">{{ trans('_menu.superAgent') }}</a></li>
+                  </ul>
+              </li>
+              <li><i class='fa fa-empty'></i></li>
+
               {{-- <li class="header">Forecast & Target</li>
               <li class="treeview {{ Ekko::isActiveRoute('target::*') }}">
                   <a href="{{ route('stFatt::idxAg') }}"><i class='fa fa-stack-overflow'></i> <span>Forecast & Target</span> <i class="fa fa-angle-left pull-right"></i></a>
