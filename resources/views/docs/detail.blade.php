@@ -182,7 +182,7 @@
          <strong> XML File</strong>
         </a>
         <hr>
-        <a type="button" class="btn btn-default btn-block" href="{{-- {{ route('doc::detail', $doc->id) }} --}}">
+        <a type="button" class="btn btn-default btn-block" href="{{ route('doc::downloadXLS', $head->id) }}">
           <strong> Excel File</strong>
         </a>
       </div>

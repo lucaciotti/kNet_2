@@ -87,8 +87,14 @@ class DocCli extends Model
     return $this->hasOne('knet\WebModels\wDdtOk', 'id_testa', 'id');
   }
 
+  // public function destCodDes(){
+  //   return $this->hasMany('knet\ArcaModels\Destinaz', 'destdiv', 'codicedes');
+  // }
+  // public function destCodCF(){
+  //   return $this->hasMany('knet\ArcaModels\Destinaz', 'codicecf', 'codicecf');
+  // }
   // public function destinaz(){
-  //   return $this->hasOne('knet\ArcaModels\Destinaz', 'codicedes', 'destdiv')->join('codicecf', $this->codicecf);
+  //   return $this->destCodDes->merce($this->destCodCF);
   // }
 
   //Multator

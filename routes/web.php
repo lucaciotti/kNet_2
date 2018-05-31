@@ -113,10 +113,10 @@ Route::group(['as' => 'doc::'], function () {
     'as' => 'downloadXML',
     'uses' => 'DocCliController@downloadXML'
   ]);
-  /*   Route::get('/docs_receive', [
-    'as' => 'ddtReceive',
-    'uses' => 'DocCliController@showDdtToReceive'
-  ]); */
+  Route::get('/docXLS/{id_testa?}', [
+    'as' => 'downloadXLS',
+    'uses' => 'DocCliController@downloadExcel'
+  ]);
 
 });
 

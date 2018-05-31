@@ -4,6 +4,7 @@ namespace knet\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 use knet\Http\Requests;
 use knet\ArcaModels\Client;
@@ -12,8 +13,11 @@ use knet\ArcaModels\Destinaz;
 use knet\ArcaModels\DocRow;
 use knet\WebModels\wDdtOk;
 
+use knet\ExportsXLS\DocExport;
+
 use Spatie\ArrayToXml\ArrayToXml;
 use File;
+use Excel;
 
 class DocCliController extends Controller
 {
@@ -291,46 +295,80 @@ class DocCliController extends Controller
 
   public function downloadXML(Request $req, $id_testa){
     $tipoDoc = DocCli::select('tipomodulo')->findOrFail($id_testa);
-    $head = DocCli::with(['client' => function($query) {
-      $query
-      ->withoutGlobalScope('agent')
-      ->withoutGlobalScope('superAgent')
-      ->withoutGlobalScope('client');
-    }]);
-    if ($tipoDoc->tipomodulo=='F'){
-        $head = $head->with(['scadenza' => function($query) {
-          $query
-          ->withoutGlobalScope('agent')
-          ->withoutGlobalScope('superAgent')
-          ->withoutGlobalScope('client');
-        }]);
-    } elseif ($tipoDoc->tipomodulo=='B') {
+    $head = DocCli::select(DB::raw('concat(tipodoc, " ", numerodoc) as doc'), 'datadoc', 'esercizio',
+                            'codicecf', 'numrighepr', 'valuta', 'sconti', 'scontocass',
+                            'cambio', 'numerodocf', 'datadocfor', 'tipomodulo',
+                            'pesolordo', 'pesonetto', 'volume', 'v1data', 'v1ora',
+                            'colli', DB::raw('speseim+spesetr as spesetras'), 'totmerce',
+                            'totsconto', 'totimp', 'totiva', 'totdoc');
+    if ($tipoDoc->tipomodulo=='B') {
         $head = $head->with('vettore', 'detBeni');
     }
     $head = $head->findOrFail($id_testa);
     if ($tipoDoc->tipomodulo == 'B'){
       $destDiv = Destinaz::where('codicecf', $head->codicecf)->where('codicedes', $head->destdiv)->first();
-      $ddtOk = wDdtOk::where('id_testa', $head->id)->first();
     } else {
       $destDiv = null;
-      $ddtOk = null;
     }
-    $rows = DocRow::where('id_testa', $id_testa)->orderBy('numeroriga', 'asc')->get();
+
+    $rows = DocRow::select('numeroriga', 'codicearti', 'descrizion', 'unmisura', 'fatt',
+                            'quantita', 'quantitare', 'sconti', 'prezzoun', 'prezzotot', 'aliiva',
+                            'ommerce', 'lotto', 'matricola', 'dataconseg', 'u_dtpronto');
+    $rows = $rows->where('id_testa', $id_testa)->orderBy('numeroriga', 'asc')->get();
+
+    if ($destDiv) {
+      $head = array_merge($head->toArray(), ['destinazione' => $destDiv->toArray()]);
+    } else {
+      $head = $head->toArray();
+    }
 
     $array = [
-        'Head' => $head->toArray(),
-        'Rows' => $rows->toArray()
+        'Head' => $head,
+        'Rows' => [
+          'Row' => $rows->toArray(),
+        ]
     ];
-
     $result = ArrayToXml::convert($array, "DocRoot");
-    $headers = [
-              'Content-Type' => 'application/xml',
-           ];
-           $file = time() . '_file.xml';
-      $destinationPath=public_path()."/upload/xml/";
-      if (!is_dir($destinationPath)) {  mkdir($destinationPath,0777,true);  }
-      File::put($destinationPath.$file,$result);
-      return response()->download($destinationPath.$file);
+  
+    $file = time() . '_file.xml';
+    $destinationPath=public_path()."/upload/xml/";
+    if (!is_dir($destinationPath)) {  mkdir($destinationPath,0777,true);  }
+    File::put($destinationPath.$file,$result);
+    return response()->download($destinationPath.$file);
+  }
+
+  public function downloadExcel(Request $req, $id_testa){
+    $tipoDoc = DocCli::select('tipomodulo')->findOrFail($id_testa);
+    $head = DocCli::select(DB::raw('concat(tipodoc, " ", numerodoc) as doc'), 'datadoc', 'esercizio',
+                            'codicecf', 'numrighepr', 'valuta', 'sconti', 'scontocass',
+                            'cambio', 'numerodocf', 'datadocfor', 'tipomodulo',
+                            'pesolordo', 'pesonetto', 'volume', 'v1data', 'v1ora',
+                            'colli', DB::raw('speseim+spesetr as spesetras'), 'totmerce',
+                            'totsconto', 'totimp', 'totiva', 'totdoc');
+    if ($tipoDoc->tipomodulo=='B') {
+        $head = $head->with('vettore', 'detBeni');
+    }
+    $head = $head->findOrFail($id_testa);
+    if ($tipoDoc->tipomodulo == 'B'){
+      $destDiv = Destinaz::where('codicecf', $head->codicecf)->where('codicedes', $head->destdiv)->first();
+    } else {
+      $destDiv = null;
+    }
+
+    $rows = DocRow::select('numeroriga', 'codicearti', 'descrizion', 'unmisura', 'fatt',
+                            'quantita', 'quantitare', 'sconti', 'prezzoun', 'prezzotot', 'aliiva',
+                            'ommerce', 'lotto', 'matricola', 'dataconseg', 'u_dtpronto');
+    $rows = $rows->where('id_testa', $id_testa)->orderBy('numeroriga', 'asc')->get();
+    $file = time() . '_file.xml';
+    $destinationPath=public_path()."/upload/xml/";
+    return Excel::create($destinationPath, function($excel){
+      $excel->sheet('Doc', function($sheet){
+        $sheet->loadView('_exports.xls.doc', [
+            'head' => $head,
+            'rows' => $rows
+        ]);
+      });
+    });
   }
 
 }
