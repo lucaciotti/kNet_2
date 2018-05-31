@@ -17,7 +17,6 @@ use knet\ExportsXLS\DocExport;
 
 use Spatie\ArrayToXml\ArrayToXml;
 use File;
-use Excel;
 
 class DocCliController extends Controller
 {
@@ -298,7 +297,7 @@ class DocCliController extends Controller
     $head = DocCli::select(DB::raw('concat(tipodoc, " ", numerodoc) as doc'), 'datadoc', 'esercizio',
                             'codicecf', 'numrighepr', 'valuta', 'sconti', 'scontocass',
                             'cambio', 'numerodocf', 'datadocfor', 'tipomodulo',
-                            'pesolordo', 'pesonetto', 'volume', 'v1data', 'v1ora',
+                            'pesolordo', 'pesonetto', 'volume', 'v1data', 'v1ora', 'vettore1', 'destdiv', 'aspbeni',
                             'colli', DB::raw('speseim+spesetr as spesetras'), 'totmerce',
                             'totsconto', 'totimp', 'totiva', 'totdoc');
     if ($tipoDoc->tipomodulo=='B') {
@@ -338,37 +337,7 @@ class DocCliController extends Controller
   }
 
   public function downloadExcel(Request $req, $id_testa){
-    $tipoDoc = DocCli::select('tipomodulo')->findOrFail($id_testa);
-    $head = DocCli::select(DB::raw('concat(tipodoc, " ", numerodoc) as doc'), 'datadoc', 'esercizio',
-                            'codicecf', 'numrighepr', 'valuta', 'sconti', 'scontocass',
-                            'cambio', 'numerodocf', 'datadocfor', 'tipomodulo',
-                            'pesolordo', 'pesonetto', 'volume', 'v1data', 'v1ora',
-                            'colli', DB::raw('speseim+spesetr as spesetras'), 'totmerce',
-                            'totsconto', 'totimp', 'totiva', 'totdoc');
-    if ($tipoDoc->tipomodulo=='B') {
-        $head = $head->with('vettore', 'detBeni');
-    }
-    $head = $head->findOrFail($id_testa);
-    if ($tipoDoc->tipomodulo == 'B'){
-      $destDiv = Destinaz::where('codicecf', $head->codicecf)->where('codicedes', $head->destdiv)->first();
-    } else {
-      $destDiv = null;
-    }
-
-    $rows = DocRow::select('numeroriga', 'codicearti', 'descrizion', 'unmisura', 'fatt',
-                            'quantita', 'quantitare', 'sconti', 'prezzoun', 'prezzotot', 'aliiva',
-                            'ommerce', 'lotto', 'matricola', 'dataconseg', 'u_dtpronto');
-    $rows = $rows->where('id_testa', $id_testa)->orderBy('numeroriga', 'asc')->get();
-    $file = time() . '_file.xml';
-    $destinationPath=public_path()."/upload/xml/";
-    return Excel::create($destinationPath, function($excel){
-      $excel->sheet('Doc', function($sheet){
-        $sheet->loadView('_exports.xls.doc', [
-            'head' => $head,
-            'rows' => $rows
-        ]);
-      });
-    });
+    return (new DocExport($id_testa))->download(time() . '_file.xlsx');
   }
 
 }
