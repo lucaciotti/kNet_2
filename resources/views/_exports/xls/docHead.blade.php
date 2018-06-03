@@ -1,28 +1,38 @@
 <table >
-  {{-- <tr>
-    <th># Line</th>
-    <th>Item Code</th>
-    <th>Item Description</th>   
-    <th>U.M.</th>
-    <th>Fatt.</th>
-    <th>Quantity</th>
-    <th>Qty Residual</th>  
-    <th>Unit Price</th>
+  <tr>
+    <th># Doc.</th>
+    <th>Year</th>   
+    <th>Doc. Date</th>
+    <th>Customer Code</th>
+    <th>Rif. Doc.</th>
+    <th>Date Rif. Doc.</th>  
+    <th>Currency</th>
+    <th>Change Value</th>
     <th>Discount</th>
-    <th>Tot.Price</th>
-    <th>VAT</th>    
-    <th>FreeOfCharge?</th>
-    <th>Lot Code</th>
-    <th>Mat Code</th>
-    <th>Dispach Date</th>
-  </tr> --}}
+    <th>Cash Discount</th>    
+    <th>Doc. Type</th>
+    <th>Net Weight</th>
+    <th>Gross Weight</th>
+    <th>Volume</th>
+    <th>Carrier</th>
+    <th>Carrier Departure</th>
+    <th>Carrier Dep. Time</th>
+    <th>Appearance of goods</th>
+    <th># Packages</th>
+    <th>Goods Destination</th>
+    <th>Transport Cost</th>
+    <th>Goods Tot.</th>
+    <th>Discount Value</th>
+    <th>Taxable Tot.</th>
+    <th>VAT Tot.</th>
+    <th>Total Due</th>
+  </tr>
 
   <tr>
     <td>{{ $head->doc }}</td>
-    <td>{{ $head->datadoc }}</td>
     <td>{{ $head->esercizio }}</td>
+    <td>{{ $head->datadoc }}</td>
     <td>{{ $head->codicecf }}</td>
-    <td>{{ $head->numrighepr }}</td>
     <td>{{ $head->numerodocf }}</td>
     <td>{{ $head->datadocfor }}</td>
     <td>{{ $head->valuta }}</td>
