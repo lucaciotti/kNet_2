@@ -135,7 +135,7 @@ This DOMPDF Wrapper for Laravel is open-sourced software licensed under the [MIT
     <footer>footer on each page</footer>
     <main>
         <p>page1</p>
-        <p>page2></p>
+        <p>page2</p>
     </main>
     </body>
     </html>    

@@ -256,3 +256,10 @@ Route::group(['as' => 'stAbc::'], function(){
     'uses' => 'StAbcController@idxManager'
   ]);
 });
+
+Route::group(['as' => 'schedaCli::'], function () {
+  Route::get('/schedaCliPDF/{codice}', [
+    'as' => 'PDF',
+    'uses' => 'SchedaCliController@downloadPDF'
+  ]);
+});

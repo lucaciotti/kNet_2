@@ -17,6 +17,7 @@ use knet\ExportsXLS\DocExport;
 
 use Spatie\ArrayToXml\ArrayToXml;
 use File;
+use PDF;
 
 class DocCliController extends Controller
 {
@@ -338,6 +339,8 @@ class DocCliController extends Controller
 
   public function downloadExcel(Request $req, $id_testa){
     return (new DocExport($id_testa))->download(time() . '_file.xlsx');
+    /* $pdf = PDF::loadView('_exports.pdf.masterPage.masterPdf', []);
+    return $pdf->stream('test.pdf'); */
   }
 
 }
