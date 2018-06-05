@@ -100,7 +100,10 @@ class SchedaCliController extends Controller
             'fatPrevYear' => $fatPrevYear,
             'AbcItems' => $AbcItems
 
-        ]);
+        ])
+        ->setOption('header-html', view('_exports.pdf.masterPage.headerPdf', ['pageTitle' => "Scheda Cliente", 'pageSubTitle' => $client->descrizion]))
+        ->setOption('footer-html', view('_exports.pdf.masterPage.footerPdf'))
+        ->setPaper('a4');
         return $pdf->stream('test.pdf');
     }
 }

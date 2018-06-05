@@ -2,38 +2,23 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
         <style>
-            /* @page { margin: 4em 1em 4em 1em; width: 100%; }
-            body { margin: 50px 25px 70px 25px; }
-            header { position: fixed; top: -50px; left: 0px; right: 0px; height: 30px; }
-            footer { position: fixed; bottom: -70px; left: 0px; right: 0px; height: 40px; } */
-            @page { margin: 0cm 0cm; size: 21cm 29.7cm }
-            /** Define now the real margins of every page in the PDF **/
-            body { margin-top: 2.5cm; margin-left: 2cm; margin-right: 2cm; margin-bottom: 2cm; }
-            /** Define the header rules **/
-            header { 
-                position: fixed; top: 0cm; left: 0cm; right: 0cm; height: 2cm;
-                /* text-align: margin-left: 2cm; */
-                line-height: 1.5cm;
-            }
-            /** Define the footer rules **/
-            footer {
-                position: fixed; bottom: 0cm; left: 0cm; right: 0cm; height: 2cm;
-                /* text-align: margin-left: 2cm; */
-                line-height: 1.5cm;
-            }
+            /* @page { font-size: pt } */
             p { page-break-after: always; }
-            p:last-child { page-break-after: never; }
+            p:last-child { page-break-after: avoid; }
+            div.row { font-size: 9pt; }
+            span.floatleft { float: left; width: 49%; } /* border-left:1px solid grey; */
+            span.floatright { float: right; width: 49%; }
         </style>
     </head>
     <body>
         
-        @section('pdf-header')
+       {{--  @section('pdf-header')
             @include('_exports.pdf.masterPage.headerPdf')
         @show
 
         @section('pdf-footer')
             @include('_exports.pdf.masterPage.footerPdf')
-        @show
+        @show --}}
 
         @yield('pdf-main')        
 
