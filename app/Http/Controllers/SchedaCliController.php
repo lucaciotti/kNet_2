@@ -92,18 +92,46 @@ class SchedaCliController extends Controller
                           ->orderBy('qtaN', 'DESC')
                           ->get();
 
+        $prevMonth = (Carbon::now()->month);
+        $valMese = 'valore' . $prevMonth;
+        $prevMonth = $fatThisYear->isEmpty() ? $prevMonth : (($fatThisYear->first()->$valMese == 0) ? $prevMonth-1 : $prevMonth);
+        // $stats = $this->makeFatTgtJson($fatThisYear, $fatPrevYear, $prevMonth);
+
         $pdf = PDF::loadView('_exports.pdf.schedaCliPdf', [
             'client' => $client,
             'scads' => $scadToPay,
             'visits' => $visits,
             'fatThisYear' => $fatThisYear,
             'fatPrevYear' => $fatPrevYear,
-            'AbcItems' => $AbcItems
-
+            'AbcItems' => $AbcItems,
         ])
         ->setOption('header-html', view('_exports.pdf.masterPage.headerPdf', ['pageTitle' => "Scheda Cliente", 'pageSubTitle' => $client->descrizion]))
         ->setOption('footer-html', view('_exports.pdf.masterPage.footerPdf'))
         ->setPaper('a4');
+        /* ->setOption('enable-javascript', true)
+        ->setOption('javascript-delay', 13500)
+        ->setOption('enable-smart-shrinking', true)
+        ->setOption('no-stop-slow-scripts', true) */
         return $pdf->stream('test.pdf');
     }
+
+    /* protected function makeFatTgtJson($fat, $tgt, $mese){
+      $collect = collect([]);
+      $fatM = 0;
+      $tgtM = 0;
+      for($i=1; $i<=$mese; $i++){
+        $valMese = 'valore' . $i;
+        $fatM += round($fat->isEmpty() ? 0 : $fat->first()->$valMese, 0);
+        $tgtM += round($tgt->isEmpty() ? 0 : $tgt->first()->$valMese, 0);
+        $dt = Carbon::createFromDate(null, $i, 1);
+        $data = [
+          'm' => $dt->year.'-'.$dt->month,
+          'a' => $fatM,
+          'b' => $tgtM
+        ];
+        $collect->push($data);
+      }
+      // dd($collect);
+      return $collect->toJSON();
+    } */
 }

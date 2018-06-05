@@ -7,7 +7,7 @@
                 <dl class="dl-horizontal">
                     <dt>{{ trans('client.descCli') }}</dt>
                     <dd>
-                        <big><strong>{{$client->descrizion}}</strong></big>
+                        <big><strong>{{$client->descrizion}}</strong></big><br>
                         <small>{{$client->supragsoc}}</small>
                     </dd>
 
@@ -25,9 +25,9 @@
                     <dt>{{ trans('client.sector_full') }}</dt>
                     <dd>{{$client->settore}} - @if($client->detSect) {{$client->detSect->descrizion}} @endif</dd>
                 </dl>
-
-                <h4>{{ trans('client.location') }} </h4>
-                <hr style="padding-top: 0; margin-top:0;">
+                
+                <hr class="divider">
+                
                 <dl class="dl-horizontal">
 
                     <dt>{{ trans('client.location') }}</dt>
@@ -43,8 +43,7 @@
                     <dd>@if($client->detZona) {{$client->detZona->descrizion}} @endif</dd> --}}
                 </dl>
 
-                <h4> {{ trans('client.situationCli') }} </h4>
-                <hr style="padding-top: 0; margin-top:0;">
+                <hr class="divider">
                 <dl class="dl-horizontal">
 
                     <dt>{{ trans('client.statusCli') }}</dt>
@@ -68,37 +67,90 @@
                     <dt>{{ trans('client.referenceAgent') }}</dt>
                     <dd>@if($client->agent) {{$client->agent->descrizion}} @endif</dd>
 
-                    <hr>
+                    <hr class="divider">
 
                     <dt>{{ trans('client.phone') }}</dt>
-                    <dd>{{$client->telefono}}
-                    @if (!empty($client->telefono))
-                        &nbsp;<a href="tel:{{$client->telefono}}"><i class="btn btn-xs fa fa-phone bg-green"></i></a>
-                    @endif
-                    </dd>
+                    <dd>{{$client->telefono}}</dd>
+
                     <dt>{{ trans('client.fax') }}</dt>
                     <dd>{{$client->fax}}</dd>
 
                     <dt>{{ trans('client.phone2') }}</dt>
                     <dd>{{$client->telex}}</dd>
 
-                    <dt>{{ trans('client.mobilePhone') }}</dt>
-                    <dd>{{$client->telcell}}
-                    @if (!empty($client->telcell))
-                        &nbsp;<a href="tel:{{$client->telcell}}"><i class="btn btn-xs fa fa-phone bg-green"></i></a>
-                    @endif
-                    </dd>
-
-                    <hr>
+                    <hr class="divider">
 
                     <dt>{{ trans('client.email') }}</dt>
-                    <dd>{{$client->email}}
-                    @if (!empty($client->email))
-                        &nbsp;<a href="mailto:{{$client->email}}"><i class="btn btn-xs fa fa-envelope-o bg-red"></i></a>
-                    @endif
-                    </dd>
+                    <dd>{{$client->email}}</dd>
                 </dl>
             </span>
         </div>
+
+        <div><hr class="dividerPage"></div>
+
+        <div class="row">
+            <div class="contentTitle">Turnover Situation</div>
+
+            @include('_exports.pdf.schedaCli.tblFatt', [
+            'fatturato' => $fatThisYear,
+            'target' => $fatPrevYear,
+            'prevMonth' => \Carbon\Carbon::now()->month,
+            'thisYear' => 2018,
+            'prevYear' => 2017
+            ])
+
+            {{-- <div class="chart" id="revenue-chart"></div> --}}
+
+        </div>
+
+        <div><hr class="dividerPage"></div>
+
+        <div class="row">
+            <div class="contentTitle">Abc Items</div>
+
+            @include('_exports.pdf.schedaCli.tblAbc', [
+                'AbcProds' => $AbcItems,
+                'thisYear' => 2018,
+                ])
+
+            {{-- <div class="chart" id="revenue-chart"></div> --}}
+
+        </div>
     </p>
 @endsection
+
+{{-- @push('scripts')
+  <!-- Morris.js charts -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+  <script src="{{ asset('/plugins/morris/morris.min.js') }}"></script>
+  <script>
+  $( document ).ready(function () {
+    "use strict";
+    // AREA CHART
+    var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    var data = {!! $stats !!};
+    var revenueLabel = "{!! trans('stFatt.revenue') !!}";
+    var targetLabel = "{!! trans('stFatt.target') !!}";
+    var config = {
+      resize: true,
+      data: data,
+      xkey: 'm',
+      ykeys: ['a', 'b'],
+      labels: [revenueLabel, targetLabel],
+      lineColors: ['#227a03', '#cd6402'],
+      hideHover: 'auto',
+      xLabels: 'month',
+      xLabelFormat: function(x) { // <--- x.getMonth() returns valid index
+        var month = months[x.getMonth()];
+        return month;
+      },
+      dateFormat: function(x) {
+        var month = months[new Date(x).getMonth()];
+        return month;
+      },
+    };
+    config.element = 'revenue-chart';
+    var area = new Morris.Line(config);
+  });
+</script>
+@endpush --}}
