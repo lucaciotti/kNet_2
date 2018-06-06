@@ -209,7 +209,20 @@
         @include('scads.partials.tblGeneric', $scads)
       </div>
     </div>
+
     @if (!Auth::user()->hasRole('client'))
+    <div class="box box-default collapsed-box">
+      <div class="box-header with-border">
+        <h3 class="box-title" data-widget="collapse"><i class='fa fa-cloud-download'> </i> Download</h3>
+        <div class="box-tools pull-right">
+          <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i></button>
+        </div>
+      </div>
+      <div class="box-body">
+        <a type="button" class="btn btn-default btn-block" target="_blank" href="{{ route('schedaCli::PDF', $client->codice) }}">Scheda Cliente PDF</a>
+      </div>
+    </div>
+
     <div class="box box-default">
       <div class="box-header with-border">
         <h3 class="box-title" data-widget="collapse">{{ trans('client.statsCli') }}</h3>

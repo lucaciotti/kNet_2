@@ -82,6 +82,106 @@
 
           </div>
       </div>
+
+      @if($ritana)
+        <div class="box box-default">
+            <div class="box-header with-border">
+              <h3 class="box-title" data-widget="collapse">Dati Enasarco</h3>
+              <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+              </div>
+            </div>
+            <div class="box-body">
+              @php                
+                $tipoAgente = ($ritana->tipoage == 1 ? "Monomandatario" : "Plurimandatario");
+                $sum_totfattura = 0;
+                $sum_compensi = 0;
+                $sum_impendit = 0;
+                $sum_prog = 0;
+                $sum_res = 0;
+                $sum_impenage = 0;
+                $sum_prog = 0;
+                $sum_res = $ritana->impmax;
+              @endphp
+              <dl class="dl-horizontal">
+                <dt>Tipo Agente</dt>
+                <dd>{{ $tipoAgente }}</dd>
+
+                <dt>Minimo Imponibile</dt>
+                <dd>{{ currency($ritana->impmin) }}</dd>
+
+                <dt>Massimo Imponibile</dt>
+                <dd>{{ currency($ritana->impmax) }}</dd>
+
+                <dt>% a Carico Ditta</dt>
+                <dd>{{ $ritana->perendit }} %</dd>
+
+                <dt>% a Carico Agente</dt>
+                <dd>{{ $ritana->perenage }} %</dd>
+              </dl>
+
+              <hr>
+
+              <table class="table table-hover table-condensed dtTbls_light">
+                <thead>
+                  <tr>
+                    <th>Data doc.</th>
+                    <th>Numero</th>
+                    <th>Tot. Fattura</th>
+                    <th>Imponibile</th>
+                    <th>% Ditta</th>
+                    <th>Importo Ditta</th>
+                    <th>% Agente</th>
+                    <th>Importo Agente</th>
+                    <th>Progressivo</th>
+                    <th>Residuo</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @foreach ($ritmov as $mov)
+                    @php
+                      $sum_totfattura += $mov->totfattura;
+                      $sum_compensi += $mov->compensi;
+                      $sum_impendit += $mov->impendit;
+                      $sum_prog += $mov->impendit;
+                      $sum_res -= $mov->impendit;
+                      $sum_impenage += (float) $mov->impenage;
+                      $sum_prog += $mov->impenage;
+                      $sum_res -= $mov->impenage;
+                    @endphp
+                    <tr>
+                      <td>{{ $mov->ftdatadoc->format('m-d-Y') }}</td>
+                      <td>{{ $mov->ftnumdoc }} </td>
+                      <td>{{ currency($mov->totfattura) }}</td>
+                      <td>{{ currency($mov->compensi) }}</td>
+                      <td>{{ $mov->perendit }}</td>
+                      <td>{{ currency($mov->impendit) }}</td>
+                      <td>{{ $mov->perenage }}</td>
+                      <td>{{ currency($mov->impenage) }}</td>
+                      <td>{{ currency($sum_prog) }}</td>
+                      <td>{{ currency($sum_res) }}</td>
+                    </tr>
+                  @endforeach
+                </tbody>
+                <tfoot class="bg-gray">
+                  <tr>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>{{ currency($sum_totfattura) }}</td>
+                    <td>{{ currency($sum_compensi) }}</td>
+                    <td>&nbsp;</td>
+                    <td>{{ currency($sum_impendit) }}</td>
+                    <td>&nbsp;</td>
+                    <td>{{ currency($sum_impenage) }}</td>
+                    <td>{{ currency($sum_prog) }}</td>
+                    <td>{{ currency($sum_res) }}</td>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+        </div>
+      @endif
+
     </div>
   </div>
 @endsection

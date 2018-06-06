@@ -96,6 +96,8 @@ class SchedaCliController extends Controller
         $valMese = 'valore' . $prevMonth;
         $prevMonth = $fatThisYear->isEmpty() ? $prevMonth : (($fatThisYear->first()->$valMese == 0) ? $prevMonth-1 : $prevMonth);
         // $stats = $this->makeFatTgtJson($fatThisYear, $fatPrevYear, $prevMonth);
+        $title = "Scheda Cliente";
+        $subTitle = $client->descrizion;
 
         $pdf = PDF::loadView('_exports.pdf.schedaCliPdf', [
             'client' => $client,
@@ -105,14 +107,16 @@ class SchedaCliController extends Controller
             'fatPrevYear' => $fatPrevYear,
             'AbcItems' => $AbcItems,
         ])
-        ->setOption('header-html', view('_exports.pdf.masterPage.headerPdf', ['pageTitle' => "Scheda Cliente", 'pageSubTitle' => $client->descrizion]))
+        ->setOption('header-html', view('_exports.pdf.masterPage.headerPdf', ['pageTitle' => $title, 'pageSubTitle' => $subTitle]))
         ->setOption('footer-html', view('_exports.pdf.masterPage.footerPdf'))
         ->setPaper('a4');
+
+        return $pdf->stream($title.'-'.$subTitle.'.pdf');
+
         /* ->setOption('enable-javascript', true)
         ->setOption('javascript-delay', 13500)
         ->setOption('enable-smart-shrinking', true)
         ->setOption('no-stop-slow-scripts', true) */
-        return $pdf->stream('test.pdf');
     }
 
     /* protected function makeFatTgtJson($fat, $tgt, $mese){

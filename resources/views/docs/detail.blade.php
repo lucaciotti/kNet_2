@@ -178,11 +178,11 @@
         </div>
       </div>
       <div class="box-body">
-        <a type="button" class="btn btn-default btn-block" href="{{ route('doc::downloadXML', $head->id) }}">
+        <a type="button" class="btn btn-default btn-block" target="_blank" href="{{ route('doc::downloadXML', $head->id) }}">
          <strong> XML File</strong>
         </a>
         <hr>
-        <a type="button" class="btn btn-default btn-block" href="{{ route('doc::downloadXLS', $head->id) }}">
+        <a type="button" class="btn btn-default btn-block" target="_blank" href="{{ route('doc::downloadXLS', $head->id) }}">
           <strong> Excel File</strong>
         </a>
       </div>

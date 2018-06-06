@@ -112,8 +112,14 @@
                 'AbcProds' => $AbcItems,
                 'thisYear' => 2018,
                 ])
+        </div>
 
-            {{-- <div class="chart" id="revenue-chart"></div> --}}
+        <div><hr class="dividerPage"></div>
+
+        <div class="row">
+            <div class="contentTitle">{{ trans('client.paymentCli') }}</div>
+
+            @include('_exports.pdf.schedaCli.tblPayment', $scads)
 
         </div>
     </p>

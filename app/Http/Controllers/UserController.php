@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Input;
 use Session;
 use knet\Jobs\ImportUsersExcel;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 use RedisUser;
 
@@ -18,6 +19,8 @@ use knet\User;
 use knet\Role;
 use knet\ArcaModels\Client;
 use knet\ArcaModels\Agent;
+use knet\ArcaModels\RitAna;
+use knet\ArcaModels\RitMov;
 
 class UserController extends Controller
 {
@@ -78,21 +81,23 @@ class UserController extends Controller
     }
 
     public function show(Request $req, $id){
-      $user=User::with('roles')->findOrFail($id);
-      $roles = Role::all();
+      $user=User::with('client', 'agent')->findOrFail($id);
+      $ritana=RitAna::first();
+      $year = (string) Carbon::now()->year;
+      $ritmov=RitMov::where('ftdatadoc', '>', new Carbon('first day of January '.$year))->get();
+      //$roles = Role::all();
       // DB::disconnect();
-      $clients = Client::select('codice', 'descrizion')
+      /* $clients = Client::select('codice', 'descrizion')
                   ->withoutGlobalScope('agent')
                   ->withoutGlobalScope('superAgent')
-                  ->withoutGlobalScope('client')->get();
+                  ->withoutGlobalScope('client')->get(); */
       // dd($clients);
-      $agents = Agent::select('codice', 'descrizion')->get();
+      // $agents = Agent::select('codice', 'descrizion')->get();
       // dd($user->roles->contains(33));
       return view('user.profile', [
         'user' => $user,
-        'roles' => $roles,
-        'clients' => $clients,
-        'agents' => $agents,
+        'ritana' => $ritana,
+        'ritmov' => $ritmov,
       ]);
     }
 
