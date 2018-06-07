@@ -85,15 +85,6 @@ class UserController extends Controller
       $ritana=RitAna::first();
       $year = (string) Carbon::now()->year;
       $ritmov=RitMov::where('ftdatadoc', '>', new Carbon('first day of January '.$year))->get();
-      //$roles = Role::all();
-      // DB::disconnect();
-      /* $clients = Client::select('codice', 'descrizion')
-                  ->withoutGlobalScope('agent')
-                  ->withoutGlobalScope('superAgent')
-                  ->withoutGlobalScope('client')->get(); */
-      // dd($clients);
-      // $agents = Agent::select('codice', 'descrizion')->get();
-      // dd($user->roles->contains(33));
       return view('user.profile', [
         'user' => $user,
         'ritana' => $ritana,
