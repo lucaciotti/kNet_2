@@ -3,6 +3,7 @@
 namespace knet\ArcaModels;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 use RedisUser;
 
 class Agent extends Model
@@ -18,6 +19,31 @@ class Agent extends Model
       parent::__construct($attributes);
       //Imposto la Connessione al Database
       $this->setConnection(RedisUser::get('ditta_DB'));
+    }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::addGlobalScope('default', function(Builder $builder) {
+            $builder->where('codice', '!=', '')->where('codice', '!=', '00');
+        });
+
+        switch (RedisUser::get('role')) {
+          case 'agent':
+            static::addGlobalScope('agent', function(Builder $builder) {
+                $builder->where('codice', RedisUser::get('codag'));
+            });
+            break;
+          case 'superAgent':
+            static::addGlobalScope('superAgent', function(Builder $builder) {
+              $builder->where('codice', RedisUser::get('codag'))->orWhere('u_capoa', RedisUser::get('codag'));
+            });
+            break;
+
+          default:
+            break;
+        }
     }
 /* 
     public function getCodiceAttribute($value){

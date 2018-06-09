@@ -263,3 +263,10 @@ Route::group(['as' => 'schedaCli::'], function () {
     'uses' => 'SchedaCliController@downloadPDF'
   ]);
 });
+
+Route::group(['as' => 'Portfolio::'], function () {
+  Route::get('/portfolioAg/{codice?}', [
+    'as' => 'idxAg',
+    'uses' => 'PortfolioController@idxAg'
+  ]);
+});
