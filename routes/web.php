@@ -269,4 +269,8 @@ Route::group(['as' => 'Portfolio::'], function () {
     'as' => 'idxAg',
     'uses' => 'PortfolioController@idxAg'
   ]);
+  Route::post('/portfolioAg', [
+    'as' => 'idxAg',
+    'uses' => 'PortfolioController@idxAg'
+  ]);
 });
