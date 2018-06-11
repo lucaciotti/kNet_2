@@ -31,7 +31,7 @@
             <select name="codag[]" class="form-control select2" multiple="multiple" data-placeholder="Select Agents" style="width: 100%;">
                 @foreach ($agents as $agente)
                     <option value="{{ $agente->codice }}"
-                    @if(isset($fltAgents) && in_array($agente->codice, $fltAgents))
+                    @if(isset($fltAgents) && in_array($agente->codice, $fltAgents, true))
                         selected
                     @endif
                     >[{{ $agente->codice }}] {{ $agente->descrizion or "Error $agent->agente - No Description" }}</option>
@@ -52,7 +52,7 @@
                 <option value="9" @if($mese==9) selected @endif >{{ __('stFatt.september')}}</option>
                 <option value="10" @if($mese==10) selected @endif >{{ __('stFatt.october')}}</option>
                 <option value="11" @if($mese==11) selected @endif >{{ __('stFatt.november')}}</option>
-                <option value="12" @if($mese==12) selected @endif >{{ __('stFatt.dicember')}}</option>
+                <option value="12" @if($mese==12) selected @endif >{{ __('stFatt.december')}}</option>
             </select>
           </div>
           <div>
@@ -98,7 +98,7 @@
                         <td> {{ currency($FTKrona) }} </td>
                         <td> {{ currency($OCKrona+$BOKrona+$FTKrona) }} </td>
                         <th colspan="1">|</th>
-                        <td> {{ currency($OCKrona+$BOKrona+$FTKrona) }} </td>
+                        <td> {{ currency($FTPrevKrona) }} </td>
                     </tr>
                     <tr>
                         <th>Koblenz</th>
@@ -107,7 +107,7 @@
                         <td> {{ currency($FTKoblenz) }} </td>
                         <td> {{ currency($OCKoblenz+$BOKoblenz+$FTKoblenz) }} </td>
                         <th colspan="1">|</th>
-                        <td> {{ currency($OCKoblenz+$BOKoblenz+$FTKoblenz) }} </td>
+                        <td> {{ currency($FTPrevKoblenz) }} </td>
                     </tr>
                     <tr>
                         <th>Kubica</th>
@@ -116,7 +116,7 @@
                         <td> {{ currency($FTKubica) }} </td>
                         <td> {{ currency($OCKubica+$BOKubica+$FTKubica) }} </td>
                         <th colspan="1">|</th>
-                        <td> {{ currency($OCKoblenz+$BOKoblenz+$FTKoblenz) }} </td>
+                        <td> {{ currency($FTPrevKoblenz) }} </td>
                     </tr>
                     <tr>
                         <th>Atomika</th>
@@ -125,7 +125,7 @@
                         <td> {{ currency($FTAtomika) }} </td>
                         <td> {{ currency($OCAtomika+$BOAtomika+$FTAtomika) }} </td>
                         <th colspan="1">|</th>
-                        <td> {{ currency($OCAtomika+$BOAtomika+$FTAtomika) }} </td>
+                        <td> {{ currency($FTPrevAtomika) }} </td>
                     </tr>
                     @if(RedisUser::get('ditta_DB')=='knet_es')
                         <tr>
@@ -135,15 +135,15 @@
                             <td> {{ currency($FTPlanet) }} </td>
                             <td> {{ currency($OCPlanet+$BOPlanet+$FTPlanet) }} </td>
                             <th colspan="1">|</th>
-                            <td> {{ currency($OCPlanet+$BOPlanet+$FTPlanet) }} </td>
+                            <td> {{ currency($FTPrevPlanet) }} </td>
                         </tr>
                     @endif
                 </tbody>
                 <tfoot class="bg-gray">
                     @php
-                        $totOC = $OCKrona+$OCKoblenz+$OCKubica+$OCGrass+$OCPlanet;
-                        $totBO = $BOKrona+$BOKoblenz+$BOKubica+$BOGrass+$BOPlanet;
-                        $totFT = $FTKrona+$FTKoblenz+$FTKubica+$FTGrass+$FTPlanet;
+                        $totOC = $OCKrona+$OCKoblenz+$OCKubica+$OCAtomika+$OCPlanet;
+                        $totBO = $BOKrona+$BOKoblenz+$BOKubica+$BOAtomika+$BOPlanet;
+                        $totFT = $FTKrona+$FTKoblenz+$FTKubica+$FTAtomika+$FTPlanet;
 
                     @endphp
                     <tr>
@@ -153,7 +153,7 @@
                         <td> {{ currency($totFT) }} </td>
                         <td> {{ currency($totOC+$totBO+$totFT) }} </td>
                         <th colspan="1">|</th>
-                        <td> {{ currency($OCPlanet+$BOPlanet+$FTPlanet) }} </td>
+                        <td> {{ currency($FTPrevKrona+$FTPrevKoblenz+$FTPrevKubica+$FTPrevAtomika+$FTPrevPlanet) }} </td>
                     </tr>
                 </tfoot>
             </table>

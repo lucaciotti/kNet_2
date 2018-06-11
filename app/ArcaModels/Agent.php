@@ -63,4 +63,10 @@ class Agent extends Model
       return $this->hasMany('knet\ArcaModels\Scadenza', 'codice', 'codag');
     }
 
+    //Funzioni Speciali
+    /* public function listAgents(){
+      $lista = Self::select('codice', 'descrizion')->whereNull('u_dataini')->orderBy('codice')->get();
+      
+    } */
+
 }

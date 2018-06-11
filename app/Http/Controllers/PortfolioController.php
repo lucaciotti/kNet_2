@@ -31,7 +31,7 @@ class PortfolioController extends Controller
 		$this->prevYear = $this->thisYear-1;	
 		$this->dStartMonth = new Carbon('first day of '.Carbon::now()->format('F').' '.((string)$this->thisYear)); 	
 		$this->dEndMonth = new Carbon('last day of '.Carbon::now()->format('F').' '.((string)$this->thisYear));
-		$mese = $req->input('mese');
+		$mese = (!$req->input('mese') ? Carbon::now()->month : $req->input('mese'));
 		if($mese){
 			$this->dStartMonth = new Carbon('first day of '.Carbon::createFromDate(null, $mese, null)->format('F').' '.((string)$this->thisYear)); 
 			$this->dEndMonth = new Carbon('last day of '.Carbon::createFromDate(null, $mese, null)->format('F').' '.((string)$this->thisYear));
@@ -45,25 +45,26 @@ class PortfolioController extends Controller
 		$OCKoblenz = $this->getOrderToShip(['B'], $fltAgents, ['B06'])->sum('totRowPrice');
 		$OCKubica = $this->getOrderToShip(['B06'], $fltAgents, ['B0630'])->sum('totRowPrice');
 		$OCAtomika = $this->getOrderToShip(['B0630'], $fltAgents)->sum('totRowPrice');
-		$OCGrass = $this->getOrderToShip(['C'], $fltAgents)->sum('totRowPrice');
-		$OCPlanet = $this->getOrderToShip(['D0'], $fltAgents)->sum('totRowPrice');
+		$OCPlanet = (RedisUser::get('ditta_DB')=='kNet_es') ? $this->getOrderToShip(['D0'], $fltAgents)->sum('totRowPrice') : 0;
 
 		$BOKrona = $this->getDdtNotInvoiced(['A'], $fltAgents)->sum('totRowPrice');
 		$BOKoblenz = $this->getDdtNotInvoiced(['B'], $fltAgents, ['B06'])->sum('totRowPrice');
 		$BOKubica = $this->getDdtNotInvoiced(['B06'], $fltAgents, ['B0630'])->sum('totRowPrice');
 		$BOAtomika = $this->getDdtNotInvoiced(['B0630'], $fltAgents)->sum('totRowPrice');
-		$BOGrass = $this->getDdtNotInvoiced(['C'], $fltAgents)->sum('totRowPrice');
-		$BOPlanet = $this->getDdtNotInvoiced(['D0'], $fltAgents)->sum('totRowPrice');
+		$BOPlanet = (RedisUser::get('ditta_DB')=='kNet_es') ? $this->getDdtNotInvoiced(['D0'], $fltAgents)->sum('totRowPrice') : 0;
 
 		$FTKrona = $this->getInvoice(['A'], $fltAgents)->sum('totRowPrice');
 		$FTKoblenz = $this->getInvoice(['B'], $fltAgents, ['B06'])->sum('totRowPrice');
 		$FTKubica = $this->getInvoice(['B06'], $fltAgents, ['B0630'])->sum('totRowPrice');
 		$FTAtomika = $this->getInvoice(['B0630'], $fltAgents)->sum('totRowPrice');
-		$FTGrass = $this->getInvoice(['C'], $fltAgents)->sum('totRowPrice');
-		$FTPlanet = $this->getInvoice(['D0'], $fltAgents)->sum('totRowPrice');
+		$FTPlanet = (RedisUser::get('ditta_DB')=='kNet_es') ? $this->getInvoice(['D0'], $fltAgents)->sum('totRowPrice') : 0;
 
+		$FTPrevKrona = $this->getPrevInvoice(['A'], $fltAgents)->sum('totRowPrice');
+		$FTPrevKoblenz = $this->getPrevInvoice(['B'], $fltAgents, ['B06'])->sum('totRowPrice');
+		$FTPrevKubica = $this->getPrevInvoice(['B06'], $fltAgents, ['B0630'])->sum('totRowPrice');
+		$FTPrevAtomika = $this->getPrevInvoice(['B0630'], $fltAgents)->sum('totRowPrice');
+		$FTPrevPlanet = (RedisUser::get('ditta_DB')=='kNet_es') ? $this->getPrevInvoice(['D0'], $fltAgents)->sum('totRowPrice') : 0;
 		
-				
 		return view('portfolio.idxAg', [
 			'agents' => $agents,
 			'mese' => $mese,
@@ -74,20 +75,22 @@ class PortfolioController extends Controller
 			'OCKoblenz' => $OCKoblenz,
 			'OCKubica' => $OCKubica,
 			'OCAtomika' => $OCAtomika,
-			'OCGrass' => $OCGrass,
 			'OCPlanet' => $OCPlanet,
 			'BOKrona' => $BOKrona,
 			'BOKoblenz' => $BOKoblenz,
 			'BOKubica' => $BOKubica,
 			'BOAtomika' => $BOAtomika,
-			'BOGrass' => $BOGrass,
 			'BOPlanet' => $BOPlanet,
 			'FTKrona' => $FTKrona,
 			'FTKoblenz' => $FTKoblenz,
 			'FTKubica' => $FTKubica,
 			'FTAtomika' => $FTAtomika,
-			'FTGrass' => $FTGrass,
 			'FTPlanet' => $FTPlanet,
+			'FTPrevKrona' => $FTPrevKrona,
+			'FTPrevKoblenz' => $FTPrevKoblenz,
+			'FTPrevKubica' => $FTPrevKubica,
+			'FTPrevAtomika' => $FTPrevAtomika,
+			'FTPrevPlanet' => $FTPrevPlanet,
 		]);
 	}
 
@@ -271,6 +274,10 @@ class PortfolioController extends Controller
 	/* Fatture dell'anno precedente */
 	public function getPrevInvoice($grupIn, $agents=[], $grupNotIn=[], $filiali=false){
 		// Mi costruisco l'array delle teste dei documenti da cercare
+		$dStartDate = $this->dStartMonth;
+		$dEndDate = $this->dEndMonth;
+		$dStartDate = $dStartDate->subYear();
+		$dEndDate = $dEndDate->subYear();
 		if(empty($this->arrayIDprevFT)){
 			$docTes = DocCli::select('id')							
 								->whereIn('esercizio', [(string)$this->prevYear])
@@ -281,11 +288,10 @@ class PortfolioController extends Controller
 			if(!empty($agents)){
 				$docTes->whereIn('agente', $agents);
 			}
-			$docTes->whereBetween('datadoc', [$this->dStartMonth->subYears(1), $this->dEndMonth->subYears(1)]);
+			$docTes->whereBetween('datadoc', [$dStartDate, $dEndDate]);
 			$docTes = $docTes->get();
-			$this->arrayIDFT = $docTes->toArray();
+			$this->arrayIDprevFT = $docTes->toArray();
 		}
-		
 		//Costruisco infine le righe con i dati che mi servono
 		$docRow = DocRow::select('id_testa', 'codicearti', 'prezzoun', 'sconti', 'quantitare')
 							->addSelect(DB::raw('prezzoun*0 as totRowPrice'))
@@ -315,7 +321,7 @@ class PortfolioController extends Controller
 				}
 			});
 		}
-		$docRow = $docRow->whereIn('id_testa', $this->arrayIDFT)->get();
+		$docRow = $docRow->whereIn('id_testa', $this->arrayIDprevFT)->get();
 		
 		$docRow = $this->calcTotRowPrice($docRow);
 		return $docRow;
