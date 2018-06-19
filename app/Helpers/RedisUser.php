@@ -47,9 +47,9 @@ class RedisUser
         return Redis::hgeaAll(static::$prefix.Auth::user()->id);
     }
 
-    public static function set($name) {
+    /* public static function set($name) {
         return Redis::set(static::$prefix."1", $name);
-    }
+    } */
 
     public static function get($name) {
         return Redis::hget(static::$prefix.Auth::user()->id, $name);
