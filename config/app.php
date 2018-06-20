@@ -161,6 +161,8 @@ return [
         knet\Providers\RouteServiceProvider::class,
         knet\Providers\RedisUserServiceProvider::class,
 
+        PragmaRX\ZipCode\Vendor\Laravel\ServiceProvider::class,
+
     ],
 
     /*
@@ -210,7 +212,9 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
         'RedisUser' => knet\Helpers\RedisUser::class,
-
+        'ZipCode' => PragmaRX\ZipCode\Vendor\Laravel\Facade::class,
+        'Input' => Illuminate\Support\Facades\Input::class,
+        
     ],
 
 ];

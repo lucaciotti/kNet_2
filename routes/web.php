@@ -274,3 +274,43 @@ Route::group(['as' => 'Portfolio::'], function () {
     'uses' => 'PortfolioController@idxAg'
   ]);
 });
+
+Route::any('zipcode', function() {
+
+    echo
+        Form::open(array('url' => 'zipcode')) .
+        Form::select('country', ZipCode::getAvailableCountries(), Input::get('country')) .
+        Form::text('zipcode', Input::get('zipcode')) .
+        Form::submit('go!') .
+        Form::close();
+
+    if (Input::get('country'))
+    {
+        ZipCode::setCountry(Input::get('country'));
+        ZipCode::setPreferredWebService('Geonames');
+        ZipCode::setQueryParameter('geonames_username', 'lucac18i');
+
+        //$webService = ZipCode::getWebServiceByName('Geonames');
+        //$webService->setUrl('http://api.zippopotam.ca');
+        $result = ZipCode::find(Input::get('zipcode'));
+
+        echo '<pre>';
+        if($result->getSuccess()){
+          echo ($result->getAddresses())[0]['city'];
+          echo '<br>';
+          echo ($result->getAddresses())[0]['department'];
+          echo '<br>';
+          echo ($result->getAddresses())[0]['department_id'];
+          echo '<br>';
+          echo ($result->getAddresses())[0]['state_name'];
+          echo '<pre>';
+          echo ($result->getCountryId());
+          echo '<r>';
+          echo ($result->getCountryName());
+        } else {
+          echo 'NOT FOUND!!';
+        }
+        echo '</pre>';
+    }
+
+});

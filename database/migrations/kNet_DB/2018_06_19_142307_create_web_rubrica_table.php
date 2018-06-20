@@ -29,7 +29,7 @@ class CreateWebRubricaTable extends Migration
             $table->string('localita', 40)->nullable()->comment('Località');
             $table->string('prov',2)->nullable()->comment('Provincia');
             $table->string('codnazione',3)->nullable()->comment('Codice Nazione');
-            $table->string('settore',3)->nullable()->comment('Settore Merciologico');
+            $table->string('settore',30)->nullable()->comment('Settore Merciologico');
             $table->string('statocf',1)->nullable()->comment('Stato');
             $table->string('sitoweb')->nullable()->comment('Sito Web');
             $table->string('agente',3)->nullable()->comment('Codice Agente Associato');
