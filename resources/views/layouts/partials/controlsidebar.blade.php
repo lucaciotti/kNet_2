@@ -57,6 +57,15 @@
                         </div>
                     </a>
                 </li>
+                <li>
+                    <a href="{{route('rubri::import')}}">
+                        <i class="menu-icon fa fa-user-plus bg-yellow"></i>
+                        <div class="menu-info">
+                            <h4 class="control-sidebar-subheading">Import Rubrica LEAD</h4>
+                            <p>{{ trans('_configMenu.importUsersDesc') }}</p>
+                        </div>
+                    </a>
+                </li>
             </ul>
         </div>
     </div>

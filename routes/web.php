@@ -275,6 +275,18 @@ Route::group(['as' => 'Portfolio::'], function () {
   ]);
 });
 
+Route::group(['as' => 'rubri::'], function () {
+  Route::get('/rubri_import', [
+    'as' => 'import',
+    'uses' => 'RubriController@showImport'
+  ]);
+  Route::post('/rubri_import', [
+    'as' => 'import',
+    'uses' => 'RubriController@doImport'
+  ]);
+});
+
+
 Route::any('zipcode', function() {
 
     echo
@@ -287,15 +299,17 @@ Route::any('zipcode', function() {
     if (Input::get('country'))
     {
         ZipCode::setCountry(Input::get('country'));
-        ZipCode::setPreferredWebService('Geonames');
-        ZipCode::setQueryParameter('geonames_username', 'lucac18i');
+        /* ZipCode::setPreferredWebService('Geonames');
+        ZipCode::setQueryParameter('geonames_username', 'lucac18i'); */
 
         //$webService = ZipCode::getWebServiceByName('Geonames');
         //$webService->setUrl('http://api.zippopotam.ca');
         $result = ZipCode::find(Input::get('zipcode'));
 
         echo '<pre>';
-        if($result->getSuccess()){
+
+        // var_dump($result->toArray());
+        if($result->getSuccess() && $result->getWebService()=="Geonames"){
           echo ($result->getAddresses())[0]['city'];
           echo '<br>';
           echo ($result->getAddresses())[0]['department'];
@@ -303,13 +317,14 @@ Route::any('zipcode', function() {
           echo ($result->getAddresses())[0]['department_id'];
           echo '<br>';
           echo ($result->getAddresses())[0]['state_name'];
-          echo '<pre>';
+          echo '<br>';
           echo ($result->getCountryId());
-          echo '<r>';
+          echo '<br>';
           echo ($result->getCountryName());
         } else {
           echo 'NOT FOUND!!';
         }
+
         echo '</pre>';
     }
 
