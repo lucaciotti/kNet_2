@@ -5,7 +5,7 @@ namespace knet\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Input;
-use knet\Jobs\ImportUsersExcel;
+use knet\Jobs\ImportLEADExcel;
 use Excel;
 use Session;
 
@@ -22,13 +22,14 @@ class RubriController extends Controller
     }
 
     public function doImport(Request $req){
-      $destinationPath = 'usersFiles'; // upload path
+      $destinationPath = public_path()."/upload/LEAD/";
+      if (!is_dir($destinationPath)) {  mkdir($destinationPath,0777,true);  }
       $extension = Input::file('file')->getClientOriginalExtension(); // getting image extension
-      $fileName = rand(11111,99999).'.'.$extension; // renameing image
+      $fileName = time() . '_file.'.$extension; // renameing image
       Input::file('file')->move($destinationPath, $fileName); // uploading file to given path
       // sending back with message
       Session::flash('success', 'Upload successfully');
-      $this->dispatch(new ImportUsersExcel($fileName));
+      ImportLEADExcel::dispatch($fileName, 'IT', 1);
       return Redirect::back();
     }
 }

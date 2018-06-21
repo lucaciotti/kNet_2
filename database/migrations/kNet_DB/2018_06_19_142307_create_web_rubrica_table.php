@@ -25,9 +25,10 @@ class CreateWebRubricaTable extends Migration
             $table->string('legalerapp', 60)->nullable()->comment('Legale Rappresentante');
             $table->string('email', 80)->comment('Email principale');
             $table->string('indirizzo', 50)->nullable()->comment('Indirizzo Sede');
-            $table->string('cap', 5)->nullable()->comment('CAP');
-            $table->string('localita', 40)->nullable()->comment('Località');
-            $table->string('prov',2)->nullable()->comment('Provincia');
+            $table->string('cap',10)->nullable()->comment('CAP');
+            $table->string('localita', 60)->nullable()->comment('Località');
+            $table->string('prov')->nullable()->comment('Provincia');
+            $table->string('regione')->nullable()->comment('Regione');
             $table->string('codnazione',3)->nullable()->comment('Codice Nazione');
             $table->string('settore',30)->nullable()->comment('Settore Merciologico');
             $table->string('statocf',1)->nullable()->comment('Stato');

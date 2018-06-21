@@ -1,4 +1,4 @@
-@extends('adminlte::page')
+@extends('layouts.app')
 
 @section('htmlheader_title')
 	Import Rubrica LEAD
@@ -6,21 +6,23 @@
 
 
 @section('main-content')
-	<div class="container-fluid spark-screen">
-		<div class="row">
-			<div class="col-md-9 col-md-offset-1">
-
-				<div class="box box-success box-solid">
+	@if(Session::has('success'))
+        <div class="alert-box success">
+            <h2>{!! Session::get('success') !!}</h2>
+        </div>
+    @endif
+    <div class="row">
+        <div class="container">
+            <div class="col-lg-12">
+                <div class="box box-default">
                     <div class="box-header with-border">
-                        <h3 class="box-title">Example box</h3>
+                        <h3 class="box-title" data-widget="collapse">{{ trans('user.importUser') }}</h3>
                         <div class="box-tools pull-right">
-                            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
                             <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
                         </div>
-                        <!-- /.box-tools -->
                     </div>
-                    <!-- /.box-header -->
                     <div class="box-body">
+                                       
                         <form action="{{ route('rubri::import') }}" method="POST" enctype="multipart/form-data">
                             {{ csrf_field() }}
                             <div class="form-group">
@@ -33,9 +35,14 @@
                             </div>
                         </form>
                     </div>
-                    <!-- /.box-body -->
                 </div>
-			</div>
-		</div>
-	</div>
+            </div>
+        </div>
+    </div>
+@endsection
+
+@section('extra_script')
+  @include('layouts.partials.scripts.iCheck')
+  @include('layouts.partials.scripts.select2')
+  @include('layouts.partials.scripts.datePicker')
 @endsection

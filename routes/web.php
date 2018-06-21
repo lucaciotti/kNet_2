@@ -310,13 +310,13 @@ Route::any('zipcode', function() {
 
         // var_dump($result->toArray());
         if($result->getSuccess() && $result->getWebService()=="Geonames"){
-          echo ($result->getAddresses())[0]['city'];
+          echo "Città: ".($result->getAddresses())[0]['city'];
           echo '<br>';
-          echo ($result->getAddresses())[0]['department'];
+          echo "Provincia: ".($result->getAddresses())[0]['department'];
           echo '<br>';
-          echo ($result->getAddresses())[0]['department_id'];
+          echo "PROV: ".($result->getAddresses())[0]['department_id'];
           echo '<br>';
-          echo ($result->getAddresses())[0]['state_name'];
+          echo "Regione: ".($result->getAddresses())[0]['state_name'];
           echo '<br>';
           echo ($result->getCountryId());
           echo '<br>';
