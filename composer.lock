@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "72095eaeed9b0e901b3f22ccaf2f4165",
+    "content-hash": "01acd6aaa552c23a4c71ddddb38de5fc",
     "packages": [
         {
             "name": "acacha/admin-lte-template-laravel",
@@ -2477,16 +2477,16 @@
         },
         {
             "name": "maatwebsite/excel",
-            "version": "3.0.6",
+            "version": "dev-develop",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Maatwebsite/Laravel-Excel.git",
-                "reference": "61bb806573f5c1a8afa3ef5e67152083489537b0"
+                "reference": "fba0ae4e6f12ee526b9478133dec8b84aba5d91c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Maatwebsite/Laravel-Excel/zipball/61bb806573f5c1a8afa3ef5e67152083489537b0",
-                "reference": "61bb806573f5c1a8afa3ef5e67152083489537b0",
+                "url": "https://api.github.com/repos/Maatwebsite/Laravel-Excel/zipball/fba0ae4e6f12ee526b9478133dec8b84aba5d91c",
+                "reference": "fba0ae4e6f12ee526b9478133dec8b84aba5d91c",
                 "shasum": ""
             },
             "require": {
@@ -2495,7 +2495,6 @@
                 "phpoffice/phpspreadsheet": "^1.2"
             },
             "require-dev": {
-                "orchestra/database": "^3.6",
                 "orchestra/testbench": "^3.6",
                 "phpunit/phpunit": "~7.0"
             },
@@ -2515,7 +2514,11 @@
                     "Maatwebsite\\Excel\\": "src/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "autoload-dev": {
+                "psr-4": {
+                    "Maatwebsite\\Excel\\Tests\\": "tests/"
+                }
+            },
             "license": [
                 "MIT"
             ],
@@ -2527,7 +2530,6 @@
             ],
             "description": "An eloquent way of importing and exporting Excel and CSV",
             "keywords": [
-                "PHPExcel",
                 "batch",
                 "csv",
                 "excel",
@@ -2535,9 +2537,14 @@
                 "import",
                 "laravel",
                 "php",
+                "phpexcel",
                 "phpspreadsheet"
             ],
-            "time": "2018-06-12T09:42:31+00:00"
+            "support": {
+                "source": "https://github.com/Maatwebsite/Laravel-Excel/tree/develop",
+                "issues": "https://github.com/Maatwebsite/Laravel-Excel/issues"
+            },
+            "time": "2018-04-30T17:55:41+00:00"
         },
         {
             "name": "monolog/monolog",
@@ -6161,16 +6168,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "7.2.5",
+            "version": "7.2.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "1dbfbe286dbbc194bb81b4a120415ebdf7db42c3"
+                "reference": "400a3836ee549ae6f665323ac3f21e27eac7155f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/1dbfbe286dbbc194bb81b4a120415ebdf7db42c3",
-                "reference": "1dbfbe286dbbc194bb81b4a120415ebdf7db42c3",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/400a3836ee549ae6f665323ac3f21e27eac7155f",
+                "reference": "400a3836ee549ae6f665323ac3f21e27eac7155f",
                 "shasum": ""
             },
             "require": {
@@ -6241,7 +6248,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2018-06-21T04:05:21+00:00"
+            "time": "2018-06-21T13:13:39+00:00"
         },
         {
             "name": "sebastian/code-unit-reverse-lookup",
@@ -6897,9 +6904,18 @@
             "time": "2018-01-29T19:49:41+00:00"
         }
     ],
-    "aliases": [],
+    "aliases": [
+        {
+            "alias": "3.1",
+            "alias_normalized": "3.1.0.0",
+            "version": "dev-develop",
+            "package": "maatwebsite/excel"
+        }
+    ],
     "minimum-stability": "dev",
-    "stability-flags": [],
+    "stability-flags": {
+        "maatwebsite/excel": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
