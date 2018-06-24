@@ -38,7 +38,7 @@ class CreateWebRubricaTable extends Migration
             $table->timestamps();
             $table->softDeletes();
 
-            $table->unique('partiva', 'email');
+            $table->unique('email');
         });
     }
 

@@ -13,7 +13,7 @@ class wVisit extends Model
 
   protected $table = 'w_visite';
   protected $dates = ['data', 'created_at', 'updated_at'];
-  protected $fillable = ['codicecf', 'user_id', 'data', 'tipo', 'descrizione', 'note'];
+  protected $fillable = ['codicecf', 'user_id', 'data', 'tipo', 'descrizione', 'note', 'rubri_id'];
   protected $connection = '';
 
   public function __construct ($attributes = array())

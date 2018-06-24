@@ -10,6 +10,19 @@ class wRubrica extends Model
 {
     protected $table = 'w_rubrica';
     protected $dates = ['created_at', 'updated_at', 'deleted_at'];
+    protected $fillable = ['descrizion',
+                        'telefono',
+                        'sitoweb',
+                        'settore',
+                        'persdacont',
+                        'email',
+                        'indirizzo',
+                        'localita',
+                        'prov',
+                        'cap',
+                        'regione',
+                        'codnazione',
+                        'user_id'];
 
     public function __construct ($attributes = array())
     {
