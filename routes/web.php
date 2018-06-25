@@ -284,6 +284,19 @@ Route::group(['as' => 'rubri::'], function () {
     'as' => 'import',
     'uses' => 'RubriController@doImport'
   ]);
+
+  Route::get('/rubrica', [
+    'as' => 'list',
+    'uses' => 'RubriController@index'
+  ]);
+  // Route::get('/client/{codice}', [
+  //   'as' => 'detail',
+  //   'uses' => 'ClientController@detail'
+  // ]);
+  // Route::post('/clients/filter', [
+  //   'as' => 'fltList',
+  //   'uses' => 'ClientController@fltIndex'
+  // ]);
 });
 
 

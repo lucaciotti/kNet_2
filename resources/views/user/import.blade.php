@@ -13,14 +13,15 @@
 @endsection
 
 @section('main-content')
-  @if(Session::has('success'))
-          <div class="alert-box success">
-          <h2>{!! Session::get('success') !!}</h2>
-          </div>
-        @endif
   <div class="row">
       <div class="container">
       <div class="col-lg-12">
+        @if(Session::has('success'))
+          <div class="callout callout-success">
+                <h4>LEAD imported with success!!</h4>
+                <p>{!! Session::get('success') !!}</p>
+          </div>
+        @endif
       <div class="box box-default">
         <div class="box-header with-border">
           <h3 class="box-title" data-widget="collapse">{{ trans('user.importUser') }}</h3>

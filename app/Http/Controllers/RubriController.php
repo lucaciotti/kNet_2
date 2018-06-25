@@ -8,10 +8,42 @@ use Illuminate\Support\Facades\Input;
 use Session;
 use knet\ExportsXLS\LEADImport;
 
+use knet\WebModels\wRubrica;
+use knet\ArcaModels\Nazione;
+use knet\ArcaModels\Settore;
+use knet\ArcaModels\Zona;
+use knet\ArcaModels\ScadCli;
+use knet\WebModels\wVisit;
+
 class RubriController extends Controller
 {
     public function __construct(){
       $this->middleware('auth');
+    }
+
+    public function index (Request $req){
+
+      if($req->user()->role_name=='client'){
+        return redirect()->action('ClientController@detail', $req-user()->codcli);
+      }
+      // on($this->connection)->
+      $contacts = wRubrica::select('id', 'descrizion', 'codnazione', 'agente', 'localita', 'settore');
+      $contacts = $contacts->with(['agent']);
+      $contacts = $contacts->get();
+      
+      $nazioni = Nazione::all();
+      $settori = Settore::all();
+      $zone = Zona::all();
+
+      // $clients = $clients->paginate(25);
+      // dd($clients);
+      return view('rubri.index', [
+        'contacts' => $contacts,
+        'nazioni' => $nazioni,
+        'settori' => $settori,
+        'zone' => $zone,
+        'mapsException' => ''
+      ]);
     }
 
     public function showImport(Request $req){

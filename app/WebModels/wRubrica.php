@@ -63,4 +63,8 @@ class wRubrica extends Model
     public function user(){
         return $this->hasOne('knet\User', 'id', 'user_id');
     }
+
+    public function agent(){
+      return $this->belongsTo('knet\ArcaModels\Agent', 'codag', 'codice');
+    }
 }
