@@ -34,7 +34,7 @@
           <input type="hidden" name="_token" value="{{ csrf_token() }}">
           <div class="form-group">
             <label>{{ trans('stFatt.selAgent') }}</label>
-            <select name="zone" class="form-control select2" style="width: 100%;">
+            <select name="codag" class="form-control select2" style="width: 100%;">
               {{-- <option value=""> </option> --}}
               @foreach ($agents as $agent)
                 <option value="{{ $agent->codice }}"
@@ -52,13 +52,13 @@
       </div>
     </div>
 
-    <div class="box box-default">
-      {{-- <div class="box-header with-border">
+    {{-- <div class="box box-default">
+      <div class="box-header with-border">
         <h3 class="box-title" data-widget="collapse">% Target</h3>
         <div class="box-tools pull-right">
           <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
         </div>
-      </div> --}}
+      </div>
       <div class="box-body text-center">
         @php
         $valMese = 'valore' . $prevMonth;
@@ -72,7 +72,7 @@
 
           <div class="knob-label"><strong>{{ trans('stFatt.targetGraph') }}</strong></div>
       </div>
-    </div>
+    </div> --}}
   </div>
 
   <div class="col-lg-9">
@@ -84,14 +84,15 @@
       </ul>
       <div class="tab-content">
         <div class="tab-pane active" id="StatTot">
-        @include('stFatt.partials.tblTotAg', [
-          'fatturato' => $fatTot,
-          'target' => $target,
-          'prevMonth' => $prevMonth,
+        @include('stFatt.partials.tblZone', [
+          'fatZone' => $fatZone,
+          'fatTot' => $fatTot,
+          'thisYear' => $thisYear,
+          'prevYear' => $prevYear
         ])
         </div>
 
-        <div class="tab-pane" id="StatDet">
+        {{-- <div class="tab-pane" id="StatDet">
 
           <div class="nav-tabs-custom">
             <ul class="nav nav-tabs">
@@ -134,12 +135,12 @@
             </div>
           </div>
 
-        </div>
+        </div> --}}
       </div>
     </div>
   </div>
 
-  <div class="col-lg-12">
+  {{-- <div class="col-lg-12">
     <div class="box box-default">
       <div class="box-header with-border">
         <h3 class="box-title" data-widget="collapse">{{ trans('stFatt.graphTitle') }}</h3>
@@ -151,7 +152,7 @@
         <div class="chart" id="revenue-chart" style="height: 300px;"></div>
       </div>
     </div>
-  </div>
+  </div> --}}
 
 </div>
 @endsection
@@ -162,52 +163,4 @@
   @include('layouts.partials.scripts.datePicker')
 @endsection
 
-@push('script-footer')
-  <script src="{{ asset('/plugins/knob/jquery.knob.js') }}"></script>
-  <!-- Morris.js charts -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
-  <script src="{{ asset('/plugins/morris/morris.min.js') }}"></script>
-  <script>
-  $(function () {
-    /* jQueryKnob */
-    $(".knob").knob({
-      /*change : function (value) {
-       //console.log("change : " + value);
-       },
-       release : function (value) {
-       console.log("release : " + value);
-       },
-       cancel : function () {
-       console.log("cancel : " + this.value);
-       },*/
-      draw: function () {}
-    });
-    /* END JQUERY KNOB */
 
-    "use strict";
-    // AREA CHART
-    var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-    var data = {!! $stats !!};
-    var revenueLabel = "{!! trans('stFatt.revenue') !!}";
-    var targetLabel = "{!! trans('stFatt.target') !!}";
-    var area = new Morris.Line({
-      element: 'revenue-chart',
-      resize: true,
-      data: data,
-      xkey: 'm',
-      ykeys: ['a', 'b'],
-      labels: [revenueLabel, targetLabel],
-      lineColors: ['#227a03', '#cd6402'],
-      hideHover: 'auto',
-      xLabelFormat: function(x) { // <--- x.getMonth() returns valid index
-        var month = months[x.getMonth()];
-        return month;
-      },
-      dateFormat: function(x) {
-        var month = months[new Date(x).getMonth()];
-        return month;
-      },
-    });
-  });
-</script>
-@endpush
