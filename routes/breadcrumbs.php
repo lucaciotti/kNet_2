@@ -123,7 +123,7 @@ Breadcrumbs::register('clientStFat', function($breadcrumbs, $codClient)
 Breadcrumbs::register('agentStFat', function($breadcrumbs, $codAg)
 {
     $breadcrumbs->parent('home');
-    $breadcrumbs->push(trans('_breadcrumbs.stFattAgent'), route('stFatt::idxCli', $codAg));
+    $breadcrumbs->push(trans('_breadcrumbs.stFattAgent'), route('stFatt::idxAg', $codAg));
 });
 
 // Home > [Client] > ShowVisite

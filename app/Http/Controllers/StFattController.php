@@ -496,6 +496,13 @@ class StFattController extends Controller
       }          
       $fatTot = $fatTot->groupBy(['codicecf'])->get();
 
+      $gruppi = GrpProd::where('codice', 'NOT LIKE', '1%')
+                ->where('codice', 'NOT LIKE', 'DIC%')
+                ->where('codice', 'NOT LIKE', '0%')
+                ->where('codice', 'NOT LIKE', '2%')
+                ->orderBy('codice')
+                ->get();
+
       return view('stFatt.idxZone', [
         'agents' => $agents,
         'agente' => $agente,
@@ -503,6 +510,9 @@ class StFattController extends Controller
         'fatTot' => $fatTot->first(),
         'thisYear' => $thisYear,
         'prevYear' => $prevYear,
+        'gruppi' => $gruppi,
+        'grpSelected' => $req->input('gruppo'),
+        'descrAg' => $descrAg,
       ]);
     }
 

@@ -60,7 +60,7 @@
         </div>
       </div>
       <div class="box-body">
-        @include('stFatt.partials.formIndex')
+        @include('stFatt.partials.formIndex', ['gruppi' => $gruppi, 'agent' => $agent, 'route' => 'stFatt::idxAg'])
       </div>
     </div>
 

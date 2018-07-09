@@ -1,4 +1,4 @@
-<form action="{{ route('stFatt::idxAg') }}" method="post">
+<form action="{{ route($route) }}" method="post">
   <input type="hidden" name="_token" value="{{ csrf_token() }}">
   <div class="form-group">
     <label>{{ trans('prod.groupProd') }}</label>
@@ -29,6 +29,7 @@
     </div>
   </div>
   <div>
+    <input type="hidden" name="codag" value="{{ $agente }}">
     <button type="submit" class="btn btn-primary">{{ trans('_message.submit') }}</button>
   </div>
 </form>
