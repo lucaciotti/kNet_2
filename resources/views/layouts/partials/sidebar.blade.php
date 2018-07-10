@@ -64,10 +64,10 @@
                   <ul class="treeview-menu">
                       <li class="{{ Ekko::isActiveRoute('stFatt::idxAg') }}"><a href="{{ route('stFatt::idxAg') }}">{{ trans('_menu.agent') }}</a></li>
                       <li class="{{ Ekko::isActiveRoute('stFatt::idxCli') }}"><a href="{{ route('stFatt::idxCli') }}">{{ trans('_menu.client') }}</a></li>
-                      @if (!in_array(RedisUser::get('role'), ['agent']))
                         <li class="{{ Ekko::isActiveRoute('stFatt::idxZone') }}"><a href="{{ route('stFatt::idxZone') }}">{{ trans('_menu.zone') }}</a></li>
+                    @if (!in_array(RedisUser::get('role'), ['agent']))
                         <li class="{{ Ekko::isActiveRoute('stFatt::idxManager') }}"><a href="{{ route('stFatt::idxManager') }}">{{ trans('_menu.superAgent') }}</a></li>
-                      @endif
+                    @endif
                   </ul>
               </li>
               <li class="treeview {{ Ekko::isActiveRoute('stAbc::*') }}">

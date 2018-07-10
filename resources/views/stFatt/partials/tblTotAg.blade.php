@@ -24,8 +24,8 @@
   </thead>
   <tbody>
     @php
-      $fat = $fatturato->first();
-      $tgt = $target->first();
+      $fat = $fat_TY->first();
+      $tgt = $fat_PY->first();
       $fatMese = empty($fat) ? 0 : $fat->valore1;
       $tgtMese = empty($tgt) ? 0 : $tgt->valore1;
       $fatProg = $fatMese;

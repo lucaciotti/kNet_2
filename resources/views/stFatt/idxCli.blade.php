@@ -61,8 +61,8 @@
       <div class="box-body text-center">
         @php
           $valMese = 'valore' . $prevMonth;
-          $tgtMese = $target->isEmpty() ? 0 : $target->first()->$valMese;
-          $fatMese = $fatTot->isempty() ? 0 : $fatTot->first()->fattmese;
+          $tgtMese = $fat_PY->isEmpty() ? 0 : $fat_PY->first()->$valMese;
+          $fatMese = $fat_TY->isempty() ? 0 : $fat_TY->first()->fattmese;
           $deltaProg = $tgtMese==0 ? 0 : round((($fatMese) / $tgtMese) * 100,2);
           $deltaProg = $deltaProg > 100 ? 100 : $deltaProg;
           $colorDelta = ($deltaProg < 33) ? 'red' : ($deltaProg > 33 && $deltaProg < 66) ? 'orange' : 'green';
@@ -78,19 +78,19 @@
     <div class="nav-tabs-custom">
       <ul class="nav nav-tabs pull-right">
         <li class="active"><a href="#StatTot" data-toggle="tab" aria-expanded="true">{{ strtoupper(trans('stFatt.total')) }}</a></li>
-        <li class=""><a href="#StatDet" data-toggle="tab" aria-expanded="false">{{ trans('stFatt.detailed') }}</a></li>
+        {{-- <li class=""><a href="#StatDet" data-toggle="tab" aria-expanded="false">{{ trans('stFatt.detailed') }}</a></li> --}}
         <li class="pull-left header"><i class="fa fa-th"></i> {{ trans('stFatt.statsTitle') }}</li>
       </ul>
       <div class="tab-content">
         <div class="tab-pane active" id="StatTot">
         @include('stFatt.partials.tblTotAg', [
-          'fatturato' => $fatTot,
-          'target' => $target,
+          'fat_TY' => $fat_TY,
+          'fat_PY' => $fat_PY,
           'prevMonth' => $prevMonth,
         ])
         </div>
 
-        <div class="tab-pane" id="StatDet">
+        {{-- <div class="tab-pane" id="StatDet">
 
           <div class="nav-tabs-custom">
             <ul class="nav nav-tabs">
@@ -133,7 +133,7 @@
             </div>
           </div>
 
-        </div>
+        </div> --}}
       </div>
     </div>
   </div>
@@ -198,6 +198,7 @@
       labels: [revenueLabel, targetLabel],
       lineColors: ['#227a03', '#cd6402'],
       hideHover: 'auto',
+      xLabels: 'month',
       xLabelFormat: function(x) { // <--- x.getMonth() returns valid index
         var month = months[x.getMonth()];
         return month;

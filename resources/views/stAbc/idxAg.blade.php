@@ -34,11 +34,11 @@
             <select name="codag" class="form-control select2" style="width: 100%;">
               <option value=""> </option>
               @foreach ($agents as $agent)
-                <option value="{{ $agent->codag }}"
-                  @if($agent->codag==$agente)
+                <option value="{{ $agent->agente }}"
+                  @if($agent->agente==$agente)
                       selected
                   @endif
-                  >{{ $agent->agent->descrizion }}</option>
+                  >{{ $agent->agent->descrizion or "Error $agent->agente - No Description" }}</option>
               @endforeach
             </select>
           </div>
@@ -46,6 +46,19 @@
             <button type="submit" class="btn btn-primary">{{ trans('_message.submit') }}</button>
           </div>
         </form>
+      </div>
+    </div>
+
+    <div class="box box-default">
+      <div class="box-header with-border">
+        <h3 class="box-title" data-widget="collapse">{{ trans('doc.filter') }}</h3>
+        <div class="box-tools pull-right">
+          <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+          {{-- <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button> --}}
+        </div>
+      </div>
+      <div class="box-body">
+        @include('stAbc.partials.formIndex', ['gruppi' => $gruppi, 'agent' => $agent, 'route' => 'stAbc::idxAg'])
       </div>
     </div>
   </div>
@@ -61,25 +74,13 @@
         @include('stAbc.partials.tblIdx', [
           'AbcProds' => $AbcProds,
           'thisYear' => $thisYear,
+          'prevYear' => $prevYear,
+          'thisMonth' => $thisMonth,
         ])
         </div>
       </div>
     </div>
   </div>
-
-  {{-- <div class="col-lg-12">
-    <div class="box box-default">
-      <div class="box-header with-border">
-        <h3 class="box-title" data-widget="collapse">{{ trans('stFatt.graphTitle') }}</h3>
-        <div class="box-tools pull-right">
-          <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
-        </div>
-      </div>
-      <div class="box-body chart-responsive">
-        <div class="chart" id="revenue-chart" style="height: 300px;"></div>
-      </div>
-    </div>
-  </div> --}}
 
 </div>
 @endsection

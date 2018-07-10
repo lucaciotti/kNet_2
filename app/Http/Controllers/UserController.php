@@ -103,6 +103,7 @@ class UserController extends Controller
       $user->codag = $req->input('codag');
       $user->codcli = $req->input('codcli');
       $user->save();
+      RedisUser::store();
 
       return Redirect::route('user::users.index');
     }

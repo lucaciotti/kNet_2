@@ -24,59 +24,15 @@ class StFattController extends Controller
     }
 
     public function idxAg (Request $req, $codAg=null) {
-      $agents = StatFatt::select('agente')
-                          ->where('agente', '!=', '00')
-                          ->where('agente', '!=', '')
-                          ->groupBy('agente')
-                          ->with([
-                            'agent' => function($query){
-                              $query->select('codice', 'descrizion');
-                            }
-                            ])
-                          ->get();
+      $agents = Agent::select('codice', 'descrizion')->whereNull('u_dataini')->orderBy('codice')->get();
       $codAg = ($req->input('codag')) ? $req->input('codag') : $codAg;
       // dd($req->input());
       $agente = (string)(!empty($codAg)) ? $codAg : $agents->first()->agente;
       $descrAg = (!empty($agents->whereStrict('agente', $agente)->first()->agent) ? $agents->whereStrict('agente', $agente)->first()->agent->descrizion : "");
       $thisYear = (string)(Carbon::now()->year);
-      /* $fatDet = StatFatt::select('agente', 'tipologia', 'gruppo',
-                                  DB::raw('MAX(prodotto) as prodotto'),
-                                  DB::raw('MAX(LEFT(gruppo,1)) as grp'),
-                                  DB::raw('SUM(valore1) as valore1'),
-                                  DB::raw('SUM(valore2) as valore2'),
-                                  DB::raw('SUM(valore3) as valore3'),
-                                  DB::raw('SUM(valore4) as valore4'),
-                                  DB::raw('SUM(valore5) as valore5'),
-                                  DB::raw('SUM(valore6) as valore6'),
-                                  DB::raw('SUM(valore7) as valore7'),
-                                  DB::raw('SUM(valore8) as valore8'),
-                                  DB::raw('SUM(valore9) as valore9'),
-                                  DB::raw('SUM(valore10) as valore10'),
-                                  DB::raw('SUM(valore11) as valore11'),
-                                  DB::raw('SUM(valore12) as valore12')
-                                )
-                          ->where('codicecf', 'CTOT')
-                          ->where('agente', $agente)
-                          ->where('esercizio', $thisYear);
-      if($req->input('gruppo')) {
-        $fatDet = $fatDet->whereIn('gruppo', $req->input('gruppo'));
-      }
-      if(!empty($req->input('optTipoDoc'))) {
-        $fatDet = $fatDet->where('prodotto', $req->input('optTipoDoc'));
-      } else {
-        $fatDet = $fatDet->whereIn('prodotto', ['KRONA', 'KOBLENZ', 'KUBIKA']);
-      }                   
-      $fatDet = $fatDet->where('tipologia', 'FATTURATO')
-                          ->groupBy(['agente', 'tipologia', 'gruppo'])
-                          ->with([
-                            'agent' => function($query){
-                              $query->select('codice', 'descrizion');
-                            }, 'grpProd' => function($query){
-                              $query->select('codice', 'descrizion');
-                            }
-                            ])
-                          ->get(); */
-      $fatTot = StatFatt::select('agente', 'tipologia',
+
+      // (Legenda PY -> Previous Year ; TY -> This Year)
+      $fat_TY = StatFatt::select('agente', 'tipologia',
                                   DB::raw('ROUND(SUM(valore1),2) as valore1'),
                                   DB::raw('ROUND(SUM(valore2),2) as valore2'),
                                   DB::raw('ROUND(SUM(valore3),2) as valore3'),
@@ -96,14 +52,14 @@ class StFattController extends Controller
                           ->where('esercizio', $thisYear)
                           ->where('tipologia', 'FATTURATO');
       if($req->input('gruppo')) {
-        $fatTot = $fatTot->whereIn('gruppo', $req->input('gruppo'));
+        $fat_TY = $fat_TY->whereIn('gruppo', $req->input('gruppo'));
       }
       if(!empty($req->input('optTipoDoc'))) {
-        $fatTot = $fatTot->where('prodotto', $req->input('optTipoDoc'));
-      } /* else {
-        $fatTot = $fatTot->whereIn('prodotto', ['KRONA', 'KOBLENZ', 'KUBIKA']);
-      } */          
-      $fatTot = $fatTot->groupBy(['agente', 'tipologia'])
+        $fat_TY = $fat_TY->where('prodotto', $req->input('optTipoDoc'));
+      } else {
+        $fat_TY = $fat_TY->whereIn('prodotto', ['KRONA', 'KOBLENZ', 'KUBIKA', 'PLANET']);
+      }          
+      $fat_TY = $fat_TY->groupBy(['agente', 'tipologia'])
                           ->with([
                             'agent' => function($query){
                               $query->select('codice', 'descrizion');
@@ -111,21 +67,9 @@ class StFattController extends Controller
                             ])
                           ->get();
       // dd($fatTot);
-      /* $target = StatFatt::where('codicecf', 'CTOT')
-                          ->where('agente', $agente)
-                          ->where('esercizio', '2017')
-                          ->where('tipologia', 'TARGET')
-                          ->groupBy(['agente', 'tipologia', 'gruppo'])
-                          ->with([
-                            'agent' => function($query){
-                              $query->select('codice', 'descrizion');
-                            }, 'grpProd' => function($query){
-                              $query->select('codice', 'descrizion');
-                            }
-                            ])
-                          ->get(); */
+      
       $prevYear = (string)((Carbon::now()->year)-1);
-      $target = StatFatt::select('agente', 'tipologia',
+      $fat_PY = StatFatt::select('agente', 'tipologia',
                                   DB::raw('ROUND(SUM(valore1),2) as valore1'),
                                   DB::raw('ROUND(SUM(valore2),2) as valore2'),
                                   DB::raw('ROUND(SUM(valore3),2) as valore3'),
@@ -145,12 +89,14 @@ class StFattController extends Controller
                           ->where('esercizio', $prevYear)
                           ->where('tipologia', 'FATTURATO');
       if($req->input('gruppo')) {
-        $target = $target->whereIn('gruppo', $req->input('gruppo'));
+        $fat_PY = $fat_PY->whereIn('gruppo', $req->input('gruppo'));
       }
       if(!empty($req->input('optTipoDoc'))) {
-        $target = $target->where('prodotto', $req->input('optTipoDoc'));
+        $fat_PY = $fat_PY->where('prodotto', $req->input('optTipoDoc'));
+      } else {
+        $fat_PY = $fat_PY->whereIn('prodotto', ['KRONA', 'KOBLENZ', 'KUBIKA']);
       }          
-      $target = $target->groupBy(['agente', 'tipologia'])
+      $fat_PY = $fat_PY->groupBy(['agente', 'tipologia'])
                           ->with([
                             'agent' => function($query){
                               $query->select('codice', 'descrizion');
@@ -167,17 +113,17 @@ class StFattController extends Controller
 
       $prevMonth = (Carbon::now()->month);
       $valMese = 'valore' . $prevMonth;
-      if(!empty($fatTot->first())){
-        $prevMonth = ($fatTot->first()->$valMese == 0) ? $prevMonth-1 : $prevMonth;
+      if(!empty($fat_TY->first())){
+        $prevMonth = ($fat_TY->first()->$valMese == 0) ? $prevMonth-1 : $prevMonth;
       }
-      $stats = $this->makeFatTgtJson($fatTot, $target, $prevMonth);
+      $stats = $this->makeFatTgtJson($fat_TY, $fat_PY, $prevMonth);
       // dd($stats);
       return view('stFatt.idxAg', [
         'agents' => $agents,
         'agente' => $agente,
-        'fatTot' => $fatTot,
+        'fat_TY' => $fat_TY,
         //'fatDet' => $fatDet,
-        'target' => $target,
+        'fat_PY' => $fat_PY,
         'stats' => $stats,
         'prevMonth' => $prevMonth,
         'gruppi' => $gruppi,
@@ -203,38 +149,10 @@ class StFattController extends Controller
                           ->get();
       $codCli = ($req->input('codcli')) ? $req->input('codcli') : $codCli;
       $cliente = (!empty($codCli)) ? $codCli : $clients->first()->codicecf;
-      $fatDet = StatFatt::select('codicecf', 'tipologia', 'gruppo',
-                                  DB::raw('MAX(prodotto) as prodotto'),
-                                  DB::raw('MAX(LEFT(gruppo,1)) as grp'),
-                                  DB::raw('SUM(valore1) as valore1'),
-                                  DB::raw('SUM(valore2) as valore2'),
-                                  DB::raw('SUM(valore3) as valore3'),
-                                  DB::raw('SUM(valore4) as valore4'),
-                                  DB::raw('SUM(valore5) as valore5'),
-                                  DB::raw('SUM(valore6) as valore6'),
-                                  DB::raw('SUM(valore7) as valore7'),
-                                  DB::raw('SUM(valore8) as valore8'),
-                                  DB::raw('SUM(valore9) as valore9'),
-                                  DB::raw('SUM(valore10) as valore10'),
-                                  DB::raw('SUM(valore11) as valore11'),
-                                  DB::raw('SUM(valore12) as valore12')
-                                )
-                          ->where('codicecf', $cliente)
-                          ->where('tipologia', 'FATTURATO')
-                          ->where('esercizio', '2017')
-                          ->groupBy(['codicecf', 'tipologia', 'gruppo'])
-                          ->with([
-                            'client' => function($query){
-                              $query->select('codice', 'descrizion')
-                              ->withoutGlobalScope('agent')
-                              ->withoutGlobalScope('superAgent')
-                              ->withoutGlobalScope('client');
-                            }, 'grpProd' => function($query){
-                              $query->select('codice', 'descrizion');
-                            }
-                            ])
-                          ->get();
-      $fatTot = StatFatt::select('codicecf', 'tipologia',
+
+      $thisYear = (string)(Carbon::now()->year);
+      // (Legenda PY -> Previous Year ; TY -> This Year)
+      $fat_TY = StatFatt::select('agente', 'tipologia',
                                   DB::raw('ROUND(SUM(valore1),2) as valore1'),
                                   DB::raw('ROUND(SUM(valore2),2) as valore2'),
                                   DB::raw('ROUND(SUM(valore3),2) as valore3'),
@@ -250,10 +168,17 @@ class StFattController extends Controller
                                   DB::raw('ROUND(SUM(fattmese),2) as fattmese')
                                 )
                           ->where('codicecf', $cliente)
-                          ->whereIn('prodotto', ['KRONA', 'KOBLENZ', 'KUBIKA'])
-                          ->where('tipologia', 'FATTURATO')
-                          ->where('esercizio', '2017')
-                          ->groupBy(['codicecf', 'tipologia'])
+                          ->where('esercizio', $thisYear)
+                          ->where('tipologia', 'FATTURATO');
+      if($req->input('gruppo')) {
+        $fat_TY = $fat_TY->whereIn('gruppo', $req->input('gruppo'));
+      }
+      if(!empty($req->input('optTipoDoc'))) {
+        $fat_TY = $fat_TY->where('prodotto', $req->input('optTipoDoc'));
+      } else {
+        $fat_TY = $fat_TY->whereIn('prodotto', ['KRONA', 'KOBLENZ', 'KUBIKA', 'PLANET']);
+      }          
+      $fat_TY = $fat_TY->groupBy(['codicecf', 'tipologia'])
                           ->with([
                             'client' => function($query){
                               $query->select('codice', 'descrizion')
@@ -263,35 +188,69 @@ class StFattController extends Controller
                             }
                             ])
                           ->get();
-      $target = StatFatt::where('codicecf', $cliente)
-                          ->where('tipologia', 'TARGET')
-                          ->where('esercizio', '2017')
-                          ->groupBy(['codicecf', 'tipologia', 'gruppo'])
+
+      $prevYear = (string)((Carbon::now()->year)-1);
+      $fat_PY = StatFatt::select('agente', 'tipologia',
+                                  DB::raw('ROUND(SUM(valore1),2) as valore1'),
+                                  DB::raw('ROUND(SUM(valore2),2) as valore2'),
+                                  DB::raw('ROUND(SUM(valore3),2) as valore3'),
+                                  DB::raw('ROUND(SUM(valore4),2) as valore4'),
+                                  DB::raw('ROUND(SUM(valore5),2) as valore5'),
+                                  DB::raw('ROUND(SUM(valore6),2) as valore6'),
+                                  DB::raw('ROUND(SUM(valore7),2) as valore7'),
+                                  DB::raw('ROUND(SUM(valore8),2) as valore8'),
+                                  DB::raw('ROUND(SUM(valore9),2) as valore9'),
+                                  DB::raw('ROUND(SUM(valore10),2) as valore10'),
+                                  DB::raw('ROUND(SUM(valore11),2) as valore11'),
+                                  DB::raw('ROUND(SUM(valore12),2) as valore12'),
+                                  DB::raw('ROUND(SUM(fattmese),2) as fattmese')
+                                )
+                          ->where('codicecf', $cliente)
+                          ->where('esercizio', $prevYear)
+                          ->where('tipologia', 'FATTURATO');
+      if($req->input('gruppo')) {
+        $fat_PY = $fat_PY->whereIn('gruppo', $req->input('gruppo'));
+      }
+      if(!empty($req->input('optTipoDoc'))) {
+        $fat_PY = $fat_PY->where('prodotto', $req->input('optTipoDoc'));
+      } else {
+        $fat_PY = $fat_PY->whereIn('prodotto', ['KRONA', 'KOBLENZ', 'KUBIKA']);
+      }          
+      $fat_PY = $fat_PY->groupBy(['codicecf', 'tipologia'])
                           ->with([
                             'client' => function($query){
                               $query->select('codice', 'descrizion')
                               ->withoutGlobalScope('agent')
                               ->withoutGlobalScope('superAgent')
                               ->withoutGlobalScope('client');
-                            }, 'grpProd' => function($query){
-                              $query->select('codice', 'descrizion');
                             }
                             ])
                           ->get();
+      
+      $gruppi = GrpProd::where('codice', 'NOT LIKE', '1%')
+                ->where('codice', 'NOT LIKE', 'DIC%')
+                ->where('codice', 'NOT LIKE', '0%')
+                ->where('codice', 'NOT LIKE', '2%')
+                ->orderBy('codice')
+                ->get();
+
       $prevMonth = (Carbon::now()->month);
       $valMese = 'valore' . $prevMonth;
-      $prevMonth = $fatTot->isEmpty() ? $prevMonth : (($fatTot->first()->$valMese == 0) ? $prevMonth-1 : $prevMonth);
-      $stats = $this->makeFatTgtJson($fatTot, $target, $prevMonth);
+      $prevMonth = $fat_TY->isEmpty() ? $prevMonth : (($fat_TY->first()->$valMese == 0) ? $prevMonth-1 : $prevMonth);
+      $stats = $this->makeFatTgtJson($fat_TY, $fat_PY, $prevMonth);
       // dd($stats);
       // dd($clients->first());
       return view('stFatt.idxCli', [
         'clients' => $clients,
         'cliente' => $cliente,
-        'fatTot' => $fatTot,
-        'fatDet' => $fatDet,
-        'target' => $target,
+        'fat_TY' => $fat_TY,
+        'fat_PY' => $fat_PY,
         'stats' => $stats,
         'prevMonth' => $prevMonth,
+        'gruppi' => $gruppi,
+        'grpSelected' => $req->input('gruppo'),
+        'thisYear' => $thisYear,
+        'prevYear' => $prevYear
       ]);
     }
 
@@ -443,7 +402,7 @@ class StFattController extends Controller
       if(!empty($req->input('optTipoDoc'))) {
         $fatZone = $fatZone->where('prodotto', $req->input('optTipoDoc'));
       } else {
-        $fatZone = $fatZone->whereIn('prodotto', ['KRONA', 'KOBLENZ', 'KUBIKA']);
+        $fatZone = $fatZone->whereIn('prodotto', ['KRONA', 'KOBLENZ', 'KUBIKA', 'PLANET']);
       }          
       $fatZone = $fatZone->groupBy(['codicecf'])
                   ->with([ 
@@ -540,3 +499,55 @@ class StFattController extends Controller
     }
 
 }
+
+
+/* $fatDet = StatFatt::select('agente', 'tipologia', 'gruppo',
+                                  DB::raw('MAX(prodotto) as prodotto'),
+                                  DB::raw('MAX(LEFT(gruppo,1)) as grp'),
+                                  DB::raw('SUM(valore1) as valore1'),
+                                  DB::raw('SUM(valore2) as valore2'),
+                                  DB::raw('SUM(valore3) as valore3'),
+                                  DB::raw('SUM(valore4) as valore4'),
+                                  DB::raw('SUM(valore5) as valore5'),
+                                  DB::raw('SUM(valore6) as valore6'),
+                                  DB::raw('SUM(valore7) as valore7'),
+                                  DB::raw('SUM(valore8) as valore8'),
+                                  DB::raw('SUM(valore9) as valore9'),
+                                  DB::raw('SUM(valore10) as valore10'),
+                                  DB::raw('SUM(valore11) as valore11'),
+                                  DB::raw('SUM(valore12) as valore12')
+                                )
+                          ->where('codicecf', 'CTOT')
+                          ->where('agente', $agente)
+                          ->where('esercizio', $thisYear);
+      if($req->input('gruppo')) {
+        $fatDet = $fatDet->whereIn('gruppo', $req->input('gruppo'));
+      }
+      if(!empty($req->input('optTipoDoc'))) {
+        $fatDet = $fatDet->where('prodotto', $req->input('optTipoDoc'));
+      } else {
+        $fatDet = $fatDet->whereIn('prodotto', ['KRONA', 'KOBLENZ', 'KUBIKA']);
+      }                   
+      $fatDet = $fatDet->where('tipologia', 'FATTURATO')
+                          ->groupBy(['agente', 'tipologia', 'gruppo'])
+                          ->with([
+                            'agent' => function($query){
+                              $query->select('codice', 'descrizion');
+                            }, 'grpProd' => function($query){
+                              $query->select('codice', 'descrizion');
+                            }
+                            ])
+                          ->get(); */
+/* $target = StatFatt::where('codicecf', 'CTOT')
+                          ->where('agente', $agente)
+                          ->where('esercizio', '2017')
+                          ->where('tipologia', 'TARGET')
+                          ->groupBy(['agente', 'tipologia', 'gruppo'])
+                          ->with([
+                            'agent' => function($query){
+                              $query->select('codice', 'descrizion');
+                            }, 'grpProd' => function($query){
+                              $query->select('codice', 'descrizion');
+                            }
+                            ])
+                          ->get(); */

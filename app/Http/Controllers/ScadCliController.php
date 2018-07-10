@@ -20,7 +20,12 @@ class ScadCliController extends Controller
     $startDate = Carbon::now()->subMonth();
     $endDate = Carbon::now();
 
-    $scads = ScadCli::select('id', 'id_doc', 'numfatt', 'datafatt', 'datascad', 'codcf', 'tipomod', 'tipo', 'insoluto', 'u_insoluto', 'pagato', 'impeffval', 'importopag', 'idragg', 'tipoacc');
+    $scads = ScadCli::select('id', 'id_doc', 'numfatt', 
+              'datafatt', 'datascad', 'codcf', 'tipomod', 
+              'tipo', 'insoluto', 'u_insoluto', 'pagato', 
+              'impeffval', 'importopag', 'idragg', 'tipoacc',
+              'impprovlit', 'impprovliq', 'liquidate'
+            );
     $scads = $scads->where('datascad', '<', Carbon::now())->whereIn('tipoacc', ['F', ''])->whereRaw("(`insoluto` = 1 OR `u_insoluto` = 1) AND `pagato` = 0");
     $scads = $scads->whereHas('client', function($query){
       $query->whereNotIn('statocf', ['C', 'S', 'L'])
@@ -46,7 +51,12 @@ class ScadCliController extends Controller
 
   public function fltIndex (Request $req){
     // dd($req);
-    $scads = ScadCli::select('id', 'id_doc', 'numfatt', 'datafatt', 'datascad', 'codcf', 'tipomod', 'tipo', 'insoluto', 'u_insoluto', 'pagato', 'impeffval', 'importopag', 'idragg', 'tipoacc');
+    $scads = ScadCli::select('id', 'id_doc', 'numfatt', 
+              'datafatt', 'datascad', 'codcf', 'tipomod', 
+              'tipo', 'insoluto', 'u_insoluto', 'pagato', 
+              'impeffval', 'importopag', 'idragg', 'tipoacc',
+              'impprovlit', 'impprovliq', 'liquidate'
+            );
     $scads = $scads->whereIn('tipoacc', [$req->input('optRaggr'), '']);
     $scads = $scads->whereIn('tipo', $req->input('chkPag'));
     if($req->input('startDate') && $req->input('noDate')!='C'){

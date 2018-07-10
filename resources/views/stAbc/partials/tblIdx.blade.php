@@ -12,8 +12,8 @@
       <th style="text-align: center;">U.M.</th>
 
       <th style="text-align: center;">{{ $thisYear }}</th>
-      <th style="text-align: center;">{{ $thisYear-1 }}</th>
-      <th style="text-align: center;">% {{ trans('stFatt.missing') }}</th>
+      <th style="text-align: center;">{{ $prevYear }}</th>
+      <th style="text-align: center;">Delta Qta</th>
     </tr>
   </thead>
   <tbody>

@@ -74,8 +74,8 @@
       <div class="box-body text-center">
         @php
         $valMese = 'valore' . $prevMonth;
-        $tgtMese = $target->isEmpty() ? 0 : $target->first()->$valMese;
-        $fatMese = $fatTot->isempty() ? 0 : $fatTot->first()->fattmese;
+        $tgtMese = $fat_PY->isEmpty() ? 0 : $fat_PY->first()->$valMese;
+        $fatMese = $fat_TY->isempty() ? 0 : $fat_TY->first()->$valMese;
         $deltaProg = $tgtMese==0 ? 0 : round((($fatMese) / $tgtMese) * 100,2);
         $deltaProg = $deltaProg > 100 ? 100 : $deltaProg;
         $colorDelta = ($deltaProg < 33) ? 'red' : ($deltaProg > 33 && $deltaProg < 66) ? 'orange' : 'green';
@@ -97,8 +97,8 @@
       <div class="tab-content">
         <div class="tab-pane active" id="StatTot">
         @include('stFatt.partials.tblTotAg', [
-          'fatturato' => $fatTot,
-          'target' => $target,
+          'fat_TY' => $fat_TY,
+          'fat_PY' => $fat_PY,
           'prevMonth' => $prevMonth,
           'thisYear' => $thisYear,
           'prevYear' => $prevYear
