@@ -4,7 +4,7 @@ namespace knet\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Carbon\Carbon;
-use PDF;
+// use PDF;
 use Illuminate\Support\Facades\DB;
 
 use knet\ArcaModels\Client;
@@ -15,6 +15,8 @@ use knet\ArcaModels\ScadCli;
 use knet\WebModels\wVisit;
 use knet\ArcaModels\StatFatt;
 use knet\ArcaModels\StatABC;
+
+use knet\Helpers\PdfReport;
 
 class SchedaCliController extends Controller
 {
@@ -98,8 +100,17 @@ class SchedaCliController extends Controller
         // $stats = $this->makeFatTgtJson($fatThisYear, $fatPrevYear, $prevMonth);
         $title = "Scheda Cliente";
         $subTitle = $client->descrizion;
-
-        $pdf = PDF::loadView('_exports.pdf.schedaCliPdf', [
+        $view = '_exports.pdf.schedaCliPdf';
+        $data = [
+            'client' => $client,
+            'scads' => $scadToPay,
+            'visits' => $visits,
+            'fatThisYear' => $fatThisYear,
+            'fatPrevYear' => $fatPrevYear,
+            'AbcItems' => $AbcItems,
+        ];
+        $pdf = PdfReport::A4Portrait($view, $data, $title, $subTitle);
+        /* $pdf = PDF::loadView('_exports.pdf.schedaCliPdf', [
             'client' => $client,
             'scads' => $scadToPay,
             'visits' => $visits,
@@ -109,7 +120,7 @@ class SchedaCliController extends Controller
         ])
         ->setOption('header-html', view('_exports.pdf.masterPage.headerPdf', ['pageTitle' => $title, 'pageSubTitle' => $subTitle]))
         ->setOption('footer-html', view('_exports.pdf.masterPage.footerPdf'))
-        ->setPaper('a4');
+        ->setPaper('a4'); */
 
         return $pdf->stream($title.'-'.$subTitle.'.pdf');
 
