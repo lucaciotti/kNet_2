@@ -27,34 +27,18 @@
         </div>
       </div>
       <div class="box-body">
-        {{-- <form action="{{ route('stAbc::idxAg') }}" method="post">
-          <input type="hidden" name="_token" value="{{ csrf_token() }}">
-          <div class="form-group">
-            <label>{{ trans('stFatt.selAgent') }}</label>
-            <select name="codag" class="form-control select2" style="width: 100%;">
-              <option value=""> </option>
-              @foreach ($agents as $agent)
-                <option value="{{ $agent->codice }}"
-                  @if($agent->codice==$agente)
-                      selected
-                  @endif
-                  >{{ $agent->descrizion or "Error $agent->codice - No Description" }}</option>
-              @endforeach
-            </select>
-          </div>
-          <div>
-            <button type="submit" class="btn btn-primary">{{ trans('_message.submit') }}</button>
-          </div>
-        </form> --}}
         <dl class="dl-horizontal">
             <dt>Cod. Art.</dt>
             <dd>
-              <big><strong>{{$AbcProds->first()->articolo}}</strong></big><br>
-              <small>{{$AbcProds->first()->product->descrizion}}</small>
+              <big><strong>{{$product->codice}}</strong></big><br>
+              <small>{{$product->descrizion}}</small>
             </dd>
             <br>
-            <dt>Agente</dt>
-            <dd>{{ $descrAg or "Error $agente - No Description" }}</dd>
+            <dt>Customer</dt>
+            <dd>
+              <big><strong>{{$customer->descrizion}}</strong></big>
+              <small>[{{$customer->codice}}]</small>
+            </dd>
           </dl>
       </div>
     </div>
@@ -68,12 +52,8 @@
       </ul>
       <div class="tab-content">
         <div class="tab-pane active" id="statAbc">
-        @include('stAbc.partials.tblDetArt', [
-          'agente' => $agente,
-          'AbcProds' => $AbcProds,
-          'thisYear' => $thisYear,
-          'prevYear' => $prevYear,
-          'thisMonth' => $thisMonth,
+        @include('stAbc.partials.tblDocsArtCli', [
+          'listDocs' => $listDocs,
         ])
         </div>
       </div>

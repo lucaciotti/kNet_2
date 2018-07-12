@@ -58,7 +58,7 @@
         </div>
       </div>
       <div class="box-body">
-        @include('stAbc.partials.formIndex', ['gruppi' => $gruppi, 'agent' => $agente, 'route' => 'stAbc::idxAg'])
+        @include('stAbc.partials.formIndex', ['gruppi' => $gruppi, 'agente' => $agente, 'route' => 'stAbc::idxAg'])
       </div>
     </div>
   </div>
@@ -71,7 +71,7 @@
       </ul>
       <div class="tab-content">
         <div class="tab-pane active" id="statAbc">
-        @include('stAbc.partials.tblIdx', [
+        @include('stAbc.partials.tblIdxAg', [
           'agente' => $agente,
           'AbcProds' => $AbcProds,
           'thisYear' => $thisYear,

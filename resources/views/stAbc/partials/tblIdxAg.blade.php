@@ -1,14 +1,14 @@
 <table class="table table-hover table-condensed dtTbls_full" id="statAbcTable">
   <thead>
     <tr>
-      <th colspan="4">&nbsp;</th>
+      <th colspan="5">&nbsp;</th>
       <th colspan="2" style="text-align: center;">Qta a Luglio</th>
       <th colspan="2" style="text-align: center;"></th>
     </tr>
     <tr>
-      <th style="text-align: center;">Cliente</th>
-      <th style="text-align: center;">Rag. Sociale</th>
-      <th style="text-align: center;">Link Documenti</th>
+      <th style="text-align: center;">Codice</th>
+      <th style="text-align: center;">Descrizione</th>
+      <th style="text-align: center;">Gruppo Prodotto</th>
       <th style="text-align: center;">U.M.</th>
       <th colspan="1">|</th>
 
@@ -23,9 +23,9 @@
   <tbody>
     @foreach ($AbcProds as $abc)
       <tr>
-        <td><a href="{{ route('client::detail', $abc->codicecf ) }}"> {{ $abc->codicecf }} </a></td>
-        <td>{{ $abc->client->descrizion or '' }}</td>
-        <td><a href="{{ route('stAbc::docsArtCli', ['codArt' => $abc->articolo, 'codcli' => $abc->codicecf] ) }}"> Link Docs </a></td>
+        <td><a href="{{ route('stAbc::detailArt', ['codArt'=>$abc->articolo, 'codAg'=>$agente]) }}"> {{ $abc->articolo }} </a></td>
+        <td>{{ $abc->product->descrizion or '' }}</td>
+        <td>{{ $abc->gruppo or '' }} - {{ $abc->grpProd->descrizion or '' }}</td>
         <td>{{ $abc->unmisura or 'PZ' }}</td>
         <th colspan="1">|</th>
         @php

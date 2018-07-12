@@ -241,8 +241,8 @@ Route::group(['as' => 'stAbc::'], function(){
     'uses' => 'StAbcController@detailArt'
   ]);
   Route::get('/stAbc/{codArt}/{codcli}', [
-    'as' => 'docArtCli',
-    'uses' => 'StAbcController@docArtCli'
+    'as' => 'docsArtCli',
+    'uses' => 'StAbcController@docsArtCli'
   ]);
   // ------------------------------
   Route::get('/stAbcZone', [

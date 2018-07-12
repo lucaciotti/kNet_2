@@ -37,7 +37,12 @@
     </div>
   </div>
   <div>
-    <input type="hidden" name="codag" value="{{ $agente }}">
+    @if($agente)
+      <input type="hidden" name="codag" value="{{ $agente }}">
+    @endif
+    @if($customer)
+      <input type="hidden" name="codcli" value="{{ $customer }}">
+    @endif
     <button type="submit" class="btn btn-primary">{{ trans('_message.submit') }}</button>
   </div>
 </form>
