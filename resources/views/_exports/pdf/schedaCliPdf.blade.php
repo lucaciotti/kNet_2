@@ -106,6 +106,16 @@
         <div><hr class="dividerPage"></div>
 
         <div class="row">
+            <div class="contentTitle">{{ trans('client.paymentCli') }}</div>
+
+            @include('_exports.pdf.schedaCli.tblPayment', $scads)
+
+        </div>
+
+        <div><hr class="dividerPage"></div>
+    </p>
+    <p>
+        <div class="row">
             <div class="contentTitle">Abc Items</div>
 
             @include('_exports.pdf.schedaCli.tblAbc', [
@@ -113,15 +123,7 @@
                 'thisYear' => 2018,
                 ])
         </div>
-
-        <div><hr class="dividerPage"></div>
-
-        <div class="row">
-            <div class="contentTitle">{{ trans('client.paymentCli') }}</div>
-
-            @include('_exports.pdf.schedaCli.tblPayment', $scads)
-
-        </div>
+        
     </p>
 @endsection
 

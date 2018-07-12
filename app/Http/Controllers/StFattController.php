@@ -27,7 +27,7 @@ class StFattController extends Controller
       $agents = Agent::select('codice', 'descrizion')->whereNull('u_dataini')->orderBy('codice')->get();
       $codAg = ($req->input('codag')) ? $req->input('codag') : $codAg;
       // dd($req->input());
-      $agente = (string)(!empty($codAg)) ? $codAg : $agents->first()->agente;
+      $agente = (string)(!empty($codAg)) ? $codAg : $agents->first()->codice;
       $descrAg = (!empty($agents->whereStrict('agente', $agente)->first()->agent) ? $agents->whereStrict('agente', $agente)->first()->agent->descrizion : "");
       $thisYear = (string)(Carbon::now()->year);
 
@@ -359,7 +359,7 @@ class StFattController extends Controller
     public function idxZone (Request $req, $codAg=null) {
       $agents = Agent::select('codice', 'descrizion')->whereNull('u_dataini')->orderBy('codice')->get();
       $codAg = ($req->input('codag')) ? $req->input('codag') : $codAg;
-      $agente = (string)(!empty($codAg)) ? $codAg : $agents->first()->agente;
+      $agente = (string)(!empty($codAg)) ? $codAg : $agents->first()->codice;
       $descrAg = (!empty($agents->whereStrict('agente', $agente)->first()->agent) ? $agents->whereStrict('agente', $agente)->first()->agent->descrizion : "");
       $thisYear = (string)(Carbon::now()->year);
       $prevYear = (string)((Carbon::now()->year)-1);
