@@ -227,18 +227,24 @@ Route::group(['as' => 'stAbc::'], function(){
     'as' => 'idxAg',
     'uses' => 'StAbcController@idxAg'
   ]);
-  Route::get('/stAbcCli', [
+  Route::get('/stAbcCli/{codcli?}', [
     'as' => 'idxCli',
-    'uses' => 'StAbcController@idxCli'
-  ]);
-  Route::get('/stAbcCli/{codcli}', [
-    'as' => 'fltCli',
     'uses' => 'StAbcController@idxCli'
   ]);
   Route::post('/stAbcCli', [
     'as' => 'idxCli',
     'uses' => 'StAbcController@idxCli'
   ]);
+  // ------------------------------
+  Route::get('/stAbc/{codArt}', [
+    'as' => 'detailArt',
+    'uses' => 'StAbcController@detailArt'
+  ]);
+  Route::get('/stAbc/{codArt}/{codcli}', [
+    'as' => 'docArtCli',
+    'uses' => 'StAbcController@docArtCli'
+  ]);
+  // ------------------------------
   Route::get('/stAbcZone', [
     'as' => 'idxZone',
     'uses' => 'StAbcController@idxZone'

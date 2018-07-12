@@ -20,14 +20,14 @@
   <div class="col-lg-3">
     <div class="box box-default">
       <div class="box-header with-border">
-        <h3 class="box-title" data-widget="collapse">{{ trans('stFatt.agent') }}</h3>
+        <h3 class="box-title" data-widget="collapse">Detail</h3>
         <div class="box-tools pull-right">
           <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
           {{-- <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button> --}}
         </div>
       </div>
       <div class="box-body">
-        <form action="{{ route('stAbc::idxAg') }}" method="post">
+        {{-- <form action="{{ route('stAbc::idxAg') }}" method="post">
           <input type="hidden" name="_token" value="{{ csrf_token() }}">
           <div class="form-group">
             <label>{{ trans('stFatt.selAgent') }}</label>
@@ -45,20 +45,17 @@
           <div>
             <button type="submit" class="btn btn-primary">{{ trans('_message.submit') }}</button>
           </div>
-        </form>
-      </div>
-    </div>
+        </form> --}}
+        <dl class="dl-horizontal">
+            <dt>Cod. Art.</dt>
+            <dd>
+              <big><strong>{{$AbcProds->first()->articolo}}</strong></big>
+              <small>{{$AbcProds->first()->product->descrizion}}</small>
+            </dd>
 
-    <div class="box box-default">
-      <div class="box-header with-border">
-        <h3 class="box-title" data-widget="collapse">{{ trans('doc.filter') }}</h3>
-        <div class="box-tools pull-right">
-          <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
-          {{-- <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button> --}}
-        </div>
-      </div>
-      <div class="box-body">
-        @include('stAbc.partials.formIndex', ['gruppi' => $gruppi, 'agent' => $agente, 'route' => 'stAbc::idxAg'])
+            <dt>Agente</dt>
+            <dd>{{ $descrAg or "Error $agente - No Description" }}</dd>
+          </dl>
       </div>
     </div>
   </div>
@@ -71,7 +68,7 @@
       </ul>
       <div class="tab-content">
         <div class="tab-pane active" id="statAbc">
-        @include('stAbc.partials.tblIdx', [
+        @include('stAbc.partials.tblDetArt', [
           'agente' => $agente,
           'AbcProds' => $AbcProds,
           'thisYear' => $thisYear,
