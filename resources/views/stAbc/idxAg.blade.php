@@ -34,11 +34,11 @@
             <select name="codag" class="form-control select2" style="width: 100%;">
               <option value=""> </option>
               @foreach ($agents as $agent)
-                <option value="{{ $agent->agente }}"
-                  @if($agent->agente==$agente)
+                <option value="{{ $agent->codice }}"
+                  @if($agent->codice==$agente)
                       selected
                   @endif
-                  >{{ $agent->agent->descrizion or "Error $agent->agente - No Description" }}</option>
+                  >{{ $agent->descrizion or "Error $agent->codice - No Description" }}</option>
               @endforeach
             </select>
           </div>
@@ -58,7 +58,7 @@
         </div>
       </div>
       <div class="box-body">
-        @include('stAbc.partials.formIndex', ['gruppi' => $gruppi, 'agent' => $agent, 'route' => 'stAbc::idxAg'])
+        @include('stAbc.partials.formIndex', ['gruppi' => $gruppi, 'agent' => $agente, 'route' => 'stAbc::idxAg'])
       </div>
     </div>
   </div>

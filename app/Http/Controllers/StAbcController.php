@@ -25,7 +25,7 @@ class StAbcController extends Controller
     public function idxAg (Request $req, $codAg=null) {
       $agents = Agent::select('codice', 'descrizion')->whereNull('u_dataini')->orderBy('codice')->get();
       $codAg = ($req->input('codag')) ? $req->input('codag') : $codAg;
-      $agente = (!empty($codAg)) ? $codAg : $agents->first()->codag;
+      $agente = (!empty($codAg)) ? $codAg : $agents->first()->codice;
       $thisYear =  Carbon::now()->year;
       $prevYear = $thisYear-1;
       $thisMonth = Carbon::now()->month;
@@ -47,18 +47,18 @@ class StAbcController extends Controller
                     DB::raw('SUM(IF(esercizio='.$thisYear.', qta10, 0)) as qta_TY_10'),
                     DB::raw('SUM(IF(esercizio='.$thisYear.', qta11, 0)) as qta_TY_11'),
                     DB::raw('SUM(IF(esercizio='.$thisYear.', qta12, 0)) as qta_TY_12'),
-                    DB::raw('SUM(IF(esercizio="'.$prevYear.'", qta1, 0)) as qta_PY_1'),
-                    DB::raw('SUM(IF(esercizio="'.$prevYear.'", qta2, 0)) as qta_PY_2'),
-                    DB::raw('SUM(IF(esercizio="'.$prevYear.'", qta3, 0)) as qta_PY_3'),
-                    DB::raw('SUM(IF(esercizio="'.$prevYear.'", qta4, 0)) as qta_PY_4'),
-                    DB::raw('SUM(IF(esercizio="'.$prevYear.'", qta5, 0)) as qta_PY_5'),
-                    DB::raw('SUM(IF(esercizio="'.$prevYear.'", qta6, 0)) as qta_PY_6'),
-                    DB::raw('SUM(IF(esercizio="'.$prevYear.'", qta7, 0)) as qta_PY_7'),
-                    DB::raw('SUM(IF(esercizio="'.$prevYear.'", qta8, 0)) as qta_PY_8'),
-                    DB::raw('SUM(IF(esercizio="'.$prevYear.'", qta9, 0)) as qta_PY_9'),
-                    DB::raw('SUM(IF(esercizio="'.$prevYear.'", qta10, 0)) as qta_PY_10'),
-                    DB::raw('SUM(IF(esercizio="'.$prevYear.'", qta11, 0)) as qta_PY_11'),
-                    DB::raw('SUM(IF(esercizio="'.$prevYear.'", qta12, 0)) as qta_PY_12')
+                    DB::raw('SUM(IF(esercizio='.$prevYear.', qta1, 0)) as qta_PY_1'),
+                    DB::raw('SUM(IF(esercizio='.$prevYear.', qta2, 0)) as qta_PY_2'),
+                    DB::raw('SUM(IF(esercizio='.$prevYear.', qta3, 0)) as qta_PY_3'),
+                    DB::raw('SUM(IF(esercizio='.$prevYear.', qta4, 0)) as qta_PY_4'),
+                    DB::raw('SUM(IF(esercizio='.$prevYear.', qta5, 0)) as qta_PY_5'),
+                    DB::raw('SUM(IF(esercizio='.$prevYear.', qta6, 0)) as qta_PY_6'),
+                    DB::raw('SUM(IF(esercizio='.$prevYear.', qta7, 0)) as qta_PY_7'),
+                    DB::raw('SUM(IF(esercizio='.$prevYear.', qta8, 0)) as qta_PY_8'),
+                    DB::raw('SUM(IF(esercizio='.$prevYear.', qta9, 0)) as qta_PY_9'),
+                    DB::raw('SUM(IF(esercizio='.$prevYear.', qta10, 0)) as qta_PY_10'),
+                    DB::raw('SUM(IF(esercizio='.$prevYear.', qta11, 0)) as qta_PY_11'),
+                    DB::raw('SUM(IF(esercizio='.$prevYear.', qta12, 0)) as qta_PY_12')
                     )
                     ->where('codag', $agente)
                     ->where('isomaggio', false)
@@ -67,11 +67,11 @@ class StAbcController extends Controller
         $AbcProds = $AbcProds->whereIn('gruppo', $req->input('gruppo'));
       }
       if(!empty($req->input('optTipoDoc'))) {
-        $fatZone = $fatZone->where('prodotto', $req->input('optTipoDoc'));
+        $AbcProds = $AbcProds->where('prodotto', $req->input('optTipoDoc'));
       } else {
-        $fatZone = $fatZone->whereIn('prodotto', ['KRONA', 'KOBLENZ', 'KUBIKA', 'PLANET']);
+        $AbcProds = $AbcProds->whereIn('prodotto', ['KRONA', 'KOBLENZ', 'KUBIKA', 'PLANET']);
       }
-      $AbcProds->groupBy(['articolo', 'codag'])
+      $AbcProds = $AbcProds->groupBy(['articolo', 'codag'])
                 ->with([
                   'agent' => function($query){
                     $query->select('codice', 'descrizion');
@@ -83,9 +83,9 @@ class StAbcController extends Controller
                     $query->select('codice', 'descrizion', 'unmisura');
                   }
                 ])
-                ->orderBy('qtaN', 'DESC')
+                ->orderBy('qta_TY', 'DESC')
                 ->get();
-      
+                
       $gruppi = SubGrpProd::where('codice', 'NOT LIKE', '1%')
                 ->where('codice', 'NOT LIKE', 'DIC%')
                 ->where('codice', 'NOT LIKE', '0%')
