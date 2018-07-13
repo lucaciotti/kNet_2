@@ -269,6 +269,12 @@ Route::group(['as' => 'schedaCli::'], function () {
     'uses' => 'SchedaCliController@downloadPDF'
   ]);
 });
+Route::group(['as' => 'schedaFat::'], function () {
+  Route::get('/schedaFatPDF/{codAg}', [
+    'as' => 'PDF',
+    'uses' => 'SchedaCliController@downloadPDF'
+  ]);
+});
 
 Route::group(['as' => 'Portfolio::'], function () {
   Route::get('/portfolioAg/{codice?}', [

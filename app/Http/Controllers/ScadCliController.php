@@ -44,8 +44,8 @@ class ScadCliController extends Controller
 
     return view('scads.index', [
       'scads' => $scads,
-      'startDate' => Carbon::createFromDate(2000, 1, 1),
-      'endDate' => Carbon::now(),
+      'startDate' => $startDate,
+      'endDate' => $endDate,
     ]);
   }
 

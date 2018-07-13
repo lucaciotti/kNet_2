@@ -94,7 +94,7 @@ class StFattController extends Controller
       if(!empty($req->input('optTipoDoc'))) {
         $fat_PY = $fat_PY->where('prodotto', $req->input('optTipoDoc'));
       } else {
-        $fat_PY = $fat_PY->whereIn('prodotto', ['KRONA', 'KOBLENZ', 'KUBIKA']);
+        $fat_PY = $fat_PY->whereIn('prodotto', ['KRONA', 'KOBLENZ', 'KUBIKA', 'PLANET']);
       }          
       $fat_PY = $fat_PY->groupBy(['agente', 'tipologia'])
                           ->with([
@@ -451,7 +451,7 @@ class StFattController extends Controller
       if(!empty($req->input('optTipoDoc'))) {
         $fatTot = $fatTot->where('prodotto', $req->input('optTipoDoc'));
       } else {
-        $fatTot = $fatTot->whereIn('prodotto', ['KRONA', 'KOBLENZ', 'KUBIKA']);
+        $fatTot = $fatTot->whereIn('prodotto', ['KRONA', 'KOBLENZ', 'KUBIKA', 'PLANET']);
       }          
       $fatTot = $fatTot->groupBy(['codicecf'])->get();
 
