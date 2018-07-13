@@ -25,4 +25,9 @@ class PdfReport
 
         return $pdf;
     }
+    
+        /* ->setOption('enable-javascript', true)
+        ->setOption('javascript-delay', 13500)
+        ->setOption('enable-smart-shrinking', true)
+        ->setOption('no-stop-slow-scripts', true) */
 }

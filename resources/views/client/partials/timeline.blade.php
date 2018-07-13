@@ -24,37 +24,43 @@
               @php
                 $message=trans('visit.eventMeeting')
               @endphp
-          @breakswitch
+          @break
+
           @case( 'Mail' )
               <i class="fa fa-envelope bg-orange"></i>
               @php
                 $message=trans('visit.eventMail')
               @endphp
-          @breakswitch
+          @break
+
           @case( 'Prod' )
               <i class="fa fa-cube bg-green"></i>
               @php
                 $message=trans('visit.eventProduct')
               @endphp
-          @breakswitch
+          @break
+
           @case( 'Scad' )
               <i class="fa fa-money bg-purple"></i>
               @php
                 $message=trans('visit.eventDebt')
               @endphp
-          @breakswitch
+          @break
+
           @case( 'RNC' )
               <i class="fa fa-exclamation-circle bg-red"></i>
               @php
                 $message=trans('visit.eventRNC')
               @endphp
-          @breakswitch
+          @break
+
           @default
               <i class="fa fa-question-circle bg-yellow"></i>
               @php
                 $message=trans('visit.eventGeneric')
               @endphp
-          @breakswitch
+          @break
+              
       @endswitch
         <div class="timeline-item">
           <span class="time"><i class="fa fa-user"></i> {{ $visit->user->name }}</span>

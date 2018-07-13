@@ -16,9 +16,9 @@
       <th style="text-align: center;">U.M.</th>
       <th style="text-align: center;">Qty</th>
       <th colspan="1">|</th>
-      <th style="text-align: center;">Unit Price</th>
+      <th style="text-align: center;">Gross Unit Price</th>
       <th style="text-align: center;">Discount</th>
-      <th style="text-align: center;">Gross Price</th>
+      <th style="text-align: center;">Net Unit Price</th>
       <th colspan="1">|</th>
       <th style="text-align: center;">Tot. Price</th>
 

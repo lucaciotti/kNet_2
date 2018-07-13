@@ -23,7 +23,7 @@
   <tbody>
     @foreach ($AbcProds as $abc)
       <tr>
-        <td><a href="{{ route('stAbc::detailArt', ['codArt'=>$abc->articolo, 'codAg'=>$agente]) }}"> {{ $abc->articolo }} </a></td>
+        <td><a href="{{ route('stAbc::detailArt', ['codArt'=>$abc->articolo, 'codag'=>$agente]) }}"> {{ $abc->articolo }} </a></td>
         <td>{{ $abc->product->descrizion or '' }}</td>
         <td>{{ $abc->gruppo or '' }} - {{ $abc->grpProd->descrizion or '' }}</td>
         <td>{{ $abc->unmisura or 'PZ' }}</td>

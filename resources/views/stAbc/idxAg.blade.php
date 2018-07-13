@@ -58,7 +58,7 @@
         </div>
       </div>
       <div class="box-body">
-        @include('stAbc.partials.formIndex', ['gruppi' => $gruppi, 'agente' => $agente, 'route' => 'stAbc::idxAg'])
+        @include('stAbc.partials.formIndex', ['gruppi' => $gruppi, 'agente' => $agente, 'customer' => '', 'route' => 'stAbc::idxAg'])
       </div>
     </div>
   </div>

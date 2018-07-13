@@ -1,7 +1,7 @@
 @extends('_exports.pdf.masterPage.masterPdf')
 
 @section('pdf-main')
-    <p>
+    <p class="page">
         <div class="row">
             <span class="floatleft">
                 <dl class="dl-horizontal">
@@ -114,17 +114,34 @@
 
         <div><hr class="dividerPage"></div>
     </p>
-    <p>
+    
+    <p class="page">
         <div class="row">
             <div class="contentTitle">Abc Items</div>
 
             @include('_exports.pdf.schedaCli.tblAbc', [
                 'AbcProds' => $AbcItems,
-                'thisYear' => 2018,
+                'thisYear' => $thisYear,
+                'prevYear' => $prevYear,
+                'thisMonth' => $thisMonth
                 ])
         </div>
         
     </p>
+    
+    @if (!$visits->isEmpty())
+        <p class="page">
+            <div class="row">
+                <div class="contentTitle">Events</div>
+
+                @include('_exports.pdf.schedaCli.timeline', [
+                    'visits' => $visits,
+                    'codcli' => $client->codice,
+                    'dateNow' => $dateNow,
+                    ])
+            </div>
+        </p>
+    @endif
 @endsection
 
 {{-- @push('scripts')

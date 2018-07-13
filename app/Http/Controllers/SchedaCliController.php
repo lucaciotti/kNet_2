@@ -30,6 +30,7 @@ class SchedaCliController extends Controller
         $visits = wVisit::where('codicecf', $codice)->with('user')->take(3)->orderBy('data', 'desc')->orderBy('id')->get();
         $thisYear = (string)(Carbon::now()->year);
         $prevYear = (string)((Carbon::now()->year)-1);
+        $thisMonth = Carbon::now()->month;
                         //   ->whereIn('prodotto', ['KRONA', 'KOBLENZ', 'KUBIKA'])
         $fatThisYear = StatFatt::select('codicecf', 'tipologia',
                                   DB::raw('ROUND(SUM(valore1),2) as valore1'),
@@ -72,32 +73,57 @@ class SchedaCliController extends Controller
                           ->groupBy(['codicecf', 'tipologia'])
                           ->get();
 
-        $AbcItems = StatABC::select('articolo', 'codag',
-                                  DB::raw('MAX(prodotto) as prodotto'),
-                                  DB::raw('MAX(gruppo) as gruppo'),
-                                  DB::raw('SUM(IF(esercizio='.$thisYear.', qta, 0)) as qtaN'),
-                                  DB::raw('SUM(IF(esercizio='.$prevYear.', qta, 0)) as qtaN1')
-                                )
-                          ->where('codicecf', $codice)
-                          ->where('isomaggio', false)
-                          ->whereIn('esercizio', [$thisYear, $prevYear])
-                          ->groupBy(['articolo', 'codag'])
-                          ->with([
-                            'agent' => function($query){
-                              $query->select('codice', 'descrizion');
-                            }, 'grpProd' => function($query){
-                              $query->select('codice', 'descrizion');
-                            }, 'product' => function($query){
-                              $query->select('codice', 'descrizion', 'unmisura');
-                            }
-                            ])
-                          ->orderBy('qtaN', 'DESC')
-                          ->get();
+        $AbcItems = StatABC::select('articolo', 'codicecf',
+                      DB::raw('MAX(prodotto) as prodotto'),
+                      DB::raw('MAX(gruppo) as gruppo'),
+                      DB::raw('SUM(IF(esercizio='.$thisYear.', qta, 0)) as qta_TY'),
+                      DB::raw('SUM(IF(esercizio='.$prevYear.', qta, 0)) as qta_PY'),
+                      DB::raw('SUM(IF(esercizio='.$thisYear.', qta1, 0)) as qta_TY_1'),
+                      DB::raw('SUM(IF(esercizio='.$thisYear.', qta2, 0)) as qta_TY_2'),
+                      DB::raw('SUM(IF(esercizio='.$thisYear.', qta3, 0)) as qta_TY_3'),
+                      DB::raw('SUM(IF(esercizio='.$thisYear.', qta4, 0)) as qta_TY_4'),
+                      DB::raw('SUM(IF(esercizio='.$thisYear.', qta5, 0)) as qta_TY_5'),
+                      DB::raw('SUM(IF(esercizio='.$thisYear.', qta6, 0)) as qta_TY_6'),
+                      DB::raw('SUM(IF(esercizio='.$thisYear.', qta7, 0)) as qta_TY_7'),
+                      DB::raw('SUM(IF(esercizio='.$thisYear.', qta8, 0)) as qta_TY_8'),
+                      DB::raw('SUM(IF(esercizio='.$thisYear.', qta9, 0)) as qta_TY_9'),
+                      DB::raw('SUM(IF(esercizio='.$thisYear.', qta10, 0)) as qta_TY_10'),
+                      DB::raw('SUM(IF(esercizio='.$thisYear.', qta11, 0)) as qta_TY_11'),
+                      DB::raw('SUM(IF(esercizio='.$thisYear.', qta12, 0)) as qta_TY_12'),
+                      DB::raw('SUM(IF(esercizio='.$prevYear.', qta1, 0)) as qta_PY_1'),
+                      DB::raw('SUM(IF(esercizio='.$prevYear.', qta2, 0)) as qta_PY_2'),
+                      DB::raw('SUM(IF(esercizio='.$prevYear.', qta3, 0)) as qta_PY_3'),
+                      DB::raw('SUM(IF(esercizio='.$prevYear.', qta4, 0)) as qta_PY_4'),
+                      DB::raw('SUM(IF(esercizio='.$prevYear.', qta5, 0)) as qta_PY_5'),
+                      DB::raw('SUM(IF(esercizio='.$prevYear.', qta6, 0)) as qta_PY_6'),
+                      DB::raw('SUM(IF(esercizio='.$prevYear.', qta7, 0)) as qta_PY_7'),
+                      DB::raw('SUM(IF(esercizio='.$prevYear.', qta8, 0)) as qta_PY_8'),
+                      DB::raw('SUM(IF(esercizio='.$prevYear.', qta9, 0)) as qta_PY_9'),
+                      DB::raw('SUM(IF(esercizio='.$prevYear.', qta10, 0)) as qta_PY_10'),
+                      DB::raw('SUM(IF(esercizio='.$prevYear.', qta11, 0)) as qta_PY_11'),
+                      DB::raw('SUM(IF(esercizio='.$prevYear.', qta12, 0)) as qta_PY_12')
+                      )
+                      ->where('codicecf', $codice)
+                      ->where('isomaggio', false)
+                      ->whereIn('esercizio', [$thisYear, $prevYear])
+                      ->whereIn('prodotto', ['KRONA', 'KOBLENZ', 'KUBICA', 'PLANET'])
+                      ->groupBy(['articolo', 'codicecf'])
+                      ->with([
+                          'grpProd' => function($query){
+                          $query->select('codice', 'descrizion');
+                        }, 'product' => function($query){
+                          $query->select('codice', 'descrizion', 'unmisura');
+                        }
+                        ])
+                      ->orderBy('qta_TY', 'DESC')
+                      ->get();
 
         $prevMonth = (Carbon::now()->month);
         $valMese = 'valore' . $prevMonth;
         $prevMonth = $fatThisYear->isEmpty() ? $prevMonth : (($fatThisYear->first()->$valMese == 0) ? $prevMonth-1 : $prevMonth);
-        // $stats = $this->makeFatTgtJson($fatThisYear, $fatPrevYear, $prevMonth);
+        
+        $visits = wVisit::where('codicecf', $codice)->with('user')->take(3)->orderBy('data', 'desc')->orderBy('id')->get();
+
         $title = "Scheda Cliente";
         $subTitle = $client->descrizion;
         $view = '_exports.pdf.schedaCliPdf';
@@ -108,45 +134,16 @@ class SchedaCliController extends Controller
             'fatThisYear' => $fatThisYear,
             'fatPrevYear' => $fatPrevYear,
             'AbcItems' => $AbcItems,
+            'thisYear' => $thisYear,
+            'prevYear' =>$prevYear,
+            'thisMonth' => $thisMonth,
+            'visits' => $visits,
+            'dateNow' => Carbon::now(),
         ];
         $pdf = PdfReport::A4Portrait($view, $data, $title, $subTitle);
-        /* $pdf = PDF::loadView('_exports.pdf.schedaCliPdf', [
-            'client' => $client,
-            'scads' => $scadToPay,
-            'visits' => $visits,
-            'fatThisYear' => $fatThisYear,
-            'fatPrevYear' => $fatPrevYear,
-            'AbcItems' => $AbcItems,
-        ])
-        ->setOption('header-html', view('_exports.pdf.masterPage.headerPdf', ['pageTitle' => $title, 'pageSubTitle' => $subTitle]))
-        ->setOption('footer-html', view('_exports.pdf.masterPage.footerPdf'))
-        ->setPaper('a4'); */
 
         return $pdf->stream($title.'-'.$subTitle.'.pdf');
 
-        /* ->setOption('enable-javascript', true)
-        ->setOption('javascript-delay', 13500)
-        ->setOption('enable-smart-shrinking', true)
-        ->setOption('no-stop-slow-scripts', true) */
     }
 
-    /* protected function makeFatTgtJson($fat, $tgt, $mese){
-      $collect = collect([]);
-      $fatM = 0;
-      $tgtM = 0;
-      for($i=1; $i<=$mese; $i++){
-        $valMese = 'valore' . $i;
-        $fatM += round($fat->isEmpty() ? 0 : $fat->first()->$valMese, 0);
-        $tgtM += round($tgt->isEmpty() ? 0 : $tgt->first()->$valMese, 0);
-        $dt = Carbon::createFromDate(null, $i, 1);
-        $data = [
-          'm' => $dt->year.'-'.$dt->month,
-          'a' => $fatM,
-          'b' => $tgtM
-        ];
-        $collect->push($data);
-      }
-      // dd($collect);
-      return $collect->toJSON();
-    } */
 }

@@ -3,11 +3,13 @@
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
         <style>
             /* @page { font-size: pt } */
-            p { page-break-after: always; }
-            p:last-child { page-break-after: avoid; }
+            p.page { page-break-after: always; }
+            p.page:last-child { page-break-after: avoid; }
             div.row { font-size: 9pt; }
             span.floatleft { float: left; width: 49%; } /* border-left:1px solid grey; */
             span.floatright { float: right; width: 49%; }
+            span.floatleft20 { float: left; width: 25%; } 
+            span.floatright80 { float: right; width: 75%; }
             hr.divider { width: 80%; float:left; margin-right: 20%;}
             hr.dividerPage { width: 80%; float:middle; margin-right: 10%;}
             dt { font-size: 8pt; font-style: italic; }
@@ -29,6 +31,36 @@
                 text-decoration: underline; 
                 padding-top: 20px;
                 padding-bottom: 20px;
+            }
+            
+            /* Style the container with a rounded border, grey background and some padding and margin */
+            .containerEvent {
+                border: 2px solid #ccc;
+                background-color: #f0f0f0;
+                border-radius: 5px;
+                padding: 10px;
+                padding-left: 20px;
+                margin: 10px 0;
+            }
+
+            /* Clear floats after containers */
+            .containerEvent::after {
+                content: "";
+                clear: both;
+                display: table;
+            }
+
+            /* Float images inside the container to the left. Add a right margin, and style the image as a circle */
+            .containerEvent img {
+                float: left;
+                margin-right: 20px;
+                border-radius: 50%;
+            }
+
+            /* Increase the font-size of a span element */
+            .containerEvent span {
+                font-size: 20px;
+                margin-right: 15px;
             }
         </style>
     </head>

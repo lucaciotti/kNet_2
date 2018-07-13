@@ -125,6 +125,7 @@ class UserController extends Controller
 
     public function actLike(Request $req, $id){
       Auth::loginUsingId($id);
+      RedisUser::store();
       return redirect()->action('HomeController@index');
     }
 

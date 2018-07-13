@@ -18,6 +18,7 @@ class User extends Authenticatable
 
     protected $username = 'nickname';
 
+    protected $connection = 'kNet';
     /**
      * The attributes that should be hidden for arrays.
      *
