@@ -29,22 +29,22 @@ class SchedaScadController extends Controller
                 'datafatt', 'datascad', 'codcf', 'tipomod', 
                 'tipo', 'insoluto', 'u_insoluto', 'pagato', 
                 'impeffval', 'importopag', 'idragg', 'tipoacc',
-                'impprovlit', 'impprovliq', 'liquidate', DB::raw('MONTH(datascad) as Mese')
+                'impprovlit', 'impprovliq', 'liquidate', DB::raw('MONTH(datafatt) as Mese')
               )
-              ->whereBetween('datascad', array($startDate, $endDate))
+              ->whereBetween('datafatt', array($startDate, $endDate))
               ->where('codag', $codAg)->where(DB::raw('LENGTH(codag)'), strlen($codAg))
               ->whereIn('tipoacc', ['F', ''])
-              ->whereRaw("`pagato` = 1")
               ->with(array('client' => function($query) {
                 $query->select('codice', 'descrizion')
                 ->withoutGlobalScope('agent')
                 ->withoutGlobalScope('superAgent')
                 ->withoutGlobalScope('client');
               }))
-              ->orderBy('datascad', 'asc')->orderBy('id', 'desc')
+              ->orderBy('datascad', 'asc')->orderBy('datafatt', 'asc')->orderBy('id', 'desc')
               ->get();
       $provv_TY = $provv_TY->groupBy('Mese');
       // dd($provv_TY);
+              // ->whereRaw("`pagato` = 1")
 
       $title = "Scheda Provvigioni Agente";
       $subTitle = $agente->descrizion;

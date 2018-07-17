@@ -37,7 +37,7 @@ return [
     'contacts'                => 'Rubrica Contatti',
     'webOrders'               => 'Inserimento Pre-Ordini da Web',
     'statsAbc'                => 'Statistiche Abc',
-    'AbcArtCli'               => 'Abc Articoli Cliente',
+    'AbcArt'                  => 'Abc Articoli',
     'AbcCli'                  => 'Abc Cliente',
 
 ];
