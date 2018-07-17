@@ -29,18 +29,19 @@ class RedisUser
                 abort(412, 'There\'s no Ditta!');
                 break;
         }
-
         $settings = [
             'ditta_DB' => $ditta,
             'location' => 'it',
             'role' => $user->roles()->first()->name,
             'codag' => (string)$user->codag,
             'codcli' => (string)$user->codcli,
-            'codforn' => (string)$user->codforn,
+            'codforn' => (string)$user->codfor,
             'lang' => (string)$user->lang
         ];
         
-        return Redis::hmset(static::$prefix.$user->id, $settings);
+        Redis::hmset(static::$prefix.$user->id, $settings);
+
+        return Redis::expire(static::$prefix.$user->id, 1800);
     }
 
     public static function getAll(){

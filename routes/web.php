@@ -272,7 +272,21 @@ Route::group(['as' => 'schedaCli::'], function () {
 Route::group(['as' => 'schedaFat::'], function () {
   Route::get('/schedaFatPDF/{codAg}', [
     'as' => 'PDF',
-    'uses' => 'SchedaCliController@downloadPDF'
+    'uses' => 'SchedaFattController@downloadPDF'
+  ]);
+  Route::get('/schedaFatZonePDF/{codAg}', [
+    'as' => 'ZonePDF',
+    'uses' => 'SchedaFattController@downloadZonePDF'
+  ]);
+});
+Route::group(['as' => 'schedaScad::'], function () {
+  Route::get('/schedaProvPDF/{codAg}', [
+    'as' => 'ProvPDF',
+    'uses' => 'SchedaScadController@downloadProvPDF'
+  ]);
+  Route::get('/schedaScadPDF/{codAg?}', [
+    'as' => 'ScadPDF',
+    'uses' => 'SchedaScadController@downloadScadPDF'
   ]);
 });
 

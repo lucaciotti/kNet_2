@@ -6,8 +6,9 @@ use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
+use knet\ArcaModels\StatFatt;
 use knet\ArcaModels\Client;
-use knet\ArcaModels\ScadCli;
+use knet\ArcaModels\Agent;
 
 use knet\Helpers\PdfReport;
 
@@ -18,7 +19,7 @@ class SchedaFattController extends Controller
     }
 
     public function downloadPDF(Request $req, $codAg){
-        $agente = Agent::select('codice', 'descrizion')->whereStrict('codice', $codAg)->orderBy('codice')->first();
+        $agente = Agent::select('codice', 'descrizion')->where('codice', $codAg)->where(DB::raw('LENGTH(codice)'), strlen($codAg))->orderBy('codice')->first();
         
         $thisYear = (string)(Carbon::now()->year);
         $prevYear = (string)((Carbon::now()->year)-1);
@@ -85,7 +86,8 @@ class SchedaFattController extends Controller
             $prevMonth = ($fat_TY->first()->$valMese == 0) ? $prevMonth-1 : $prevMonth;
         }
 
-        //FATTURATO PER ZONA
+        //FATTURATO PER ZONA 
+        // (Sub-Legenda KR = KRONA, KO = KOBLENZ, KU = KUBICA, AT = ATOMIKA, PL = PLANET)
         $fatZone = StatFatt::select('codicecf',
                     DB::raw('SUM(IF(esercizio="'.$thisYear.'", ROUND(valore1,2), 0)) as val_TY_1'),
                     DB::raw('SUM(IF(esercizio="'.$thisYear.'", ROUND(valore2,2), 0)) as val_TY_2'),
@@ -153,7 +155,7 @@ class SchedaFattController extends Controller
                     DB::raw('SUM(IF(esercizio="'.$prevYear.'", ROUND(valore11,2), 0)) as val_PY_11'),
                     DB::raw('SUM(IF(esercizio="'.$prevYear.'", ROUND(valore12,2), 0)) as val_PY_12')               
                     )
-                    ->where('agente', $agente)->where(DB::raw('LENGTH(agente)'), strlen($agente))
+                    ->where('agente', $codAg)->where(DB::raw('LENGTH(agente)'), strlen($codAg))
                     ->whereIn('esercizio', [$thisYear, $prevYear])
                     ->where('codicecf', 'CTOT')
                     ->where('tipologia', 'FATTURATO')
@@ -161,7 +163,7 @@ class SchedaFattController extends Controller
                     ->groupBy(['codicecf'])->get();
 
         $title = "Scheda Fatturato Agente";
-        $subTitle = $agente->descrizion;
+        $subTitle = ($agente) ? $agente->descrizion : "NONE";
         $view = '_exports.pdf.schedaFatPdf';
         $data = [
             'agente' => $agente,
@@ -174,7 +176,337 @@ class SchedaFattController extends Controller
             'thisYear' => $thisYear,
             'prevYear' => $prevYear
         ];
-        $pdf = PdfReport::A4Portrait($view, $data, $title, $subTitle);
+        $pdf = PdfReport::A4Landscape($view, $data, $title, $subTitle);
+
+        return $pdf->stream($title.'-'.$subTitle.'.pdf');
+    }
+
+    public function downloadZonePDF(Request $req, $codAg){
+        $agente = Agent::select('codice', 'descrizion')->where('codice', $codAg)->where(DB::raw('LENGTH(codice)'), strlen($codAg))->orderBy('codice')->first();
+        
+        $thisYear = (string)(Carbon::now()->year);
+        $prevYear = (string)((Carbon::now()->year)-1);
+
+        
+        //FATTURATO PER ZONA 
+        // (Sub-Legenda KR = KRONA, KO = KOBLENZ, KU = KUBICA, AT = ATOMIKA, PL = PLANET)
+        $fatZone_KR = StatFatt::select('codicecf',
+                    DB::raw('SUM(IF(esercizio="'.$thisYear.'", ROUND(valore1,2), 0)) as val_TY_1'),
+                    DB::raw('SUM(IF(esercizio="'.$thisYear.'", ROUND(valore2,2), 0)) as val_TY_2'),
+                    DB::raw('SUM(IF(esercizio="'.$thisYear.'", ROUND(valore3,2), 0)) as val_TY_3'),
+                    DB::raw('SUM(IF(esercizio="'.$thisYear.'", ROUND(valore4,2), 0)) as val_TY_4'),
+                    DB::raw('SUM(IF(esercizio="'.$thisYear.'", ROUND(valore5,2), 0)) as val_TY_5'),
+                    DB::raw('SUM(IF(esercizio="'.$thisYear.'", ROUND(valore6,2), 0)) as val_TY_6'),
+                    DB::raw('SUM(IF(esercizio="'.$thisYear.'", ROUND(valore7,2), 0)) as val_TY_7'),
+                    DB::raw('SUM(IF(esercizio="'.$thisYear.'", ROUND(valore8,2), 0)) as val_TY_8'),
+                    DB::raw('SUM(IF(esercizio="'.$thisYear.'", ROUND(valore9,2), 0)) as val_TY_9'),
+                    DB::raw('SUM(IF(esercizio="'.$thisYear.'", ROUND(valore10,2), 0)) as val_TY_10'),
+                    DB::raw('SUM(IF(esercizio="'.$thisYear.'", ROUND(valore11,2), 0)) as val_TY_11'),
+                    DB::raw('SUM(IF(esercizio="'.$thisYear.'", ROUND(valore12,2), 0)) as val_TY_12'),
+                    DB::raw('SUM(IF(esercizio="'.$prevYear.'", ROUND(valore1,2), 0)) as val_PY_1'),
+                    DB::raw('SUM(IF(esercizio="'.$prevYear.'", ROUND(valore2,2), 0)) as val_PY_2'),
+                    DB::raw('SUM(IF(esercizio="'.$prevYear.'", ROUND(valore3,2), 0)) as val_PY_3'),
+                    DB::raw('SUM(IF(esercizio="'.$prevYear.'", ROUND(valore4,2), 0)) as val_PY_4'),
+                    DB::raw('SUM(IF(esercizio="'.$prevYear.'", ROUND(valore5,2), 0)) as val_PY_5'),
+                    DB::raw('SUM(IF(esercizio="'.$prevYear.'", ROUND(valore6,2), 0)) as val_PY_6'),
+                    DB::raw('SUM(IF(esercizio="'.$prevYear.'", ROUND(valore7,2), 0)) as val_PY_7'),
+                    DB::raw('SUM(IF(esercizio="'.$prevYear.'", ROUND(valore8,2), 0)) as val_PY_8'),
+                    DB::raw('SUM(IF(esercizio="'.$prevYear.'", ROUND(valore9,2), 0)) as val_PY_9'),
+                    DB::raw('SUM(IF(esercizio="'.$prevYear.'", ROUND(valore10,2), 0)) as val_PY_10'),
+                    DB::raw('SUM(IF(esercizio="'.$prevYear.'", ROUND(valore11,2), 0)) as val_PY_11'),
+                    DB::raw('SUM(IF(esercizio="'.$prevYear.'", ROUND(valore12,2), 0)) as val_PY_12')               
+                    )
+                    ->where('agente', $codAg)->where(DB::raw('LENGTH(agente)'), strlen($codAg))
+                    ->whereIn('esercizio', [$thisYear, $prevYear])
+                    ->where('codicecf', "!=", 'CTOT')
+                    ->where('tipologia', 'FATTURATO')
+                    ->whereIn('prodotto', ['KRONA'])
+                    ->groupBy(['codicecf'])
+                    ->with([ 
+                        'client' => function($query){
+                            $query->select('codice', 'descrizion', 'settore', 'zona')
+                            ->with(['detZona', 'detSect']);
+                            }
+                        ])
+                    ->get();
+        $fatZone_KR = $fatZone_KR->groupBy('client.zona');
+        
+        $fatTot_KR = StatFatt::select('codicecf',
+                    DB::raw('SUM(IF(esercizio="'.$thisYear.'", ROUND(valore1,2), 0)) as val_TY_1'),
+                    DB::raw('SUM(IF(esercizio="'.$thisYear.'", ROUND(valore2,2), 0)) as val_TY_2'),
+                    DB::raw('SUM(IF(esercizio="'.$thisYear.'", ROUND(valore3,2), 0)) as val_TY_3'),
+                    DB::raw('SUM(IF(esercizio="'.$thisYear.'", ROUND(valore4,2), 0)) as val_TY_4'),
+                    DB::raw('SUM(IF(esercizio="'.$thisYear.'", ROUND(valore5,2), 0)) as val_TY_5'),
+                    DB::raw('SUM(IF(esercizio="'.$thisYear.'", ROUND(valore6,2), 0)) as val_TY_6'),
+                    DB::raw('SUM(IF(esercizio="'.$thisYear.'", ROUND(valore7,2), 0)) as val_TY_7'),
+                    DB::raw('SUM(IF(esercizio="'.$thisYear.'", ROUND(valore8,2), 0)) as val_TY_8'),
+                    DB::raw('SUM(IF(esercizio="'.$thisYear.'", ROUND(valore9,2), 0)) as val_TY_9'),
+                    DB::raw('SUM(IF(esercizio="'.$thisYear.'", ROUND(valore10,2), 0)) as val_TY_10'),
+                    DB::raw('SUM(IF(esercizio="'.$thisYear.'", ROUND(valore11,2), 0)) as val_TY_11'),
+                    DB::raw('SUM(IF(esercizio="'.$thisYear.'", ROUND(valore12,2), 0)) as val_TY_12'),
+                    DB::raw('SUM(IF(esercizio="'.$prevYear.'", ROUND(valore1,2), 0)) as val_PY_1'),
+                    DB::raw('SUM(IF(esercizio="'.$prevYear.'", ROUND(valore2,2), 0)) as val_PY_2'),
+                    DB::raw('SUM(IF(esercizio="'.$prevYear.'", ROUND(valore3,2), 0)) as val_PY_3'),
+                    DB::raw('SUM(IF(esercizio="'.$prevYear.'", ROUND(valore4,2), 0)) as val_PY_4'),
+                    DB::raw('SUM(IF(esercizio="'.$prevYear.'", ROUND(valore5,2), 0)) as val_PY_5'),
+                    DB::raw('SUM(IF(esercizio="'.$prevYear.'", ROUND(valore6,2), 0)) as val_PY_6'),
+                    DB::raw('SUM(IF(esercizio="'.$prevYear.'", ROUND(valore7,2), 0)) as val_PY_7'),
+                    DB::raw('SUM(IF(esercizio="'.$prevYear.'", ROUND(valore8,2), 0)) as val_PY_8'),
+                    DB::raw('SUM(IF(esercizio="'.$prevYear.'", ROUND(valore9,2), 0)) as val_PY_9'),
+                    DB::raw('SUM(IF(esercizio="'.$prevYear.'", ROUND(valore10,2), 0)) as val_PY_10'),
+                    DB::raw('SUM(IF(esercizio="'.$prevYear.'", ROUND(valore11,2), 0)) as val_PY_11'),
+                    DB::raw('SUM(IF(esercizio="'.$prevYear.'", ROUND(valore12,2), 0)) as val_PY_12')               
+                    )
+                    ->where('agente', $codAg)->where(DB::raw('LENGTH(agente)'), strlen($codAg))
+                    ->whereIn('esercizio', [$thisYear, $prevYear])
+                    ->where('codicecf', 'CTOT')
+                    ->where('tipologia', 'FATTURATO')
+                    ->whereIn('prodotto', ['KRONA'])
+                    ->groupBy(['codicecf'])->get();
+        
+        //KOBLENZ
+        $fatZone_KO = StatFatt::select('codicecf',
+                    DB::raw('SUM(IF(esercizio="'.$thisYear.'", ROUND(valore1,2), 0)) as val_TY_1'),
+                    DB::raw('SUM(IF(esercizio="'.$thisYear.'", ROUND(valore2,2), 0)) as val_TY_2'),
+                    DB::raw('SUM(IF(esercizio="'.$thisYear.'", ROUND(valore3,2), 0)) as val_TY_3'),
+                    DB::raw('SUM(IF(esercizio="'.$thisYear.'", ROUND(valore4,2), 0)) as val_TY_4'),
+                    DB::raw('SUM(IF(esercizio="'.$thisYear.'", ROUND(valore5,2), 0)) as val_TY_5'),
+                    DB::raw('SUM(IF(esercizio="'.$thisYear.'", ROUND(valore6,2), 0)) as val_TY_6'),
+                    DB::raw('SUM(IF(esercizio="'.$thisYear.'", ROUND(valore7,2), 0)) as val_TY_7'),
+                    DB::raw('SUM(IF(esercizio="'.$thisYear.'", ROUND(valore8,2), 0)) as val_TY_8'),
+                    DB::raw('SUM(IF(esercizio="'.$thisYear.'", ROUND(valore9,2), 0)) as val_TY_9'),
+                    DB::raw('SUM(IF(esercizio="'.$thisYear.'", ROUND(valore10,2), 0)) as val_TY_10'),
+                    DB::raw('SUM(IF(esercizio="'.$thisYear.'", ROUND(valore11,2), 0)) as val_TY_11'),
+                    DB::raw('SUM(IF(esercizio="'.$thisYear.'", ROUND(valore12,2), 0)) as val_TY_12'),
+                    DB::raw('SUM(IF(esercizio="'.$prevYear.'", ROUND(valore1,2), 0)) as val_PY_1'),
+                    DB::raw('SUM(IF(esercizio="'.$prevYear.'", ROUND(valore2,2), 0)) as val_PY_2'),
+                    DB::raw('SUM(IF(esercizio="'.$prevYear.'", ROUND(valore3,2), 0)) as val_PY_3'),
+                    DB::raw('SUM(IF(esercizio="'.$prevYear.'", ROUND(valore4,2), 0)) as val_PY_4'),
+                    DB::raw('SUM(IF(esercizio="'.$prevYear.'", ROUND(valore5,2), 0)) as val_PY_5'),
+                    DB::raw('SUM(IF(esercizio="'.$prevYear.'", ROUND(valore6,2), 0)) as val_PY_6'),
+                    DB::raw('SUM(IF(esercizio="'.$prevYear.'", ROUND(valore7,2), 0)) as val_PY_7'),
+                    DB::raw('SUM(IF(esercizio="'.$prevYear.'", ROUND(valore8,2), 0)) as val_PY_8'),
+                    DB::raw('SUM(IF(esercizio="'.$prevYear.'", ROUND(valore9,2), 0)) as val_PY_9'),
+                    DB::raw('SUM(IF(esercizio="'.$prevYear.'", ROUND(valore10,2), 0)) as val_PY_10'),
+                    DB::raw('SUM(IF(esercizio="'.$prevYear.'", ROUND(valore11,2), 0)) as val_PY_11'),
+                    DB::raw('SUM(IF(esercizio="'.$prevYear.'", ROUND(valore12,2), 0)) as val_PY_12')               
+                    )
+                    ->where('agente', $codAg)->where(DB::raw('LENGTH(agente)'), strlen($codAg))
+                    ->whereIn('esercizio', [$thisYear, $prevYear])
+                    ->where('codicecf', "!=", 'CTOT')
+                    ->where('tipologia', 'FATTURATO')
+                    ->whereIn('prodotto', ['KOBLENZ'])
+                    ->groupBy(['codicecf'])
+                    ->with([ 
+                        'client' => function($query){
+                            $query->select('codice', 'descrizion', 'settore', 'zona')
+                            ->with(['detZona', 'detSect']);
+                            }
+                        ])
+                    ->get();
+        $fatZone_KO = $fatZone_KO->groupBy('client.zona');
+        
+        $fatTot_KO = StatFatt::select('codicecf',
+                    DB::raw('SUM(IF(esercizio="'.$thisYear.'", ROUND(valore1,2), 0)) as val_TY_1'),
+                    DB::raw('SUM(IF(esercizio="'.$thisYear.'", ROUND(valore2,2), 0)) as val_TY_2'),
+                    DB::raw('SUM(IF(esercizio="'.$thisYear.'", ROUND(valore3,2), 0)) as val_TY_3'),
+                    DB::raw('SUM(IF(esercizio="'.$thisYear.'", ROUND(valore4,2), 0)) as val_TY_4'),
+                    DB::raw('SUM(IF(esercizio="'.$thisYear.'", ROUND(valore5,2), 0)) as val_TY_5'),
+                    DB::raw('SUM(IF(esercizio="'.$thisYear.'", ROUND(valore6,2), 0)) as val_TY_6'),
+                    DB::raw('SUM(IF(esercizio="'.$thisYear.'", ROUND(valore7,2), 0)) as val_TY_7'),
+                    DB::raw('SUM(IF(esercizio="'.$thisYear.'", ROUND(valore8,2), 0)) as val_TY_8'),
+                    DB::raw('SUM(IF(esercizio="'.$thisYear.'", ROUND(valore9,2), 0)) as val_TY_9'),
+                    DB::raw('SUM(IF(esercizio="'.$thisYear.'", ROUND(valore10,2), 0)) as val_TY_10'),
+                    DB::raw('SUM(IF(esercizio="'.$thisYear.'", ROUND(valore11,2), 0)) as val_TY_11'),
+                    DB::raw('SUM(IF(esercizio="'.$thisYear.'", ROUND(valore12,2), 0)) as val_TY_12'),
+                    DB::raw('SUM(IF(esercizio="'.$prevYear.'", ROUND(valore1,2), 0)) as val_PY_1'),
+                    DB::raw('SUM(IF(esercizio="'.$prevYear.'", ROUND(valore2,2), 0)) as val_PY_2'),
+                    DB::raw('SUM(IF(esercizio="'.$prevYear.'", ROUND(valore3,2), 0)) as val_PY_3'),
+                    DB::raw('SUM(IF(esercizio="'.$prevYear.'", ROUND(valore4,2), 0)) as val_PY_4'),
+                    DB::raw('SUM(IF(esercizio="'.$prevYear.'", ROUND(valore5,2), 0)) as val_PY_5'),
+                    DB::raw('SUM(IF(esercizio="'.$prevYear.'", ROUND(valore6,2), 0)) as val_PY_6'),
+                    DB::raw('SUM(IF(esercizio="'.$prevYear.'", ROUND(valore7,2), 0)) as val_PY_7'),
+                    DB::raw('SUM(IF(esercizio="'.$prevYear.'", ROUND(valore8,2), 0)) as val_PY_8'),
+                    DB::raw('SUM(IF(esercizio="'.$prevYear.'", ROUND(valore9,2), 0)) as val_PY_9'),
+                    DB::raw('SUM(IF(esercizio="'.$prevYear.'", ROUND(valore10,2), 0)) as val_PY_10'),
+                    DB::raw('SUM(IF(esercizio="'.$prevYear.'", ROUND(valore11,2), 0)) as val_PY_11'),
+                    DB::raw('SUM(IF(esercizio="'.$prevYear.'", ROUND(valore12,2), 0)) as val_PY_12')               
+                    )
+                    ->where('agente', $codAg)->where(DB::raw('LENGTH(agente)'), strlen($codAg))
+                    ->whereIn('esercizio', [$thisYear, $prevYear])
+                    ->where('codicecf', 'CTOT')
+                    ->where('tipologia', 'FATTURATO')
+                    ->whereIn('prodotto', ['KOBLENZ'])
+                    ->groupBy(['codicecf'])->get();
+        
+        //KUBICA
+        $fatZone_KU = StatFatt::select('codicecf',
+                    DB::raw('SUM(IF(esercizio="'.$thisYear.'", ROUND(valore1,2), 0)) as val_TY_1'),
+                    DB::raw('SUM(IF(esercizio="'.$thisYear.'", ROUND(valore2,2), 0)) as val_TY_2'),
+                    DB::raw('SUM(IF(esercizio="'.$thisYear.'", ROUND(valore3,2), 0)) as val_TY_3'),
+                    DB::raw('SUM(IF(esercizio="'.$thisYear.'", ROUND(valore4,2), 0)) as val_TY_4'),
+                    DB::raw('SUM(IF(esercizio="'.$thisYear.'", ROUND(valore5,2), 0)) as val_TY_5'),
+                    DB::raw('SUM(IF(esercizio="'.$thisYear.'", ROUND(valore6,2), 0)) as val_TY_6'),
+                    DB::raw('SUM(IF(esercizio="'.$thisYear.'", ROUND(valore7,2), 0)) as val_TY_7'),
+                    DB::raw('SUM(IF(esercizio="'.$thisYear.'", ROUND(valore8,2), 0)) as val_TY_8'),
+                    DB::raw('SUM(IF(esercizio="'.$thisYear.'", ROUND(valore9,2), 0)) as val_TY_9'),
+                    DB::raw('SUM(IF(esercizio="'.$thisYear.'", ROUND(valore10,2), 0)) as val_TY_10'),
+                    DB::raw('SUM(IF(esercizio="'.$thisYear.'", ROUND(valore11,2), 0)) as val_TY_11'),
+                    DB::raw('SUM(IF(esercizio="'.$thisYear.'", ROUND(valore12,2), 0)) as val_TY_12'),
+                    DB::raw('SUM(IF(esercizio="'.$prevYear.'", ROUND(valore1,2), 0)) as val_PY_1'),
+                    DB::raw('SUM(IF(esercizio="'.$prevYear.'", ROUND(valore2,2), 0)) as val_PY_2'),
+                    DB::raw('SUM(IF(esercizio="'.$prevYear.'", ROUND(valore3,2), 0)) as val_PY_3'),
+                    DB::raw('SUM(IF(esercizio="'.$prevYear.'", ROUND(valore4,2), 0)) as val_PY_4'),
+                    DB::raw('SUM(IF(esercizio="'.$prevYear.'", ROUND(valore5,2), 0)) as val_PY_5'),
+                    DB::raw('SUM(IF(esercizio="'.$prevYear.'", ROUND(valore6,2), 0)) as val_PY_6'),
+                    DB::raw('SUM(IF(esercizio="'.$prevYear.'", ROUND(valore7,2), 0)) as val_PY_7'),
+                    DB::raw('SUM(IF(esercizio="'.$prevYear.'", ROUND(valore8,2), 0)) as val_PY_8'),
+                    DB::raw('SUM(IF(esercizio="'.$prevYear.'", ROUND(valore9,2), 0)) as val_PY_9'),
+                    DB::raw('SUM(IF(esercizio="'.$prevYear.'", ROUND(valore10,2), 0)) as val_PY_10'),
+                    DB::raw('SUM(IF(esercizio="'.$prevYear.'", ROUND(valore11,2), 0)) as val_PY_11'),
+                    DB::raw('SUM(IF(esercizio="'.$prevYear.'", ROUND(valore12,2), 0)) as val_PY_12')               
+                    )
+                    ->where('agente', $codAg)->where(DB::raw('LENGTH(agente)'), strlen($codAg))
+                    ->whereIn('esercizio', [$thisYear, $prevYear])
+                    ->where('codicecf', "!=", 'CTOT')
+                    ->where('tipologia', 'FATTURATO')
+                    ->whereIn('prodotto', ['KUBIKA'])
+                    ->groupBy(['codicecf'])
+                    ->with([ 
+                        'client' => function($query){
+                            $query->select('codice', 'descrizion', 'settore', 'zona')
+                            ->with(['detZona', 'detSect']);
+                            }
+                        ])
+                    ->get();
+        $fatZone_KU = $fatZone_KU->groupBy('client.zona');
+        
+        $fatTot_KU = StatFatt::select('codicecf',
+                    DB::raw('SUM(IF(esercizio="'.$thisYear.'", ROUND(valore1,2), 0)) as val_TY_1'),
+                    DB::raw('SUM(IF(esercizio="'.$thisYear.'", ROUND(valore2,2), 0)) as val_TY_2'),
+                    DB::raw('SUM(IF(esercizio="'.$thisYear.'", ROUND(valore3,2), 0)) as val_TY_3'),
+                    DB::raw('SUM(IF(esercizio="'.$thisYear.'", ROUND(valore4,2), 0)) as val_TY_4'),
+                    DB::raw('SUM(IF(esercizio="'.$thisYear.'", ROUND(valore5,2), 0)) as val_TY_5'),
+                    DB::raw('SUM(IF(esercizio="'.$thisYear.'", ROUND(valore6,2), 0)) as val_TY_6'),
+                    DB::raw('SUM(IF(esercizio="'.$thisYear.'", ROUND(valore7,2), 0)) as val_TY_7'),
+                    DB::raw('SUM(IF(esercizio="'.$thisYear.'", ROUND(valore8,2), 0)) as val_TY_8'),
+                    DB::raw('SUM(IF(esercizio="'.$thisYear.'", ROUND(valore9,2), 0)) as val_TY_9'),
+                    DB::raw('SUM(IF(esercizio="'.$thisYear.'", ROUND(valore10,2), 0)) as val_TY_10'),
+                    DB::raw('SUM(IF(esercizio="'.$thisYear.'", ROUND(valore11,2), 0)) as val_TY_11'),
+                    DB::raw('SUM(IF(esercizio="'.$thisYear.'", ROUND(valore12,2), 0)) as val_TY_12'),
+                    DB::raw('SUM(IF(esercizio="'.$prevYear.'", ROUND(valore1,2), 0)) as val_PY_1'),
+                    DB::raw('SUM(IF(esercizio="'.$prevYear.'", ROUND(valore2,2), 0)) as val_PY_2'),
+                    DB::raw('SUM(IF(esercizio="'.$prevYear.'", ROUND(valore3,2), 0)) as val_PY_3'),
+                    DB::raw('SUM(IF(esercizio="'.$prevYear.'", ROUND(valore4,2), 0)) as val_PY_4'),
+                    DB::raw('SUM(IF(esercizio="'.$prevYear.'", ROUND(valore5,2), 0)) as val_PY_5'),
+                    DB::raw('SUM(IF(esercizio="'.$prevYear.'", ROUND(valore6,2), 0)) as val_PY_6'),
+                    DB::raw('SUM(IF(esercizio="'.$prevYear.'", ROUND(valore7,2), 0)) as val_PY_7'),
+                    DB::raw('SUM(IF(esercizio="'.$prevYear.'", ROUND(valore8,2), 0)) as val_PY_8'),
+                    DB::raw('SUM(IF(esercizio="'.$prevYear.'", ROUND(valore9,2), 0)) as val_PY_9'),
+                    DB::raw('SUM(IF(esercizio="'.$prevYear.'", ROUND(valore10,2), 0)) as val_PY_10'),
+                    DB::raw('SUM(IF(esercizio="'.$prevYear.'", ROUND(valore11,2), 0)) as val_PY_11'),
+                    DB::raw('SUM(IF(esercizio="'.$prevYear.'", ROUND(valore12,2), 0)) as val_PY_12')               
+                    )
+                    ->where('agente', $codAg)->where(DB::raw('LENGTH(agente)'), strlen($codAg))
+                    ->whereIn('esercizio', [$thisYear, $prevYear])
+                    ->where('codicecf', 'CTOT')
+                    ->where('tipologia', 'FATTURATO')
+                    ->whereIn('prodotto', ['KUBIKA'])
+                    ->groupBy(['codicecf'])->get();
+
+        // PLANET        
+        $fatZone_PL = StatFatt::select('codicecf',
+                    DB::raw('SUM(IF(esercizio="'.$thisYear.'", ROUND(valore1,2), 0)) as val_TY_1'),
+                    DB::raw('SUM(IF(esercizio="'.$thisYear.'", ROUND(valore2,2), 0)) as val_TY_2'),
+                    DB::raw('SUM(IF(esercizio="'.$thisYear.'", ROUND(valore3,2), 0)) as val_TY_3'),
+                    DB::raw('SUM(IF(esercizio="'.$thisYear.'", ROUND(valore4,2), 0)) as val_TY_4'),
+                    DB::raw('SUM(IF(esercizio="'.$thisYear.'", ROUND(valore5,2), 0)) as val_TY_5'),
+                    DB::raw('SUM(IF(esercizio="'.$thisYear.'", ROUND(valore6,2), 0)) as val_TY_6'),
+                    DB::raw('SUM(IF(esercizio="'.$thisYear.'", ROUND(valore7,2), 0)) as val_TY_7'),
+                    DB::raw('SUM(IF(esercizio="'.$thisYear.'", ROUND(valore8,2), 0)) as val_TY_8'),
+                    DB::raw('SUM(IF(esercizio="'.$thisYear.'", ROUND(valore9,2), 0)) as val_TY_9'),
+                    DB::raw('SUM(IF(esercizio="'.$thisYear.'", ROUND(valore10,2), 0)) as val_TY_10'),
+                    DB::raw('SUM(IF(esercizio="'.$thisYear.'", ROUND(valore11,2), 0)) as val_TY_11'),
+                    DB::raw('SUM(IF(esercizio="'.$thisYear.'", ROUND(valore12,2), 0)) as val_TY_12'),
+                    DB::raw('SUM(IF(esercizio="'.$prevYear.'", ROUND(valore1,2), 0)) as val_PY_1'),
+                    DB::raw('SUM(IF(esercizio="'.$prevYear.'", ROUND(valore2,2), 0)) as val_PY_2'),
+                    DB::raw('SUM(IF(esercizio="'.$prevYear.'", ROUND(valore3,2), 0)) as val_PY_3'),
+                    DB::raw('SUM(IF(esercizio="'.$prevYear.'", ROUND(valore4,2), 0)) as val_PY_4'),
+                    DB::raw('SUM(IF(esercizio="'.$prevYear.'", ROUND(valore5,2), 0)) as val_PY_5'),
+                    DB::raw('SUM(IF(esercizio="'.$prevYear.'", ROUND(valore6,2), 0)) as val_PY_6'),
+                    DB::raw('SUM(IF(esercizio="'.$prevYear.'", ROUND(valore7,2), 0)) as val_PY_7'),
+                    DB::raw('SUM(IF(esercizio="'.$prevYear.'", ROUND(valore8,2), 0)) as val_PY_8'),
+                    DB::raw('SUM(IF(esercizio="'.$prevYear.'", ROUND(valore9,2), 0)) as val_PY_9'),
+                    DB::raw('SUM(IF(esercizio="'.$prevYear.'", ROUND(valore10,2), 0)) as val_PY_10'),
+                    DB::raw('SUM(IF(esercizio="'.$prevYear.'", ROUND(valore11,2), 0)) as val_PY_11'),
+                    DB::raw('SUM(IF(esercizio="'.$prevYear.'", ROUND(valore12,2), 0)) as val_PY_12')               
+                    )
+                    ->where('agente', $codAg)->where(DB::raw('LENGTH(agente)'), strlen($codAg))
+                    ->whereIn('esercizio', [$thisYear, $prevYear])
+                    ->where('codicecf', "!=", 'CTOT')
+                    ->where('tipologia', 'FATTURATO')
+                    ->whereIn('prodotto', ['PLANET'])
+                    ->groupBy(['codicecf'])
+                    ->with([ 
+                        'client' => function($query){
+                            $query->select('codice', 'descrizion', 'settore', 'zona')
+                            ->with(['detZona', 'detSect']);
+                            }
+                        ])
+                    ->get();
+        $fatZone_PL = $fatZone_PL->groupBy('client.zona');
+        
+        $fatTot_PL = StatFatt::select('codicecf',
+                    DB::raw('SUM(IF(esercizio="'.$thisYear.'", ROUND(valore1,2), 0)) as val_TY_1'),
+                    DB::raw('SUM(IF(esercizio="'.$thisYear.'", ROUND(valore2,2), 0)) as val_TY_2'),
+                    DB::raw('SUM(IF(esercizio="'.$thisYear.'", ROUND(valore3,2), 0)) as val_TY_3'),
+                    DB::raw('SUM(IF(esercizio="'.$thisYear.'", ROUND(valore4,2), 0)) as val_TY_4'),
+                    DB::raw('SUM(IF(esercizio="'.$thisYear.'", ROUND(valore5,2), 0)) as val_TY_5'),
+                    DB::raw('SUM(IF(esercizio="'.$thisYear.'", ROUND(valore6,2), 0)) as val_TY_6'),
+                    DB::raw('SUM(IF(esercizio="'.$thisYear.'", ROUND(valore7,2), 0)) as val_TY_7'),
+                    DB::raw('SUM(IF(esercizio="'.$thisYear.'", ROUND(valore8,2), 0)) as val_TY_8'),
+                    DB::raw('SUM(IF(esercizio="'.$thisYear.'", ROUND(valore9,2), 0)) as val_TY_9'),
+                    DB::raw('SUM(IF(esercizio="'.$thisYear.'", ROUND(valore10,2), 0)) as val_TY_10'),
+                    DB::raw('SUM(IF(esercizio="'.$thisYear.'", ROUND(valore11,2), 0)) as val_TY_11'),
+                    DB::raw('SUM(IF(esercizio="'.$thisYear.'", ROUND(valore12,2), 0)) as val_TY_12'),
+                    DB::raw('SUM(IF(esercizio="'.$prevYear.'", ROUND(valore1,2), 0)) as val_PY_1'),
+                    DB::raw('SUM(IF(esercizio="'.$prevYear.'", ROUND(valore2,2), 0)) as val_PY_2'),
+                    DB::raw('SUM(IF(esercizio="'.$prevYear.'", ROUND(valore3,2), 0)) as val_PY_3'),
+                    DB::raw('SUM(IF(esercizio="'.$prevYear.'", ROUND(valore4,2), 0)) as val_PY_4'),
+                    DB::raw('SUM(IF(esercizio="'.$prevYear.'", ROUND(valore5,2), 0)) as val_PY_5'),
+                    DB::raw('SUM(IF(esercizio="'.$prevYear.'", ROUND(valore6,2), 0)) as val_PY_6'),
+                    DB::raw('SUM(IF(esercizio="'.$prevYear.'", ROUND(valore7,2), 0)) as val_PY_7'),
+                    DB::raw('SUM(IF(esercizio="'.$prevYear.'", ROUND(valore8,2), 0)) as val_PY_8'),
+                    DB::raw('SUM(IF(esercizio="'.$prevYear.'", ROUND(valore9,2), 0)) as val_PY_9'),
+                    DB::raw('SUM(IF(esercizio="'.$prevYear.'", ROUND(valore10,2), 0)) as val_PY_10'),
+                    DB::raw('SUM(IF(esercizio="'.$prevYear.'", ROUND(valore11,2), 0)) as val_PY_11'),
+                    DB::raw('SUM(IF(esercizio="'.$prevYear.'", ROUND(valore12,2), 0)) as val_PY_12')               
+                    )
+                    ->where('agente', $codAg)->where(DB::raw('LENGTH(agente)'), strlen($codAg))
+                    ->whereIn('esercizio', [$thisYear, $prevYear])
+                    ->where('codicecf', 'CTOT')
+                    ->where('tipologia', 'FATTURATO')
+                    ->whereIn('prodotto', ['PLANET'])
+                    ->groupBy(['codicecf'])->get();
+
+        $title = "Scheda Fatturato Agente";
+        $subTitle = ($agente) ? $agente->descrizion : "NONE";
+        $view = '_exports.pdf.schedaFatZonePdf';
+        $data = [
+            'agente' => $agente,
+            'fatZone_KR' => $fatZone_KR,
+            'fatTot_KR' => $fatTot_KR->first(),
+            'fatZone_KO' => $fatZone_KO,
+            'fatTot_KO' => $fatTot_KO->first(),
+            'fatZone_KU' => $fatZone_KU,
+            'fatTot_KU' => $fatTot_KU->first(),
+            'fatZone_PL' => $fatZone_PL,
+            'fatTot_PL' => $fatTot_PL->first(),
+            'descrAg' => $subTitle,
+            'thisYear' => $thisYear,
+            'prevYear' => $prevYear
+        ];
+        $pdf = PdfReport::A4Landscape($view, $data, $title, $subTitle);
 
         return $pdf->stream($title.'-'.$subTitle.'.pdf');
     }

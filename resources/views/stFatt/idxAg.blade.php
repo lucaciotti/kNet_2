@@ -36,11 +36,11 @@
             <select name="codag" class="form-control select2" style="width: 100%;">
               <option value=""> </option>
               @foreach ($agents as $agent)
-                <option value="{{ $agent->agente }}"
-                  @if($agent->agente==$agente)
+                <option value="{{ $agent->codice }}"
+                  @if($agent->codice==$agente)
                       selected
                   @endif
-                  >{{ $agent->agent->descrizion or "Error $agent->agente - No Description" }}</option>
+                  >{{ $agent->descrizion or "Error $agent->codice - No Description" }}</option>
               @endforeach
             </select>
           </div>
@@ -61,6 +61,19 @@
       </div>
       <div class="box-body">
         @include('stFatt.partials.formIndex', ['gruppi' => $gruppi, 'agent' => $agent, 'route' => 'stFatt::idxAg'])
+      </div>
+    </div>
+
+    <div class="box box-default collapsed-box">
+      <div class="box-header with-border">
+        <h3 class="box-title" data-widget="collapse"><i class='fa fa-cloud-download'> </i> Download</h3>
+        <div class="box-tools pull-right">
+          <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i></button>
+        </div>
+      </div>
+      <div class="box-body">
+        <a type="button" class="btn btn-default btn-block" target="_blank" href="{{ route('schedaFat::PDF', $agente) }}">Scheda Fatturato PDF</a>
+        <a type="button" class="btn btn-default btn-block" target="_blank" href="{{ route('schedaFat::ZonePDF', $agente) }}">Scheda Fatturato Zone PDF</a>
       </div>
     </div>
 

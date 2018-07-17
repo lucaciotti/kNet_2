@@ -53,7 +53,7 @@
 
               @if (!empty($user->codcli))
                 <dt>{{ trans('user.codCli') }}</dt>
-                <dd>{{$user->codcli}} - {{$user->client->descrizion}}</dd>
+                <dd>{{$user->codcli}} - {{$user->client->descrizion or 'NONE'}}</dd>
               @endif
 
               <dt>{{ trans('user.refDitta') }}</dt>
@@ -150,7 +150,7 @@
                       $sum_res -= $mov->impenage;
                     @endphp
                     <tr>
-                      <td>{{ $mov->ftdatadoc->format('m-d-Y') }}</td>
+                      <td><span>{{$mov->ftdatadoc->format('Ymd')}}</span>{{ $mov->ftdatadoc->format('d-m-Y') }}</td>
                       <td>{{ $mov->ftnumdoc }} </td>
                       <td>{{ currency($mov->totfattura) }}</td>
                       <td>{{ currency($mov->compensi) }}</td>

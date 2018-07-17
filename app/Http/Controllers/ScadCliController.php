@@ -17,7 +17,8 @@ class ScadCliController extends Controller
     }
 
   public function index (Request $req){
-    $startDate = Carbon::now()->subMonth();
+    $thisYear = Carbon::now()->year;
+    $startDate = Carbon::createFromDate($thisYear-1, 1, 1);
     $endDate = Carbon::now();
 
     $scads = ScadCli::select('id', 'id_doc', 'numfatt', 
@@ -26,7 +27,7 @@ class ScadCliController extends Controller
               'impeffval', 'importopag', 'idragg', 'tipoacc',
               'impprovlit', 'impprovliq', 'liquidate'
             );
-    $scads = $scads->where('datascad', '<', Carbon::now())->whereIn('tipoacc', ['F', ''])->whereRaw("(`insoluto` = 1 OR `u_insoluto` = 1) AND `pagato` = 0");
+    $scads = $scads->whereBetween('datascad', array($startDate, $endDate))->whereIn('tipoacc', ['F', ''])->whereRaw("(`insoluto` = 1 OR `u_insoluto` = 1) AND `pagato` = 0");
     $scads = $scads->whereHas('client', function($query){
       $query->whereNotIn('statocf', ['C', 'S', 'L'])
             ->withoutGlobalScope('agent')

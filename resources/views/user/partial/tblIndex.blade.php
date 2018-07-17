@@ -26,7 +26,7 @@
             {{ $role->display_name }}
           @endforeach</td>
           <td>@if (!empty($user->codag))
-            {{ $user->codag }} - {{ $user->agent->descrizion }}
+            {{ $user->codag }} - {{ $user->agent->descrizion or 'NONE' }}
           @endif</td>
           <td>@if (!empty($user->codcli))
             {{ $user->codcli }}

@@ -20,6 +20,8 @@
             table tr:nth-child(even) { background-color: #f2f2f2; }
             table tr.danger { background-color: red; }
             table tr.warning { background-color: orange; }
+            table tbody td.green { background-color: #cef2bc; }
+            table tbody td.orange { background-color: #f0d45e; }
             table thead { display: table-header-group; }
             table tfoot { background-color: darkgrey; display: table-header-group; }
             div.contentTitle { 
@@ -29,8 +31,8 @@
                 margin-left: 20px; 
                 font-weight: bold; 
                 text-decoration: underline; 
-                padding-top: 20px;
-                padding-bottom: 20px;
+                padding-top: 15px;
+                padding-bottom: 15px;
             }
             
             /* Style the container with a rounded border, grey background and some padding and margin */

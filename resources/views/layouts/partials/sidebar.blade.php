@@ -48,14 +48,19 @@
                   </ul>
               </li>
               <li class="{{ Ekko::isActiveRoute('scad::*') }}"><a href="{{ route('scad::list') }}"><i class='fa fa-money'></i> <span>{{ trans('_menu.payment') }}</span></a></li>
-              <li class="{{ Ekko::isActiveRoute('prod::*') }}"><a href="{{ route('prod::list') }}"><i class='fa fa-cube'></i> <span>{{ trans('_menu.products') }}</span></a></li>
+              {{-- <li class="{{ Ekko::isActiveRoute('prod::*') }}"><a href="{{ route('prod::list') }}"><i class='fa fa-cube'></i> <span>{{ trans('_menu.products') }}</span></a></li> --}}
               <li><i class='fa fa-empty'></i></li>
 
               {{-- @if (!Auth::user()->hasRole('client')) --}}
               @if (!in_array(RedisUser::get('role'), ['client']))
               <li class="header">Funzioni Web</li>
               {{-- <li class=""><a href="{{ route('doc::list', 'O') }}"><i class='fa fa-pencil-square-o'></i> <span>Pre-Ordini via Web</span></a></li> --}}
-              <li class="{{ Ekko::isActiveRoute('visit::*') }}"><a href="{{ route('visit::insert') }}"><i class='fa fa-weixin'></i> <span>{{ trans('_menu.insVisits') }}</span></a></li>
+              <li class="treeview {{ Ekko::isActiveRoute('visit::*') }}">
+                <a href="{{ route('visit::insert') }}"><i class='fa fa-weixin'></i> <span>Visite & Eventi</span><i class="fa fa-angle-left pull-right"></i></a>
+                <ul class="treeview-menu">
+                    <li class="{{ Ekko::isActiveRoute('visit::*') }}"><a href="{{ route('visit::insert') }}"> <span>{{ trans('_menu.insVisits') }}</span></a></li>
+                    {{-- <li class="{{ Ekko::isActiveRoute('visit::*') }}"><a href="{{ route('visit::insert') }}"> <span>Report Visite</span></a></li> --}}
+                </ul>
               <li><i class='fa fa-empty'></i></li>
 
               <li class="header">Statistiche</li>
@@ -64,10 +69,10 @@
                   <ul class="treeview-menu">
                       <li class="{{ Ekko::isActiveRoute('stFatt::idxAg') }}"><a href="{{ route('stFatt::idxAg') }}">{{ trans('_menu.agent') }}</a></li>
                       <li class="{{ Ekko::isActiveRoute('stFatt::idxCli') }}"><a href="{{ route('stFatt::idxCli') }}">{{ trans('_menu.client') }}</a></li>
-                        <li class="{{ Ekko::isActiveRoute('stFatt::idxZone') }}"><a href="{{ route('stFatt::idxZone') }}">{{ trans('_menu.zone') }}</a></li>
-                    @if (!in_array(RedisUser::get('role'), ['agent']))
+                      <li class="{{ Ekko::isActiveRoute('stFatt::idxZone') }}"><a href="{{ route('stFatt::idxZone') }}">{{ trans('_menu.zone') }}</a></li>
+                    {{-- @if (!in_array(RedisUser::get('role'), ['agent']))
                         <li class="{{ Ekko::isActiveRoute('stFatt::idxManager') }}"><a href="{{ route('stFatt::idxManager') }}">{{ trans('_menu.superAgent') }}</a></li>
-                    @endif
+                    @endif --}}
                   </ul>
               </li>
               <li class="treeview {{ Ekko::isActiveRoute('stAbc::*') }}">
@@ -75,19 +80,14 @@
                   <ul class="treeview-menu">
                       <li class="{{ Ekko::isActiveRoute('stAbc::idxAg') }}"><a href="{{ route('stAbc::idxAg') }}">{{ trans('_menu.agent') }}</a></li>
                       <li class="{{ Ekko::isActiveRoute('stAbc::idxCli') }}"><a href="{{ route('stAbc::idxCli') }}">{{ trans('_menu.client') }}</a></li>
-                      <li class="{{ Ekko::isActiveRoute('stAbc::idxZone') }}"><a href="{{ route('stAbc::idxZone') }}">{{ trans('_menu.zone') }}</a></li>
-                      <li class="{{ Ekko::isActiveRoute('stAbc::idxManager') }}"><a href="{{ route('stAbc::idxManager') }}">{{ trans('_menu.superAgent') }}</a></li>
+                      {{-- <li class="{{ Ekko::isActiveRoute('stAbc::idxZone') }}"><a href="{{ route('stAbc::idxZone') }}">{{ trans('_menu.zone') }}</a></li> --}}
+                      {{-- <li class="{{ Ekko::isActiveRoute('stAbc::idxManager') }}"><a href="{{ route('stAbc::idxManager') }}">{{ trans('_menu.superAgent') }}</a></li> --}}
                   </ul>
               </li>
-              <li><i class='fa fa-empty'></i></li>
-
-              <li class="treeview {{ Ekko::isActiveRoute('stAbc::*') }}">
-                  <a href="{{ route('stAbc::idxAg') }}"><i class='fa fa-stack-overflow'></i> <span>Portafoglio</span> <i class="fa fa-angle-left pull-right"></i></a>
+              <li class="treeview {{ Ekko::isActiveRoute('Portfolio::*') }}">
+                  <a href="{{ route('Portfolio::idxAg') }}"><i class='fa fa-stack-overflow'></i> <span>Portafoglio</span> <i class="fa fa-angle-left pull-right"></i></a>
                   <ul class="treeview-menu">
-                      <li class="{{ Ekko::isActiveRoute('stAbc::idxAg') }}"><a href="{{ route('Portfolio::idxAg') }}">{{ trans('_menu.agent') }}</a></li>
-                      <li class="{{ Ekko::isActiveRoute('stAbc::idxCli') }}"><a href="{{ route('stAbc::idxCli') }}">{{ trans('_menu.client') }}</a></li>
-                      <li class="{{ Ekko::isActiveRoute('stAbc::idxZone') }}"><a href="{{ route('stAbc::idxZone') }}">{{ trans('_menu.zone') }}</a></li>
-                      <li class="{{ Ekko::isActiveRoute('stAbc::idxManager') }}"><a href="{{ route('stAbc::idxManager') }}">{{ trans('_menu.superAgent') }}</a></li>
+                      <li class="{{ Ekko::isActiveRoute('Portfolio::idxAg') }}"><a href="{{ route('Portfolio::idxAg') }}">{{ trans('_menu.agent') }}</a></li>
                   </ul>
               </li>
               <li><i class='fa fa-empty'></i></li>
