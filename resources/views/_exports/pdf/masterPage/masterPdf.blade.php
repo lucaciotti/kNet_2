@@ -22,6 +22,7 @@
             table tr.warning { background-color: orange; }
             table tbody td.green { background-color: #cef2bc; }
             table tbody td.orange { background-color: #f0d45e; }
+            table tbody td.red { background-color: #ffb3b3; }
             table thead { display: table-header-group; }
             table tfoot { background-color: darkgrey; display: table-header-group; }
             div.contentTitle { 

@@ -45,6 +45,7 @@ class SchedaScadController extends Controller
       $provv_TY = $provv_TY->groupBy('Mese');
       // dd($provv_TY);
               // ->whereRaw("`pagato` = 1")
+              // ->where('datapag', '<=', $endDate)
 
       $title = "Scheda Provvigioni Agente";
       $subTitle = $agente->descrizion;
