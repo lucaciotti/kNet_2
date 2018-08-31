@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Http\Request;
+use knet\Http\Resources\CustomerCollection;
+use knet\ArcaModels\Client;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,3 +28,8 @@ Route::group(['prefix' => 'v1','middleware' => 'auth:api'], function () {
 
 Route::get('users', 'UserController@allUsers')->middleware('auth:api');
 Route::get('clients', 'ClientController@allCustomers')->middleware('auth:api');
+
+Route::middleware('auth:api')->get('customer', function (Request $request) {
+    $customers = Client::select('codice', 'descrizion')->paginate();
+    return new CustomerCollection($customers);
+});

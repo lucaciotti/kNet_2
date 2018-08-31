@@ -37,7 +37,7 @@
               <option value=""> </option>
               @foreach ($agents as $agent)
                 <option value="{{ $agent->codice }}"
-                  @if($agent->codice==$agente)
+                  @if($agent->codice==$agente && strlen($agent->codice)==strlen($agente))
                       selected
                   @endif
                   >{{ $agent->descrizion or "Error $agent->codice - No Description" }}</option>

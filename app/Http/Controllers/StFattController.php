@@ -26,10 +26,10 @@ class StFattController extends Controller
     public function idxAg (Request $req, $codAg=null) {
       $agents = Agent::select('codice', 'descrizion')->whereNull('u_dataini')->orderBy('codice')->get();
       $codAg = ($req->input('codag')) ? $req->input('codag') : $codAg;
-      // dd($req->input());
       $agente = (string)(!empty($codAg)) ? $codAg : $agents->first()->codice;
-      $descrAg = (!empty($agents->whereStrict('agente', $agente)->first()->agent) ? $agents->whereStrict('agente', $agente)->first()->agent->descrizion : "");
+      $descrAg = (!empty($agents->whereStrict('codice', $agente)->first()) ? $agents->whereStrict('codice', $agente)->first()->descrizion : "");
       $thisYear = (string)(Carbon::now()->year);
+      // dd($agents);
 
       // (Legenda PY -> Previous Year ; TY -> This Year)
       $fat_TY = StatFatt::select('agente', 'tipologia',
