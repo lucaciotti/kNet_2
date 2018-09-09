@@ -110,8 +110,8 @@ return [
 
     'hosts' => [
         '213.152.198.83' => [
-            'deploy_path' => '/var/www/html',
-            'user' => 'knet',
+            'deploy_path' => '/var/www/html/kdev',
+            'user' => 'ced',
         ],
     ],
 
@@ -157,5 +157,4 @@ return [
     */
 
     'custom_deployer_file' => false,
-
 ];
