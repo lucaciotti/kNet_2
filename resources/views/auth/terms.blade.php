@@ -7,8 +7,9 @@
             </div>
 
             <div class="modal-body">
-                <p>Lorem ipsum dolor sit amet, veniam numquam has te. No suas nonumes recusabo mea, est ut graeci definitiones. His ne melius vituperata scriptorem, cum paulo copiosae conclusionemque at. Facer inermis ius in, ad brute nominati referrentur vis. Dicat erant sit ex. Phaedrum imperdiet scribentur vix no, ad latine similique forensibus vel.</p>
-                <p>Dolore populo vivendum vis eu, mei quaestio liberavisse ex. Electram necessitatibus ut vel, quo at probatus oportere, molestie conclusionemque pri cu. Brute augue tincidunt vim id, ne munere fierent rationibus mei. Ut pro volutpat praesent qualisque, an iisque scripta intellegebat eam.</p>
+                <p>I hereby authorize the treatment of my personal details solely for the finality mentioned in point a), with the modalities and in the limits mentioned in this information sheet, in accordance with art. 13 of the D.lgs. 196/03 of the Italian civil law .</p>
+
+                <p>I also authorize the treatment of my personal details provided to Krona Koblenz S.p.A. solely for the finality mentioned in points b) and c), with the modalities and in the limits mentioned in this information sheet, in accordance with art. 13 of the D.lgs. 196/03 of the Italian civil law .</p>
             </div>
 
             <div class="modal-footer">

@@ -36,7 +36,8 @@ class RedisUser
             'codag' => (string)$user->codag,
             'codcli' => (string)$user->codcli,
             'codforn' => (string)$user->codfor,
-            'lang' => (string)$user->lang
+            'lang' => (string)$user->lang,
+            'isActive' => $user->isActive,
         ];
         
         Redis::hmset(static::$prefix.$user->id, $settings);

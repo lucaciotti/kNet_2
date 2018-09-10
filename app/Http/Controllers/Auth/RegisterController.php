@@ -3,9 +3,12 @@
 namespace knet\Http\Controllers\Auth;
 
 use knet\User;
+use knet\Role;
 use Validator;
 use knet\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use knet\Mail\NewRegistration;
+use Illuminate\Support\Facades\Mail;
 
 /**
  * Class RegisterController
@@ -33,7 +36,7 @@ class RegisterController extends Controller
      */
     public function showRegistrationForm()
     {
-        return view('adminlte::auth.register');
+        return view('auth.register');
     }
 
     /**
@@ -62,11 +65,11 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'name'     => 'required|max:255',
-            'username' => 'sometimes|required|max:255|unique:users',
-            'email'    => 'required|email|max:255|unique:users',
-            'password' => 'required|min:6|confirmed',
-            'terms'    => 'required',
+            'name' => 'required|max:255',
+            'nickname' => 'required|email|max:255|unique:users',
+            'email' => 'required|email|max:255',
+            'password' => 'required|confirmed|min:6',
+            'terms' => 'required',
         ]);
     }
 
@@ -78,14 +81,32 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        $fields = [
-            'name'     => $data['name'],
-            'email'    => $data['email'],
+        $user = User::create([
+            'name' => $data['name'],
+            'nickname' => $data['nickname'],
+            'email' => $data['email'],
             'password' => bcrypt($data['password']),
-        ];
-        if (config('auth.providers.users.field', 'email') === 'username' && isset($data['username'])) {
-            $fields['username'] = $data['username'];
-        }
-        return User::create($fields);
+        ]);
+        $user->roles()->detach();
+        $user->attachRole(Role::where('name', 'user')->first()->id);
+        $user->ditta = 'it';
+        $user->isActive = true;
+        $user->save();
+        
+        Mail::to('ced-it@k-group.com')
+            ->cc('ced@k-group.com')
+            ->send(new NewRegistration($user));
+
+        return $user;
+
+        // $fields = [
+        //     'name'     => $data['name'],
+        //     'email'    => $data['email'],
+        //     'password' => bcrypt($data['password']),
+        // ];
+        // if (config('auth.providers.users.field', 'email') === 'username' && isset($data['username'])) {
+        //     $fields['username'] = $data['username'];
+        // }
+        // return User::create($fields);
     }
 }

@@ -19,7 +19,7 @@
 
 	<br><br><br>
 
-@if (!in_array(session('user.role'), ['user']))
+@if (!in_array(RedisUser::get('role'), ['user']))
 
 	<div class="row">
 		<div class="container">

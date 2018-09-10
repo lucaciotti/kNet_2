@@ -62,7 +62,8 @@
               <hr>
 
               <dt>{{ trans('user.changeLang') }}</dt>
-              <dd><form action="{{ route('user::changeLang') }}" method="post" class="form" style="max-width:30%;">
+              <dd>
+                <form action="{{ route('user::changeLang') }}" method="post" class="form" style="max-width:30%;">
                   <input type="hidden" name="_token" value="{{ csrf_token() }}">
                   <div class="input-group">
                     <select class="form-control" name="lang">
@@ -77,7 +78,14 @@
                       <button type='submit' name='search' id='search-btn' class="btn btn-flat"><i class="fa fa-angle-right"></i></button>
                     </span>
                   </div>
-              </form></dd>
+                </form>
+              </dd>
+              <hr>
+
+              <dt>Reset Password</dt>
+                <dd>
+                  <a href="{{ url('/password/reset') }}">Reset My Password!</a><br>
+                </dd>
             </dl>
 
           </div>

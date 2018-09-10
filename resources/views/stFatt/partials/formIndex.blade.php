@@ -31,7 +31,7 @@
       </label>
       @if(RedisUser::get('ditta')=='knet_es')
         <label>
-          <input type="radio" name="optTipoDoc" id="opt3" value="PLANET"> Planet
+          <input type="radio" name="optTipoDoc" id="opt4" value="PLANET"> Planet
         </label>
       @endif
     </div>

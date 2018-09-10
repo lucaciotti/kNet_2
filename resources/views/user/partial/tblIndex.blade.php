@@ -6,6 +6,7 @@
     <th>{{ trans('user.role') }}</th>
     <th>{{ trans('user.codAg') }}</th>
     <th>{{ trans('user.codCli') }}</th>
+    <th>isActive?</th>
     <th>&nbsp;</th>
     <th>&nbsp;</th>
   </thead>
@@ -32,6 +33,13 @@
             {{ $user->codcli }}
             {{-- {{ $user->codcli }} - {{ $user->client->descrizion }} --}}
           @endif</td>
+          <td>
+            @if ($user->isActive)
+              Si
+            @else
+              No
+            @endif
+          </td>
           <td>
             <a href="{{ route('user::users.edit', $user->id ) }}">
               <button type="submit" id="edit-user-{{ $user->id }}" class="btn">

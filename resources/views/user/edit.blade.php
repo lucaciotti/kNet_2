@@ -99,6 +99,18 @@
 
             </div>
 
+            <div class="form-group">
+              <label>isActive?</label>
+              <div class="radio">
+                <label>
+                  <input type="radio" name="isActive" id="opt1" value="0" @if(!$user->isActive) checked @endif> No
+                </label>
+                <label>
+                  <input type="radio" name="isActive" id="opt2" value="1" @if($user->isActive) checked @endif>Si
+                </label>
+              </div>
+            </div>
+
             <div>
               <button type="submit" class="btn btn-primary">{{ trans('_message.submit') }}</button>
             </div>
