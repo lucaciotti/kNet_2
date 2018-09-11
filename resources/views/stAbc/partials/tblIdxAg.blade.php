@@ -2,7 +2,7 @@
   <thead>
     <tr>
       <th colspan="5">&nbsp;</th>
-      <th colspan="2" style="text-align: center;">Qta a Luglio</th>
+      <th colspan="2" style="text-align: center;">Qta a {{__('_monthList.month_'.$thisMonth)}}</th>
       <th colspan="2" style="text-align: center;"></th>
     </tr>
     <tr>

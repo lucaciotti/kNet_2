@@ -134,6 +134,7 @@ class UserController extends Controller
       $user = Auth::user();
       $user->ditta = $req->input('ditta');
       $user->save();
+      RedisUser::store();
       return redirect()->action('HomeController@index');
     }
 
@@ -141,6 +142,7 @@ class UserController extends Controller
       $user = Auth::user();
       $user->lang = $req->input('lang');
       $user->save();
+      RedisUser::store();
       return redirect()->action('UserController@show', $user->id);
     }
 

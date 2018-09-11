@@ -93,7 +93,7 @@ return [
     'options' => [
         'application' => env('APP_NAME', 'Laravel'),
         'repository' => 'https://github.com/lucaciotti/kNet_2.git',
-        'php_fpm_service' => 'php7.2-fpm',
+        'php_fpm_service' => 'php7.0-fpm',
         'ssh_multiplexing' => false,
         'git_tty' => false,
     ],
