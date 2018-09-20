@@ -17,6 +17,7 @@ use knet\WebModels\wVisit;
 
 use Auth;
 use knet\User;
+use RedisUser;
 
 class ClientController extends Controller
 {
@@ -29,8 +30,8 @@ class ClientController extends Controller
 
     public function index (Request $req){
 
-      if($req->user()->role_name=='client'){
-        return redirect()->action('ClientController@detail', $req-user()->codcli);
+      if(RedisUser::get('role')=='client'){
+        return redirect()->action('ClientController@detail', RedisUser::get('codcli'));
       }
       // on($this->connection)->
       $clients = Client::where('statocf', 'T')->where('agente', '!=', '');

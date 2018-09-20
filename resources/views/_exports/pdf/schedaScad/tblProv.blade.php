@@ -22,7 +22,7 @@
       <th>{{ trans('scad.typePayment') }}</th>
       <th>{{ trans('scad.valueToPay') }}</th>
       <th>{{ trans('scad.valuePayed') }}</th>
-      <th>Prov. Calcolata{{-- {{ trans('scad.valueToPay') }} --}}</th>
+      <th>Prov. Da Maturare{{-- {{ trans('scad.valueToPay') }} --}}</th>
       <th>Prov. Maturate{{-- {{ trans('scad.valueToPay') }} --}}</th>
       <th>Prov. Liquidate{{-- {{ trans('scad.valuePayed') }} --}}</th>
     </tr>
