@@ -2,7 +2,7 @@
 <footer class="main-footer">
     <!-- To the right -->
     <div class="pull-right hidden-xs">
-        <a href="{{ url("/todo") }}">#ToDo List...</a>
+        {{-- <a href="{{ url("/todo") }}">#ToDo List...</a> --}}
     </div>
     <!-- Default to the left -->
     <strong>

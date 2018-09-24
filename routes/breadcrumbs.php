@@ -52,7 +52,7 @@ Breadcrumbs::register('clientDocs', function($breadcrumbs, $codClient, $tipoDoc)
         $docPush = trans('_breadcrumbs.documents');
         break;
     }
-    $breadcrumbs->push($docPush, route('client::detail', $tipoDoc));
+    $breadcrumbs->push($docPush, route('client::detail', $codClient));
 });
 
 // Home > Docs
