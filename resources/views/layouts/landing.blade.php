@@ -243,12 +243,12 @@ Landing page based on Pratt: http://blacktie.co/demo/pratt/
 <div id="footerwrap">
     <div class="container">
         <div class="col-lg-5">
-            <h3>{{ trans('_message.address') }}</h3>
+            <h3>Krona Koblenz S.P.A.</h3>
             <p>
                 via Piane 90,<br/>
                 Coriano, Rimini<br/>
                 47853<br/>
-                Italia
+                Italy
             </p>
         </div>
 
