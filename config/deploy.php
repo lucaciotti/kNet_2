@@ -93,8 +93,9 @@ return [
     'options' => [
         'application' => env('APP_NAME', 'Laravel'),
         'repository' => 'https://github.com/lucaciotti/kNet_2.git',
-        'php_fpm_service' => 'php7.2-fpm',
-        'stage' => 'production',
+        'php_fpm_service' => 'php7.0-fpm',
+        'ssh_multiplexing' => false,
+        'git_tty' => false,
     ],
 
     /*
@@ -112,6 +113,7 @@ return [
         '213.152.198.83' => [
             'deploy_path' => '/var/www/html/kdev',
             'user' => 'ced',
+            'stage' => 'production',
         ],
     ],
 
