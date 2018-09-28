@@ -331,7 +331,7 @@ class DocCliController extends Controller
     $result = ArrayToXml::convert($array, "DocRoot");
   
     $file = time() . '_file.xml';
-    $destinationPath=public_path()."/upload/xml/";
+    $destinationPath=sys_get_temp_dir()+"/";
     if (!is_dir($destinationPath)) {  mkdir($destinationPath,0777,true);  }
     File::put($destinationPath.$file,$result);
     return response()->download($destinationPath.$file);
