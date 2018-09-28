@@ -82,7 +82,9 @@ class DocCliController extends Controller
       $startDate = Carbon::now()->subMonth();
       $endDate = Carbon::now();
     }
-    $docs = $docs->whereBetween('datadoc', [$startDate, $endDate]);
+    if(!$req->input('noDate')){
+      $docs = $docs->whereBetween('datadoc', [$startDate, $endDate]);
+    }
     if($req->input('ragsoc')) {
       $ragsoc = strtoupper($req->input('ragsoc'));
       if($req->input('ragsocOp')=='eql'){
@@ -145,8 +147,8 @@ class DocCliController extends Controller
       'ragSoc' => $req->input('ragsoc'),
       'tipomodulo' => $req->input('optTipoDoc'),
       'descModulo' => $descModulo,
-      'startDate' => $startDate,
-      'endDate' => $endDate,
+      'startDate' => !$req->input('noDate') ? $startDate : "",
+      'endDate' => !$req->input('noDate') ? $endDate : "",
     ]);
   }
 
@@ -331,7 +333,7 @@ class DocCliController extends Controller
     $result = ArrayToXml::convert($array, "DocRoot");
   
     $file = time() . '_file.xml';
-    $destinationPath=sys_get_temp_dir()+"/";
+    $destinationPath=sys_get_temp_dir()."/";
     if (!is_dir($destinationPath)) {  mkdir($destinationPath,0777,true);  }
     File::put($destinationPath.$file,$result);
     return response()->download($destinationPath.$file);

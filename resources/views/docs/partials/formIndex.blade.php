@@ -26,7 +26,7 @@
   </div>
   <div class="form-group">
     <label>&nbsp;
-      <input type="checkbox" name="noDate" id="noDate" value="C" > {{ trans('doc.anyDate') }}
+      <input type="checkbox" name="noDate" id="noDate" value="C" @if($startDate=="") checked @endif> {{ trans('doc.anyDate') }}
     </label>
   </div>
   <div class="form-group">
