@@ -81,13 +81,15 @@
       </div>
 		</div>
   </div>
+  @if (!in_array(RedisUser::get('role'), ['client']))
   <div class="row">
     <div class="container">
       <div class="col-lg-12">
-        <p>Scarica il Manuale kNet aggiornato --> <a href="{{ URL::to( '/assets/manuali/Manuale agente - kNet.pdf') }}" target="_blank">LINK</a></p>
+        <p><b>Scarica il Manuale kNet aggiornato --> <a href="{{ route('manuale::agente') }}" target="_blank">LINK</a></b></p>
       </div>
     </div>
   </div>
+  @endif
 @else
   <div class="row">
     <div class="col-lg-10 col-lg-offset-1">

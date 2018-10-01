@@ -331,6 +331,15 @@ Route::group(['as' => 'rubri::'], function () {
   // ]);
 });
 
+Route::group(['as' => 'manuale::'], function () {
+  Route::get('/manuale_agente', [
+    'as' => 'agente',
+    'uses' => function (Request $request) {
+      $fileName = public_path('manuali/ManualeAgente-kNet.pdf');
+      return response()->download($fileName);
+    }
+  ]);
+});
 
 Route::any('zipcode', function() {
 
