@@ -50,6 +50,7 @@ class SchedaCliController extends Controller
                           ->where('codicecf', $codice)
                           ->where('tipologia', 'FATTURATO')
                           ->where('esercizio', $thisYear)
+                          ->whereIn('prodotto', ['KRONA', 'KOBLENZ', 'KUBIKA', 'PLANET'])
                           ->groupBy(['codicecf', 'tipologia'])
                           ->get();
         $fatPrevYear = StatFatt::select('codicecf', 'tipologia',
@@ -70,6 +71,7 @@ class SchedaCliController extends Controller
                           ->where('codicecf', $codice)
                           ->where('tipologia', 'FATTURATO')
                           ->where('esercizio', $prevYear)
+                          ->whereIn('prodotto', ['KRONA', 'KOBLENZ', 'KUBIKA', 'PLANET'])
                           ->groupBy(['codicecf', 'tipologia'])
                           ->get();
 
