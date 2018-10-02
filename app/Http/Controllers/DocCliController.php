@@ -269,6 +269,8 @@ class DocCliController extends Controller
       'docs' => $docs,
       'tipomodulo' => $tipomodulo,
       'descModulo' => $descModulo,
+      'startDate' => "",
+      'endDate' => "",
     ]);
   }
 
@@ -294,6 +296,8 @@ class DocCliController extends Controller
       'docs' => $docs,
       'tipomodulo' => $tipomodulo,
       'descModulo' => $descModulo,
+      'startDate' => lastMonth,
+      'endDate' => Carbon::now(),
     ]);
   }
 
