@@ -31,7 +31,7 @@ class RedisUser
         }
         $settings = [
             'ditta_DB' => $ditta,
-            'location' => 'it',
+            'location' => $user->ditta,
             'role' => $user->roles()->first()->name,
             'codag' => (string)$user->codag,
             'codcli' => (string)$user->codcli,
