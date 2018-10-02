@@ -202,6 +202,8 @@ class DocCliController extends Controller
       'descModulo' => $descModulo,
       'client' => $client,
       'codicecf' => $codice,
+      'startDate' => "",
+      'endDate' => "",
     ]);
   }
 
