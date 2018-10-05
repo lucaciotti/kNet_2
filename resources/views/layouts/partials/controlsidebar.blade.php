@@ -15,9 +15,9 @@
                 <div class="input-group">
                   {{-- <input type="text" name="q" class="form-control" placeholder="{{ trans('adminlte_lang::message.search') }}..."/> --}}
                   <select class="form-control" name="ditta">
-                    <option value="it" @if (session('user.ditta_DB')=='kNet_it') selected="selected" @endif>kNet {{ trans('_configMenu.italia') }}</option>
-                    <option value="es" @if (session('user.ditta_DB')=='kNet_es') selected="selected" @endif>kNet {{ trans('_configMenu.spagna') }}</option>
-                    <option value="fr" @if (session('user.ditta_DB')=='kNet_fr') selected="selected" @endif>kNet {{ trans('_configMenu.francia') }}</option>
+                    <option value="it" @if (RedisUser::get('ditta_DB')=='kNet_it') selected="selected" @endif>kNet {{ trans('_configMenu.italia') }}</option>
+                    <option value="es" @if (RedisUser::get('ditta_DB')=='kNet_es') selected="selected" @endif>kNet {{ trans('_configMenu.spagna') }}</option>
+                    <option value="fr" @if (RedisUser::get('ditta_DB')=='kNet_fr') selected="selected" @endif>kNet {{ trans('_configMenu.francia') }}</option>
                   </select>
                   <span class="input-group-btn">
                     <button type='submit' name='search' id='search-btn' class="btn btn-flat"><i class="fa fa-angle-right"></i></button>
