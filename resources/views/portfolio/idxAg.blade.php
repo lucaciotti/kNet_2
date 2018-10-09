@@ -82,7 +82,7 @@
                     </tr>
                     <tr>
                         <th colspan="1">&nbsp;</th>
-                        <th style="text-align: center;">Orders Portfolio</th>
+                        <th style="text-align: center;">Orders Portfolio</th>{{-- {{ link_to_action()} --}}
                         <th style="text-align: center;">Ddt</th>
                         <th style="text-align: center;">Invoice</th>
                         <th style="text-align: center;">Tot.</th>

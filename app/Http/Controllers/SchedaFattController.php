@@ -123,6 +123,9 @@ class SchedaFattController extends Controller
                     ->with([ 
                         'client' => function($query){
                             $query->select('codice', 'descrizion', 'settore', 'zona')
+                            ->withoutGlobalScope('agent')
+                            ->withoutGlobalScope('superAgent')
+                            ->withoutGlobalScope('client')
                             ->with(['detZona', 'detSect']);
                             }
                         ])
@@ -225,6 +228,9 @@ class SchedaFattController extends Controller
                     ->with([ 
                         'client' => function($query){
                             $query->select('codice', 'descrizion', 'settore', 'zona')
+                            ->withoutGlobalScope('agent')
+                            ->withoutGlobalScope('superAgent')
+                            ->withoutGlobalScope('client')
                             ->with(['detZona', 'detSect']);
                             }
                         ])
@@ -300,6 +306,9 @@ class SchedaFattController extends Controller
                     ->with([ 
                         'client' => function($query){
                             $query->select('codice', 'descrizion', 'settore', 'zona')
+                            ->withoutGlobalScope('agent')
+                            ->withoutGlobalScope('superAgent')
+                            ->withoutGlobalScope('client')
                             ->with(['detZona', 'detSect']);
                             }
                         ])
@@ -375,6 +384,9 @@ class SchedaFattController extends Controller
                     ->with([ 
                         'client' => function($query){
                             $query->select('codice', 'descrizion', 'settore', 'zona')
+                            ->withoutGlobalScope('agent')
+                            ->withoutGlobalScope('superAgent')
+                            ->withoutGlobalScope('client')
                             ->with(['detZona', 'detSect']);
                             }
                         ])
@@ -450,6 +462,9 @@ class SchedaFattController extends Controller
                     ->with([ 
                         'client' => function($query){
                             $query->select('codice', 'descrizion', 'settore', 'zona')
+                            ->withoutGlobalScope('agent')
+                            ->withoutGlobalScope('superAgent')
+                            ->withoutGlobalScope('client')
                             ->with(['detZona', 'detSect']);
                             }
                         ])

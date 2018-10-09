@@ -301,6 +301,96 @@ class DocCliController extends Controller
     ]);
   }
 
+  public function showOrderDispachMonth(Request $req, $fltAgents, $mese){
+    $thisYear = Carbon::now()->year;
+		$prevYear = $thisYear-1;	
+		$dStartMonth = new Carbon('first day of '.Carbon::createFromDate(null, $mese, null)->format('F').' '.((string)$this->thisYear)); 
+		$dEndMonth = new Carbon('last day of '.Carbon::createFromDate(null, $mese, null)->format('F').' '.((string)$this->thisYear));
+
+    $idOrders = $this->getIDOrderToShip($fltAgents, $thisYear, $prevYear, $dEndMonth);
+
+    $docs = DocCli::select('id', 'tipodoc', 'numerodoc', 'datadoc', 'codicecf', 'numerodocf', 'numrighepr', 'totdoc');
+    $docs = $docs->where('tipomodulo', 'O');
+    $docs = $docs->whereIn('id_testa', $idOrders);
+    $docs = $docs->with(['client' => function($query) {
+      $query
+      ->withoutGlobalScope('agent')
+      ->withoutGlobalScope('superAgent')
+      ->withoutGlobalScope('client');
+    }]);
+    $docs = $docs->orderBy('datadoc', 'desc')->orderBy('id', 'desc')->get();
+    // dd($docs);
+
+    $tipomodulo = 'O';
+    $descModulo = ($tipomodulo == 'O' ? 'Ordini' : ($tipomodulo == 'B' ? 'Bolle' : ($tipomodulo == 'F' ? 'Fatture' : $tipomodulo)));
+
+    return view('docs.index', [
+      'docs' => $docs,
+      'tipomodulo' => $tipomodulo,
+      'descModulo' => $descModulo,
+      'startDate' => $dStartMonth,
+      'endDate' => $dEndMonth,
+    ]);
+  }
+
+  public function showDdtToInvoice(Request $req){
+    $lastMonth = new Carbon('first day of last month');
+    $docs = DocCli::select('id', 'tipodoc', 'numerodoc', 'datadoc', 'codicecf', 'numerodocf', 'numrighepr', 'totdoc')
+                    ->where('tipomodulo', 'B')
+                    ->where('datadoc', '>=', $lastMonth)
+                    ->where('numrighepr', '>', 0);
+    $docs = $docs->with(['client' => function($query) {
+      $query
+      ->withoutGlobalScope('agent')
+      ->withoutGlobalScope('superAgent')
+      ->withoutGlobalScope('client');
+    }]);
+    $docs = $docs->orderBy('datadoc', 'desc')->orderBy('id', 'desc')->get();
+    // dd($docs);
+
+    $tipomodulo = 'B';
+    $descModulo = ($tipomodulo == 'O' ? 'Ordini' : ($tipomodulo == 'B' ? 'Bolle' : ($tipomodulo == 'F' ? 'Fatture' : $tipomodulo)));
+
+    return view('docs.index', [
+      'docs' => $docs,
+      'tipomodulo' => $tipomodulo,
+      'descModulo' => $descModulo,
+      'startDate' => $lastMonth,
+      'endDate' => Carbon::now(),
+    ]);
+  }
+
+  /////////////////////
+  // CERCO GLI ID DELLE TESTE DEGLI ORDINI DA SPEDIRE!!!
+  /////////////////////
+  public function getIDOrderToShip($agents=[], $thisYear, $prevYear, $dEndMonth, $filiali=false){
+
+		// Mi costruisco l'array delle teste dei documenti da cercare se Non esiste		
+    $docTes = DocCli::select('id')							
+              ->whereIn('esercizio', [(string)$thisYear, (string)$prevYear])
+              ->where('tipodoc', 'OC');
+    if(!$filiali && RedisUser::get('ditta_DB')=='knet_it'){					
+      $docTes->whereNotIn('codicecf',['C00973', 'C03000', 'C07000', 'C06000', 'C01253']);
+    }
+    if(!empty($agents)){
+      $docTes->whereIn('agente', $agents);
+    }
+    $docTes = $docTes->get();
+    $arrayIDOC = $docTes->toArray();
+		
+		//Costruisco infine le righe con i dati che mi servono
+		$docRow = DocRow::select('id_testa')
+							->where('quantitare', '>', 0)
+							->where('ommerce', 0)
+							->where('codicearti', '!=', '');
+		$docRow->where('dataconseg', '<=', $dEndMonth);
+		$docRow = $docRow->whereIn('id_testa', $arrayIDOC)->get();
+		
+		return $docRow->toArray();
+  }
+  ///////////////////////////////////////
+  
+
   public function downloadXML(Request $req, $id_testa){
     $tipoDoc = DocCli::select('tipomodulo')->findOrFail($id_testa);
     $head = DocCli::select(DB::raw('concat(tipodoc, " ", numerodoc) as doc'), 'datadoc', 'esercizio',

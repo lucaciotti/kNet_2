@@ -113,8 +113,8 @@ Route::group(['as' => 'doc::'], function () {
   Route::get('/docs_receive', [
     'as' => 'ddtReceive',
     'uses' => 'DocCliController@showDdtToReceive'
-  ]);  
-
+  ]); 
+  
   Route::get('/docXML/{id_testa?}', [
     'as' => 'downloadXML',
     'uses' => 'DocCliController@downloadXML'
