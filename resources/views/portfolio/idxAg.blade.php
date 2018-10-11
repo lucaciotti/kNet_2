@@ -82,9 +82,9 @@
                     </tr>
                     <tr>
                         <th colspan="1">&nbsp;</th>
-                        <th style="text-align: center;">{{link_to_action('DocCliController@showOrderDispachMonth', 'Orders Porfolio', ['fltAgents'=>$fltAgents, 'mese'=>$mese])}}</th>{{-- {{ link_to_action()} --}}
-                        <th style="text-align: center;">Ddt</th>
-                        <th style="text-align: center;">Invoice</th>
+                        <th style="text-align: center;"> <a href="{{$urlOrders}}" target="_blank">Orders Porfolio</a></th>{{-- {{ link_to_action()} --}}
+                        <th style="text-align: center;"><a href="{{$urlDdts}}" target="_blank">Ddt</a></th>
+                        <th style="text-align: center;"><a href="{{$urlInvoices}}" target="_blank">Invoice</a></th>
                         <th style="text-align: center;">Tot.</th>
                         <th colspan="1">|</th>
                         <th style="text-align: center;">Tot. Invoice</th>

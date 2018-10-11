@@ -39,7 +39,7 @@ class PortfolioController extends Controller
 
 		$agents = Agent::select('codice', 'descrizion')->whereNull('u_dataini')->orderBy('codice')->get();
         $codAg = ($req->input('codag')) ? $req->input('codag') : $codAg;
-        $fltAgents = (!empty($codAg)) ? $codAg : $agents->first()->toArray(); //$agents->pluck('codice')->toArray();
+        $fltAgents = (!empty($codAg)) ? $codAg : array_wrap($agents->first()->codice); //$agents->pluck('codice')->toArray();
 
 		$OCKrona = $this->getOrderToShip(['A'], $fltAgents)->sum('totRowPrice');
 		$OCKoblenz = $this->getOrderToShip(['B'], $fltAgents, ['B06'])->sum('totRowPrice');
@@ -64,7 +64,7 @@ class PortfolioController extends Controller
 		$FTPrevKubica = $this->getPrevInvoice(['B06'], $fltAgents, ['B0630'])->sum('totRowPrice');
 		$FTPrevAtomika = $this->getPrevInvoice(['B0630'], $fltAgents)->sum('totRowPrice');
 		$FTPrevPlanet = (RedisUser::get('ditta_DB')=='kNet_es') ? $this->getPrevInvoice(['D0'], $fltAgents)->sum('totRowPrice') : 0;
-		
+		// dd($fltAgents);
 		return view('portfolio.idxAg', [
 			'agents' => $agents,
 			'mese' => $mese,
@@ -91,10 +91,28 @@ class PortfolioController extends Controller
 			'FTPrevKubica' => $FTPrevKubica,
 			'FTPrevAtomika' => $FTPrevAtomika,
 			'FTPrevPlanet' => $FTPrevPlanet,
+			'urlOrders' => action('DocCliController@showOrderDispachMonth', ['fltAgents'=> $fltAgents, 'mese'=>$mese]),
+			'urlDdts' => action('DocCliController@showDdtToInvoice', ['fltAgents'=>$fltAgents]),
+			'urlInvoices' => action('DocCliController@showInvoiceMonth', ['fltAgents'=>$fltAgents, 'mese'=>$mese]),
 		]);
 	}
 
+	public function portfolioPDF(Request $req, $codAg){
+		$this->thisYear = Carbon::now()->year;
+		$this->prevYear = $this->thisYear-1;	
+		$this->dStartMonth = new Carbon('first day of '.Carbon::now()->format('F').' '.((string)$this->thisYear)); 	
+		$this->dEndMonth = new Carbon('last day of '.Carbon::now()->format('F').' '.((string)$this->thisYear));
+		$mese = (!$req->input('mese') ? Carbon::now()->month : $req->input('mese'));
+		if($mese){
+			$this->dStartMonth = new Carbon('first day of '.Carbon::createFromDate(null, $mese, null)->format('F').' '.((string)$this->thisYear)); 
+			$this->dEndMonth = new Carbon('last day of '.Carbon::createFromDate(null, $mese, null)->format('F').' '.((string)$this->thisYear));
+		}
 
+        $codAg = ($req->input('codag')) ? $req->input('codag') : $codAg;
+		
+		$OCKrona = $this->getOrderToShip(['A', 'B', 'D0'], array_wrap($codAg));
+		dd($OCKrona);
+	}
 
 
 
@@ -122,10 +140,10 @@ class PortfolioController extends Controller
 		}	
 		
 		//Costruisco infine le righe con i dati che mi servono
-		$docRow = DocRow::select('id_testa', 'codicearti', 'gruppo', 'prezzoun', 'sconti', 'quantitare')
+		$docRow = DocRow::select('id_testa', 'codicearti', 'descrizion', 'gruppo', 'prezzoun', 'sconti', 'quantitare', 'unmisura', 'quantita', 'u_dtpronto', 'dataconseg')
 							->addSelect(DB::raw('prezzoun*0 as totRowPrice'))
 							->with(['doccli' => function($q){
-								$q->select('id', 'tipomodulo', 'sconti', 'scontocass', 'numerodoc');
+								$q->select('id', 'tipomodulo', 'sconti', 'scontocass', 'numerodoc', 'tipodoc', 'datadoc', 'codicecf');
 							}])
 							->where('quantitare', '>', 0)
 							->where('ommerce', 0)

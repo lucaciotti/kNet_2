@@ -12,6 +12,7 @@ use knet\ArcaModels\DocCli;
 use knet\ArcaModels\Destinaz;
 use knet\ArcaModels\DocRow;
 use knet\WebModels\wDdtOk;
+use knet\Helpers\RedisUser;
 
 use knet\ExportsXLS\DocExport;
 
@@ -84,6 +85,9 @@ class DocCliController extends Controller
     }
     if(!$req->input('noDate')){
       $docs = $docs->whereBetween('datadoc', [$startDate, $endDate]);
+    }
+    if($req->input('fltAgents')){
+      $docs->whereIn('agente', $req->input('fltAgents'));
     }
     if($req->input('ragsoc')) {
       $ragsoc = strtoupper($req->input('ragsoc'));
@@ -301,17 +305,17 @@ class DocCliController extends Controller
     ]);
   }
 
-  public function showOrderDispachMonth(Request $req, $fltAgents, $mese){
+  public function showOrderDispachMonth(Request $req){
     $thisYear = Carbon::now()->year;
 		$prevYear = $thisYear-1;	
-		$dStartMonth = new Carbon('first day of '.Carbon::createFromDate(null, $mese, null)->format('F').' '.((string)$this->thisYear)); 
-		$dEndMonth = new Carbon('last day of '.Carbon::createFromDate(null, $mese, null)->format('F').' '.((string)$this->thisYear));
+		$dStartMonth = new Carbon('first day of '.Carbon::createFromDate(null, $req->input('mese'), null)->format('F').' '.((string)$thisYear)); 
+		$dEndMonth = new Carbon('last day of '.Carbon::createFromDate(null, $req->input('mese'), null)->format('F').' '.((string)$thisYear));
 
-    $idOrders = $this->getIDOrderToShip($fltAgents, $thisYear, $prevYear, $dEndMonth);
+    $idOrders = $this->getIDOrderToShip($req->input('fltAgents'), $thisYear, $prevYear, $dEndMonth);
 
     $docs = DocCli::select('id', 'tipodoc', 'numerodoc', 'datadoc', 'codicecf', 'numerodocf', 'numrighepr', 'totdoc');
     $docs = $docs->where('tipomodulo', 'O');
-    $docs = $docs->whereIn('id_testa', $idOrders);
+    $docs = $docs->whereIn('id', $idOrders);
     $docs = $docs->with(['client' => function($query) {
       $query
       ->withoutGlobalScope('agent')
@@ -339,6 +343,9 @@ class DocCliController extends Controller
                     ->where('tipomodulo', 'B')
                     ->where('datadoc', '>=', $lastMonth)
                     ->where('numrighepr', '>', 0);
+    if($req->input('fltAgents')){
+      $docs->whereIn('agente', $req->input('fltAgents'));
+    }
     $docs = $docs->with(['client' => function($query) {
       $query
       ->withoutGlobalScope('agent')
@@ -357,6 +364,38 @@ class DocCliController extends Controller
       'descModulo' => $descModulo,
       'startDate' => $lastMonth,
       'endDate' => Carbon::now(),
+    ]);
+  }
+
+  public function showInvoiceMonth(Request $req){
+    $thisYear = Carbon::now()->year;
+		$prevYear = $thisYear-1;	
+		$dStartMonth = new Carbon('first day of '.Carbon::createFromDate(null, $req->input('mese'), null)->format('F').' '.((string)$thisYear)); 
+		$dEndMonth = new Carbon('last day of '.Carbon::createFromDate(null, $req->input('mese'), null)->format('F').' '.((string)$thisYear));
+    $docs = DocCli::select('id', 'tipodoc', 'numerodoc', 'datadoc', 'codicecf', 'numerodocf', 'numrighepr', 'totdoc')
+                    ->whereIn('tipomodulo', ['F', 'N'])
+                    ->whereBetween('datadoc', [$dStartMonth, $dEndMonth]);
+    if($req->input('fltAgents')){
+      $docs->whereIn('agente', $req->input('fltAgents'));
+    }
+    $docs = $docs->with(['client' => function($query) {
+      $query
+      ->withoutGlobalScope('agent')
+      ->withoutGlobalScope('superAgent')
+      ->withoutGlobalScope('client');
+    }]);
+    $docs = $docs->orderBy('datadoc', 'desc')->orderBy('id', 'desc')->get();
+    // dd($docs);
+
+    $tipomodulo = 'F';
+    $descModulo = ($tipomodulo == 'O' ? 'Ordini' : ($tipomodulo == 'B' ? 'Bolle' : ($tipomodulo == 'F' ? 'Fatture' : $tipomodulo)));
+
+    return view('docs.index', [
+      'docs' => $docs,
+      'tipomodulo' => $tipomodulo,
+      'descModulo' => $descModulo,
+      'startDate' => $dStartMonth,
+      'endDate' => $dEndMonth,
     ]);
   }
 

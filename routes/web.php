@@ -305,6 +305,24 @@ Route::group(['as' => 'Portfolio::'], function () {
     'as' => 'idxAg',
     'uses' => 'PortfolioController@idxAg'
   ]);
+
+  Route::get('/orders_toDispach', [
+    'as' => 'ordersDispach',
+    'uses' => 'DocCliController@showOrderDispachMonth'
+  ]);
+  Route::get('/ddts_toInvoice', [
+    'as' => 'ddtInvoice',
+    'uses' => 'DocCliController@showDdtToInvoice'
+  ]); 
+  Route::get('/invoice_month', [
+    'as' => 'invoiceMonth',
+    'uses' => 'DocCliController@showInvoiceMonth'
+  ]);
+
+  Route::get('/portfolioPDF/{codAg}/{mese?}', [
+    'as' => 'portfolioPDF',
+    'uses' => 'PortfolioController@portfolioPDF'
+  ]);
 });
 
 Route::group(['as' => 'rubri::'], function () {
