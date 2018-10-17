@@ -41,7 +41,7 @@ class SchedaScadController extends Controller
                 ->withoutGlobalScope('superAgent')
                 ->withoutGlobalScope('client');
               }))
-              ->orderBy('datascad', 'asc')->orderBy('datafatt', 'asc')->orderBy('id', 'desc')
+              ->orderBy('datafatt', 'asc')->orderBy('datascad', 'asc')->orderBy('id', 'desc')
               ->get();
       $provv_TY = $provv_TY->groupBy('Mese');
       // dd($provv_TY);
