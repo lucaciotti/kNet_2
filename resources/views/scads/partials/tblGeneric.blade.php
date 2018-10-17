@@ -3,7 +3,7 @@
     <th>{{ trans('scad.datePay_condensed') }}</th>
     <th>{{ trans('scad.numInvoice') }}</th>
     <th>{{ trans('scad.dateInvoice') }}</th>
-    <th>{{ trans('scad.merged') }}?</th>
+    {{-- <th>{{ trans('scad.merged') }}?</th> --}}
     <th>{{ trans('scad.valueToPay') }}</th>
     <th>{{ trans('scad.valuePayed') }}</th>
   </thead>
@@ -27,9 +27,9 @@
             </a>
           </td>
           <td><span>{{$scad->datafatt->format('Ymd')}}</span>{{ $scad->datafatt->format('d-m-Y') }}</td>
-          <td>@if($scad->idragg>0)
+          {{-- <td>@if($scad->idragg>0)
             <a href=""> {{ trans('scad.merged') }}</a>
-          @endif</td>
+          @endif</td> --}}
           <td>{{ $scad->impeffval }}</td>
           <td>{{ $scad->importopag }}</td>
         </tr>

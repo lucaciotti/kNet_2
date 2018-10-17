@@ -5,7 +5,7 @@
     <th>{{ trans('scad.numInvoice') }}</th>
     <th>{{ trans('scad.dateInvoice') }}</th>
     <th>{{ trans('scad.client') }}</th>
-    <th>{{ trans('scad.merged') }}?</th>
+    {{-- <th>{{ trans('scad.merged') }}?</th> --}}
     <th>{{ trans('scad.typePayment') }}</th>
     <th>{{ trans('scad.valueToPay') }}</th>
     <th>{{ trans('scad.valuePayed') }}</th>
@@ -49,12 +49,11 @@
               </a>
             @endif
           </td>
-          <td>
+          {{-- <td>
             @if($scad->idragg>0)
-              {{-- <a href="{{ route('scad::detail', $scad->idragg ) }}"> Accorpata</a> --}}
               <a href="#"> {{ trans('scad.merged') }}</a>
             @endif
-          </td>
+          </td> --}}
           <td>{{ $scad->desc_pag }}</td>
           <td>{{ $scad->impeffval }}</td>
           <td>{{ $scad->importopag }}</td>

@@ -19,11 +19,11 @@ class SchedaScadController extends Controller
     }
 
     public function downloadProvPDF(Request $req, $codAg){
-      $thisYear = Carbon::now()->year;
+      $thisYear = Carbon::now()->month==1 ? Carbon::now()->year-1 : Carbon::now()->year;
       $agente = Agent::select('codice', 'descrizion')->where('codice', $codAg)->where(DB::raw('LENGTH(codice)'), strlen($codAg))->orderBy('codice')->first();
 
       $startDate = Carbon::createFromDate($thisYear, 1, 1);
-      $endDate = Carbon::now();
+      $endDate = new Carbon('last day of last month');
 
       $provv_TY = ScadCli::select('id', 'id_doc', 'numfatt', 
                 'datafatt', 'datascad', 'codcf', 'tipomod', 
@@ -32,6 +32,7 @@ class SchedaScadController extends Controller
                 'impprovlit', 'impprovliq', 'liquidate', DB::raw('MONTH(datafatt) as Mese')
               )
               ->whereBetween('datafatt', array($startDate, $endDate))
+              ->whereBetween('datascad', array($startDate, $endDate))
               ->where('codag', $codAg)->where(DB::raw('LENGTH(codag)'), strlen($codAg))
               ->whereIn('tipoacc', ['F', ''])
               ->with(array('client' => function($query) {

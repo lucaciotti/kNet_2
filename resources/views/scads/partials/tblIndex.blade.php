@@ -52,10 +52,9 @@
           </td>
           <td>
             {{ $scad->desc_pag }}
-            @if($scad->idragg>0)
-              {{-- <a href="{{ route('scad::detail', $scad->idragg ) }}"> Accorpata</a> --}}
+            {{-- @if($scad->idragg>0)
               <a href="#"> {{ trans('scad.merged') }}</a>
-            @endif
+            @endif --}}
           </td>
           <td>{{ $scad->impeffval }}</td>
           <td>{{ $scad->importopag }}</td>

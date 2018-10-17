@@ -54,7 +54,7 @@
       </div>
       <div class="box-body">
         @if(RedisUser::get('role')=='agent')
-          <a type="button" class="btn btn-default btn-block" target="_blank" href="{{ route('schedaScad::ProvPDF', RedisUser::get('codag')) }}">Situazione Provvigioni PDF</a>
+          <a type="button" class="btn btn-default btn-block" target="_blank" href="{{ route('schedaScad::ProvPDF', RedisUser::get('codag')) }}">Situaz. Provvigioni da Fatturare PDF</a>
         @endif
         <a type="button" class="btn btn-default btn-block" target="_blank" href="{{ route('schedaScad::ScadPDF', RedisUser::get('codag')) }}">Scheda Scadenze PDF</a>
       </div>
