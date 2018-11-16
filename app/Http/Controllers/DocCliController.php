@@ -28,6 +28,9 @@ class DocCliController extends Controller
     }
 
   public function index (Request $req, $tipomodulo=null){
+    if(RedisUser::get('role')=='client'){
+      return redirect()->action('DocCliController@docCli', ['codice'=> RedisUser::get('codcli'), 'tipomodulo'=>$tipomodulo]);
+    }
     $docs = DocCli::select('id', 'tipodoc', 'numerodoc', 'datadoc', 'codicecf', 'numerodocf', 'numrighepr', 'totdoc');
     if ($tipomodulo){
       $docs = $docs->where('tipomodulo', $tipomodulo);

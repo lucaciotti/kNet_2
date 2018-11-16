@@ -33,7 +33,11 @@
   </div>
 
   <div class="col-lg-5">
-    <div class="box box-default">
+    @if(RedisUser::get('role')=='client')
+    <div class="box box-default collapsed-box">
+    @else
+    <div class="box box-default"> 
+    @endif
       <div class="box-header with-border">
         <h3 class="box-title" data-widget="collapse">{{ trans('doc.filter') }}</h3>
         <div class="box-tools pull-right">

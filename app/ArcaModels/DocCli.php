@@ -49,7 +49,7 @@ class DocCli extends Model
           break;
         case 'client':
           static::addGlobalScope('client', function(Builder $builder) {
-              $builder->where('codicecf', RedisUser::get('codcli'));
+              $builder->where('codicecf', RedisUser::get('codcli'))->where('tipodoc', '!=', 'AA');
           });
           break;
 

@@ -32,7 +32,12 @@ class SchedaScadController extends Controller
                 'impprovlit', 'impprovliq', 'liquidate', DB::raw('MONTH(datafatt) as Mese')
               )
               ->whereBetween('datafatt', array($startDate, $endDate))
-              ->whereBetween('datascad', array($startDate, $endDate))
+              ->where(function ($q) use ($startDate, $endDate) {
+                $q->whereBetween('datascad', array($startDate, $endDate))
+                ->orWhere(function ($query) use ($startDate, $endDate) {
+                  $query->whereBetween('datapag', array($startDate, $endDate));
+                });
+              })
               ->where('codag', $codAg)->where(DB::raw('LENGTH(codag)'), strlen($codAg))
               ->whereIn('tipoacc', ['F', ''])
               ->with(array('client' => function($query) {

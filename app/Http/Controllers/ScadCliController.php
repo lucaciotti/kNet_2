@@ -9,6 +9,8 @@ use Carbon\Carbon;
 use knet\Http\Requests;
 use knet\ArcaModels\ScadCli;
 
+use knet\Helpers\RedisUser;
+
 class ScadCliController extends Controller
 {
 
@@ -27,7 +29,10 @@ class ScadCliController extends Controller
               'impeffval', 'importopag', 'idragg', 'tipoacc',
               'impprovlit', 'impprovliq', 'liquidate'
             );
-    $scads = $scads->whereBetween('datascad', array($startDate, $endDate))->whereIn('tipoacc', ['F', ''])->whereRaw("(`insoluto` = 1 OR `u_insoluto` = 1) AND `pagato` = 0");
+    $scads = $scads->whereBetween('datascad', array($startDate, $endDate))->whereIn('tipoacc', ['F', '']);
+    if(RedisUser::get('role')!='client'){
+      $scads = $scads->whereRaw("(`insoluto` = 1 OR `u_insoluto` = 1) AND `pagato` = 0");
+    }
     $scads = $scads->whereHas('client', function($query){
       $query->whereNotIn('statocf', ['C', 'S', 'L'])
             ->withoutGlobalScope('agent')
