@@ -168,7 +168,9 @@ class PortfolioController extends Controller
 				}
 			});
 		}
-		$docRow->where('dataconseg', '<=', $this->dEndMonth);
+		// 26/11 Richiesta di Mauro per fare Ordini solo del mese!
+		// $docRow->where('dataconseg', '<=', $this->dEndMonth);
+		$docRow->whereBetween('dataconseg', [$this->dStartMonth, $this->dEndMonth]);
 		$docRow = $docRow->whereIn('id_testa', $this->arrayIDOC)->get();
 		
 		$docRow = $this->calcTotRowPrice($docRow);

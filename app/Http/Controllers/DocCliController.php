@@ -314,7 +314,7 @@ class DocCliController extends Controller
 		$dStartMonth = new Carbon('first day of '.Carbon::createFromDate(null, $req->input('mese'), null)->format('F').' '.((string)$thisYear)); 
 		$dEndMonth = new Carbon('last day of '.Carbon::createFromDate(null, $req->input('mese'), null)->format('F').' '.((string)$thisYear));
 
-    $idOrders = $this->getIDOrderToShip($req->input('fltAgents'), $thisYear, $prevYear, $dEndMonth);
+    $idOrders = $this->getIDOrderToShip($req->input('fltAgents'), $thisYear, $prevYear, $dStartMonth, $dEndMonth);
 
     $docs = DocCli::select('id', 'tipodoc', 'numerodoc', 'datadoc', 'codicecf', 'numerodocf', 'numrighepr', 'totdoc');
     $docs = $docs->where('tipomodulo', 'O');
@@ -405,7 +405,7 @@ class DocCliController extends Controller
   /////////////////////
   // CERCO GLI ID DELLE TESTE DEGLI ORDINI DA SPEDIRE!!!
   /////////////////////
-  public function getIDOrderToShip($agents=[], $thisYear, $prevYear, $dEndMonth, $filiali=false){
+  public function getIDOrderToShip($agents=[], $thisYear, $prevYear, $dStartMonth, $dEndMonth, $filiali=false){
 
 		// Mi costruisco l'array delle teste dei documenti da cercare se Non esiste		
     $docTes = DocCli::select('id')							
@@ -424,8 +424,10 @@ class DocCliController extends Controller
 		$docRow = DocRow::select('id_testa')
 							->where('quantitare', '>', 0)
 							->where('ommerce', 0)
-							->where('codicearti', '!=', '');
-		$docRow->where('dataconseg', '<=', $dEndMonth);
+              ->where('codicearti', '!=', '');
+		// 26/11 Richiesta di Mauro per fare Ordini solo del mese!
+    $docRow->whereBetween('dataconseg', [$dStartMonth, $dEndMonth]);
+		// $docRow->where('dataconseg', '<=', $dEndMonth);
 		$docRow = $docRow->whereIn('id_testa', $arrayIDOC)->get();
 		
 		return $docRow->toArray();
