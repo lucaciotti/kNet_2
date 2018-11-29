@@ -71,12 +71,8 @@ class Product extends Model
   }
 
   // JOIN Tables
-  public function doccli(){
-    return $this->hasMany('knet\ArcaModels\DocCli', 'codicearti', 'codice');
-  }
-
-  public function docsup(){
-    return $this->hasMany('knet\ArcaModels\DocSup', 'codicearti', 'codice');
+  public function docrow(){
+    return $this->hasMany('knet\ArcaModels\DocRow', 'codicearti', 'codice');
   }
 
   public function masterClas(){
