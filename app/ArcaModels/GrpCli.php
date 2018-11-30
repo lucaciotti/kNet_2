@@ -22,10 +22,10 @@ class GrpCli extends Model
 
   // JOIN Tables
   public function client(){
-    return $this->belongsTo('knet\ArcaModels\Client', 'codice', 'gruppolist');
+    return $this->hasMany('knet\ArcaModels\Client', 'gruppolist', 'codice');
   }
 
   public function listPersCli(){
-    return $this->belongsTo('knet\ArcaModels\Listini', 'codice', 'gruppocli');
+    return $this->hasMany('knet\ArcaModels\Listini', 'gruppocli', 'codice');
   }
 }
