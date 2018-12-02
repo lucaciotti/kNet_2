@@ -30,8 +30,8 @@
         <dl class="dl-horizontal">
             <dt>Cod. Art.</dt>
             <dd>
-              <big><strong>{{$product->codice}}</strong></big><br>
-              <small>{{$product->descrizion}}</small>
+              <big><strong>{{$product->codice or ''}}</strong></big><br>
+              <small>{{$product->descrizion or ''}}</small>
             </dd>
             <br>
             <dt>Customer</dt>

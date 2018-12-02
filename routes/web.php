@@ -165,6 +165,25 @@ Route::group(['as' => 'scad::'], function () {
   ]);
 });
 
+Route::group(['as' => 'listini::'], function () {
+  Route::get('/listCli/{codicecf?}', [
+    'as' => 'idxCli',
+    'uses' => 'ListiniController@idxCli'
+  ]);
+  Route::post('/listCli/{codicecf?}', [
+    'as' => 'idxCli',
+    'uses' => 'ListiniController@idxCli'
+  ]);
+  Route::get('/listGpr/{grpCli?}', [
+    'as' => 'grpCli',
+    'uses' => 'ListiniController@idxGrpCli'
+  ]);
+  Route::post('/listGpr/{grpCli?}', [
+    'as' => 'grpCli',
+    'uses' => 'ListiniController@idxGrpCli'
+  ]);
+});
+
 Route::post('ddtConfirm/{id}', [
   'as' => 'ddtConfirm',
   'uses' => 'DdtOkController@store'

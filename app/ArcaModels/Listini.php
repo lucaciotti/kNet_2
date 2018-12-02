@@ -77,15 +77,17 @@ class Listini extends Model
 
     public function getTipoProdAttribute(){
         if (substr($this->attributes['gruppomag'],0,3)=="B06"){
-            $tipo = "Kubica";
+            $tipo = "KUBICA";
         } elseif (substr($this->attributes['gruppomag'],0,1)=="B") {
-            $tipo = "Koblenz";
+            $tipo = "KOBLENZ";
         } elseif (substr($this->attributes['gruppomag'],0,1)=="A") {
-            $tipo = "Krona";
+            $tipo = "KRONA";
         } elseif (substr($this->attributes['gruppomag'],0,1)=="C") {
-            $tipo = "Grass";
+            $tipo = "GRASS";
         } elseif (substr($this->attributes['gruppomag'],0,1)=="2") {
-            $tipo = "Campioni";
+            $tipo = "CAMPIONI";
+        } elseif (substr($this->attributes['gruppomag'],0,2)=="D0") {
+            $tipo = "PLANET";
         } else {
             $tipo = "KK";
         }
