@@ -69,25 +69,25 @@
       </div>
     </div>
 
-    <div class="box box-default">
+    {{-- <div class="box box-default">
       <div class="box-header with-border">
         <h3 class="box-title" data-widget="collapse">{{ trans('doc.filter') }}</h3>
         <div class="box-tools pull-right">
           <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
-          {{-- <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button> --}}
+          
         </div>
       </div>
       <div class="box-body">
         @include('listini.partials.formIndex', ['gruppi' => $gruppi, 'agente' => null, 'route' => 'listini::idxCli', 'customer' => $customer])
       </div>
-    </div>
+    </div>--}}
   </div>
 
   <div class="col-lg-9">
     <div class="nav-tabs-custom">
       <ul class="nav nav-tabs pull-left">
-        <li class="active"><a href="#listProd" data-toggle="tab" aria-expanded="true">Articolo</a></li>
-        <li><a href="#listGrpProd" data-toggle="tab" aria-expanded="true">Gruppo Prodotto</a></li>
+        <li class="active"><a href="#listProd" data-toggle="tab" aria-expanded="true">Articolo&nbsp;<span class="badge bg-green">{{$ListProds->count()}}</span></a></li>
+        <li><a href="#listGrpProd" data-toggle="tab" aria-expanded="true">Gruppo Prodotto&nbsp;<span class="badge bg-yellow">{{$ListGrpProds->count()}}</span></a></li>
         {{-- <li class="pull-left header"><i class="fa fa-th"></i> Listini Personalizzati </li> --}}
       </ul>
       <div class="tab-content">
@@ -95,14 +95,18 @@
             @include('listini.partials.tblProd', [
             'ListProds' => $ListProds,
             'customer' => $customer,
-            'customerDesc' => $customerDet->descrizion
+            'customerDesc' => $customerDet->descrizion, 
+            'endOfYear' => $endOfYear,
+            'noCli'=> false
             ])
         </div>
         <div class="tab-pane" id="listGrpProd">
             @include('listini.partials.tblGrpProd', [
             'ListGrpProds' => $ListGrpProds,
             'customer' => $customer,
-            'customerDesc' => $customerDet->descrizion
+            'customerDesc' => $customerDet->descrizion, 
+            'endOfYear' => $endOfYear,
+            'noCli'=> false
             ])
         </div>
       </div>

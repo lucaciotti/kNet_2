@@ -182,6 +182,10 @@ Route::group(['as' => 'listini::'], function () {
     'as' => 'grpCli',
     'uses' => 'ListiniController@idxGrpCli'
   ]);
+  Route::post('/listOk/{id?}', [
+    'as' => 'wListOk',
+    'uses' => 'ListiniController@setListOk'
+  ]);
 });
 
 Route::post('ddtConfirm/{id}', [

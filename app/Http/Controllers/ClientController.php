@@ -96,7 +96,7 @@ class ClientController extends Controller
     }
 
     public function detail (Request $req, $codCli){
-      $client = Client::with(['agent', 'detNation', 'detZona', 'detSect', 'clasCli', 'detPag', 'detStato'])->findOrFail($codCli);
+      $client = Client::with(['agent', 'detNation', 'detZona', 'detSect', 'clasCli', 'detPag', 'detStato', 'grpCli'])->findOrFail($codCli);
       $scadToPay = ScadCli::where('codcf', $codCli)->where('pagato',0)->whereIn('tipoacc', ['F', ''])->orderBy('datascad','desc')->get();
       $address = $client->indirizzo.", ".$client->localita.", ".$client->nazione;
       $expt = '';

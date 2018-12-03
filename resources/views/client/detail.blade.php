@@ -24,6 +24,9 @@
       <ul class="nav nav-tabs">
         <li class="active"><a href="#Anag" data-toggle="tab" aria-expanded="true">{{ trans('client.dataCli') }}</a></li>
         <li class=""><a href="#Cont" data-toggle="tab" aria-expanded="false">{{ trans('client.contactCli') }}</a></li>
+        @if(RedisUser::get('role')!='client')
+          <li class=""><a href="#List" data-toggle="tab" aria-expanded="false">Listini Personalizzati</a></li>
+        @endif
       </ul>
       <div class="tab-content">
         <div class="tab-pane active" id="Anag">
@@ -153,6 +156,29 @@
               @endif
             </dd>
 
+          </dl>
+        </div>
+
+        <div class="tab-pane" id="List">
+          <dl class="dl-horizontal">
+            @if($client->gruppolist)
+              <dt>Listino Gruppo Cliente</dt>
+              <dd>
+                <a type="button" class="btn btn-default btn-block" href="{{ route('listini::grpCli', [$client->gruppolist]) }}" >
+                    {{$client->gruppolist}} - {{$client->grpCli->descrizion or ''}}
+                </a>
+              </dd>
+            @endif
+        
+            <dt>Listino Cliente</dt>
+            <dd>
+              <a type="button" class="btn btn-default btn-block" href="{{ route('listini::idxCli', [$client->codice]) }}">
+                  Listino Personalizzato
+              </a>
+            </dd>
+        
+            <hr>
+        
           </dl>
         </div>
       </div>

@@ -114,5 +114,9 @@ class Listini extends Model
     public function grpProd(){
         return $this->hasOne('knet\ArcaModels\SubGrpProd', 'codice', 'gruppomag');
     }
+    
+    public function wListOk(){
+        return $this->hasOne('knet\WebModels\wListiniOk', 'listini_id', 'id');
+    }
 
 }

@@ -18,6 +18,7 @@ use knet\ArcaModels\SuperAgent;
 use knet\ArcaModels\Product;
 use knet\ArcaModels\GrpProd;
 use knet\ArcaModels\SubGrpProd;
+use knet\WebModels\wListiniOk;
 
 class ListiniController extends Controller
 {
@@ -58,7 +59,8 @@ class ListiniController extends Controller
                     'product' => function($query){
                         $query->select('codice', 'descrizion', 'unmisura', 'gruppo', 'listino6', 'listino1')
                             ->with('grpProd');
-                    }
+                    },
+                    'wListOk'
                     ])
                     ->orderBy('codicearti')
                     ->get();
@@ -75,7 +77,8 @@ class ListiniController extends Controller
                     },
                     'masterProd' => function($query){
                         $query->select('codice', 'descrizion');
-                    }
+                    },
+                    'wListOk'
                     ])
                     ->orderBy('gruppomag')
                     ->get();
@@ -95,6 +98,7 @@ class ListiniController extends Controller
             'ListProds' => $ListProds,
             'ListGrpProds' => $ListGrpProds,
             'thisYear' => $thisYear,
+            'endOfYear' => $endOfYear,
             'gruppi' => $gruppi,
         ]);
     }
@@ -115,10 +119,10 @@ class ListiniController extends Controller
         $customerGrp = (!empty($codGrp)) ? $codGrp : $cliGrps->first()->gruppocli;
         $grpCliDet = GrpCli::select('codice', 'descrizion')
                         ->with(['client'=>function($q){
-                            $q->select('codice', 'descrizion');
+                                $q->select('codice', 'descrizion', 'gruppolist');
                             }])
                         ->where('codice', $customerGrp)->first();
-        
+        // dd($grpCliDet);
         $ListProds = Listini::where('gruppocli', $customerGrp)
                         ->where('codicearti', '!=', '');
         if($req->input('gruppo')) {
@@ -171,8 +175,25 @@ class ListiniController extends Controller
             'ListProds' => $ListProds,
             'ListGrpProds' => $ListGrpProds,
             'thisYear' => $thisYear,
+            'endOfYear' => $endOfYear,
             'gruppi' => $gruppi,
         ]);
+    }
+
+    public function setListOk(Request $req, $grpCli=null){
+        foreach($req->estendi as $listId){
+            $listOk = wListiniOk::create([
+                'listini_id'  =>$listId,
+                'esercizio' => '2019',
+            ]);
+            $listOk->save();
+        }
+        if($req->routeCli){
+            return redirect()->action('ListiniController@idxCli', $req->routeCli);
+        } else {
+            return redirect()->action('ListiniController@grpCli', $req->routeGrp);
+        }
+        
     }
 
 }
