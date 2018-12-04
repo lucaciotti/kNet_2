@@ -60,11 +60,14 @@
         </div>
       </div>
       <div class="box-body">
-        <a type="button" class="btn btn-default btn-block" href="{{ route('listini::grpCli', $customerDet->gruppolist) }}">
+        <a type="button" class="btn btn-default btn-block" href="{{ route('listini::grpCli', $customerDet->gruppolist) }}" target="_blank">
             Gruppo Listino Cliente -> {{$customerDet->gruppolist}} - {{$customerDet->grpCli->descrizion}}
         </a>
-        <a type="button" class="btn btn-default btn-block" href="{{ route('client::detail', $customer) }}">
+        <a type="button" class="btn btn-default btn-block" href="{{ route('client::detail', $customer) }}" target="_blank">
             Anagrafica Cliente
+        </a>
+        <a type="button" class="btn btn-default btn-block" href="{{ route('stAbc::idxCli', ['codcli' => $customer]) }}" target="_blank">
+            Abc Articolo Cliente
         </a>
       </div>
     </div>
