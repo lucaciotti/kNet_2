@@ -55,6 +55,17 @@
                 <option value="12" @if($mese==12) selected @endif >{{ __('stFatt.december')}}</option>
             </select>
           </div>
+          <div class="form-group">
+            <label>Select Year</label>
+            @php
+                $year = (Carbon\Carbon::now()->year)-1;
+            @endphp
+            <select name="year" class="form-control select2" data-placeholder="Select Year" style="width: 100%;">
+                @for ($i = 0; $i < 3; $i++)
+                    <option value="{{$year+$i}}" @if($thisYear==$year+$i) selected @endif>{{ $year+$i }}</option>
+                @endfor
+            </select>
+          </div>
           <div>
             <button type="submit" class="btn btn-primary">{{ trans('_message.submit') }}</button>
           </div>

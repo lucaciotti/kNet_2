@@ -28,7 +28,7 @@ class StAbcController extends Controller
 
     public function idxAg (Request $req, $codAg=null) {
       $agents = Agent::select('codice', 'descrizion')->whereNull('u_dataini')->orderBy('codice')->get();
-      $codAg = ($req->input('codag')) ? $req->input('codag') : $codAg;
+      $codAg = ($req->input('codag')) ? $req->input('codag') : (!empty(RedisUser::get('codag')) ? RedisUser::get('codag') : $codAg);
       $agente = (!empty($codAg)) ? $codAg : $agents->first()->codice;
       $thisYear =  Carbon::now()->year;
       $prevYear = $thisYear-1;

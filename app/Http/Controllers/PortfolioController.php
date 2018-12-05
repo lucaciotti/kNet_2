@@ -27,7 +27,7 @@ class PortfolioController extends Controller
 
     public function idxAg(Request $req, $codAg=null){
 		// Costruisco i filtri
-		$this->thisYear = Carbon::now()->year;
+		$this->thisYear = (!$req->input('year') ? Carbon::now()->year : $req->input('year'));
 		$this->prevYear = $this->thisYear-1;	
 		$this->dStartMonth = new Carbon('first day of '.Carbon::now()->format('F').' '.((string)$this->thisYear)); 	
 		$this->dEndMonth = new Carbon('last day of '.Carbon::now()->format('F').' '.((string)$this->thisYear));
@@ -38,8 +38,8 @@ class PortfolioController extends Controller
 		}
 
 		$agents = Agent::select('codice', 'descrizion')->whereNull('u_dataini')->orderBy('codice')->get();
-        $codAg = ($req->input('codag')) ? $req->input('codag') : $codAg;
-        $fltAgents = (!empty($codAg)) ? $codAg : array_wrap($agents->first()->codice); //$agents->pluck('codice')->toArray();
+		$codAg = ($req->input('codag')) ? $req->input('codag') : $codAg;
+        $fltAgents = (!empty($codAg)) ? $codAg : array_wrap((!empty(RedisUser::get('codag')) ? RedisUser::get('codag') : $agents->first()->codice)); //$agents->pluck('codice')->toArray();
 
 		$OCKrona = $this->getOrderToShip(['A'], $fltAgents)->sum('totRowPrice');
 		$OCKoblenz = $this->getOrderToShip(['B'], $fltAgents, ['B06'])->sum('totRowPrice');
@@ -97,7 +97,7 @@ class PortfolioController extends Controller
 		]);
 	}
 
-	public function portfolioPDF(Request $req, $codAg){
+	public function portfolioPDF(Request $req, $codAg, $mese, $year){
 		$this->thisYear = Carbon::now()->year;
 		$this->prevYear = $this->thisYear-1;	
 		$this->dStartMonth = new Carbon('first day of '.Carbon::now()->format('F').' '.((string)$this->thisYear)); 	
@@ -108,7 +108,7 @@ class PortfolioController extends Controller
 			$this->dEndMonth = new Carbon('last day of '.Carbon::createFromDate(null, $mese, null)->format('F').' '.((string)$this->thisYear));
 		}
 
-        $codAg = ($req->input('codag')) ? $req->input('codag') : $codAg;
+        $codAg = ($req->input('codag')) ? $req->input('codag') : ((!empty(RedisUser::get('codag')) ? RedisUser::get('codag') : $codAg));
 		
 		$OCKrona = $this->getOrderToShip(['A', 'B', 'D0'], array_wrap($codAg));
 		dd($OCKrona);

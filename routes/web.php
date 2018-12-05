@@ -186,6 +186,10 @@ Route::group(['as' => 'listini::'], function () {
     'as' => 'wListOk',
     'uses' => 'ListiniController@setListOk'
   ]);
+  Route::get('/cliListScad', [
+    'as' => 'cliListScad',
+    'uses' => 'ListiniController@cliListScad'
+  ]);
 });
 
 Route::post('ddtConfirm/{id}', [

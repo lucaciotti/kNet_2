@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Collection;
 
 use knet\Http\Requests;
+use knet\Helpers\RedisUser;
 
 use knet\ArcaModels\StatFatt;
 use knet\ArcaModels\Client;
@@ -26,7 +27,7 @@ class StFattController extends Controller
     public function idxAg (Request $req, $codAg=null) {
       $agents = Agent::select('codice', 'descrizion')->whereNull('u_dataini')->orderBy('codice')->get();
       $codAg = ($req->input('codag')) ? $req->input('codag') : $codAg;
-      $agente = (string)(!empty($codAg)) ? $codAg : $agents->first()->codice;
+      $agente = (string)(!empty($codAg)) ? $codAg : (!empty(RedisUser::get('codag')) ? RedisUser::get('codag') : $agents->first()->codice);
       $descrAg = (!empty($agents->whereStrict('codice', $agente)->first()) ? $agents->whereStrict('codice', $agente)->first()->descrizion : "");
       $thisYear = (string)(Carbon::now()->year);
       // dd($agents);
@@ -359,7 +360,7 @@ class StFattController extends Controller
     public function idxZone (Request $req, $codAg=null) {
       $agents = Agent::select('codice', 'descrizion')->whereNull('u_dataini')->orderBy('codice')->get();
       $codAg = ($req->input('codag')) ? $req->input('codag') : $codAg;
-      $agente = (string)(!empty($codAg)) ? $codAg : $agents->first()->codice;
+      $agente = (string)(!empty($codAg)) ? $codAg : (!empty(RedisUser::get('codag')) ? RedisUser::get('codag') : $agents->first()->codice);
       $descrAg = (!empty($agents->whereStrict('agente', $agente)->first()->agent) ? $agents->whereStrict('agente', $agente)->first()->agent->descrizion : "");
       $thisYear = (string)(Carbon::now()->year);
       $prevYear = (string)((Carbon::now()->year)-1);

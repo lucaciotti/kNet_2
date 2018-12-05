@@ -16,7 +16,7 @@
         <th></th>
         <th style="text-align: center;">Fine Validità</th>
         <th colspan="1">|</th>
-        <th style="text-align: center;">Fascie Qta</th>
+        <th style="text-align: center;">Fasce Qta</th>
         @if(!in_array(RedisUser::get('role'), ['agent', 'client']))
           <th colspan="1">|</th>
           <th style="text-align: center;">Estendi a 2019</th>
@@ -54,7 +54,7 @@
           <th colspan="1">|</th>
           <td>
             @if($list->u_budg1>0)
-              <a href='' data-toggle="modal" data-target=".bs-modal-{{$list->id}}">Dettaglio Fascie</a>
+              <a href='' data-toggle="modal" data-target=".bs-modal-{{$list->id}}">Dettaglio Fasce</a>
               @include('listini.partials.mdlFormFascie', 
               [
                 'customer' => $customer,

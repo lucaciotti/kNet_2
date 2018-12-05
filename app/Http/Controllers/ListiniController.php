@@ -181,12 +181,14 @@ class ListiniController extends Controller
     }
 
     public function setListOk(Request $req, $grpCli=null){
-        foreach($req->estendi as $listId){
-            $listOk = wListiniOk::create([
-                'listini_id'  =>$listId,
-                'esercizio' => '2019',
-            ]);
-            $listOk->save();
+        if($req->estendi){
+            foreach($req->estendi as $listId){
+                $listOk = wListiniOk::create([
+                    'listini_id'  =>$listId,
+                    'esercizio' => '2019',
+                ]);
+                $listOk->save();
+            }
         }
         if($req->routeCli){
             return redirect()->action('ListiniController@idxCli', $req->routeCli);
@@ -194,6 +196,34 @@ class ListiniController extends Controller
             return redirect()->action('ListiniController@grpCli', $req->routeGrp);
         }
         
+    }
+
+    public function cliListScad(Request $req){
+        $thisYear = Carbon::now()->year;
+        $date = Carbon::now();
+        // $startOfYear = $date->copy()->startOfYear();
+        $endOfYear   = $date->copy()->endOfYear();
+
+        $customers = Listini::select(
+                            'codclifor',
+                            DB::raw('SUM(IF(codicearti!="", 1, 0)) as nCodArt'),
+                            DB::raw('SUM(IF(gruppomag!="", 1, 0)) as nGrpMag')
+                            )
+                        ->where('codclifor', '!=', '')->where('datafine', '<=', $endOfYear)
+                        ->whereDoesntHave('wListOk')
+                        ->with(['client'=>function($q){
+                            $q->select('codice', 'descrizion');
+                        }])
+                        ->groupBy('codclifor')
+                        ->orderBy('codclifor')->get();
+        // dd($customers->first());
+
+        return view('listini.cliListScad', [
+            'customers' => $customers,
+            'thisYear' => $thisYear,
+            'endOfYear' => $endOfYear,
+        ]);
+
     }
 
 }
