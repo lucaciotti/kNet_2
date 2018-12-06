@@ -309,7 +309,7 @@ class DocCliController extends Controller
   }
 
   public function showOrderDispachMonth(Request $req){
-    $thisYear = Carbon::now()->year;
+    $thisYear = ($req->input('year')) ? $req->input('year') : Carbon::now()->year;
 		$prevYear = $thisYear-1;	
 		$dStartMonth = new Carbon('first day of '.Carbon::createFromDate(null, $req->input('mese'), null)->format('F').' '.((string)$thisYear)); 
 		$dEndMonth = new Carbon('last day of '.Carbon::createFromDate(null, $req->input('mese'), null)->format('F').' '.((string)$thisYear));
@@ -371,7 +371,7 @@ class DocCliController extends Controller
   }
 
   public function showInvoiceMonth(Request $req){
-    $thisYear = Carbon::now()->year;
+    $thisYear = ($req->input('year')) ? $req->input('year') : Carbon::now()->year;
 		$prevYear = $thisYear-1;	
 		$dStartMonth = new Carbon('first day of '.Carbon::createFromDate(null, $req->input('mese'), null)->format('F').' '.((string)$thisYear)); 
 		$dEndMonth = new Carbon('last day of '.Carbon::createFromDate(null, $req->input('mese'), null)->format('F').' '.((string)$thisYear));

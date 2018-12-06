@@ -346,7 +346,7 @@ Route::group(['as' => 'Portfolio::'], function () {
     'uses' => 'DocCliController@showInvoiceMonth'
   ]);
 
-  Route::get('/portfolioPDF/{codAg}/{mese?}', [
+  Route::get('/portfolioPDF/{codAg}/{mese?}/{year?}', [
     'as' => 'portfolioPDF',
     'uses' => 'PortfolioController@portfolioPDF'
   ]);

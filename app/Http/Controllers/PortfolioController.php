@@ -91,9 +91,9 @@ class PortfolioController extends Controller
 			'FTPrevKubica' => $FTPrevKubica,
 			'FTPrevAtomika' => $FTPrevAtomika,
 			'FTPrevPlanet' => $FTPrevPlanet,
-			'urlOrders' => action('DocCliController@showOrderDispachMonth', ['fltAgents'=> $fltAgents, 'mese'=>$mese]),
+			'urlOrders' => action('DocCliController@showOrderDispachMonth', ['fltAgents'=> $fltAgents, 'mese'=>$mese, 'year' => $this->thisYear]),
 			'urlDdts' => action('DocCliController@showDdtToInvoice', ['fltAgents'=>$fltAgents]),
-			'urlInvoices' => action('DocCliController@showInvoiceMonth', ['fltAgents'=>$fltAgents, 'mese'=>$mese]),
+			'urlInvoices' => action('DocCliController@showInvoiceMonth', ['fltAgents'=>$fltAgents, 'mese'=>$mese, 'year' => $this->thisYear]),
 		]);
 	}
 
