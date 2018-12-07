@@ -58,6 +58,7 @@ class ListiniController extends Controller
         $ListProds = $ListProds->with([ 
                     'product' => function($query){
                         $query->select('codice', 'descrizion', 'unmisura', 'gruppo', 'listino6', 'listino1')
+                            ->withoutGlobalScope('Listino')
                             ->with('grpProd');
                     },
                     'wListOk'
@@ -137,6 +138,7 @@ class ListiniController extends Controller
         $ListProds = $ListProds->with([ 
                     'product' => function($query){
                         $query->select('codice', 'descrizion', 'unmisura', 'gruppo', 'listino6', 'listino1')
+                            ->withoutGlobalScope('Listino')
                             ->with('grpProd');
                     }
                     ])
