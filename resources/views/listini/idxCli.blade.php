@@ -60,9 +60,11 @@
         </div>
       </div>
       <div class="box-body">
-        <a type="button" class="btn btn-default btn-block" href="{{ route('listini::grpCli', $customerDet->gruppolist) }}" target="_blank">
-            Gruppo Listino Cliente -> {{$customerDet->gruppolist}} - {{$customerDet->grpCli->descrizion}}
-        </a>
+        @if($customerDet->gruppolist)
+          <a type="button" class="btn btn-default btn-block" href="{{ route('listini::grpCli', $customerDet->gruppolist) }}" target="_blank">
+              Gruppo Listino Cliente -> {{$customerDet->gruppolist}} - {{$customerDet->grpCli->descrizion}}
+          </a>
+        @endif
         <a type="button" class="btn btn-default btn-block" href="{{ route('client::detail', $customer) }}" target="_blank">
             Anagrafica Cliente
         </a>
