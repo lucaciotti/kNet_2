@@ -57,7 +57,7 @@
             @endif
           </td>
           <td>
-            @if (!in_array(RedisUser::get('role'), ['client']))
+            @if (in_array(RedisUser::get('role'), ['client']))
               @if($row->u_dtpronto)
                 {{ $row->u_dtpronto->format('d-m-Y') }}
               @else
