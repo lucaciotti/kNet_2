@@ -57,12 +57,16 @@
             @endif
           </td>
           <td>
-            @if($row->u_dtpronto)
-              {{ $row->u_dtpronto->format('d-m-Y') }}
-            @else
-              @if($row->dataconseg)
-                {{ $row->dataconseg->format('d-m-Y') }}
+            @if (!in_array(RedisUser::get('role'), ['client']))
+              @if($row->u_dtpronto)
+                {{ $row->u_dtpronto->format('d-m-Y') }}
+              @else
+                @if($row->dataconseg)
+                  {{ $row->dataconseg->format('d-m-Y') }}
+                @endif
               @endif
+          @else
+            @if($row->dataconseg) {{ $row->dataconseg->format('d-m-Y') }} @endif
             @endif
           </td>
           <td>
