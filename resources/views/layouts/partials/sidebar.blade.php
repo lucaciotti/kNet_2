@@ -72,6 +72,8 @@
                     <li class="{{ Ekko::isActiveRoute('visit::*') }}"><a href="{{ route('visit::insert') }}"> <span>{{ trans('_menu.insVisits') }}</span></a></li>
                     {{-- <li class="{{ Ekko::isActiveRoute('visit::*') }}"><a href="{{ route('visit::insert') }}"> <span>Report Visite</span></a></li> --}}
                 </ul>
+              </li>
+              <li class=""><a href="http://2.115.99.233:8080" target="_blank"><i class='fa fa-calendar'></i> <span>Kalendar</span></a></li>
               <li><i class='fa fa-empty'></i></li>
 
               <li class="header">Statistiche</li>
