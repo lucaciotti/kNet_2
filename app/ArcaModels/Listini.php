@@ -30,7 +30,7 @@ class Listini extends Model
         static::addGlobalScope('attivo', function(Builder $builder) {
             if(RedisUser::get('ditta_DB')=='kNet_es')
             {
-                $builder->where('datafine', '>=', new Carbon('last day of last month'))->orWhere('datafine', '=', '')->orWhereNull('datafine');
+                $builder->where('datafine', '>=', new Carbon('first day of last year'))->orWhere('datafine', '=', '')->orWhereNull('datafine');
             } else {
                 $builder->where('datafine', '>=', Carbon::now())->orWhere('datafine', '=', '')->orWhereNull('datafine');
             }
