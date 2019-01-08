@@ -34,7 +34,7 @@ class ListiniController extends Controller
 
         if(RedisUser::get('ditta_DB')=='kNet_es')
         {
-           $endOfYear = new Carbon('last day of last year');
+           $endOfYear = new Carbon('last day of last month');
         }
 
         // ->where('datafine', '<=', $endOfYear)
@@ -117,7 +117,7 @@ class ListiniController extends Controller
         $endOfYear   = $date->copy()->endOfYear();
         if(RedisUser::get('ditta_DB')=='kNet_es')
         {
-           $endOfYear = new Carbon('last day of last year');
+           $endOfYear = new Carbon('last day of last month');
         }
         // ->where('datafine', '<=', $endOfYear)
         $cliGrps = Listini::select('gruppocli')->where('gruppocli', '!=', '')
@@ -217,7 +217,7 @@ class ListiniController extends Controller
         $endOfYear   = $date->copy()->endOfYear();
         if(RedisUser::get('ditta_DB')=='kNet_es')
         {
-           $endOfYear = new Carbon('last day of last year');
+           $endOfYear = new Carbon('last day of last month');
         }
 
         $customers = Listini::select(
