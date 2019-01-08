@@ -88,10 +88,17 @@
       </ul>
       <div class="tab-content">
         <div class="tab-pane active" id="listProd">
+          @php
+            if($grpCliDet){
+              $customerDesc=$grpCliDet->descrizion;
+            } else {
+              $customerDesc='';
+            }
+          @endphp
             @include('listini.partials.tblProd', [
             'ListProds' => $ListProds,
             'customer' => $customerGrp,
-            'customerDesc' => $grpCliDet->descrizion,
+            'customerDesc' => $customerDesc,
             'endOfYear' => $endOfYear,
             'noCli'=> true
             ])
@@ -100,7 +107,7 @@
             @include('listini.partials.tblGrpProd', [
             'ListGrpProds' => $ListGrpProds,
             'customer' => $customerGrp,
-            'customerDesc' => $grpCliDet->descrizion,
+            'customerDesc' => $customerDesc,
             'endOfYear' => $endOfYear,
             'noCli'=> true
             ])

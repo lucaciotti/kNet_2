@@ -7,7 +7,7 @@
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title">Lista Clienti Associati a {{ $grpCliDet->descrizion }}</h4>
+        <h4 class="modal-title">Lista Clienti Associati a {{ $grpCliDet->descrizion or '' }}</h4>
       </div>
       <div class="modal-body">
         <table class="table table-hover table-condensed dtTbls_light" id="listProdTable">
@@ -23,16 +23,18 @@
             </tr>
           </thead>
           <tbody>
-            @foreach ($grpCliDet->client as $client)
-            <tr>
-              <td><a href="{{ route('client::detail', ['codicecf' => $client->codice]) }}"> {{ $client->codice }} </a></td>
-              <td>{{ $client->descrizion or '' }}</td>
-              <th colspan="1">|</th>
-              <td><a href="{{ route('listini::idxCli', ['codicecf' => $client->codice]) }}"> Listino Pers. </a></td>
-              <th colspan="1">|</th>
-              <td><a href="{{ route('stAbc::idxCli', ['codicecf' => $client->codice]) }}"> Abc Articoli </a></td>
-            </tr>
-            @endforeach
+            @if($grpCliDet && $grpCliDet->client)
+              @foreach ($grpCliDet->client as $client)
+              <tr>
+                <td><a href="{{ route('client::detail', ['codicecf' => $client->codice]) }}"> {{ $client->codice }} </a></td>
+                <td>{{ $client->descrizion or '' }}</td>
+                <th colspan="1">|</th>
+                <td><a href="{{ route('listini::idxCli', ['codicecf' => $client->codice]) }}"> Listino Pers. </a></td>
+                <th colspan="1">|</th>
+                <td><a href="{{ route('stAbc::idxCli', ['codicecf' => $client->codice]) }}"> Abc Articoli </a></td>
+              </tr>
+              @endforeach
+            @endif
           </tbody>
         </table>
       </div>
