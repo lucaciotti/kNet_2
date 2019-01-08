@@ -28,7 +28,12 @@ class Listini extends Model
         parent::boot();
 
         static::addGlobalScope('attivo', function(Builder $builder) {
-            $builder->where('datafine', '>=', Carbon::now())->orWhere('datafine', '=', '')->orWhereNull('datafine');
+            if(RedisUser::get('ditta_DB')=='kNet_es')
+            {
+                $builder->where('datafine', '>=', new Carbon('last day of last year'))->orWhere('datafine', '=', '')->orWhereNull('datafine');
+            } else {
+                $builder->where('datafine', '>=', Carbon::now())->orWhere('datafine', '=', '')->orWhereNull('datafine');
+            }
         });
 
         switch (RedisUser::get('role')) {
