@@ -13,8 +13,11 @@ class CreateTableGenericSystem extends Migration
      */
     public function up()
     {
-        Schema::create('w_generic_system', function (Blueprint $table) {
-            $table->increments('id');
+        Schema::create('w_system_mkt', function (Blueprint $table) {
+            $table->string('codice', 6)->primary()->comment('Codice Univoco');
+            $table->integer('livello')->comment('Livello di ');
+            $table->string('descrizione', 100)->comment('Codice Univoco');
+            $table->string('url', 255)->comment('Codice Univoco');
             $table->timestamps();
         });
     }

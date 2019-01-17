@@ -35,6 +35,7 @@ class CreateTableModuleCarp extends Migration
             $table->boolean('not_why_noinfo')->nullable()->comment('');
             $table->integer('not_supplierType')->nullable()->comment('');
             $table->string('not_supplierName', 100)->nullable()->comment('');
+            $table->json('systemsList')->nullable()->comment('');
             $table->boolean('wants_tryKK')->nullable()->comment('');
             $table->text('notryKK_note')->nullable()->comment('');
             $table->boolean('wants_info')->nullable()->comment('');
