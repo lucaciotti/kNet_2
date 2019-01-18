@@ -31,7 +31,7 @@
         @php
           $qta_TY = 0;
           $qta_PY = 0;
-          for($i=1; $i<$thisMonth; $i++){
+          for($i=1; $i<=$thisMonth; $i++){
             $campo_TY = 'qta_TY_'.$i;
             $campo_PY = 'qta_PY_'.$i;
             $qta_TY += $abc->$campo_TY;
