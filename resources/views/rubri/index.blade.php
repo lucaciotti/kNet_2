@@ -1,11 +1,11 @@
 @extends('layouts.app')
 
 @section('htmlheader_title')
-    - {{ trans('client.headTitle_idx') }}
+    - Rubrica Contatti
 @endsection
 
 @section('contentheader_title')
-    {{ trans('client.contentTitle_idx') }}
+    Rubrica Contatti
 @endsection
 
 @section('contentheader_breadcrumb')
@@ -18,7 +18,7 @@
     <div class="col-lg-7">
       <div class="box box-default">
         <div class="box-header with-border">
-          <h3 class="box-title" data-widget="collapse">{{ trans('client.listCli') }}</h3>
+          <h3 class="box-title" data-widget="collapse">Lista Contatti</h3>
           <div class="box-tools pull-right">
             <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
           </div>

@@ -65,7 +65,8 @@
               {{-- @if (!Auth::user()->hasRole('client')) --}}
               @if (!in_array(RedisUser::get('role'), ['client']))
               <li class="header">Funzioni Web</li>
-              {{-- <li class=""><a href="{{ route('doc::list', 'O') }}"><i class='fa fa-pencil-square-o'></i> <span>Pre-Ordini via Web</span></a></li> --}}
+              <li class=""><a href="{{ route('rubri::list') }}"><i class="fa fa-address-card-o"></i> <span>Rubrica Contatti</span></a></li>
+              {{-- <li class=""><a href="{{ route('doc::list', 'O') }}"><i class='fa fa-pencil-square-o'></i> <span>Pre-Ordini via Web</span></a></li> --}}              
               <li class="treeview {{ Ekko::isActiveRoute('visit::*') }}">
                 <a href="{{ route('visit::insert') }}"><i class='fa fa-weixin'></i> <span>Visite & Eventi</span><i class="fa fa-angle-left pull-right"></i></a>
                 <ul class="treeview-menu">
