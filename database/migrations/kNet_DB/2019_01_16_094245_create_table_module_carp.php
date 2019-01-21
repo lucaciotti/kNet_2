@@ -52,6 +52,6 @@ class CreateTableModuleCarp extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('w_mod_carp');
+        Schema::dropIfExists('w_mod_carp_01');
     }
 }

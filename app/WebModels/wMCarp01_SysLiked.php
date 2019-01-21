@@ -9,7 +9,7 @@ use RedisUser;
 
 class wMCarp01_SysLiked extends Model
 {
-    protected $table = 'w_mcarp01_sysmkt';
+    protected $table = 'w_mcarp01_sysLiked';
     protected $dates = ['created_at', 'updated_at', 'deleted_at'];
     protected $fillable = ['type',
                         'mcarp01_id',
@@ -21,15 +21,6 @@ class wMCarp01_SysLiked extends Model
         parent::__construct($attributes);
         //Imposto la Connessione al Database
         $this->setConnection(RedisUser::get('ditta_DB'));
-    }
-
-    protected static function boot()
-    {
-      parent::boot();
-
-      static::addGlobalScope('type', function(Builder $builder) {
-          $builder->where('type', 4);
-      });
     }
 
     public function modCarp01(){

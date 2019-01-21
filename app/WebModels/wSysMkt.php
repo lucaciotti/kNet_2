@@ -24,10 +24,10 @@ class wSysMkt extends Model
         $this->setConnection(RedisUser::get('ditta_DB'));
     }
 
-    public function modCarp01(){
+    public function sysLiked_mCarp01(){
          return $this->hasManyThrough(
             'knet\WebModels\wModCarp01',
-            'knet\WebModels\wMCarp01_SysMkt',
+            'knet\WebModels\wMCarp01_SysLiked',
             'sysmkt_cod', // Foreign key on PivotModCarp table...
             'id', // Foreign key on ModCarp table...
             'codice', // Local key on this table...

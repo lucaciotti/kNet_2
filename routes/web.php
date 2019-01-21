@@ -376,6 +376,12 @@ Route::group(['as' => 'rubri::'], function () {
   // ]);
 });
 
+Route::group(['as' => 'sysMkt::'], function () {
+  Route::resource('sysMkt', 'SysMktController')->only([
+    'index', 'store'
+  ]);
+});
+
 Route::group(['as' => 'manuale::'], function () {
   Route::get('/manuale_agente', [
     'as' => 'agente',

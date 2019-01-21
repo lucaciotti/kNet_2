@@ -9,7 +9,7 @@ use RedisUser;
 
 class wMCarp01_SysBuyOfKK extends Model
 {
-    protected $table = 'w_mcarp01_sysmkt';
+    protected $table = 'w_mcarp01_sysBuyOfKK';
     protected $dates = ['created_at', 'updated_at', 'deleted_at'];
     protected $fillable = ['type',
                         'mcarp01_id',
@@ -21,15 +21,6 @@ class wMCarp01_SysBuyOfKK extends Model
         parent::__construct($attributes);
         //Imposto la Connessione al Database
         $this->setConnection(RedisUser::get('ditta_DB'));
-    }
-
-    protected static function boot()
-    {
-      parent::boot();
-
-      static::addGlobalScope('type', function(Builder $builder) {
-          $builder->where('type', 2);
-      });
     }
 
     public function modCarp01(){

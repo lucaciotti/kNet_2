@@ -55,26 +55,48 @@ class wModCarp01 extends Model
     }
 
     public function sysBuyOfKK(){
-        return $this->hasMany('knet\WebModels\wMCarp01_SysBuyOFOther', 'mcarp01_id', 'id');
-      /* return $this->hasManyThrough(
+        // return $this->hasMany('knet\WebModels\wMCarp01_SysBuyOfKK', 'mcarp01_id', 'id');
+        return $this->hasManyThrough(
             'knet\WebModels\wSysMkt',
-            'knet\WebModels\wMCarp01_SysBuyOFKK',
+            'knet\WebModels\wMCarp01_SysBuyOfKK',
             'mcarp01_id', // Foreign key on PivotModCarp table...
             'codice', // Foreign key on ModCarp table...
             'id', // Local key on this table...
             'sysmkt_cod' // Local key on PivotModCarp table...
-        ); */
+        );
     }
 
     public function sysBuyOfOther(){
-        return $this->hasMany('knet\WebModels\wMCarp01_SysBuyOFOther', 'mcarp01_id', 'id');
+        return $this->hasManyThrough(
+            'knet\WebModels\wSysMkt',
+            'knet\WebModels\wMCarp01_SysBuyOfOther',
+            'mcarp01_id', // Foreign key on PivotModCarp table...
+            'codice', // Foreign key on ModCarp table...
+            'id', // Local key on this table...
+            'sysmkt_cod' // Local key on PivotModCarp table...
+        );
     }
 
     public function sysKnown(){
-        return $this->hasMany('knet\WebModels\wMCarp01_SysBuyOFOther', 'mcarp01_id', 'id');
+        return $this->hasManyThrough(
+            'knet\WebModels\wSysMkt',
+            'knet\WebModels\wMCarp01_SysKnown',
+            'mcarp01_id', // Foreign key on PivotModCarp table...
+            'codice', // Foreign key on ModCarp table...
+            'id', // Local key on this table...
+            'sysmkt_cod' // Local key on PivotModCarp table...
+        );
+        
     }
 
     public function sysLiked(){
-        return $this->hasMany('knet\WebModels\wMCarp01_SysBuyOFOther', 'mcarp01_id', 'id');
+        return $this->hasManyThrough(
+            'knet\WebModels\wSysMkt',
+            'knet\WebModels\wMCarp01_SysLiked',
+            'mcarp01_id', // Foreign key on PivotModCarp table...
+            'codice', // Foreign key on ModCarp table...
+            'id', // Local key on this table...
+            'sysmkt_cod' // Local key on PivotModCarp table...
+        );
     }
 }

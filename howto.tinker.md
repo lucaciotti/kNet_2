@@ -1,4 +1,4 @@
-1. Start an authenticated session --> auth()->loginUsingId(1)
+1. Start an authenticated session --> auth()->loginUsingId(2)
 
 2. Ok, now let's add an event listener:
     ```php
