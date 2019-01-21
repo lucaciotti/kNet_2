@@ -13,7 +13,7 @@ class CreateTableModuleCarp extends Migration
      */
     public function up()
     {
-        Schema::create('w_mod_carp', function (Blueprint $table) {
+        Schema::create('w_mod_carp_01', function (Blueprint $table) {
             $table->increments('id');
             $table->bigInteger('rubri_id')->unsigned()->comment('');
             $table->boolean('prod_mobili')->default(false)->comment('');
@@ -35,7 +35,6 @@ class CreateTableModuleCarp extends Migration
             $table->boolean('not_why_noinfo')->nullable()->comment('');
             $table->integer('not_supplierType')->nullable()->comment('');
             $table->string('not_supplierName', 100)->nullable()->comment('');
-            $table->json('systemsList')->nullable()->comment('');
             $table->boolean('wants_tryKK')->nullable()->comment('');
             $table->text('notryKK_note')->nullable()->comment('');
             $table->boolean('wants_info')->nullable()->comment('');
