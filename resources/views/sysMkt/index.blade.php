@@ -12,10 +12,10 @@
 	<div class="row">
 
 		<div id="app" class="container">
-			<div class="col-lg-12">
-				@include ('sysMkt.partials.list')   
-					
+			<div class="col-lg-12">	
 				@include ('sysMkt.partials.form')      
+
+				@include ('sysMkt.partials.list')   
 			</div>
     	</div>
         

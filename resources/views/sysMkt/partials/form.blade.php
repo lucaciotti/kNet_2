@@ -10,10 +10,12 @@
         <form action="{{ route('sysMkt::sysMkt.store') }}" method="POST" @submit.prevent='onSubmit' @keydown="form.errors.clear($event.target.name)">
               {{ csrf_field() }}
 
-            <div class="form-group">
+            <div class="form-group has-feedback " :class="{ 'has-error': form.errors.has('codice') }">
               <label>Codice System</label>
               <input type="text" class="form-control" name="codice" value="" placeholder="Codice System" v-model='form.codice'>
-              <span class="help is-danger" v-if="form.errors.has('codice')" v-text="form.errors.get('codice')"></span>
+              <transition name="fade">
+                <span class="help-block" v-if="form.errors.has('codice')" v-text="form.errors.get('codice')"></span>
+              </transition>
             </div>
 
             <div class="form-group">
@@ -23,7 +25,7 @@
             </div>
 
             <div>
-              <button type="submit" class="btn btn-primary" :disabled="form.errors.any()">{{ trans('_message.submit') }}</button>
+              <button type="submit" class="btn btn-primary" :disabled="form.errors.any()"><i v-if="form.submitting" class="fa fa-refresh fa-spin"></i>{{ trans('_message.submit') }}</button>
             </div>
         </form>
     

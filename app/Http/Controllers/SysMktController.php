@@ -14,7 +14,7 @@ class SysMktController extends Controller
 
     public function index() {
         return view('sysMkt.index', [
-            'sysMkt' => wSysMkt::all(),
+            'sysMkt' => wSysMkt::orderBy('codice')->get(),
         ]);
     }
 

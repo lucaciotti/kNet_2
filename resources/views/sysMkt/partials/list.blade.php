@@ -9,14 +9,33 @@
 	</div>
 	<div class="box-body">
 
-		<ul>
-			@foreach ($sysMkt as $sys)
-				<li>
-					<a href="#">{{ $sys->codice }}</a> - {{ $sys->descrizione}}
-				</li>
-			@endforeach
-		</ul>
-		<hr>
+		<table class="table table-hover table-condensed dtTbls_full">
+			<thead>
+				<th>Codice</th>
+				<th>Descrizione</th>
+				<th>Url Sito Mkt</th>
+				<th>&nbsp;</th>
+			</thead>
+			<tbody>
+				@foreach ($sysMkt as $sys)
+					<tr>
+						<td><big>{{ $sys->codice }}</big></td>
+						<td>{{ $sys->descrizione }}</td>
+						<td>{{ $sys->url }}</td>
+						<td>
+							<form action="" method="POST">
+								{{ csrf_field() }}
+								{{ method_field('DELETE') }}
+
+								<button type="submit" id="delete-user-{{ $sys->codice }}" class="btn btn-danger">
+									<i class="fa fa-btn fa-trash"></i>
+								</button>
+							</form>
+						</td>
+					</tr>
+				@endforeach
+			</tbody>
+		</table>
 
 	</div>
 </div>
