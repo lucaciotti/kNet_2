@@ -26,22 +26,20 @@
         <div class="box-body">
           <table class="table table-hover table-condensed dtTbls_light">
             <thead>
-              <th>{{ trans('client.code') }}</th>
               <th>{{ trans('client.descCli') }}</th>
               <th>{{ trans('client.nat&loc') }}</th>
               <th>{{ trans('client.sector') }}</th>
               <th>{{ trans('client.agent') }}</th>
             </thead>
             <tbody>
-              @foreach ($contacts as $client)
+              @foreach ($contacts as $contact)
                 <tr>
                   <td>
-                    <a href="{{ route('client::detail', $client->id ) }}"> {{ $client->codice }}</a>
+                    <a href="{{ route('ModCarp01::create', ['rubri_id' => $contact->id] ) }}"> {{ $contact->descrizion }}</a>
                   </td>
-                  <td>{{ $client->descrizion }}</td>
-                  <td>{{ $client->codnazione }} - {{ $client->localita }}</td>
-                  <td>{{ $client->settore }}</td>
-                  <td>@if($client->agent) {{ $client->agent->descrizion }} @endif</td>
+                  <td>{{ $contact->codnazione }} - {{ $contact->regione }}, {{ $contact->localita }}</td>
+                  <td>{{ $contact->settore }}</td>
+                  <td>@if($contact->agent) {{ $contact->agent->descrizion }} @endif</td>
                 </tr>
               @endforeach
             </tbody>

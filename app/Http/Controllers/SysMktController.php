@@ -3,6 +3,7 @@
 namespace knet\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
 
 use knet\WebModels\wSysMkt;
 
@@ -30,5 +31,10 @@ class SysMktController extends Controller
             'url' => request('url')
         ]);
         return ['message' => 'System Mkt creato!'];
+    }
+
+    public function destroy(Request $req, $codice){
+      wSysMkt::where('codice', $codice)->delete();
+      return Redirect::route('sysMkt::sysMkt.index');
     }
 }

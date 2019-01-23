@@ -23,7 +23,7 @@
 						<td>{{ $sys->descrizione }}</td>
 						<td>{{ $sys->url }}</td>
 						<td>
-							<form action="" method="POST">
+							<form action="{{route('sysMkt::sysMkt.destroy', $sys->codice)}}" method="POST">
 								{{ csrf_field() }}
 								{{ method_field('DELETE') }}
 

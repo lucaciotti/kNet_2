@@ -27,7 +27,7 @@ class RubriController extends Controller
         return redirect()->action('ClientController@detail', $req-user()->codcli);
       }
       // on($this->connection)->
-      $contacts = wRubrica::select('id', 'descrizion', 'codnazione', 'agente', 'localita', 'settore');
+      $contacts = wRubrica::select('id', 'descrizion', 'codnazione', 'agente', 'regione', 'localita', 'settore');
       $contacts = $contacts->with(['agent']);
       $contacts = $contacts->get();
       

@@ -378,7 +378,18 @@ Route::group(['as' => 'rubri::'], function () {
 
 Route::group(['as' => 'sysMkt::'], function () {
   Route::resource('sysMkt', 'SysMktController')->only([
-    'index', 'store'
+    'index', 'store', 'destroy'
+  ]);
+});
+
+Route::group(['as' => 'ModCarp01::'], function () {
+  Route::get('/createModule/{rubri_id}', [
+    'as' => 'create',
+    'uses' => 'ModCarp01Controller@createModule'
+  ]);  
+  Route::post('/storeModCarp01', [
+    'as' => 'store',
+    'uses' => 'ModCarp01Controller@store'
   ]);
 });
 

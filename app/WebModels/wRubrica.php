@@ -65,6 +65,6 @@ class wRubrica extends Model
     }
 
     public function agent(){
-      return $this->belongsTo('knet\ArcaModels\Agent', 'codag', 'codice');
+      return $this->belongsTo('knet\ArcaModels\Agent', 'agente', 'codice');
     }
 }
