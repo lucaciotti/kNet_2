@@ -110,6 +110,7 @@ class StAbcController extends Controller
 
     public function idxCli (Request $req, $codCli=null) {
       $customers = StatAbc::select('codicecf')
+                    ->whereHas('client')
                     ->with(['client'=>function($q){
                       $q->select('codice', 'descrizion');
                     }])
@@ -302,8 +303,11 @@ class StAbcController extends Controller
                   ->where('quantitare', '>', 0)
                   ->where('ommerce', 0)
                   ->whereHas('doccli', function($q) use ($codCli, $thisYear, $prevYear){
-                    $q ->where('codicecf', $codCli)
-                      ->whereIn('esercizio', [$thisYear, $prevYear]);
+                    $q->where('codicecf', $codCli)
+                      ->whereIn('esercizio', [$thisYear, $prevYear])
+                      ->withoutGlobalScope('agent')
+                      ->withoutGlobalScope('superAgent')
+                      ->withoutGlobalScope('client');
                   })
                   ->with(['doccli' => function ($query) use ($codCli, $thisYear, $prevYear){
                     $query->select('id', 'tipodoc', 'datadoc', 'numerodoc', 'scontocass', 'agente')

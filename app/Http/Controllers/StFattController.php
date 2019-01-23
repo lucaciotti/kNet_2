@@ -138,7 +138,7 @@ class StFattController extends Controller
     public function idxCli (Request $req, $codCli=null) {
       $clients = StatFatt::select('codicecf')
                           ->where('codicecf', '!=', 'CTOT')
-                          ->groupBy('codicecf')
+                          ->whereHas('client')
                           ->with([
                             'client' => function($query){
                               $query->select('codice', 'descrizion')
@@ -146,7 +146,8 @@ class StFattController extends Controller
                               ->withoutGlobalScope('superAgent')
                               ->withoutGlobalScope('client');
                             }
-                            ])
+                          ])
+                          ->groupBy('codicecf')
                           ->get();
       $codCli = ($req->input('codcli')) ? $req->input('codcli') : $codCli;
       $cliente = (!empty($codCli)) ? $codCli : $clients->first()->codicecf;
