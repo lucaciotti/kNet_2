@@ -1,3 +1,7 @@
+<!-- iCheck -->
+{{--
+<link href="{{ asset('/plugins/iCheck/square/_all.css') }}" rel="stylesheet" type="text/css" /> --}}
+<link href="{{ asset('/plugins/iCheck/flat/_all.css') }}" rel="stylesheet" type="text/css" />
 
 <!-- iCheck -->
 <script src="{{ asset('/plugins/iCheck/icheck.min.js') }}" type="text/javascript"></script>

@@ -480,6 +480,7 @@ class StFattController extends Controller
 
     //Costruisce Collection JSON per Grafico.
     protected function makeFatTgtJson($fat, $tgt, $mese){
+      $mese=12;
       $collect = collect([]);
       $fatM = 0;
       $tgtM = 0;

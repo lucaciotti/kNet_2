@@ -1,9 +1,13 @@
-
+<!-- DatePicket -->
+<link href="{{ asset('/plugins_old/datepicker/datepicker3.css') }}" rel="stylesheet" type="text/css" />
+<link href="{{ asset('/plugins_old/daterangepicker/daterangepicker-bs3.css') }}" rel="stylesheet" type="text/css" />
+<link href="{{ asset('/plugins_old/timepicker/bootstrap-timepicker.min.css') }}" rel="stylesheet" type="text/css" />
 <!-- datePicker -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
-<script src="{{ asset('/plugins/datepicker/bootstrap-datepicker.js') }}" type="text/javascript"></script>
-<script src="{{ asset('/plugins/daterangepicker/daterangepicker.js') }}" type="text/javascript"></script>
-<script src="{{ asset('/plugins/timepicker/bootstrap-timepicker.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset('/plugins_old/datepicker/bootstrap-datepicker.js') }}" type="text/javascript"></script>
+<script src="{{ asset('/plugins_old/daterangepicker/daterangepicker.js') }}" type="text/javascript"></script>
+<script src="{{ asset('/plugins_old/timepicker/bootstrap-timepicker.min.js') }}" type="text/javascript"></script>
+
+<script src="{{ asset('/plugins/moment/moment-with-locales.js') }}" type="text/javascript"></script>
 
 <script>
     $(function () {

@@ -28,7 +28,7 @@
         <!-- /.search form -->
 
         <!-- Sidebar Menu -->
-        <ul class="sidebar-menu">
+        <ul class="sidebar-menu tree" data-widget="tree">
             <li class="header">Arca Web</li>
             <!-- Optionally, you can add icons to the links -->
             <li class="{{ Ekko::isActiveURL('home') }}"><a href="{{ url('/home') }}"><i class='fa fa-home'></i> <span>{{ trans('_menu.home') }}</span></a></li>

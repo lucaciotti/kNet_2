@@ -6,7 +6,7 @@
     </div>
     <!-- Default to the left -->
     <strong>
-      Copyright &copy; 2016
+      Copyright &copy; {{ Carbon\Carbon::now()->year }}
       <a href="http://www.k-group.com">K-Group</a>.
     </strong>
     {{ trans('_message.createdby') }}
