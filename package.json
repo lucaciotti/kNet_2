@@ -35,11 +35,10 @@
     "lodash": "^4.17.4",
     "popper.js": "^1.12",
     "pretty-checkbox-vue": "^1.1.9",
-    "vue": "^2.5.7"
-  },
-  "dependencies": {
+    "vue": "^2.5.7",
     "jquery-knob": "^1.2.11",
     "raphael": "^2.2.7",
     "vue-select": "^2.5.1"
-  }
+  },
+  "dependencies": {}
 }
