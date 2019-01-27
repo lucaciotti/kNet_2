@@ -50,7 +50,7 @@ if (token) {
  * and simple, leaving you to focus on building your next great project.
  */
 
-// window.Vue = require("vue");
+window.Vue = require("vue");
 
 // Use trans function in Vue (equivalent to trans() Laravel Translations helper). See htmlheader.balde.php partial.
 Vue.prototype.trans = key => {

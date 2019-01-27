@@ -19,9 +19,9 @@
               <label>Tipologia di Produzione</label>
               {{-- <input type="text" class="form-control" name="descrizione" value="" placeholder="Descrizione System" v-model='form.descrizione'> --}}
               {{-- <input type="checkbox" id="checkbox" v-model="form.checked"> --}}
-              <p-check name="check" class="p-switch" color="success" v-model="form.checked">check</p-check>
+              <p-check name="check" class="p-switch" color="success" v-model="check">check</p-check>
               <p-radio name="radio" color="info" v-model="form.radio">radio</p-radio>
-              <v-select :options="['foo','bar']" multiselect></v-select>
+              <v-select :options="['foo','bar']" v-model="selected"></v-select>
               {{-- <label for="checkbox">{{ checked }}</label> --}}
                 {{-- <input type="checkbox" name="typeProdPorte" true-value="yes" false-value="no" v-model="form.typeProdPorte"> Porte --}}
                 {{-- <input type="checkbox" id="typeProd_finestre" v-model='form.typeProd_finestre'> Finestre

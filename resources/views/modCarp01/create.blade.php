@@ -13,7 +13,9 @@
 
 		<div id="app" class="container">
 			<div class="col-lg-12">	
-				@include ('modCarp01.partials.form')      
+			<form-carp contact="{{$contact}}" sysmkt="{{$sysMkt}}">
+				</form-carp>
+				{{-- @include ('modCarp01.partials.form')       --}}
 			</div>
     	</div>
         
@@ -21,10 +23,10 @@
 @endsection
 
 @section('extra_script')
-	@include('layouts.partials.scripts.iCheck')
+	{{-- @include('layouts.partials.scripts.iCheck')
  	@include('layouts.partials.scripts.select2')
   	@include('layouts.partials.scripts.datePicker')
+	<script src="/js/modCarp01.js"></script> --}}
   	{{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.15.3/axios.js"></script>
 	<script src="https://unpkg.com/vue@2.1.6/dist/vue.js"></script> --}}
-	<script src="/js/modCarp01.js"></script>
 @endsection

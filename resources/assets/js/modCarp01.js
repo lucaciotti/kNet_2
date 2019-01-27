@@ -1,47 +1,45 @@
-
-import Form from 'acacha-forms'
+import Form from "acacha-forms";
 // import initialitzeIcheck from './InitializeIcheck'
-import redirect from './redirect'
-import PrettyInput from 'pretty-checkbox-vue/input';
-import PrettyCheck from 'pretty-checkbox-vue/check';
-import PrettyRadio from 'pretty-checkbox-vue/radio';
-import vSelect from 'vue-select';
+import redirect from "./redirect";
+import PrettyInput from "pretty-checkbox-vue/input";
+import PrettyCheck from "pretty-checkbox-vue/check";
+import PrettyRadio from "pretty-checkbox-vue/radio";
+import vSelect from "vue-select";
 
-
-Vue.component('p-input', PrettyInput);
-Vue.component('p-check', PrettyCheck);
-Vue.component('p-radio', PrettyRadio);
-Vue.component('v-select', vSelect)
+Vue.component("p-input", PrettyInput);
+Vue.component("p-check", PrettyCheck);
+Vue.component("p-radio", PrettyRadio);
+Vue.component("v-select", vSelect);
 
 const app = new Vue({
-    el: "#app",
+  el: "#app",
 
-    mixins: [redirect],
+  mixins: [redirect],
 
-    data: {
-        selected: null,
-        form: new Form({
-            ragioneSociale: "",
-            typeProdPorte: "",
-            checked: '',
-            radio: '',
-            // typeProd_finestre: "",
-            // typeProd_mobili: ""
-        }),
-    },
+  data: {
+    selected: null,
+    check: null,
+    form: new Form({
+      ragioneSociale: "",
+      typeProdPorte: "",
+      checked: "",
+      radio: ""
+      // typeProd_finestre: "",
+      // typeProd_mobili: ""
+    })
+  },
 
-    components: {
-    },
+  components: {},
 
-    methods: {
-        onSubmit() {
-            this.form.post("/storeModCarp01").then(response => {
-                // window.location.reload();
-            });
-        }
-    },
+  methods: {
+    onSubmit() {
+      this.form.post("/storeModCarp01").then(response => {
+        // window.location.reload();
+      });
+    }
+  },
 
-    /* mounted: function () {
+  /* mounted: function () {
         jQuery("input").on("ifChecked", function (e) {
             app.$data.checked = true;
         });
@@ -49,8 +47,8 @@ const app = new Vue({
             app.$data.checked = false;
         });
     } */
-    
-    mounted() {
-        // this.initialitzeICheck('checked')
-    },
+
+  mounted() {
+    // this.initialitzeICheck('checked')
+  }
 });

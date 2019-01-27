@@ -56,7 +56,15 @@ mix
     "node_modules/bootstrap-daterangepicker/daterangepicker.*",
     "public/plugins/daterangepicker"
   )
-  .copy("node_modules/bootstrap-datepicker/dist", "public/plugins/datepicker");
+  .copy("node_modules/bootstrap-datepicker/dist", "public/plugins/datepicker")
+  .copy(
+    "node_modules/pretty-checkbox/dist/pretty-checkbox.min.css",
+    "public/plugins/pretty-checkbox/css"
+  )
+  .copy(
+    "node_modules/vue-multiselect/dist/vue-multiselect.min.css",
+    "public/plugins/vue-multiselect/css"
+  );
 
 if (mix.config.inProduction) {
   mix.version();

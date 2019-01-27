@@ -25,7 +25,7 @@ class wModCarp01 extends Model
                         'yes_supplierName',
                         'yes_isInformato',
                         'not_why_prezzo',
-                        'not_why_qualità',
+                        'not_why_qualita',
                         'not_why_servizio',
                         'not_why_catalogo',
                         'not_why_noinfo',

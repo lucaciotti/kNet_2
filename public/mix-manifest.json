@@ -43,5 +43,7 @@
     "/plugins/raphael/raphael.no-deps.min.js": "/plugins/raphael/raphael.no-deps.min.js",
     "/plugins/daterangepicker/daterangepicker.css": "/plugins/daterangepicker/daterangepicker.css",
     "/plugins/daterangepicker/daterangepicker.js": "/plugins/daterangepicker/daterangepicker.js",
-    "/plugins/daterangepicker/daterangepicker.scss": "/plugins/daterangepicker/daterangepicker.scss"
+    "/plugins/daterangepicker/daterangepicker.scss": "/plugins/daterangepicker/daterangepicker.scss",
+    "/plugins/pretty-checkbox/css/pretty-checkbox.min.css": "/plugins/pretty-checkbox/css/pretty-checkbox.min.css",
+    "/plugins/vue-multiselect/css/vue-multiselect.min.css": "/plugins/vue-multiselect/css/vue-multiselect.min.css"
 }
