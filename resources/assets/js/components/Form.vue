@@ -396,6 +396,70 @@
         <label>Ragione Sociale del Fornitore</label>
         <input type="text" class="form-control" name="nameSupplier" v-model="form.not_supplierName">
       </div>
+
+      <hr>
+
+      <div class="form-group has-feedback" :class="{ 'has-error': form.errors.has('rConosceKK') }">
+        <label>Ha intenzione di provare i Prodotti Krona Koblenz?</label>
+        <pRadio
+          class="p-icon p-round p-fill p-smooth p-bigger"
+          name="wants_tryKK"
+          color="info"
+          v-model="form.wants_tryKK"
+          value="true"
+          @change="boolWantsTryKK"
+        >
+          <i class="icon fa fa-check" slot="extra"></i>
+          Sì
+        </pRadio>
+        <pRadio
+          class="p-icon p-round p-fill p-smooth p-bigger"
+          name="wants_tryKK"
+          color="info"
+          v-model="form.wants_tryKK"
+          value="false"
+          @change="boolWantsTryKK"
+        >
+          <i class="icon fa fa-check" slot="extra"></i>
+          No
+        </pRadio>
+      </div>
+
+      <div
+        class="form-group has-feedback"
+        :class="{ 'has-error': form.errors.has('sysLiked') }"
+        v-show="isTryKK && isTryKK!=null"
+      >
+        <label>Quali Sistemi Le interessano maggiormente?</label>
+        <v-multi-select
+          v-model="form.sysLiked"
+          :options="optionsSysMkt"
+          :multiple="true"
+          :searchable="true"
+          placeholder="Pick a value"
+          label="descrizione"
+          track-by="codice"
+        ></v-multi-select>
+        <span
+          class="help is-danger"
+          v-if="form.errors.has('sysLiked')"
+          v-text="form.errors.get('sysLiked')"
+        ></span>
+      </div>
+
+      <div
+        class="form-group has-feedback"
+        :class="{ 'has-error': form.errors.has('notryKK_note') }"
+        v-show="!isTryKK && isTryKK!=null"
+      >
+        <label>Motiva la scelta...</label>
+        <textarea
+          class="form-control"
+          rows="5"
+          v-model="form.notryKK_note"
+          placeholder="Inserisci Note"
+        ></textarea>
+      </div>
     </boxDefault>
 
     <button type="submit" class="btn btn-primary" :disabled="form.errors.any()">
@@ -443,10 +507,16 @@ export default {
         not_why_catalogo: false,
         not_why_noinfo: false,
         not_supplierType: "",
-        not_supplierName: ""
+        not_supplierName: "",
+        wants_tryKK: null,
+        notryKK_note: "",
+        wants_info: null,
+        final_note: "",
+        vote: 0
       }),
       isConosceKK: null,
       isAcquistaKK: null,
+      isTryKK: null,
       optionsSysMkt: JSON.parse(this.sysmkt),
       preSysKnown: [{ codice: "", descrizione: "none" }]
     };
@@ -475,6 +545,10 @@ export default {
 
     boolAcquistaKK() {
       this.isAcquistaKK = this.form.rAcquistaKK === "true" ? true : false;
+    },
+
+    boolWantsTryKK() {
+      this.isTryKK = this.form.wants_tryKK === "true" ? true : false;
     },
 
     listSysKnown() {
