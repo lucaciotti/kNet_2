@@ -14,7 +14,8 @@ require("./bootstrap");
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-Vue.component("form-carp", require("./components/Form.vue"));
+Vue.component("form-carp", require("./components/FormCarp.vue"));
+Vue.component("form-sys-mkt", require("./components/FormSysMkt.vue"));
 
 const app = new Vue({
   el: "#app"

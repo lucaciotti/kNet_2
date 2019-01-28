@@ -29,7 +29,7 @@ class CreateTableModuleCarp extends Migration
             $table->string('yes_supplierName', 100)->nullable()->comment('');
             $table->boolean('yes_isInformato')->nullable()->comment('');
             $table->boolean('not_why_prezzo')->nullable()->comment('');
-            $table->boolean('not_why_qualità')->nullable()->comment('');
+            $table->boolean('not_why_qualita')->nullable()->comment('');
             $table->boolean('not_why_servizio')->nullable()->comment('');
             $table->boolean('not_why_catalogo')->nullable()->comment('');
             $table->boolean('not_why_noinfo')->nullable()->comment('');
