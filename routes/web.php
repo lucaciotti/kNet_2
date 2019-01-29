@@ -361,19 +361,18 @@ Route::group(['as' => 'rubri::'], function () {
     'as' => 'import',
     'uses' => 'RubriController@doImport'
   ]);
-
   Route::get('/rubrica', [
     'as' => 'list',
     'uses' => 'RubriController@index'
   ]);
-  // Route::get('/client/{codice}', [
-  //   'as' => 'detail',
-  //   'uses' => 'ClientController@detail'
-  // ]);
-  // Route::post('/clients/filter', [
-  //   'as' => 'fltList',
-  //   'uses' => 'ClientController@fltIndex'
-  // ]);
+  Route::get('/contact/{rubri_id}', [
+    'as' => 'detail',
+    'uses' => 'RubriController@detail'
+  ]);
+  Route::post('/rubrica/filter', [
+    'as' => 'fltList',
+    'uses' => 'RubriController@fltIndex'
+  ]);
 });
 
 Route::group(['as' => 'sysMkt::'], function () {
@@ -390,6 +389,18 @@ Route::group(['as' => 'ModCarp01::'], function () {
   Route::post('/storeModCarp01', [
     'as' => 'store',
     'uses' => 'ModCarp01Controller@store'
+  ]);
+  Route::get('/editModule/{rubri_id}', [
+    'as' => 'edit',
+    'uses' => 'ModCarp01Controller@edit'
+  ]);
+  Route::post('/updModCarp01', [
+    'as' => 'update',
+    'uses' => 'ModCarp01Controller@update'
+  ]);
+  Route::delete('/delModCarp01/{rubri_id}', [
+    'as' => 'delete',
+    'uses' => 'ModCarp01Controller@delete'
   ]);
 });
 

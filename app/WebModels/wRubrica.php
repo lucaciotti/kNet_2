@@ -9,7 +9,7 @@ use RedisUser;
 class wRubrica extends Model
 {
     protected $table = 'w_rubrica';
-    protected $dates = ['created_at', 'updated_at', 'deleted_at'];
+    protected $dates = ['created_at', 'updated_at', 'deleted_at','date_nextvisit', 'date_lastvisit'];
     protected $fillable = ['descrizion',
                         'telefono',
                         'sitoweb',

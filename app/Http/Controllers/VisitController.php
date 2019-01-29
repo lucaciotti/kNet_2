@@ -10,6 +10,7 @@ use knet\Http\Requests;
 
 use knet\ArcaModels\Client;
 use knet\WebModels\wVisit;
+use knet\WebModels\wRubrica;
 use Auth;
 
 class VisitController extends Controller
@@ -34,7 +35,8 @@ class VisitController extends Controller
     public function store(Request $req){
       // dd($req);
       $visit = wVisit::create([
-        'codicecf' => $req->input('codcli'),
+        'codicecf' => ($req->input('codcli') ? $req->input('codcli') : null),
+        'rubri_id' => ($req->input('rubri_id') ? $req->input('rubri_id') : null),
         'user_id' => Auth::user()->id,
         'data' => new Carbon($req->input('data')),
         'tipo' => $req->input('tipo'),
@@ -42,13 +44,25 @@ class VisitController extends Controller
         'note' => $req->input('note')
       ]);
 
-      return Redirect::route('visit::show', $req->input('codcli'));
+      if($req->input('rubri_id')){
+        $contact = wRubrica::find($req->input('rubri_id'));
+        $contact->date_lastvisit = new Carbon($req->input('data'));
+        $contact->date_nextvisit = (new Carbon($req->input('data')))->addDays(60);
+        $contact->save();
+      }
+
+      return Redirect::route('visit::show', $req->input('codcli'), $req->input('rubri_id'));
     }
 
-    public function show(Request $req, $codCli){
+    public function show(Request $req, $codCli=null, $rubri_id=null ){
       // dd($req);
-      $visits = wVisit::where('codicecf', $codCli)->with('user')->orderBy('data', 'desc')->orderBy('id')->get();
-      $client = Client::findOrFail($codCli);
+      if($codCli){
+        $visits = wVisit::where('codicecf', $codCli)->with('user')->orderBy('data', 'desc')->orderBy('id')->get();
+        $client = Client::findOrFail($codCli);
+      } elseif($rubri_id){
+        $visits = wVisit::where('rubri_id', $rubri_id)->with('user')->orderBy('data', 'desc')->orderBy('id')->get();
+        $client = wRubrica::findOrFail($rubri_id);
+      }
 
       return view('visit.show', [
         'visits' => $visits,

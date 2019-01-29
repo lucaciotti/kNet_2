@@ -4,6 +4,7 @@ namespace knet\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
+use Carbon\Carbon;
 
 use knet\WebModels\wModCarp01;
 use knet\WebModels\wMCarp01_SysBuyOfKK;
@@ -12,6 +13,7 @@ use knet\WebModels\wMCarp01_SysKnown;
 use knet\WebModels\wMCarp01_SysLiked;
 use knet\WebModels\wSysMkt;
 use knet\WebModels\wRubrica;
+use knet\WebModels\wVisit;
 use Auth;
 
 class ModCarp01Controller extends Controller
@@ -29,6 +31,7 @@ class ModCarp01Controller extends Controller
     }
     
     public function store(Request $req){
+        $contact=wRubrica::find($req->input('rubri_id'));
         $modCarp = wModCarp01::create([
             'rubri_id' => $req->input('rubri_id'),
             'prod_mobili' => $req->input('typeProdMobili'),
@@ -88,7 +91,35 @@ class ModCarp01Controller extends Controller
                 ]);
             }
         }
-        return ;
+        $visit = wVisit::create([
+            'codicecf' => $contact->codicecf,
+            'rubri_id' => $req->input('rubri_id'),
+            'user_id' => Auth::user()->id,
+            'data' => Carbon::now(),
+            'tipo' => "MCarp",
+            'descrizione' => "Compilazione Modulo Falegnami",
+            'modCarp_id' => $modCarp->id
+        ]);
+
+        // Infine aggiorno il contatto con informazioni Chiave.
+        $contact->isKKBuyer = $modCarp->isKKBuyer;
+        $contact->know_kk = $modCarp->know_kk;
+        $contact->wants_tryKK = $modCarp->wants_tryKK;
+        $contact->wants_info = $modCarp->wants_info;
+        $contact->prod_mobili = $modCarp->prod_mobili;
+        $contact->prod_porte = $modCarp->prod_porte;
+        $contact->prod_portefinestre = $modCarp->prod_portefinestre;
+        $contact->prod_cucine = $modCarp->prod_cucine;
+        $contact->prod_other = $modCarp->prod_other;
+        $contact->prod_note = $modCarp->prod_note;
+        $contact->vote = $modCarp->vote;
+        $contact->isModCarp01 = true;
+        $contact->date_lastvisit = Carbon::now();
+        $contact->date_nextvisit = Carbon::now()->addDays(60);
+        $contact->save();
+
+
+        return ['Modulo Falegnami Salvato'];
     }
 
 }

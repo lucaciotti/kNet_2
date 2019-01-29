@@ -24,22 +24,62 @@
           </div>
         </div>
         <div class="box-body">
-          <table class="table table-hover table-condensed dtTbls_light">
+          <table class="table table-hover table-condensed dtTbls_full">
+            <col width="100">
+            <col width="100">
+            <col width="20">
+            <col width="50">
+            <col width="2">
+            <col width="2">            
             <thead>
               <th>{{ trans('client.descCli') }}</th>
               <th>{{ trans('client.nat&loc') }}</th>
-              <th>{{ trans('client.sector') }}</th>
+              <th>Pross.Visita</th>
               <th>{{ trans('client.agent') }}</th>
+              <th>&nbsp;</th>
+              <th>&nbsp;</th>
             </thead>
             <tbody>
               @foreach ($contacts as $contact)
-                <tr>
+                @if ($contact->date_nextvisit)
+                  @php
+                      $dToNextVisit=$contact->date_nextvisit->diffInDays(Carbon\Carbon::now());
+                      if($contact->date_nextvisit<Carbon\Carbon::now()){
+                        $dToNextVisit = $dToNextVisit*-1;
+                      }
+                  @endphp
+                    @if ($dToNextVisit<10 && $dToNextVisit>0)
+                        <tr class="warning">
+                    @else
+                      @if ($dToNextVisit<0)
+                          <tr class="danger">
+                      @else
+                          <tr>                                              
+                      @endif                        
+                    @endif
+                @else
+                  <tr>                    
+                @endif
                   <td>
-                    <a href="{{ route('ModCarp01::create', ['rubri_id' => $contact->id] ) }}"> {{ $contact->descrizion }}</a>
+                    <a href="{{ route('rubri::detail', ['rubri_id' => $contact->id] ) }}"> {{ $contact->descrizion }}</a>
                   </td>
-                  <td>{{ $contact->codnazione }} - {{ $contact->regione }}, {{ $contact->localita }}</td>
-                  <td>{{ $contact->settore }}</td>
+                  <td>{{ $contact->codnazione }} - {{ $contact->regione }}, {{ ucfirst(strtolower($contact->localita)) }}</td>
+                  <td>
+                    @if($contact->date_nextvisit)
+                      <span>{{$contact->date_nextvisit->format('Ymd')}}</span>{{ $contact->date_nextvisit->format('d-m-Y') }}
+                    @endif
+                  </td>
                   <td>@if($contact->agent) {{ $contact->agent->descrizion }} @endif</td>
+                  <td>
+                      @if($contact->codicecf) <a class="btn btn-primary" href="{{ route('client::detail', $contact->codicecf ) }}"><i class="fa fa-users" target="_blank"></i></a> @endif
+                  </td>
+                  <td>
+                      @if($contact->isModCarp01) 
+                        <a class="btn btn-success" href="{{ route('ModCarp01::edit', ['rubri_id' => $contact->id] ) }}" target="_blank"><i class="fa fa-file-text-o"></i></a>
+                      @else
+                        <a class="btn btn-warning" href="{{ route('ModCarp01::create', ['rubri_id' => $contact->id] ) }}" target="_blank"><i class="fa fa-file-text-o"></i></a>
+                      @endif
+                  </td>
                 </tr>
               @endforeach
             </tbody>
@@ -59,7 +99,7 @@
           </div>
         </div>
         <div class="box-body">
-          {{-- @include('client.partials.formIndex') --}}
+          @include('rubri.partials.formIndex')
         </div>
       </div>
     </div>

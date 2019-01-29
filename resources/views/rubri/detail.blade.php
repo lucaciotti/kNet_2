@@ -5,16 +5,16 @@
 @endsection
 
 @section('contentheader_title')
-    {{$client->descrizion}}
+    {{$contact->descrizion}}
 @endsection
 
-@section('contentheader_description')
+{{-- @section('contentheader_description')
     [{{$client->codice}}]
-@endsection
+@endsection --}}
 
-@section('contentheader_breadcrumb')
+{{-- @section('contentheader_breadcrumb')
   {!! Breadcrumbs::render('client', $client->codice) !!}
-@endsection
+@endsection --}}
 
 @section('main-content')
 {{-- <div class="container"> --}}
@@ -30,23 +30,25 @@
           <dl class="dl-horizontal">
             <dt>{{ trans('client.descCli') }}</dt>
             <dd>
-              <big><strong>{{$client->descrizion}}</strong></big>
-              <small>{{$client->supragsoc}}</small>
+              <big><strong>{{$contact->descrizion}}</strong></big>
+              {{-- <small>{{$client->supragsoc}}</small> --}}
             </dd>
 
             <dt>{{ trans('client.codeCli') }}</dt>
-            <dd>{{$client->codice}}</dd>
+            <dd>@if ($contact->codicecf)
+                <a href="{{ route('client::detail', $contact->codicecf ) }}">{{$contact->codicecf}} - {{$contact->client->descrizion}}</a>
+            @endif</dd>
 
             <dt>{{ trans('client.vatCode') }}</dt>
-            <dd>{{$client->partiva}}</dd>
+            <dd>{{$contact->partiva}}</dd>
 
-            @if($client->codfiscale != $client->partiva)
+            @if($contact->codfiscale != $contact->partiva)
               <dt>{{ trans('client.taxCode') }}</dt>
-              <dd>{{$client->codfiscale}}</dd>
+              <dd>{{$contact->codfiscale}}</dd>
             @endif
 
-            <dt>{{ trans('client.sector_full') }}</dt>
-            <dd>{{$client->settore}} - @if($client->detSect) {{$client->detSect->descrizion}} @endif</dd>
+            {{-- <dt>{{ trans('client.sector_full') }}</dt>
+            <dd>{{$client->settore}} - @if($client->detSect) {{$client->detSect->descrizion}} @endif</dd> --}}
           </dl>
 
           <h4><strong> {{ trans('client.location') }} </strong> </h4>
@@ -54,16 +56,14 @@
           <dl class="dl-horizontal">
 
             <dt>{{ trans('client.location') }}</dt>
-            <dd>{{$client->localita}} ({{$client->prov}}) - @if($client->detNation) {{$client->detNation->descrizion}} @endif</dd>
+            <dd>{{$contact->localita}} ({{$contact->prov}}) - {{ $contact->regione }} - {{$contact->nazione}} </dd>
 
             <dt>{{ trans('client.address') }}</dt>
-            <dd>{{$client->indirizzo}}</dd>
+            <dd>{{$contact->indirizzo}}</dd>
 
             <dt>{{ trans('client.posteCode') }}</dt>
-            <dd>{{$client->cap}}</dd>
+            <dd>{{$contact->cap}}</dd>
 
-            <dt>{{ trans('client.zone') }}</dt>
-            <dd>@if($client->detZona) {{$client->detZona->descrizion}} @endif</dd>
           </dl>
 
           <h4><strong> {{ trans('client.situationCli') }}</strong> </h4>
@@ -71,16 +71,13 @@
           <dl class="dl-horizontal">
 
             <dt>{{ trans('client.statusCli') }}</dt>
-            <dd>{{$client->statocf}} - @if($client->detStato) {{$client->detStato->descrizion}} @endif</dd>
+            <dd>{{$contact->statocf}} - @if($contact->statocf=='T') Attivo @else Chiuso @endif</dd>
 
-            <dt>{{ trans('client.paymentType') }}</dt>
-            <dd>{{$client->pag}} - @if($client->detPag) {{$client->detPag->descrizion}} @endif</dd>
+            <dt>Data Ultima Visita</dt>
+            <dd>{{$contact->date_lastvisit}}</dd>
 
-            <dt>{{ trans('client.relationStart') }}</dt>
-            <dd>{{$client->u_dataini}}</dd>
-
-            <dt>{{ trans('client.relationEnd') }}</dt>
-            <dd>{{$client->u_datafine}}</dd>
+            <dt>Data Prossima Visita</dt>
+            <dd>{{$contact->date_nextVisit}}</dd>
           </dl>
         </div>
         <!-- /.tab-pane -->
@@ -88,68 +85,26 @@
           <dl class="dl-horizontal">
 
             <dt>{{ trans('client.referencePerson') }}</dt>
-            <dd>{{$client->persdacont}}</dd>
+            <dd>{{$contact->legaleRapp}}</dd>
 
             <dt>{{ trans('client.referenceAgent') }}</dt>
-            <dd>@if($client->agent) {{$client->agent->descrizion}} @endif</dd>
+            <dd>@if($contact->agent) {{$contact->agent->descrizion}} @endif</dd>
 
             <hr>
 
             <dt>{{ trans('client.phone') }}</dt>
-            <dd>{{$client->telefono}}
-              @if (!empty($client->telefono))
-                  &nbsp;<a href="tel:{{$client->telefono}}"><i class="btn btn-xs fa fa-phone bg-green"></i></a>
-              @endif
-            </dd>
-            <dt>{{ trans('client.fax') }}</dt>
-            <dd>{{$client->fax}}</dd>
-
-            <dt>{{ trans('client.phone2') }}</dt>
-            <dd>{{$client->telex}}</dd>
-
-            <dt>{{ trans('client.mobilePhone') }}</dt>
-            <dd>{{$client->telcell}}
-              @if (!empty($client->telcell))
-                  &nbsp;<a href="tel:{{$client->telcell}}"><i class="btn btn-xs fa fa-phone bg-green"></i></a>
+            <dd>{{$contact->telefono}}
+              @if (!empty($contact->telefono))
+                  &nbsp;<a href="tel:{{$contact->telefono}}"><i class="btn btn-xs fa fa-phone bg-green"></i></a>
               @endif
             </dd>
 
             <hr>
 
             <dt>{{ trans('client.email') }}</dt>
-            <dd>{{$client->email}}
-              @if (!empty($client->email))
-                  &nbsp;<a href="mailto:{{$client->email}}"><i class="btn btn-xs fa fa-envelope-o bg-red"></i></a>
-              @endif
-            </dd>
-
-            <hr>
-
-            <dt>{{ trans('client.emailAdm') }}</dt>
-            <dd>{{$client->emailam}}
-              @if (!empty($client->emailam))
-                  &nbsp;<a href="mailto:{{$client->emailam}}"><i class="btn btn-xs fa fa-envelope-o bg-red"></i></a>
-              @endif
-            </dd>
-
-            <dt>{{ trans('client.emailOrder') }}</dt>
-            <dd>{{$client->emailut}}
-              @if (!empty($client->emailut))
-                  &nbsp;<a href="mailto:{{$client->emailut}}"><i class="btn btn-xs fa fa-envelope-o bg-red"></i></a>
-              @endif
-            </dd>
-
-            <dt>{{ trans('client.emailDdt') }}</dt>
-            <dd>{{$client->emailav}}
-              @if (!empty($client->emailav))
-                  &nbsp;<a href="mailto:{{$client->emailav}}"><i class="btn btn-xs fa fa-envelope-o bg-red"></i></a>
-              @endif
-            </dd>
-
-            <dt>{{ trans('client.emailInvoice') }}</dt>
-            <dd>{{$client->emailpec}}
-              @if (!empty($client->emailpec))
-                  &nbsp;<a href="mailto:{{$client->emailpec}}"><i class="btn btn-xs fa fa-envelope-o bg-red"></i></a>
+            <dd>{{$contact->email}}
+              @if (!empty($contact->email))
+                  &nbsp;<a href="mailto:{{$contact->email}}"><i class="btn btn-xs fa fa-envelope-o bg-red"></i></a>
               @endif
             </dd>
 
@@ -188,16 +143,16 @@
         </div>
       </div>
       <div class="box-body">
-        <a type="button" class="btn btn-default btn-block" href="{{ route('doc::client', [$client->codice, '']) }}">{{ strtoupper(trans('client.allDocs')) }}</a>
+        {{-- <a type="button" class="btn btn-default btn-block" href="{{ route('doc::client', [$client->codice, '']) }}">{{ strtoupper(trans('client.allDocs')) }}</a>
         <a type="button" class="btn btn-default btn-block" href="{{ route('doc::client', [$client->codice, 'P']) }}">{{ trans('client.quotes') }}</a>
         <a type="button" class="btn btn-default btn-block" href="{{ route('doc::client', [$client->codice, 'O']) }}">{{ trans('client.orders') }}</a>
         <a type="button" class="btn btn-default btn-block" href="{{ route('doc::client', [$client->codice, 'B']) }}">{{ trans('client.ddt') }}</a>
         <a type="button" class="btn btn-default btn-block" href="{{ route('doc::client', [$client->codice, 'F']) }}">{{ trans('client.invoice') }}</a>
-        <a type="button" class="btn btn-default btn-block" href="{{ route('doc::client', [$client->codice, 'N']) }}">{{ trans('client.notecredito') }}</a>
+        <a type="button" class="btn btn-default btn-block" href="{{ route('doc::client', [$client->codice, 'N']) }}">{{ trans('client.notecredito') }}</a> --}}
       </div>
     </div>
 
-    <div class="box box-default collapsed-box">
+    {{-- <div class="box box-default collapsed-box">
       <div class="box-header with-border">
         <h3 class="box-title" data-widget="collapse">{{ trans('client.paymentCli') }}</h3>
         <span class="badge bg-yellow">{{$scads->count()}}</span>
@@ -208,9 +163,9 @@
       <div class="box-body">
         @include('scads.partials.tblGeneric', $scads)
       </div>
-    </div>
+    </div> --}}
 
-    @if (!Auth::user()->hasRole('client'))
+    {{-- @if (!Auth::user()->hasRole('client'))
     <div class="box box-default collapsed-box">
       <div class="box-header with-border">
         <h3 class="box-title" data-widget="collapse"><i class='fa fa-cloud-download'> </i> Download</h3>
@@ -234,7 +189,7 @@
         <a type="button" class="btn btn-default btn-block" href="{{ route('stFatt::fltCli', $client->codice) }}">{{ trans('client.revenue') }}</a>
       </div>
     </div>
-    @endif
+    @endif --}}
   </div>
 
 </div>
@@ -244,13 +199,13 @@
   <div class="col-lg-6">
     @include('client.partials.timeline', [
       'visits' => $visits,
-      'codcli' => $client->codice,
+      'codcli' => 'C01252',
       'dateNow' => $dateNow,
       ])
   </div>
 
-  <div class="col-lg-6">
-    <div class="box box-default collapsed-box">  {{-- collapsed-box --}}
+  {{-- <div class="col-lg-6">
+    <div class="box box-default collapsed-box"> 
       <div class="box-header with-border">
         <h3 class="box-title" data-widget="collapse">{{ trans('client.noteCli') }}</h3>
         <div class="box-tools pull-right">
@@ -260,7 +215,7 @@
       <div class="box-body">
         <strong>{!! $client->note !!}</strong>
       </div>
-    </div>
+    </div> --}}
 
   </div>
 </div>
