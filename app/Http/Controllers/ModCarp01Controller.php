@@ -122,4 +122,13 @@ class ModCarp01Controller extends Controller
         return ['Modulo Falegnami Salvato'];
     }
 
+    public function edit(Request $req, $rubri_id){
+        $modCarp = wModCarp01::where('rubri_id', $rubri_id)->with(['sysKnown', 'sysBuyOfKK', 'sysBuyOfOther', 'sysLiked'])->first();
+        return view('modCarp01.edit', [
+            'contact' => wRubrica::find($rubri_id),
+            'sysMkt' => wSysMkt::all(),
+            'modCarp' => $modCarp
+        ]);
+    }
+
 }

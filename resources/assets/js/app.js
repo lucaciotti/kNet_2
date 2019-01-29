@@ -15,6 +15,7 @@ require("./bootstrap");
  */
 
 Vue.component("form-carp", require("./components/FormCarp.vue"));
+Vue.component("form-carp-edit", require("./components/FormCarpEdit.vue"));
 Vue.component("form-sys-mkt", require("./components/FormSysMkt.vue"));
 
 const app = new Vue({
