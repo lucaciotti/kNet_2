@@ -21,8 +21,9 @@ class ModCarp01Controller extends Controller
     }
 
     public function createModule(Request $req, $rubri_id){
+        // dd(wRubrica::find($rubri_id));
         return view('modCarp01.create', [
-            'contact' => wRubrica::find($rubri_id)->first(),
+            'contact' => wRubrica::find($rubri_id),
             'sysMkt' => wSysMkt::all(),
         ]);
     }

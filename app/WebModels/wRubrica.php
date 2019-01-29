@@ -21,10 +21,30 @@ class wRubrica extends Model
                         'prov',
                         'cap',
                         'regione',
-                        'codnazione',
+                        'codnazione', 
+                        'partiva',
+                        'codfiscale',
+                        'legalerapp',
+                        'agente',
+                        'nDipendenti', 
+                        'codicecf', 
+                        'prod_mobili', 
+                        'prod_porte',
+                        'prod_portefinestre', 
+                        'prod_cucine', 
+                        'prod_other', 
+                        'prod_note', 
+                        'wants_info', 
+                        'wants_tryKK', 
+                        'know_kk', 
+                        'isKkBuyer', 
+                        'vote', 
+                        'code_ateco', 
+                        'date_nextvisit',
                         'user_id'];
 
-    public function __construct ($attributes = array())
+    
+                        public function __construct ($attributes = array())
     {
         parent::__construct($attributes);
         //Imposto la Connessione al Database
@@ -66,5 +86,9 @@ class wRubrica extends Model
 
     public function agent(){
       return $this->belongsTo('knet\ArcaModels\Agent', 'agente', 'codice');
+    }
+
+    public function client(){
+      return $this->hasOne('knet\ArcaModels\Client', 'codice', 'codicecf');
     }
 }

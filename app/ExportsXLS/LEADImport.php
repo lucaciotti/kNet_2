@@ -64,11 +64,42 @@ class LEADImport
       
         foreach ($rows as $row) {
             Log::info($row['RagioneSociale']);
-            // dd($row);
-            if(!empty($row['email']) && strpos($row['email'],"@")>0){
-                $contatto = wRubrica::where("email", $row['email'])->first();
-                if($contatto==null){ // Creo l'Utente
+            // Log::info(print_r($row, true));
+            if(!empty($row['partitaiva'])){
+                $contatto = wRubrica::where("partiva", $row['partitaiva'])->first();
+                if($contatto==null){ // Creo il contatto
+                    $contatto = wRubrica::firstOrCreate([
+                        'partiva' => $row['partitaiva']
+                    ],[
+                        'descrizion'  => $row['RagioneSociale'],
+                        'telefono' => $row['telefono'],
+                        'settore' => 'FALEGNAMERIA',
+                        'legalerapp' => $row['legaleRapp'],  
+                        'indirizzo' => $row['Indirizzo'],                      
+                        'localita' => $row['localita'],
+                        'prov' => $row['prov'],
+                        'cap' => $row['cap'],
+                        'regione' => $row['regione'],
+                        'codnazione' => $this->country,
+                        'code_ateco' => $row['code_ateco'], 
+                        'codfiscale' => $row['codicefiscale'],
+                        'partiva' => $row['partitaiva'], 
+                        'sitoweb' => $row['sitoweb'], 
+                        'email' => $row['email'], 
+                        'nDipendenti' => $row['nDipendenti'], 
+                        'agente' => $row['agente'],
+                        'user_id' => Auth::user()->id
+                    ]);
+                } else {
+                    Log::info("Contatto già presente in Rubrica...");
+                    Log::info(print_r($row, true));
+                }
+            }
 
+            // OLD IMPORT LEAD
+            /* if(!empty($row['email']) && strpos($row['email'],"@")>0){
+                $contatto = wRubrica::where("email", $row['email'])->first();
+                if($contatto==null){ // Creo il contatto
                     // Cerco gli indirizzi
                     // Prima di tutto cerco tramite CAP
                     if(!empty($row['CAP'])){
@@ -118,13 +149,13 @@ class LEADImport
                         'rubri_id' => $contatto->id,
                         'user_id' => Auth::user()->id,
                         'data' => new Carbon('last day of '.Carbon::createFromDate(null, $this->mese, null)->format('F').' '.((string)Carbon::now()->year)),
-                        'tipo' => 'Meet',
-                        'descrizione' => 'First LEAD FeedBack',
+                        'tipo' => 'Add_',
+                        'descrizione' => 'Creato Contatto',
                         'note' => $row['Feedback']
                     ]);
                     //$visit->save();
-                }
-            } 
+                } 
+            } */
         }
         Log::info('FINE PROCEDURA IMPORT LEAD!');
         $this->end = true;
