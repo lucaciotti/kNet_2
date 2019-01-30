@@ -223,4 +223,12 @@ class ModCarp01Controller extends Controller
         return ['Modulo Falegnami Salvato'];
     }
 
+    public function delete(Request $req, $rubri_id){
+        $contact = wRubrica::find($rubri_id);
+        wModCarp01::where('rubri_id', $rubri_id)->delete();
+        $contact->isModCarp01 = false;
+        $contact->save();
+        return redirect()->action('RubriController@detail', $rubri_id);
+    }
+
 }

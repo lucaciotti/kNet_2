@@ -144,8 +144,12 @@
       </div>
       <div class="box-body">
         @if ($contact->isModCarp01)
-          <a type="button" class="btn btn-success btn-block" href="{{ route('ModCarp01::edit', $contact->id) }}">Edita Modulo</a>    
-          <a type="button" class="btn btn-danger btn-block" href="{{ route('ModCarp01::delete', $contact->id) }}">Cancella Modulo</a>
+          <a type="button" class="btn btn-success btn-block" href="{{ route('ModCarp01::edit', $contact->id) }}">Edita Modulo</a> 
+          <br>   
+          {{Form::open(['method'  => 'DELETE', 'route' => ['ModCarp01::delete', $contact->id]])}}
+          {{Form::button('Cancella Modulo', array('type' => 'submit', 'class' => 'btn btn-danger btn-block'))}}
+          {{Form::close() }}
+          {{-- <a type="button" class="btn btn-danger btn-block" href="{{ route('ModCarp01::delete', $contact->id) }}" data-method="delete" data-token="{{csrf_token()}}" data-confirm="Are you sure?">Cancella Modulo</a> --}}
         @else
           <a type="button" class="btn btn-warning btn-block" href="{{ route('ModCarp01::create', $contact->id) }}">Compilazione Modulo</a>
         @endif
