@@ -4,6 +4,7 @@ namespace knet\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Session;
 use Cornford\Googlmapper\Facades\MapperFacade as Mapper;
 use Illuminate\Support\Facades\DB;
 
@@ -45,8 +46,10 @@ class ClientController extends Controller
 
       // $clients = $clients->paginate(25);
       // dd($clients);
+      Session::forget('_old_input');
       return view('client.index', [
         'clients' => $clients,
+        'fltClients' => Client::select('codice', 'descrizion')->orderBy('descrizion')->get(),
         'nazioni' => $nazioni,
         'settori' => $settori,
         'zone' => $zone,
@@ -58,14 +61,28 @@ class ClientController extends Controller
       // dd($req);
       $clients = Client::where('statocf', 'LIKE', ($req->input('optStatocf')=='' ? '%' : $req->input('optStatocf')));
       if($req->input('ragsoc')) {
-        if($req->input('ragsocOp')=='eql'){
-          $clients = $clients->where('descrizion', strtoupper($req->input('ragsoc')));
+        $clients = $clients->where('codice', $req->input('ragsoc'));
+      }
+      if($req->input('partiva')) {
+        if($req->input('partivaOp')=='eql'){
+          $clients = $clients->where('partiva', strtoupper($req->input('partiva')));
         }
-        if($req->input('ragsocOp')=='stw'){
-          $clients = $clients->where('descrizion', 'LIKE', strtoupper($req->input('ragsoc')).'%');
+        if($req->input('partivaOp')=='stw'){
+          $clients = $clients->where('partiva', 'LIKE', strtoupper($req->input('partiva')).'%');
         }
-        if($req->input('ragsocOp')=='cnt'){
-          $clients = $clients->where('descrizion', 'LIKE', '%'.strtoupper($req->input('ragsoc')).'%');
+        if($req->input('partivaOp')=='cnt'){
+          $clients = $clients->where('partiva', 'LIKE', '%'.strtoupper($req->input('partiva')).'%');
+        }
+      }
+      if($req->input('codcli')) {
+        if($req->input('codcliOp')=='eql'){
+          $clients = $clients->where('codice', strtoupper($req->input('codcli')));
+        }
+        if($req->input('codcliOp')=='stw'){
+          $clients = $clients->where('codice', 'LIKE', strtoupper($req->input('codcli')).'%');
+        }
+        if($req->input('codcliOp')=='cnt'){
+          $clients = $clients->where('codice', 'LIKE', '%'.strtoupper($req->input('codcli')).'%');
         }
       }
       if($req->input('settore')) {
@@ -86,9 +103,12 @@ class ClientController extends Controller
       $nazioni = Nazione::all();
       $settori = Settore::all();
       $zone = Zona::all();
+      
+      $req->flash();
 
       return view('client.index', [
         'clients' => $clients,
+        'fltClients' => Client::select('codice', 'descrizion')->orderBy('descrizion')->get(),
         'nazioni' => $nazioni,
         'settori' => $settori,
         'zone' => $zone,

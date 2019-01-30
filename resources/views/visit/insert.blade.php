@@ -33,19 +33,21 @@
               {{ csrf_field() }}
 
             <div class="form-group">
-              <label>{{ trans('visit.client') }}</label>
-              <select name="codcli" class="form-control select2" style="width: 100%;">
-                @if ($client instanceof Illuminate\Database\Eloquent\Collection)
-                  @if ($client->count()>1)
-                    <option value=""> </option>
-                  @endif
-                  @foreach ($client as $cli)
-                    <option value="{{ $cli->codice }}">[{{$cli->codice}}] {{ $cli->descrizion }}</option>
-                  @endforeach
-                @else
-                  <option value="{{ $client->codice }}">[{{$client->codice}}] {{ $client->descrizion }}</option>
-                @endif
-              </select>
+              @if ($client)
+                  <label>{{ trans('visit.client') }}</label>
+                  <select name="codcli" class="form-control select2" style="width: 100%;">
+                    @if ($client instanceof Illuminate\Database\Eloquent\Collection)
+                      @if ($client->count()>1)
+                        <option value=""> </option>
+                      @endif
+                      @foreach ($client as $cli)
+                        <option value="{{ $cli->codice }}">[{{$cli->codice}}] {{ $cli->descrizion }}</option>
+                      @endforeach
+                    @else
+                      <option value="{{ $client->codice }}">[{{$client->codice}}] {{ $client->descrizion }}</option>
+                    @endif
+                  </select>
+              @endif              
             </div>
 
             <div class="form-group">

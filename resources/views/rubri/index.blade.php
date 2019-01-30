@@ -24,13 +24,7 @@
           </div>
         </div>
         <div class="box-body">
-          <table class="table table-hover table-condensed dtTbls_full">
-            <col width="100">
-            <col width="100">
-            <col width="20">
-            <col width="50">
-            <col width="2">
-            <col width="2">            
+          <table class="table table-hover table-condensed dtTbls_light">        
             <thead>
               <th>{{ trans('client.descCli') }}</th>
               <th>{{ trans('client.nat&loc') }}</th>
@@ -71,13 +65,13 @@
                   </td>
                   <td>@if($contact->agent) {{ $contact->agent->descrizion }} @endif</td>
                   <td>
-                      @if($contact->codicecf) <a class="btn btn-primary" href="{{ route('client::detail', $contact->codicecf ) }}"><i class="fa fa-users" target="_blank"></i></a> @endif
+                      @if($contact->codicecf) <a class="btn-sm btn-primary" href="{{ route('client::detail', $contact->codicecf ) }}"><i class="fa fa-users" target="_blank"></i></a> @endif
                   </td>
                   <td>
                       @if($contact->isModCarp01) 
-                        <a class="btn btn-success" href="{{ route('ModCarp01::edit', ['rubri_id' => $contact->id] ) }}" target="_blank"><i class="fa fa-file-text-o"></i></a>
+                        <a class="btn-sm btn-success" href="{{ route('ModCarp01::edit', ['rubri_id' => $contact->id] ) }}" target="_blank"><i class="fa fa-file-text-o"></i></a>
                       @else
-                        <a class="btn btn-warning" href="{{ route('ModCarp01::create', ['rubri_id' => $contact->id] ) }}" target="_blank"><i class="fa fa-file-text-o"></i></a>
+                        <a class="btn-sm btn-warning" href="{{ route('ModCarp01::create', ['rubri_id' => $contact->id] ) }}" target="_blank"><i class="fa fa-file-text-o"></i></a>
                       @endif
                   </td>
                 </tr>

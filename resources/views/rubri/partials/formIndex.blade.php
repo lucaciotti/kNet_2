@@ -7,7 +7,11 @@
       <select name="rubri_id" class="form-control select2" style="width: 100%;">
         <option value=""> </option>
         @foreach ($fltContacts as $contact)
-          <option value="{{ $contact->id }}">{{ $contact->descrizion or 'cDeleted' }}</option>
+          <option value="{{ $contact->id }}"
+            @if ($contact->id==old('rubri_id'))
+                selected
+            @endif
+            >{{ $contact->descrizion or 'cDeleted' }}</option>
         @endforeach
       </select>
     </div>
@@ -17,13 +21,13 @@
       <label>Partita Iva</label>
       <div class="input-group">
         <span class="input-group-btn">
-          <select type="button" class="btn btn-warning dropdown-toggle" name="ragsocOp">
+          <select type="button" class="btn btn-warning dropdown-toggle" name="partivaOp">
             <option value="eql">=</option>
             <option value="stw">[]...</option>
             <option value="cnt" selected>...[]...</option>
           </select>
         </span>
-        <input type="text" class="form-control" name="partiva">
+        <input type="text" class="form-control" name="partiva" value="{{ old('partiva') }}">
       </div>
     </div>
   {{-- Regione --}}
@@ -32,7 +36,7 @@
       <select name="regione" class="form-control select2" style="width: 100%;">
         <option value=""> </option>
         @foreach ($regioni as $regione)
-          <option value="{{ $regione->regione }}">{{ $regione->regione or 'cDeleted' }}</option>
+          <option value="{{ $regione->regione }}"@if ($regione->regione==old('regione')) selected @endif>{{ $regione->regione or 'cDeleted' }}</option>
         @endforeach
       </select>
     </div>
@@ -43,7 +47,7 @@
       <select name="prov" class="form-control select2" style="width: 100%;">
         <option value=""> </option>
         @foreach ($zone as $loc)
-          <option value="{{ $loc->prov }}">{{ $loc->prov or 'cDeleted' }}</option>
+          <option value="{{ $loc->prov }}"@if ($loc->prov==old('prov')) selected @endif>{{ $loc->prov or 'cDeleted' }}</option>
         @endforeach
       </select>
     </div>
@@ -54,7 +58,7 @@
       <select name="agente" class="form-control select2" style="width: 100%;">
         <option value=""> </option>
         @foreach ($agenti as $agente)
-          <option value="{{ $agente->agente }}">{{ $agente->agent->descrizion or 'cDeleted' }}</option>
+          <option value="{{ $agente->agente }}"@if ($agente->agente==old('agente')) selected @endif>{{ $agente->agent->descrizion or 'cDeleted' }}</option>
         @endforeach
       </select>
     </div>
@@ -64,13 +68,13 @@
       <label>Stato Contatto</label>
       <div class="radio">
         <label>
-          <input type="radio" name="optStatocf" id="opt1" value="T"> {{ trans('client.activeStatus') }}
+          <input type="radio" name="optStatocf" id="opt1" value="T" @if (old('optStatocf')=='T') checked @endif> {{ trans('client.activeStatus') }}
         </label>
         <label>
-          <input type="radio" name="optStatocf" id="opt2" value="C"> {{ trans('client.closedStatus') }}
+          <input type="radio" name="optStatocf" id="opt2" value="C"@if (old('optStatocf')=='C') checked @endif> {{ trans('client.closedStatus') }}
         </label>
         <label>
-          <input type="radio" name="optStatocf" id="opt3" value="" checked> {{ strtoupper(trans('client.allStatus')) }}
+          <input type="radio" name="optStatocf" id="opt3" value="" @if (old('optStatocf')=='') checked @endif> {{ strtoupper(trans('client.allStatus')) }}
         </label>
       </div>
     </div>

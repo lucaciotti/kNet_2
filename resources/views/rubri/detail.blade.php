@@ -56,7 +56,7 @@
           <dl class="dl-horizontal">
 
             <dt>{{ trans('client.location') }}</dt>
-            <dd>{{$contact->localita}} ({{$contact->prov}}) - {{ $contact->regione }} - {{$contact->nazione}} </dd>
+            <dd>{{$contact->localita}} ({{$contact->prov}}) - {{ $contact->regione }} - {{$contact->codnazione}} </dd>
 
             <dt>{{ trans('client.address') }}</dt>
             <dd>{{$contact->indirizzo}}</dd>
@@ -74,10 +74,10 @@
             <dd>{{$contact->statocf}} - @if($contact->statocf=='T') Attivo @else Chiuso @endif</dd>
 
             <dt>Data Ultima Visita</dt>
-            <dd>{{$contact->date_lastvisit}}</dd>
+            <dd>{{$contact->date_lastvisit->format('d-m-Y')}}</dd>
 
             <dt>Data Prossima Visita</dt>
-            <dd>{{$contact->date_nextVisit}}</dd>
+            <dd>{{$contact->date_nextvisit->format('d-m-Y')}}</dd>
           </dl>
         </div>
         <!-- /.tab-pane -->
@@ -85,7 +85,7 @@
           <dl class="dl-horizontal">
 
             <dt>{{ trans('client.referencePerson') }}</dt>
-            <dd>{{$contact->legaleRapp}}</dd>
+            <dd>{{$contact->legalerapp}}</dd>
 
             <dt>{{ trans('client.referenceAgent') }}</dt>
             <dd>@if($contact->agent) {{$contact->agent->descrizion}} @endif</dd>
@@ -137,33 +137,36 @@
   <div class="col-lg-4">
     <div class="box box-default">
       <div class="box-header with-border">
-        <h3 class="box-title" data-widget="collapse">{{ trans('client.docuCli') }}</h3>
+        <h3 class="box-title" data-widget="collapse">Modulo Falegnami</h3>
         <div class="box-tools pull-right">
           <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
         </div>
       </div>
       <div class="box-body">
-        {{-- <a type="button" class="btn btn-default btn-block" href="{{ route('doc::client', [$client->codice, '']) }}">{{ strtoupper(trans('client.allDocs')) }}</a>
-        <a type="button" class="btn btn-default btn-block" href="{{ route('doc::client', [$client->codice, 'P']) }}">{{ trans('client.quotes') }}</a>
-        <a type="button" class="btn btn-default btn-block" href="{{ route('doc::client', [$client->codice, 'O']) }}">{{ trans('client.orders') }}</a>
-        <a type="button" class="btn btn-default btn-block" href="{{ route('doc::client', [$client->codice, 'B']) }}">{{ trans('client.ddt') }}</a>
-        <a type="button" class="btn btn-default btn-block" href="{{ route('doc::client', [$client->codice, 'F']) }}">{{ trans('client.invoice') }}</a>
-        <a type="button" class="btn btn-default btn-block" href="{{ route('doc::client', [$client->codice, 'N']) }}">{{ trans('client.notecredito') }}</a> --}}
+        @if ($contact->isModCarp01)
+          <a type="button" class="btn btn-success btn-block" href="{{ route('ModCarp01::edit', $contact->id) }}">Edita Modulo</a>    
+          <a type="button" class="btn btn-danger btn-block" href="{{ route('ModCarp01::delete', $contact->id) }}">Cancella Modulo</a>
+        @else
+          <a type="button" class="btn btn-warning btn-block" href="{{ route('ModCarp01::create', $contact->id) }}">Compilazione Modulo</a>
+        @endif
       </div>
     </div>
+  
 
-    {{-- <div class="box box-default collapsed-box">
-      <div class="box-header with-border">
-        <h3 class="box-title" data-widget="collapse">{{ trans('client.paymentCli') }}</h3>
-        <span class="badge bg-yellow">{{$scads->count()}}</span>
-        <div class="box-tools pull-right">
-          <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i></button>
+    @if ($contact->codicecf)
+      <div class="box box-default">
+        <div class="box-header with-border">
+          <h3 class="box-title" data-widget="collapse">{{ trans('client.statsCli') }}</h3>
+          <div class="box-tools pull-right">
+            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+          </div>
         </div>
-      </div>
-      <div class="box-body">
-        @include('scads.partials.tblGeneric', $scads)
-      </div>
-    </div> --}}
+        <div class="box-body">
+          <a type="button" class="btn btn-default btn-block" href="{{ route('stFatt::fltCli', $contact->codicecf) }}">{{ trans('client.revenue') }}</a>
+          <a type="button" class="btn btn-default btn-block" href="{{ route('stAbc::idxCli', ['codcli'=>$contact->codicecf]) }}">Abc Articoli</a>
+        </div>
+      </div>        
+    @endif
 
     {{-- @if (!Auth::user()->hasRole('client'))
     <div class="box box-default collapsed-box">
@@ -176,19 +179,7 @@
       <div class="box-body">
         <a type="button" class="btn btn-default btn-block" target="_blank" href="{{ route('schedaCli::PDF', $client->codice) }}">Scheda Cliente PDF</a>
       </div>
-    </div>
-
-    <div class="box box-default">
-      <div class="box-header with-border">
-        <h3 class="box-title" data-widget="collapse">{{ trans('client.statsCli') }}</h3>
-        <div class="box-tools pull-right">
-          <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
-        </div>
-      </div>
-      <div class="box-body">
-        <a type="button" class="btn btn-default btn-block" href="{{ route('stFatt::fltCli', $client->codice) }}">{{ trans('client.revenue') }}</a>
-      </div>
-    </div>
+    </div>    
     @endif --}}
   </div>
 
@@ -197,14 +188,15 @@
 <div class="row">
 
   <div class="col-lg-6">
-    @include('client.partials.timeline', [
+    @include('rubri.partials.timeline', [
       'visits' => $visits,
-      'codcli' => 'C01252',
+      'codcli' => '',
+      'rubri_id' => $contact->id,
       'dateNow' => $dateNow,
       ])
   </div>
 
-  {{-- <div class="col-lg-6">
+  <div class="col-lg-6">
     <div class="box box-default collapsed-box"> 
       <div class="box-header with-border">
         <h3 class="box-title" data-widget="collapse">{{ trans('client.noteCli') }}</h3>
@@ -213,9 +205,9 @@
         </div>
       </div>
       <div class="box-body">
-        <strong>{!! $client->note !!}</strong>
+        <strong>{!! $contact->final_note !!}</strong>
       </div>
-    </div> --}}
+    </div>
 
   </div>
 </div>

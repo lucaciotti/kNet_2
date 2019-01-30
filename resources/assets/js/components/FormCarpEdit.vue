@@ -871,8 +871,8 @@ export default {
 
     onSubmit() {
       if (this.checkGoOn()) {
-        this.form.post("/storeModCarp01").then(response => {
-          // window.location.reload();
+        this.form.post("/updModCarp01").then(response => {
+          window.location.replace('/contact/'+JSON.parse(this.contact).id);
         });
       }
     }

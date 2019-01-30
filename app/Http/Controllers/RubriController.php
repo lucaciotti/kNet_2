@@ -38,6 +38,7 @@ class RubriController extends Controller
 
       // $clients = $clients->paginate(25);
       // dd($clients);
+      Session::forget('_old_input');
       return view('rubri.index', [
         'contacts' => $contacts,
         'fltContacts' => wRubrica::select('id', 'descrizion')->orderBy('descrizion')->get(),
@@ -50,14 +51,17 @@ class RubriController extends Controller
 
     public function fltIndex (Request $req){
       $contacts = wRubrica::where('statocf', 'LIKE', ($req->input('optStatocf')=='' ? '%' : $req->input('optStatocf')));
+      if($req->input('rubri_id')) {
+        $contacts = $contacts->where('id', $req->input('rubri_id'));
+      }
       if($req->input('partiva')) {
-        if($req->input('partiva')=='eql'){
+        if($req->input('partivaOp')=='eql'){
           $contacts = $contacts->where('partiva', strtoupper($req->input('partiva')));
         }
-        if($req->input('partiva')=='stw'){
+        if($req->input('partivaOp')=='stw'){
           $contacts = $contacts->where('partiva', 'LIKE', strtoupper($req->input('partiva')).'%');
         }
-        if($req->input('partiva')=='cnt'){
+        if($req->input('partivaOp')=='cnt'){
           $contacts = $contacts->where('partiva', 'LIKE', '%'.strtoupper($req->input('partiva')).'%');
         }
       }
@@ -73,13 +77,15 @@ class RubriController extends Controller
       if($req->input('optModCarp')) {
         $contacts = $contacts->where('isModCarp01', ($req->input('optModCarp')=='S' ? true : false));
       }
-      $contacts = $contacts->select('id', 'descrizion', 'codnazione', 'agente', 'regione', 'localita', 'date_nextvisit', 'vote', 'codicecf', 'isModCarp01');
+      $contacts = $contacts->select('id', 'descrizion', 'codnazione', 'agente', 'regione', 'localita', 'prov', 'date_nextvisit', 'vote', 'codicecf', 'isModCarp01');
       $contacts = $contacts->with('agent');
       $contacts = $contacts->get();
 
-      $zone = wRubrica::distinct()->orderBy('prov')->get(['prov']);
+      $zone = $contacts->unique('prov')->sortByDesc('prov');
       $regioni = wRubrica::distinct()->orderBy('regione')->get(['regione']);
       $agenti = wRubrica::distinct()->orderBy('agente')->with(['agent'])->get(['agente']);
+
+      $req->flash();
 
       return view('rubri.index', [
         'contacts' => $contacts,

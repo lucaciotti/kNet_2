@@ -65,13 +65,17 @@
               {{-- @if (!Auth::user()->hasRole('client')) --}}
               @if (!in_array(RedisUser::get('role'), ['client']))
               <li class="header">Funzioni Web</li>
-              <li class=""><a href="{{ route('rubri::list') }}"><i class="fa fa-address-card-o"></i> <span>Rubrica Contatti</span></a></li>
+              @if (RedisUser::get('ditta_DB')=='kNet_it')
+                <li class=""><a href="{{ route('rubri::list') }}"><i class="fa fa-address-card-o"></i> <span>Rubrica Contatti</span></a></li>
+              @endif
               {{-- <li class=""><a href="{{ route('doc::list', 'O') }}"><i class='fa fa-pencil-square-o'></i> <span>Pre-Ordini via Web</span></a></li> --}}              
               <li class="treeview {{ Ekko::isActiveRoute('visit::*') }}">
                 <a href="{{ route('visit::insert') }}"><i class='fa fa-weixin'></i> <span>Visite & Eventi</span><i class="fa fa-angle-left pull-right"></i></a>
                 <ul class="treeview-menu">
                     <li class="{{ Ekko::isActiveRoute('visit::*') }}"><a href="{{ route('visit::insert') }}"> <span>{{ trans('_menu.insVisits') }}</span></a></li>
-                    {{-- <li class="{{ Ekko::isActiveRoute('visit::*') }}"><a href="{{ route('visit::insert') }}"> <span>Report Visite</span></a></li> --}}
+                    @if (RedisUser::get('ditta_DB')=='kNet_it')
+                        <li class="{{ Ekko::isActiveRoute('visit::*') }}"><a href="{{ route('visit::insertRubri') }}"> <span>Inserimento Visita Contatto</span></a></li>    
+                    @endif
                 </ul>
               </li>
               {{-- @if (in_array(RedisUser::get('ditta_DB'), ['kNet_it'])) --}}

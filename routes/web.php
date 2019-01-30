@@ -202,9 +202,17 @@ Route::group(['as' => 'visit::'], function(){
     'as' => 'insert',
     'uses' => 'VisitController@index'
   ]);
+  Route::get('/visit/insertRubri/{rubri_id?}', [
+    'as' => 'insertRubri',
+    'uses' => 'VisitController@indexRubri'
+  ]);
   Route::get('/visit/{codice}', [
     'as' => 'show',
     'uses' => 'VisitController@show'
+  ]);
+  Route::get('/visitRubri/{rubri_id}', [
+    'as' => 'showRubri',
+    'uses' => 'VisitController@showRubri'
   ]);
   Route::post('/visit/store', [
     'as' => 'store',

@@ -1,0 +1,339 @@
+
+[2019-01-29 14:17:46] local.INFO: LINEA LEGNO S.R.L.  
+[2019-01-29 14:17:46] local.INFO: Contatto già presente in Rubrica...  
+[2019-01-29 14:17:46] local.INFO: Illuminate\Support\Collection Object
+(
+    [items:protected] => Array
+        (
+            [RagioneSociale] => LINEA LEGNO S.R.L.
+            [Indirizzo] => ZONA INDUSTRIALE DI BARAGIANO, SNC
+            [cap] => 85050
+            [localita] => BALVANO
+            [prov] => POTENZA
+            [telefono] => 0971993092
+            [nDipendenti] => 13
+            [legaleRapp] => GUGLIELMI ANTONIO
+            [code_ateco] => 16.23.1
+            [codicefiscale] => 01038450761
+            [partitaiva] => 01038450761
+            [sitoweb] => 
+            [email] => 
+            [agente] => 004
+            [regione] => Basilicata
+            [] => 
+        )
+
+)
+  
+[2019-01-29 14:18:41] local.INFO: TECNO INFISSI S.R.L.  
+[2019-01-29 14:18:41] local.INFO: Contatto già presente in Rubrica...  
+[2019-01-29 14:18:41] local.INFO: Illuminate\Support\Collection Object
+(
+    [items:protected] => Array
+        (
+            [RagioneSociale] => TECNO INFISSI S.R.L.
+            [Indirizzo] => VIA APPIA ANTICA I^ TRAVERSA, 10
+            [cap] => 81100
+            [localita] => CASERTA
+            [prov] => CASERTA
+            [telefono] => 
+            [nDipendenti] => 6
+            [legaleRapp] => VAGLIVIELLO DOMENICO
+            [code_ateco] => 16.23.1
+            [codicefiscale] => 02536690619
+            [partitaiva] => 02536690619
+            [sitoweb] => 
+            [email] => 
+            [agente] => 48
+            [regione] => Campania
+            [] => 
+        )
+
+)
+  
+[2019-01-29 14:19:23] local.INFO: ARTE LEGNO S.R.L.  
+[2019-01-29 14:19:23] local.INFO: Contatto già presente in Rubrica...  
+[2019-01-29 14:19:23] local.INFO: Illuminate\Support\Collection Object
+(
+    [items:protected] => Array
+        (
+            [RagioneSociale] => ARTE LEGNO S.R.L.
+            [Indirizzo] => VIA ALESSANDRO MANZONI, 2
+            [cap] => 84010
+            [localita] => SAN MARZANO SUL SARNO
+            [prov] => SALERNO
+            [telefono] => 
+            [nDipendenti] => 3
+            [legaleRapp] => ADINOLFI LEONARDO
+            [code_ateco] => 16.23.1
+            [codicefiscale] => 04813590652
+            [partitaiva] => 04813590652
+            [sitoweb] => 
+            [email] => 
+            [agente] => 48
+            [regione] => Campania
+            [] => 
+        )
+
+)
+  
+[2019-01-29 14:20:12] local.INFO: IDEA LEGNO S.R.L.  
+[2019-01-29 14:20:12] local.INFO: Contatto già presente in Rubrica...  
+[2019-01-29 14:20:12] local.INFO: Illuminate\Support\Collection Object
+(
+    [items:protected] => Array
+        (
+            [RagioneSociale] => IDEA LEGNO S.R.L.
+            [Indirizzo] => VIA BAGNOLI, 47
+            [cap] => 41049
+            [localita] => SASSUOLO
+            [prov] => MODENA
+            [telefono] => 0536810262
+            [nDipendenti] => 3
+            [legaleRapp] => CABRI ANTONIO
+            [code_ateco] => 16.23.1
+            [codicefiscale] => 02292380363
+            [partitaiva] => 02292380363
+            [sitoweb] => 
+            [email] => 
+            [agente] => 1
+            [regione] => Emilia Romagna
+            [] => 
+        )
+
+)
+  
+[2019-01-29 14:23:02] local.INFO: TECNOLEGNO S.R.L.  
+[2019-01-29 14:23:02] local.INFO: Contatto già presente in Rubrica...  
+[2019-01-29 14:23:02] local.INFO: Illuminate\Support\Collection Object
+(
+    [items:protected] => Array
+        (
+            [RagioneSociale] => TECNOLEGNO S.R.L.
+            [Indirizzo] => VIA VALLARSA, 13
+            [cap] => 00141
+            [localita] => ROMA
+            [prov] => ROMA
+            [telefono] => 
+            [nDipendenti] => 10
+            [legaleRapp] => GIACOBBI GUIDO
+            [code_ateco] => 16.23.2
+            [codicefiscale] => 06956860586
+            [partitaiva] => 01655191003
+            [sitoweb] => www.tecnolegnorieti.it
+            [email] => 
+            [agente] => 004
+            [regione] => Lazio
+            [] => 
+        )
+
+)
+  
+[2019-01-29 14:23:50] local.INFO: TECNOWOOD S.R.L.  
+[2019-01-29 14:23:50] local.INFO: Contatto già presente in Rubrica...  
+[2019-01-29 14:23:50] local.INFO: Illuminate\Support\Collection Object
+(
+    [items:protected] => Array
+        (
+            [RagioneSociale] => TECNOWOOD S.R.L.
+            [Indirizzo] => STRADA QUARTACCIO, KM.1,200
+            [cap] => 01034
+            [localita] => FABRICA DI ROMA
+            [prov] => VITERBO
+            [telefono] => 0761598472
+            [nDipendenti] => 6
+            [legaleRapp] => PEDICA GIAJPAOLO
+            [code_ateco] => 16.23.2
+            [codicefiscale] => 05055891211
+            [partitaiva] => 05055891211
+            [sitoweb] => 
+            [email] => info@tecnowoodarredi.it
+            [agente] => 004
+            [regione] => Lazio
+            [] => 
+        )
+
+)
+  
+[2019-01-29 14:25:05] local.INFO: ARTLEGNO S.R.L.  
+[2019-01-29 14:25:06] local.INFO: Contatto già presente in Rubrica...  
+[2019-01-29 14:25:06] local.INFO: Illuminate\Support\Collection Object
+(
+    [items:protected] => Array
+        (
+            [RagioneSociale] => ARTLEGNO S.R.L.
+            [Indirizzo] => VIA ING.ANGELO PONZETTI, 2
+            [cap] => 24050
+            [localita] => MORENGO
+            [prov] => BERGAMO
+            [telefono] => 
+            [nDipendenti] => 5
+            [legaleRapp] => AGLIARDI MARCO
+            [code_ateco] => 16.23.1
+            [codicefiscale] => 02889240178
+            [partitaiva] => 00701750986
+            [sitoweb] => 
+            [email] => info@artlegno.it
+            [agente] => 28
+            [regione] => Lombardia
+            [] => 
+        )
+
+)
+  
+[2019-01-29 14:25:44] local.INFO: FALEGNAMERIA MORONI S.R.L.  
+[2019-01-29 14:25:45] local.INFO: Contatto già presente in Rubrica...  
+[2019-01-29 14:25:45] local.INFO: Illuminate\Support\Collection Object
+(
+    [items:protected] => Array
+        (
+            [RagioneSociale] => FALEGNAMERIA MORONI S.R.L.
+            [Indirizzo] => VIA CAPONNETTO, 11
+            [cap] => 26900
+            [localita] => LODI
+            [prov] => LODI
+            [telefono] => 
+            [nDipendenti] => 6
+            [legaleRapp] => MORONI MARCO
+            [code_ateco] => 16.23.2
+            [codicefiscale] => 04404080964
+            [partitaiva] => 04404080964
+            [sitoweb] => www.moronifalegnameria.com
+            [email] => info@moronifalegnameria.com
+            [agente] => 28
+            [regione] => Lombardia
+            [] => 
+        )
+
+)
+  
+[2019-01-29 14:26:42] local.INFO: EDIL LEGNO S.R.L.  
+[2019-01-29 14:26:42] local.INFO: Contatto già presente in Rubrica...  
+[2019-01-29 14:26:42] local.INFO: Illuminate\Support\Collection Object
+(
+    [items:protected] => Array
+        (
+            [RagioneSociale] => EDIL LEGNO S.R.L.
+            [Indirizzo] => LOCALITA' SAN PIETRO, 5
+            [cap] => 27040
+            [localita] => PORTALBERA
+            [prov] => PAVIA
+            [telefono] => 0385266055
+            [nDipendenti] => 7
+            [legaleRapp] => BRIGADA MARCO
+            [code_ateco] => 16.23.1
+            [codicefiscale] => 01459470413
+            [partitaiva] => 01459470413
+            [sitoweb] => 
+            [email] => 
+            [agente] => 28
+            [regione] => Lombardia
+            [] => 
+        )
+
+)
+  
+[2019-01-29 14:27:56] local.INFO: ARTLEGNO S.R.L.  
+[2019-01-29 14:27:56] local.INFO: Contatto già presente in Rubrica...  
+[2019-01-29 14:27:56] local.INFO: Illuminate\Support\Collection Object
+(
+    [items:protected] => Array
+        (
+            [RagioneSociale] => ARTLEGNO S.R.L.
+            [Indirizzo] => VIALE ADUA, 48
+            [cap] => 25034
+            [localita] => ORZINUOVI
+            [prov] => BRESCIA
+            [telefono] => 030941397
+            [nDipendenti] => 11
+            [legaleRapp] => SAVERGNINI MAURIZIO
+            [code_ateco] => 16.23.1
+            [codicefiscale] => 02889240178
+            [partitaiva] => 00701750986
+            [sitoweb] => 
+            [email] => info@artlegno.it
+            [agente] => 005
+            [regione] => Lombardia
+            [] => 
+        )
+
+)
+  
+[2019-01-29 14:28:06] local.INFO: TECNOWOOD S.R.L.  
+[2019-01-29 14:28:06] local.INFO: Contatto già presente in Rubrica...  
+[2019-01-29 14:28:06] local.INFO: Illuminate\Support\Collection Object
+(
+    [items:protected] => Array
+        (
+            [RagioneSociale] => TECNOWOOD S.R.L.
+            [Indirizzo] => VIA MONICO, 9
+            [cap] => 25017
+            [localita] => LONATO DEL GARDA
+            [prov] => BRESCIA
+            [telefono] => 0306377785
+            [nDipendenti] => 7
+            [legaleRapp] => BLEGI ALESSANDRO
+            [code_ateco] => 16.23.2
+            [codicefiscale] => 05055891211
+            [partitaiva] => 05055891211
+            [sitoweb] => 
+            [email] => info@tecnowoodarredi.it
+            [agente] => 005
+            [regione] => Lombardia
+            [] => 
+        )
+
+)
+  
+[2019-01-29 14:28:21] local.INFO: ECOLEGNO S.R.L.  
+[2019-01-29 14:28:21] local.INFO: Contatto già presente in Rubrica...  
+[2019-01-29 14:28:21] local.INFO: Illuminate\Support\Collection Object
+(
+    [items:protected] => Array
+        (
+            [RagioneSociale] => ECOLEGNO S.R.L.
+            [Indirizzo] => VIA ALESSANDRO VOLTA, 191/197
+            [cap] => 46030
+            [localita] => SUSTINENTE
+            [prov] => MANTOVA
+            [telefono] => 0386710163
+            [nDipendenti] => 5
+            [legaleRapp] => GELATI LUCA
+            [code_ateco] => 16.23.2
+            [codicefiscale] => 02184350201
+            [partitaiva] => 02184350201
+            [sitoweb] => www.ecolegnosrl.it
+            [email] => 
+            [agente] => 005
+            [regione] => Lombardia
+            [] => 
+        )
+
+)
+  
+[2019-01-29 14:31:07] local.INFO: SILVESTRI S.R.L.  
+[2019-01-29 14:31:07] local.INFO: Contatto già presente in Rubrica...  
+[2019-01-29 14:31:07] local.INFO: Illuminate\Support\Collection Object
+(
+    [items:protected] => Array
+        (
+            [RagioneSociale] => SILVESTRI S.R.L.
+            [Indirizzo] => VIA STELLA, 15
+            [cap] => 38123
+            [localita] => TRENTO
+            [prov] => TRENTO
+            [telefono] => 0461912969
+            [nDipendenti] => 12
+            [legaleRapp] => SILVESTRI MONICA
+            [code_ateco] => 16.23.2
+            [codicefiscale] => 00424010262
+            [partitaiva] => 00424010262
+            [sitoweb] => silvestrifratelli.com
+            [email] => info@silvestrifratelli.com
+            [agente] => 18
+            [regione] => Trentino
+            [] => 
+        )
+
+)
+  

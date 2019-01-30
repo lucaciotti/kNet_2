@@ -24,37 +24,35 @@
               @php
                 $message=trans('visit.eventMeeting')
               @endphp
-          @breakswitch
           @case( 'Mail' )
               <i class="fa fa-envelope bg-orange"></i>
               @php
                 $message=trans('visit.eventMail')
               @endphp
-          @breakswitch
           @case( 'Prod' )
               <i class="fa fa-cube bg-green"></i>
               @php
                 $message=trans('visit.eventProduct')
               @endphp
-          @breakswitch
+          
           @case( 'Scad' )
               <i class="fa fa-money bg-purple"></i>
               @php
                 $message=trans('visit.eventDebt')
               @endphp
-          @breakswitch
+          
           @case( 'RNC' )
               <i class="fa fa-exclamation-circle bg-red"></i>
               @php
                 $message=trans('visit.eventRNC')
               @endphp
-          @breakswitch
+          
           @default
               <i class="fa fa-question-circle bg-yellow"></i>
               @php
                 $message=trans('visit.eventGeneric')
               @endphp
-          @breakswitch
+          
       @endswitch
         <div class="timeline-item">
           <span class="time"><i class="fa fa-user"></i> {{ $visit->user->name }}</span>
@@ -80,8 +78,8 @@
   <li>
     <i class='fa fa-clock-o bg-gray'></i>
     <span class="timeline-item">
-      <a class="btn btn-sm btn-default" href="{{ route('visit::insert', $codcli) }}"> <i class="fa fa-plus"></i> <span>{{ trans('client.insEvent') }}</span></a>
-      <a class="btn btn-sm btn-primary" href="{{ route('visit::show', $codcli) }}">  <span>{{ trans('client.seeTimeline') }}... </span></a>
+      <a class="btn btn-sm btn-default" href="{{ route('visit::insertRubri', $rubri_id) }}"> <i class="fa fa-plus"></i> <span>{{ trans('client.insEvent') }}</span></a>
+      <a class="btn btn-sm btn-primary" href="{{ route('visit::showRubri', $rubri_id) }}">  <span>{{ trans('client.seeTimeline') }}... </span></a>
     </span>
   </li>
 </ul>

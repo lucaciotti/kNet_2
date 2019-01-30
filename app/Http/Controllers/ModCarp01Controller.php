@@ -113,6 +113,7 @@ class ModCarp01Controller extends Controller
         $contact->prod_other = $modCarp->prod_other;
         $contact->prod_note = $modCarp->prod_note;
         $contact->vote = $modCarp->vote;
+        $contact->final_note = $modCarp->final_note;
         $contact->isModCarp01 = true;
         $contact->date_lastvisit = Carbon::now();
         $contact->date_nextvisit = Carbon::now()->addDays(60);
@@ -129,6 +130,97 @@ class ModCarp01Controller extends Controller
             'sysMkt' => wSysMkt::all(),
             'modCarp' => $modCarp
         ]);
+    }
+
+    public function update(Request $req){
+        $contact=wRubrica::find($req->input('rubri_id'));
+        $modCarp = wModCarp01::where('rubri_id', $req->input('rubri_id'))->first();
+
+        $modCarp->prod_mobili = $req->input('typeProdMobili');
+        $modCarp->prod_porte = $req->input('typeProdPorte');
+        $modCarp->prod_portefinestre = $req->input('typeProdFinestre');
+        $modCarp->prod_cucine = $req->input('typeProdCucine');
+        $modCarp->prod_other = $req->input('typeProdOther');
+        $modCarp->prod_note = $req->input('noteProdOther');
+        $modCarp->know_kk = $req->input('rConosceKK')=='true' ? true : false;
+        $modCarp->isKkBuyer =$req->input('rAcquistaKK')=='true' ? true : false;
+        $modCarp->yes_supplierType = $req->input('yes_supplierType');
+        $modCarp->yes_supplierName = $req->input('yes_supplierName');
+        $modCarp->yes_isInformato = $req->input('yes_isInformato');
+        $modCarp->not_why_prezzo = $req->input('not_why_prezzo');
+        $modCarp->not_why_qualita = $req->input('not_why_qualita');
+        $modCarp->not_why_servizio = $req->input('not_why_servizio');
+        $modCarp->not_why_catalogo = $req->input('not_why_catalogo');
+        $modCarp->not_why_noinfo = $req->input('not_why_noinfo');
+        $modCarp->not_supplierType = $req->input('not_supplierType');
+        $modCarp->not_supplierName = $req->input('not_supplierName');
+        $modCarp->wants_tryKK = $req->input('wants_tryKK');
+        
+        $modCarp->notryKK_note = $req->input('notryKK_note');
+        $modCarp->wants_info = $req->input('wants_info');
+        $modCarp->final_note = $req->input('final_note');
+        $modCarp->vote = $req->input('vote');
+        $modCarp->save();
+
+        // if($req->input('sysKnown')){
+        //     foreach($req->input('sysKnown') as $sys){
+        //         wMCarp01_SysKnown::create([
+        //             'mcarp01_id' => $modCarp->id,
+        //             'sysmkt_cod' => $sys['codice']
+        //         ]);
+        //     }
+        // }        
+        // if($req->input('sysBuyOfKK')){
+        //     foreach($req->input('sysBuyOfKK') as $sys){
+        //         wMCarp01_SysBuyOfKK::create([
+        //             'mcarp01_id' => $modCarp->id,
+        //             'sysmkt_cod' => $sys['codice']
+        //         ]);
+        //     }
+        // }        
+        // if($req->input('sysBuyOfOther')){
+        //     foreach($req->input('sysBuyOfOther') as $sys){
+        //         wMCarp01_SysBuyOfOther::create([
+        //             'mcarp01_id' => $modCarp->id,
+        //             'sysmkt_cod' => $sys['codice']
+        //         ]);
+        //     }
+        // }        
+        // if($req->input('sysLiked')){
+        //     foreach($req->input('sysLiked') as $sys){
+        //         wMCarp01_SysLiked::create([
+        //             'mcarp01_id' => $modCarp->id,
+        //             'sysmkt_cod' => $sys['codice']
+        //         ]);
+        //     }
+        // }
+        $visit = wVisit::create([
+            'codicecf' => $contact->codicecf,
+            'rubri_id' => $req->input('rubri_id'),
+            'user_id' => Auth::user()->id,
+            'data' => Carbon::now(),
+            'tipo' => "MCarp",
+            'descrizione' => "Modificato Modulo Falegnami",
+            'modCarp_id' => $modCarp->id
+        ]);
+
+        // Infine aggiorno il contatto con informazioni Chiave.
+        $contact->isKKBuyer = $modCarp->isKKBuyer;
+        $contact->know_kk = $modCarp->know_kk;
+        $contact->wants_tryKK = $modCarp->wants_tryKK;
+        $contact->wants_info = $modCarp->wants_info;
+        $contact->prod_mobili = $modCarp->prod_mobili;
+        $contact->prod_porte = $modCarp->prod_porte;
+        $contact->prod_portefinestre = $modCarp->prod_portefinestre;
+        $contact->prod_cucine = $modCarp->prod_cucine;
+        $contact->prod_other = $modCarp->prod_other;
+        $contact->prod_note = $modCarp->prod_note;
+        $contact->vote = $modCarp->vote;
+        // $contact->final_note = $modCarp->final_note;
+        $contact->save();
+
+
+        return ['Modulo Falegnami Salvato'];
     }
 
 }

@@ -86,7 +86,11 @@
   <li>
     <i class='fa fa-clock-o bg-gray'></i>
     <span class="timeline-item">
-      <a class="btn btn-sm btn-default" href="{{ route('visit::insert', $codcli) }}"> <i class="fa fa-plus"></i> <span>{{ trans('visit.insEvent') }}</span></a>
+      @if($codcli)
+        <a class="btn btn-sm btn-default" href="{{ route('visit::insert', $codcli) }}"> <i class="fa fa-plus"></i> <span>{{ trans('visit.insEvent') }}</span></a>
+      @else
+        <a class="btn btn-sm btn-default" href="{{ route('visit::insertRubri', $rubri_id) }}"> <i class="fa fa-plus"></i> <span>{{ trans('visit.insEvent') }}</span></a>
+      @endif
     </span>
   </li>
 </ul>
