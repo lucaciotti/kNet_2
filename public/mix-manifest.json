@@ -1,7 +1,10 @@
 {
     "/js/app.js": "/js/app.js",
+    "/js/app.js.map": "/js/app.js.map",
     "/js/modCarp01.js": "/js/modCarp01.js",
+    "/js/modCarp01.js.map": "/js/modCarp01.js.map",
     "/js/app-landing.js": "/js/app-landing.js",
+    "/js/app-landing.js.map": "/js/app-landing.js.map",
     "/css/app.css": "/css/app.css",
     "/css/app-landing.css": "/css/app-landing.css",
     "/img/app-bg.png": "/img/app-bg.png",
