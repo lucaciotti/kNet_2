@@ -28,7 +28,7 @@ class Listini extends Model
         parent::boot();
 
         static::addGlobalScope('attivo', function(Builder $builder) {
-            if(RedisUser::get('ditta_DB')=='kNet_es')
+            if(RedisUser::get('ditta_DB')=='kNet_es' || (RedisUser::get('ditta_DB')=='kNet_it' && RedisUser::get('codag')=='002'))
             {
                 $builder->where('datafine', '>=', new Carbon('first day of last year'))->orWhere('datafine', '=', '')->orWhereNull('datafine');
             } else {
