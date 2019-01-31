@@ -28,6 +28,7 @@ class RubriController extends Controller
 
       $contacts = wRubrica::select('id', 'descrizion', 'codnazione', 'agente', 'regione', 'localita', 'date_nextvisit', 'vote', 'codicecf', 'isModCarp01');
       $contacts = $contacts->with(['agent']);
+      $contacts = $contacts->where('statocf', 'T');
       $contacts = $contacts->get();
       
       // $nazioni = Nazione::all();
@@ -41,7 +42,7 @@ class RubriController extends Controller
       Session::forget('_old_input');
       return view('rubri.index', [
         'contacts' => $contacts,
-        'fltContacts' => wRubrica::select('id', 'descrizion')->orderBy('descrizion')->get(),
+        'fltContacts' => $contacts,//wRubrica::select('id', 'descrizion')->orderBy('descrizion')->get(),
         'zone' => $zone,
         'regioni' => $regioni,
         'agenti' => $agenti,
@@ -89,7 +90,7 @@ class RubriController extends Controller
 
       return view('rubri.index', [
         'contacts' => $contacts,
-        'fltContacts' => wRubrica::select('id', 'descrizion')->orderBy('descrizion')->get(),
+        'fltContacts' => $contacts,//wRubrica::select('id', 'descrizion')->orderBy('descrizion')->get(),
         'zone' => $zone,
         'regioni' => $regioni,
         'agenti' => $agenti,
@@ -126,6 +127,12 @@ class RubriController extends Controller
       ]);
     }
 
+    public function closeContact(Request $req, $rubri_id){
+      $contact=wRubrica::findOrFail($rubri_id);
+      $contact->statocf = 'C';
+      $contact->save();
+      return redirect()->action('RubriController@detail', $rubri_id);
+    }
 
     //SEZIONE IMPORT FILE EXCEL
     public function showImport(Request $req){

@@ -48,23 +48,23 @@ class wModCarp01 extends Model
     public static function boot() {
         parent::boot();
 
-        static::deleting(function($modCarp) { // before delete() method call this
-            // dd($modCarp);
-             $modCarp->sysBuyOfKK()->delete();
-             $modCarp->sysBuyOfOther()->delete();
-             $modCarp->sysKnown()->delete();
-             $modCarp->sysLiked()->delete();
-             // do the rest of the cleanup...
-        });
+        // static::deleting(function($modCarp) { // before delete() method call this
+        //     // dd($modCarp);
+        //      $modCarp->sysBuyOfKK()->delete();
+        //      $modCarp->sysBuyOfOther()->delete();
+        //      $modCarp->sysKnown()->delete();
+        //      $modCarp->sysLiked()->delete();
+        //      // do the rest of the cleanup...
+        // });
     }
 
-    public function delete() {
-        $this->sysBuyOfKK()->delete();
-        $this->sysBuyOfOther()->delete();
-        $this->sysKnown()->delete();
-        $this->sysLiked()->delete();
-        parent::delete();
-    }
+    // public function delete() {
+    //     $this->sysBuyOfKK()->delete();
+    //     $this->sysBuyOfOther()->delete();
+    //     $this->sysKnown()->delete();
+    //     $this->sysLiked()->delete();
+    //     parent::delete();
+    // }
 
     
     public function contact(){

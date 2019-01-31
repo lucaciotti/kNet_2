@@ -47,6 +47,11 @@
               <dd>{{$contact->codfiscale}}</dd>
             @endif
 
+            <dt>Sito</dt>
+            <dd>{{$contact->sitoweb}} @if (!empty($contact->sitoweb)) &nbsp;
+              <a href="http://{{$contact->sitoweb}}" target="_blank"><i class="btn btn-xs fa fa-external-link btn-primary"></i></a> @endif
+            </dd>
+
             {{-- <dt>{{ trans('client.sector_full') }}</dt>
             <dd>{{$client->settore}} - @if($client->detSect) {{$client->detSect->descrizion}} @endif</dd> --}}
           </dl>
@@ -71,13 +76,21 @@
           <dl class="dl-horizontal">
 
             <dt>{{ trans('client.statusCli') }}</dt>
-            <dd>{{$contact->statocf}} - @if($contact->statocf=='T') Attivo @else Chiuso @endif</dd>
+            <dd>
+              {{$contact->statocf}} - 
+              @if($contact->statocf=='T') 
+              Attivo
+              {{Form::open(['method' => 'POST', 'route' => ['rubri::close', $contact->id]])}} 
+              {{Form::button('Chiudi Contatto', array('type' => 'submit', 'class' => 'btn-xs btn-danger'))}} 
+              {{Form::close() }} 
+              @else Chiuso @endif
+            </dd>
 
             <dt>Data Ultima Visita</dt>
-            <dd>{{$contact->date_lastvisit->format('d-m-Y')}}</dd>
+            <dd>@if($contact->date_lastvisit){{$contact->date_lastvisit->format('d-m-Y')}}@endif</dd>
 
             <dt>Data Prossima Visita</dt>
-            <dd>{{$contact->date_nextvisit->format('d-m-Y')}}</dd>
+            <dd>@if($contact->date_nextvisit){{$contact->date_nextvisit->format('d-m-Y')}}@endif</dd>
           </dl>
         </div>
         <!-- /.tab-pane -->
@@ -86,6 +99,9 @@
 
             <dt>{{ trans('client.referencePerson') }}</dt>
             <dd>{{$contact->legalerapp}}</dd>
+
+            <dt>n° Dipendenti</dt>
+            <dd>@if($contact->nDipendenti){{$contact->nDipendenti}}@endif</dd>
 
             <dt>{{ trans('client.referenceAgent') }}</dt>
             <dd>@if($contact->agent) {{$contact->agent->descrizion}} @endif</dd>
@@ -155,7 +171,72 @@
         @endif
       </div>
     </div>
-  
+
+    @if ($contact->isModCarp01)
+    <div class="box box-default">
+      <div class="box-header with-border">
+        <h3 class="box-title" data-widget="collapse">Dati Contatto</h3>
+        <div class="box-tools pull-right">
+          <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+        </div>
+      </div>
+      <div class="box-body">
+        <dl class="dl-horizontal">
+          <dt>Tipologia Produzione</dt>
+          <dd>
+            @if ($contact->prod_porte) Porte - @endif
+            @if ($contact->prod_portefinestre) Finestre - @endif
+            @if ($contact->prod_mobili) Mobili - @endif
+            @if ($contact->prod_cucine) Cucine - @endif
+            @if ($contact->prod_other) Altro - {{$contact->prod_note}} @endif
+          </dd>
+          
+          <dt>Conosce Krona Koblenz?</dt>
+          <dd>
+            <big>
+              <strong>
+                @if ($contact->know_kk) SI @endif
+                @if (!$contact->know_kk) NO @endif
+              </strong>
+            </big>
+          </dd>
+
+          <dt>Acquista Già Prodotti KK?</dt>
+          <dd>
+            <big>
+              <strong>
+                @if ($contact->idKkBuyer) SI @endif
+                @if (!$contact->idKkBuyer) NO @endif
+              </strong>
+            </big>
+          </dd>
+          @if (!$contact->idKkBuyer || !$contact->know_kk)
+          <dt>Vuole Provare KK?</dt>
+          <dd>
+            <big>
+              <strong>
+                @if ($contact->wants_tryKK) SI @endif
+                @if (!$contact->wants_tryKK) NO @endif
+              </strong>
+            </big>
+          </dd>              
+          @endif
+          @if ($contact->know_kk)
+          <dt>Vuole Info da KK?</dt>
+          <dd>
+            <big>
+              <strong>
+                @if ($contact->wants_info) SI @endif
+                @if (!$contact->wants_info) NO @endif
+              </strong>
+            </big>
+          </dd>
+          @endif
+        </dl>
+      </div>
+    </div>
+
+    @endif
 
     @if ($contact->codicecf)
       <div class="box box-default">

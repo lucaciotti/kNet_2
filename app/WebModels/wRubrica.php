@@ -3,6 +3,8 @@
 namespace knet\WebModels;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\DB;
 
 use RedisUser;
 

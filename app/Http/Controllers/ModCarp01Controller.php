@@ -44,7 +44,7 @@ class ModCarp01Controller extends Controller
             'isKkBuyer' => $req->input('rAcquistaKK')=='true' ? true : false,
             'yes_supplierType' => intval($req->input('yes_supplierType')),
             'yes_supplierName' => $req->input('yes_supplierName'),
-            'yes_isInformato' => $req->input('yes_isInformato'),
+            'yes_isInformato' => $req->input('yes_isInformato')=='true' ? true : false,
             'not_why_prezzo' => $req->input('not_why_prezzo'),
             'not_why_qualita' => $req->input('not_why_qualita'),
             'not_why_servizio' => $req->input('not_why_servizio'),
@@ -52,9 +52,9 @@ class ModCarp01Controller extends Controller
             'not_why_noinfo' => $req->input('not_why_noinfo'),
             'not_supplierType' => intval($req->input('not_supplierType')),
             'not_supplierName' => $req->input('not_supplierName'),
-            'wants_tryKK' => $req->input('wants_tryKK'),
+            'wants_tryKK' => $req->input('wants_tryKK')=='true' ? true : false,
             'notryKK_note' => $req->input('notryKK_note'),
-            'wants_info' => $req->input('wants_info'),
+            'wants_info' => $req->input('wants_info')=='true' ? true : false,
             'final_note' => $req->input('final_note'),
             'vote' => $req->input('vote'),
             'user_id' =>  Auth::user()->id
@@ -113,7 +113,6 @@ class ModCarp01Controller extends Controller
         $contact->prod_other = $modCarp->prod_other;
         $contact->prod_note = $modCarp->prod_note;
         $contact->vote = $modCarp->vote;
-        $contact->final_note = $modCarp->final_note;
         $contact->isModCarp01 = true;
         $contact->date_lastvisit = Carbon::now();
         $contact->date_nextvisit = Carbon::now()->addDays(60);
@@ -146,7 +145,7 @@ class ModCarp01Controller extends Controller
         $modCarp->isKkBuyer =$req->input('rAcquistaKK')=='true' ? true : false;
         $modCarp->yes_supplierType = $req->input('yes_supplierType');
         $modCarp->yes_supplierName = $req->input('yes_supplierName');
-        $modCarp->yes_isInformato = $req->input('yes_isInformato');
+        $modCarp->yes_isInformato = $req->input('yes_isInformato')=='true' ? true : false;
         $modCarp->not_why_prezzo = $req->input('not_why_prezzo');
         $modCarp->not_why_qualita = $req->input('not_why_qualita');
         $modCarp->not_why_servizio = $req->input('not_why_servizio');
@@ -154,46 +153,49 @@ class ModCarp01Controller extends Controller
         $modCarp->not_why_noinfo = $req->input('not_why_noinfo');
         $modCarp->not_supplierType = $req->input('not_supplierType');
         $modCarp->not_supplierName = $req->input('not_supplierName');
-        $modCarp->wants_tryKK = $req->input('wants_tryKK');
-        
+        $modCarp->wants_tryKK = $req->input('wants_tryKK')=='true' ? true : false;        
         $modCarp->notryKK_note = $req->input('notryKK_note');
-        $modCarp->wants_info = $req->input('wants_info');
+        $modCarp->wants_info = $req->input('wants_info')=='true' ? true : false;
         $modCarp->final_note = $req->input('final_note');
         $modCarp->vote = $req->input('vote');
         $modCarp->save();
 
-        // if($req->input('sysKnown')){
-        //     foreach($req->input('sysKnown') as $sys){
-        //         wMCarp01_SysKnown::create([
-        //             'mcarp01_id' => $modCarp->id,
-        //             'sysmkt_cod' => $sys['codice']
-        //         ]);
-        //     }
-        // }        
-        // if($req->input('sysBuyOfKK')){
-        //     foreach($req->input('sysBuyOfKK') as $sys){
-        //         wMCarp01_SysBuyOfKK::create([
-        //             'mcarp01_id' => $modCarp->id,
-        //             'sysmkt_cod' => $sys['codice']
-        //         ]);
-        //     }
-        // }        
-        // if($req->input('sysBuyOfOther')){
-        //     foreach($req->input('sysBuyOfOther') as $sys){
-        //         wMCarp01_SysBuyOfOther::create([
-        //             'mcarp01_id' => $modCarp->id,
-        //             'sysmkt_cod' => $sys['codice']
-        //         ]);
-        //     }
-        // }        
-        // if($req->input('sysLiked')){
-        //     foreach($req->input('sysLiked') as $sys){
-        //         wMCarp01_SysLiked::create([
-        //             'mcarp01_id' => $modCarp->id,
-        //             'sysmkt_cod' => $sys['codice']
-        //         ]);
-        //     }
-        // }
+        wMCarp01_SysKnown::where('mcarp01_id',$modCarp->id)->delete();
+        if($req->input('sysKnown')){
+            foreach($req->input('sysKnown') as $sys){
+                wMCarp01_SysKnown::create([
+                    'mcarp01_id' => $modCarp->id,
+                    'sysmkt_cod' => $sys['codice']
+                ]);
+            }
+        }        
+        wMCarp01_SysBuyOfKK::where('mcarp01_id',$modCarp->id)->delete();
+        if($req->input('sysBuyOfKK')){
+            foreach($req->input('sysBuyOfKK') as $sys){
+                wMCarp01_SysBuyOfKK::create([
+                    'mcarp01_id' => $modCarp->id,
+                    'sysmkt_cod' => $sys['codice']
+                ]);
+            }
+        }        
+        wMCarp01_SysBuyOfOther::where('mcarp01_id',$modCarp->id)->delete();
+        if($req->input('sysBuyOfOther')){
+            foreach($req->input('sysBuyOfOther') as $sys){
+                wMCarp01_SysBuyOfOther::create([
+                    'mcarp01_id' => $modCarp->id,
+                    'sysmkt_cod' => $sys['codice']
+                ]);
+            }
+        }        
+        wMCarp01_SysLiked::where('mcarp01_id',$modCarp->id)->delete();
+        if($req->input('sysLiked')){
+            foreach($req->input('sysLiked') as $sys){
+                wMCarp01_SysLiked::create([
+                    'mcarp01_id' => $modCarp->id,
+                    'sysmkt_cod' => $sys['codice']
+                ]);
+            }
+        }
         $visit = wVisit::create([
             'codicecf' => $contact->codicecf,
             'rubri_id' => $req->input('rubri_id'),
@@ -225,7 +227,12 @@ class ModCarp01Controller extends Controller
 
     public function delete(Request $req, $rubri_id){
         $contact = wRubrica::find($rubri_id);
-        wModCarp01::where('rubri_id', $rubri_id)->delete();
+        $modCarp = wModCarp01::where('rubri_id', $rubri_id)->first();
+        wMCarp01_SysKnown::where('mcarp01_id',$modCarp->id)->delete();
+        wMCarp01_SysBuyOfKK::where('mcarp01_id',$modCarp->id)->delete();
+        wMCarp01_SysBuyOfKK::where('mcarp01_id',$modCarp->id)->delete();
+        wMCarp01_SysLiked::where('mcarp01_id',$modCarp->id)->delete();
+        wModCarp01::findOrFail($modCarp->id)->delete();
         $contact->isModCarp01 = false;
         $contact->save();
         return redirect()->action('RubriController@detail', $rubri_id);

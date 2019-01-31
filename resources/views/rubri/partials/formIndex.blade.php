@@ -68,13 +68,13 @@
       <label>Stato Contatto</label>
       <div class="radio">
         <label>
-          <input type="radio" name="optStatocf" id="opt1" value="T" @if (old('optStatocf')=='T') checked @endif> {{ trans('client.activeStatus') }}
+          <input type="radio" name="optStatocf" id="opt1" value="T" @if (old('optStatocf')=='T' || old('optStatocf')=='') checked @endif> {{ trans('client.activeStatus') }}
         </label>
         <label>
           <input type="radio" name="optStatocf" id="opt2" value="C"@if (old('optStatocf')=='C') checked @endif> {{ trans('client.closedStatus') }}
         </label>
         <label>
-          <input type="radio" name="optStatocf" id="opt3" value="" @if (old('optStatocf')=='') checked @endif> {{ strtoupper(trans('client.allStatus')) }}
+          <input type="radio" name="optStatocf" id="opt3" value="%" @if (old('optStatocf')=='%') checked @endif> {{ strtoupper(trans('client.allStatus')) }}
         </label>
       </div>
     </div>
@@ -86,13 +86,13 @@
       <label>Modulo Falegnami</label>
       <div class="radio">
         <label>
-          <input type="radio" name="optModCarp" id="optMod1" value="S">Si
+          <input type="radio" name="optModCarp" id="optMod1" @if (old('optModCarp')=='S') checked @endif value="S">Si
         </label>
         <label>
-          <input type="radio" name="optModCarp" id="optMod2" value="N">No
+          <input type="radio" name="optModCarp" id="optMod2" @if (old('optModCarp')=='N') checked @endif value="N">No
         </label>
         <label>
-          <input type="radio" name="optModCarp" id="optMod3" value="" checked> {{ strtoupper(trans('client.allStatus')) }}
+          <input type="radio" name="optModCarp" id="optMod3" @if (old('optModCarp')=='') checked @endif value="" > {{ strtoupper(trans('client.allStatus')) }}
         </label>
       </div>
     </div>

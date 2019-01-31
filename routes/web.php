@@ -381,6 +381,10 @@ Route::group(['as' => 'rubri::'], function () {
     'as' => 'fltList',
     'uses' => 'RubriController@fltIndex'
   ]);
+  Route::post('/closeContact/{rubri_id}', [
+    'as' => 'close',
+    'uses' => 'RubriController@closeContact'
+  ]);
 });
 
 Route::group(['as' => 'sysMkt::'], function () {

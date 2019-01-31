@@ -103,6 +103,15 @@
             v-text="form.errors.get('noteProdOther')"
           ></span>
         </transition>
+        <pCheck
+            class="p-icon p-curve p-smooth p-bigger"
+            color="info-o"
+            name="typeProd"
+            v-model="form.isTermina"
+          >
+            <i class="icon fa fa-check" slot="extra"></i>
+            Termina Questionario
+          </pCheck>
       </div>
 
       <hr>
@@ -232,16 +241,6 @@
             <i class="icon fa fa-check" slot="extra"></i>
             Gruppo Commerciale
           </pRadio>
-          <pRadio
-            class="p-icon p-round p-fill p-smooth p-bigger"
-            name="yes_supplierType"
-            color="info"
-            v-model="form.yes_supplierType"
-            value="3"
-          >
-            <i class="icon fa fa-check" slot="extra"></i>
-            Direttamente dal Produttore
-          </pRadio>
         </div>
         <transition name="fade">
           <span
@@ -303,13 +302,12 @@
         </pRadio>
       </div>
 
-      <hr v-show="!form.yes_isInformato">
-
       <div
         class="form-group has-feedback"
         :class="{ 'has-error': form.errors.has('wants_info') }"
-        v-show="!form.yes_isInformato && form.yes_isInformato!=null"
+        v-show="form.yes_isInformato=='false'"
       >
+        <hr>
         <label>Vuole ricevere Documentazioni?</label>
         <pRadio
           class="p-icon p-round p-fill p-smooth p-bigger"
@@ -337,9 +335,7 @@
     </boxDefault>
 
     <!-- QUI NON CONOSCE KK  -->
-    <boxDefault
-      v-show="(!isConosceKK && isConosceKK!=null) || (!isAcquistaKK && isAcquistaKK!=null)"
-    >
+    <boxDefault  v-show="(!isConosceKK && isConosceKK!=null) || (!isAcquistaKK && isAcquistaKK!=null)">
       <div
         class="form-group has-feedback"
         :class="{ 'has-error': form.errors.has('sysBuyOfOther') }"
@@ -543,11 +539,13 @@
           track-by="codice"
           @close="personalEventSelect('sysLiked')"
         ></v-multi-select>
-        <span
-          class="help is-danger"
-          v-if="form.errors.has('sysLiked')"
-          v-text="form.errors.get('sysLiked')"
-        ></span>
+        <transition name="fade">
+          <span
+            class="help-block"
+            v-if="form.errors.has('sysLiked')"
+            v-text="form.errors.get('sysLiked')"
+          ></span>
+        </transition>
       </div>
 
       <div
@@ -562,6 +560,13 @@
           v-model="form.notryKK_note"
           placeholder="Inserisci Note"
         ></textarea>
+        <transition name="fade">
+          <span
+            class="help-block"
+            v-if="form.errors.has('notryKK_note')"
+            v-text="form.errors.get('notryKK_note')"
+          ></span>
+        </transition>
       </div>
     </boxDefault>
 
@@ -588,7 +593,7 @@
     <button
       type="submit"
       class="btn btn-success btn-block"
-      :disabled="form.errors.any()"
+      :disabled="form.errors.any() || form.submitting"
       v-show="isTheEnd"
     >
       <i v-if="form.submitting" class="fa fa-refresh fa-spin"></i>
@@ -622,6 +627,7 @@ export default {
         typeProdMobili: JSON.parse(this.modcarp).prod_mobili,
         typeProdOther: JSON.parse(this.modcarp).prod_other,
         noteProdOther: JSON.parse(this.modcarp).prod_note,
+        isTermina: JSON.parse(this.modcarp).prod_isMulti,
         rConosceKK: JSON.parse(this.modcarp).know_kk ? "true" : "false",
         rAcquistaKK: JSON.parse(this.modcarp).isKkBuyer ? "true" : "false",
         sysKnown: JSON.parse(this.modcarp).sys_known,
@@ -669,124 +675,90 @@ export default {
   },
 
   methods: {
-    checkGoOn() {
+    checkGoOn(){
       let lGoOn = true;
       //STEP 1
-      if (this.form.rConosceKK != null) {
-        if (
-          !this.form.typeProdPorte &&
-          !this.form.typeProdFinestre &&
-          !this.form.typeProdCucine &&
-          !this.form.typeProdMobili &&
-          !this.form.typeProdOther
-        ) {
-          this.form.errors.set({
-            errors: {
-              typeProd:
-                "Deve Essere selezionato almeno una Tipologia di Produzione"
-            }
-          });
+      if(this.form.rConosceKK!=null){
+        if(!this.form.typeProdPorte && !this.form.typeProdFinestre && !this.form.typeProdCucine && !this.form.typeProdMobili && !this.form.typeProdOther) {
+          this.form.errors.set({errors: {'typeProd': 'Deve Essere selezionato almeno una Tipologia di Produzione'}});
           lGoOn = false;
         }
-        if (this.form.typeProdOther && _.isEmpty(this.form.noteProdOther)) {
-          this.form.errors.set({
-            errors: { noteProdOther: "Deve Essere Descritta la Tipologia" }
-          });
+        if(this.form.typeProdOther && _.isEmpty(this.form.noteProdOther)) {
+          this.form.errors.set({errors: {'noteProdOther': 'Deve Essere Descritta la Tipologia'}});
           lGoOn = false;
         }
-        if (lGoOn && this.oldConosceKK != this.form.rConosceKK) {
+        if(lGoOn && this.oldConosceKK != this.form.rConosceKK){
           this.boolConosceKK();
         }
       }
-      //STEP 2a Conosce KK
-      if (this.isConosceKK && this.form.rAcquistaKK != null) {
-        lGoOn = true;
-        if (_.isEmpty(this.form.sysKnown)) {
-          this.form.errors.set({
-            errors: { sysKnown: "Deve essere selezionata almeno una voce" }
-          });
-          lGoOn = false;
+      if(this.form.isTermina){
+        //STEP 2a Conosce KK
+        if(this.isConosceKK && this.form.rAcquistaKK!=null){
+          lGoOn = true;
+          if(_.isEmpty(this.form.sysKnown)){
+            this.form.errors.set({errors: {'sysKnown': 'Deve essere selezionata almeno una voce'}});
+            lGoOn = false;
+          }
+          if(lGoOn && this.oldAcquistaKK != this.form.rAcquistaKK){
+            this.boolAcquistaKK();
+          }
         }
-        if (lGoOn && this.oldAcquistaKK != this.form.rAcquistaKK) {
-          this.boolAcquistaKK();
+        //STEP 3a Conosce e Acquista KK
+        if(this.isConosceKK && this.isAcquistaKK && this.form.yes_isInformato!=null){
+          if(_.isEmpty(this.form.sysBuyOfKK)){
+            this.form.errors.set({errors: {'sysBuyOfKK': 'Deve essere selezionata almeno una voce'}});
+            lGoOn = false;
+          } else if(this.form.yes_supplierType==0){
+            this.form.errors.set({errors: {'yes_supplierType': 'Seleziona una tipologia di Fornitore'}});
+            lGoOn = false;
+          } else if(this.form.yes_supplierType>1 && _.isEmpty(this.form.yes_supplierName)){
+            this.form.errors.set({errors: {'yes_supplierName': 'Inserire Ragione Sociale Fornitore'}});
+            lGoOn = false;
+          }
         }
-      }
-      //STEP 3a Conosce e Acquista KK
-      if (
-        this.isConosceKK &&
-        this.isAcquistaKK &&
-        this.form.yes_isInformato != null
-      ) {
-        if (_.isEmpty(this.form.sysBuyOfKK)) {
-          this.form.errors.set({
-            errors: { sysBuyOfKK: "Deve essere selezionata almeno una voce" }
-          });
-          lGoOn = false;
-        } else if (this.form.yes_supplierType == 0) {
-          this.form.errors.set({
-            errors: { yes_supplierType: "Seleziona una tipologia di Fornitore" }
-          });
-          lGoOn = false;
-        } else if (
-          this.form.yes_supplierType > 1 &&
-          _.isEmpty(this.form.yes_supplierName)
-        ) {
-          this.form.errors.set({
-            errors: { yes_supplierName: "Inserire Ragione Sociale Fornitore" }
-          });
-          lGoOn = false;
-        }
-        if (lGoOn) {
-          if (this.form.yes_isInformato) {
+        if(lGoOn){
+          if(this.form.yes_isInformato=='true'){
             this.isTheEnd = true;
           } else {
-            if (!this.form.yes_isInformato && this.form.wants_info != null) {
+            if(this.form.yes_isInformato=='false' && this.form.wants_info!=null){
               this.isTheEnd = true;
             }
           }
         }
-      }
-      //STEP 2b/3b NON Conosce o NON Acquista KK
-      if (
-        (!this.isConosceKK || !this.isAcquistaKK) &&
-        this.form.wants_tryKK != null
-      ) {
-        console.log("Step2b/3b");
-        if (_.isEmpty(this.form.sysBuyOfOther)) {
-          this.form.errors.set({
-            errors: { sysBuyOfOther: "Deve essere selezionata almeno una voce" }
-          });
-          lGoOn = false;
-        } else if (
-          !this.form.not_why_prezzo &&
-          !this.form.not_why_qualita &&
-          !this.form.not_why_servizio &&
-          !this.form.not_why_catalogo &&
-          !this.form.not_why_noinfo
-        ) {
-          this.form.errors.set({ errors: { notWhy: "Specificare una voce" } });
-          lGoOn = false;
-        } else if (this.form.not_supplierType == 0) {
-          this.form.errors.set({
-            errors: { not_supplierType: "Seleziona una tipologia di Fornitore" }
-          });
-          lGoOn = false;
-        } else if (
-          this.form.not_supplierType > 1 &&
-          _.isEmpty(this.form.not_supplierName)
-        ) {
-          this.form.errors.set({
-            errors: { not_supplierName: "Inserire Ragione Sociale Fornitore" }
-          });
-          lGoOn = false;
-        }
-        if (lGoOn) {
-          if (this.form.wants_tryKK && !_.isEmpty(this.form.sysLiked)) {
+        //STEP 2b/3b NON Conosce o NON Acquista KK
+        if((!this.isConosceKK || !this.isAcquistaKK) && this.form.wants_tryKK!=null){
+          console.log('Step2b/3b');
+          if(_.isEmpty(this.form.sysBuyOfOther)){
+            this.form.errors.set({errors: {'sysBuyOfOther': 'Deve essere selezionata almeno una voce'}});
+            lGoOn = false;
+          } else if(!this.form.not_why_prezzo && !this.form.not_why_qualita && !this.form.not_why_servizio && !this.form.not_why_catalogo && !this.form.not_why_noinfo){
+            this.form.errors.set({errors: {'notWhy': 'Specificare una voce'}});
+            lGoOn = false;
+          } else if(this.form.not_supplierType==0){
+            this.form.errors.set({errors: {'not_supplierType': 'Seleziona una tipologia di Fornitore'}});
+            lGoOn = false;
+          } else if(this.form.not_supplierType>1 && _.isEmpty(this.form.not_supplierName)){
+            this.form.errors.set({errors: {'not_supplierName': 'Inserire Ragione Sociale Fornitore'}});
+            lGoOn = false;
+          }    
+        }    
+        if(lGoOn){
+          if(this.form.wants_tryKK=='true' && !_.isEmpty(this.form.sysLiked)){
             this.isTheEnd = true;
-          } else if (!this.form.wants_tryKK && !_.isEmpty(this.form.notWhy)) {
+          } else if (this.form.wants_tryKK=='true' && _.isEmpty(this.form.sysLiked)) {
+            this.form.errors.set({errors: {'sysLiked': 'Deve essere selezionata almeno una voce'}});
+            lGoOn = false;
+          }
+          
+          if(this.form.wants_tryKK=='false' && this.form.notryKK_note!=''){
             this.isTheEnd = true;
+          } else if(this.form.wants_tryKK=='false' && this.form.notryKK_note==''){
+            this.form.errors.set({errors: {'notryKK_note': 'Specificare il perchè'}});
+            lGoOn = false;
           }
         }
+      } else {
+        this.isTheEnd = true;
       }
       return lGoOn;
     },
@@ -794,6 +766,7 @@ export default {
     clearNoteProd() {
       if (!this.form.typeProdOther) {
         this.form.noteProdOther = "";
+        this.form.errors.clear('noteProdOther');
       }
     },
 
@@ -872,7 +845,10 @@ export default {
     onSubmit() {
       if (this.checkGoOn()) {
         this.form.post("/updModCarp01").then(response => {
+          alert('Modulo Salvato! Verrai reindirizzato...');
           window.location.replace('/contact/'+JSON.parse(this.contact).id);
+        }).catch(error => {
+          alert("C'è Stato un errore! Contattare Assistenza!");
         });
       }
     }
