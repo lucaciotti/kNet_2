@@ -14,7 +14,7 @@
 		<div id="app" class="container">
 			<div class="col-lg-12">	
 			<form-carp-edit contact="{{$contact}}" 
-			sysmkt="{{$sysMkt}}" modcarp="{{$modCarp}}">
+			sysmkt="{{$sysMkt}}" modcarp="{{$modCarp}}" sysother="{{$sysOther}}">
 				</form-carp-edit>
 				{{-- @include ('modCarp01.partials.form')       --}}
 			</div>

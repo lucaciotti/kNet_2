@@ -26,7 +26,8 @@ class ModCarp01Controller extends Controller
         // dd(wRubrica::find($rubri_id));
         return view('modCarp01.create', [
             'contact' => wRubrica::find($rubri_id),
-            'sysMkt' => wSysMkt::all(),
+            'sysMkt' => wSysMkt::where('codice', 'LIKE', 'KU%')->orWhere('codice', 'LIKE', 'KZ%')->get(),
+            'sysOther' => wSysMkt::where('codice', 'LIKE', 'OT%')->get(),
         ]);
     }
     
@@ -97,7 +98,7 @@ class ModCarp01Controller extends Controller
             'user_id' => Auth::user()->id,
             'data' => Carbon::now(),
             'tipo' => "MCarp",
-            'descrizione' => "Compilazione Modulo Falegnami",
+            'descrizione' => "Compilazione Analisi di Mercato 2019",
             'modCarp_id' => $modCarp->id
         ]);
 
@@ -119,14 +120,15 @@ class ModCarp01Controller extends Controller
         $contact->save();
 
 
-        return ['Modulo Falegnami Salvato'];
+        return ['Analisi di Mercato 2019 Salvata'];
     }
 
     public function edit(Request $req, $rubri_id){
         $modCarp = wModCarp01::where('rubri_id', $rubri_id)->with(['sysKnown', 'sysBuyOfKK', 'sysBuyOfOther', 'sysLiked'])->first();
         return view('modCarp01.edit', [
             'contact' => wRubrica::find($rubri_id),
-            'sysMkt' => wSysMkt::all(),
+            'sysMkt' => wSysMkt::where('codice', 'LIKE', 'KU%')->orWhere('codice', 'LIKE', 'KZ%')->get(),
+            'sysOther' => wSysMkt::where('codice', 'LIKE', 'OT%')->get(),
             'modCarp' => $modCarp
         ]);
     }
@@ -202,7 +204,7 @@ class ModCarp01Controller extends Controller
             'user_id' => Auth::user()->id,
             'data' => Carbon::now(),
             'tipo' => "MCarp",
-            'descrizione' => "Modificato Modulo Falegnami",
+            'descrizione' => "Modificato Analisi di Mercato 2019",
             'modCarp_id' => $modCarp->id
         ]);
 

@@ -29,6 +29,7 @@ class RubriController extends Controller
       $contacts = wRubrica::select('id', 'descrizion', 'codnazione', 'agente', 'regione', 'localita', 'date_nextvisit', 'vote', 'codicecf', 'isModCarp01');
       $contacts = $contacts->with(['agent']);
       $contacts = $contacts->where('statocf', 'T');
+      $contacts = $contacts->orderBy('date_lastvisit', 'DESC')->orderBy('descrizion');
       $contacts = $contacts->get();
       
       // $nazioni = Nazione::all();

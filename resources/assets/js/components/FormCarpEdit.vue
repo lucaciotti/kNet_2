@@ -343,7 +343,7 @@
         <label>Quali Prodotti della Concorrenza Utilizza?</label>
         <v-multi-select
           v-model="form.sysBuyOfOther"
-          :options="optionsSysMkt"
+          :options="optionsSysOther"
           :multiple="true"
           :searchable="true"
           placeholder="Pick a value"
@@ -613,7 +613,7 @@ import vMultiSelect from "vue-multiselect";
 import boxDefault from "./layouts/BoxDefault";
 
 export default {
-  props: ["contact", "sysmkt", "modcarp"],
+  props: ["contact", "sysmkt", "modcarp", "sysother"],
   mixins: [redirect],
 
   data() {
@@ -660,6 +660,7 @@ export default {
       oldTryKK: JSON.parse(this.modcarp).wants_tryKK ? "true" : "false",
       isTheEnd: true,
       optionsSysMkt: JSON.parse(this.sysmkt),
+      optionsSysOther: JSON.parse(this.sysother),
       preSysKnown: JSON.parse(this.modcarp).sys_known
     };
   },

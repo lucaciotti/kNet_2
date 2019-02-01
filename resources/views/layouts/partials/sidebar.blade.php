@@ -65,7 +65,7 @@
               {{-- @if (!Auth::user()->hasRole('client')) --}}
               @if (!in_array(RedisUser::get('role'), ['client']))
               <li class="header">Funzioni Web</li>
-              @if (RedisUser::get('ditta_DB')=='kNet_it' && !in_array(RedisUser::get('role'), ['agent', 'superAgent']))
+              @if (RedisUser::get('ditta_DB')=='kNet_it')
                 <li class=""><a href="{{ route('rubri::list') }}"><i class="fa fa-address-card-o"></i> <span>Rubrica Contatti</span></a></li>
               @endif
               {{-- <li class=""><a href="{{ route('doc::list', 'O') }}"><i class='fa fa-pencil-square-o'></i> <span>Pre-Ordini via Web</span></a></li> --}}              
