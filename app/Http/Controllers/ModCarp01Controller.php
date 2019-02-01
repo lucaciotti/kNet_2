@@ -222,7 +222,7 @@ class ModCarp01Controller extends Controller
         $contact->save();
 
 
-        return ['Modulo Falegnami Salvato'];
+        return ['Analisi Mercato 2019 Salvato'];
     }
 
     public function delete(Request $req, $rubri_id){

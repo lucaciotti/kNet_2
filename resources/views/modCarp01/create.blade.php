@@ -1,11 +1,11 @@
 @extends('layouts.app')
 
 @section('htmlheader_title')
-    - Modulo Falegnami
+    - Analisi Mercato 2019
 @endsection
 
 @section('contentheader_title')
-    Modulo Falegnami
+    Analisi Mercato 2019
 @endsection
 
 @section('main-content')
