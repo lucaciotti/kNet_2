@@ -35,7 +35,7 @@ class ClientController extends Controller
         return redirect()->action('ClientController@detail', RedisUser::get('codcli'));
       }
       // on($this->connection)->
-      $clients = Client::where('statocf', 'T')->where('agente', '!=', '');
+      $clients = Client::whereNotIn('statocf', ['C', 'L', 'S', '1', '2', 'B', 'N'])->where('agente', '!=', '');
       $clients = $clients->select('codice', 'descrizion', 'codnazione', 'agente', 'localita', 'settore');
       $clients = $clients->with(['agent']);
       $clients = $clients->get();

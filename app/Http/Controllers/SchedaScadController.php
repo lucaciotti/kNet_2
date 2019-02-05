@@ -18,12 +18,16 @@ class SchedaScadController extends Controller
       $this->middleware('auth');
     }
 
-    public function downloadProvPDF(Request $req, $codAg){
-      $thisYear = Carbon::now()->month==1 ? Carbon::now()->year-1 : Carbon::now()->year;
+    public function downloadProvPDF(Request $req, $codAg, $year){
+      $thisYear = $year;//Carbon::now()->month==1 ? Carbon::now()->year-1 : Carbon::now()->year;
       $agente = Agent::select('codice', 'descrizion')->where('codice', $codAg)->where(DB::raw('LENGTH(codice)'), strlen($codAg))->orderBy('codice')->first();
 
       $startDate = Carbon::createFromDate($thisYear, 1, 1);
-      $endDate = new Carbon('last day of last month');
+      if($year==Carbon::now()->year){
+        $endDate = new Carbon('last day of last month');
+      } else {
+        $endDate = Carbon::createFromDate($thisYear, 12, 31);
+      }
 
       $provv_TY = ScadCli::select('id', 'id_doc', 'numfatt', 
                 'datafatt', 'datascad', 'codcf', 'tipomod', 
@@ -53,7 +57,7 @@ class SchedaScadController extends Controller
               // ->whereRaw("`pagato` = 1")
               // ->where('datapag', '<=', $endDate)
 
-      $title = "Scheda Provvigioni Agente";
+      $title = "Scheda Provvigioni Agente - ".(string)$thisYear;
       $subTitle = $agente->descrizion;
       $view = '_exports.pdf.schedaProvPdf';
       $data = [

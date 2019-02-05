@@ -321,7 +321,7 @@ Route::group(['as' => 'schedaFat::'], function () {
   ]);
 });
 Route::group(['as' => 'schedaScad::'], function () {
-  Route::get('/schedaProvPDF/{codAg}', [
+  Route::get('/schedaProvPDF/{codAg}/{year?}', [
     'as' => 'ProvPDF',
     'uses' => 'SchedaScadController@downloadProvPDF'
   ]);
