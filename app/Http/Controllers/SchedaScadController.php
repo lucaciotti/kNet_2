@@ -39,9 +39,9 @@ class SchedaScadController extends Controller
               )
               ->whereBetween('datafatt', array($startDate, $endDateFT))
               ->where(function ($q) use ($startDate, $endDateScad) {
-                $q->whereBetween('datascad', array($startDate, $endDateScad))
+                $q->whereBetween('datapag', array($startDate, $endDateScad))
                 ->orWhere(function ($query) use ($startDate, $endDateScad) {
-                  $query->whereBetween('datapag', array($startDate, $endDateScad));
+                  $query->whereBetween('datascad', array($startDate, $endDateScad))->where('pagato', false);
                 });
               })
               ->where('codag', $codAg)->where(DB::raw('LENGTH(codag)'), strlen($codAg))
