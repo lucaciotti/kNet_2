@@ -19,15 +19,17 @@ class SchedaScadController extends Controller
     }
 
     public function downloadProvPDF(Request $req, $codAg, $year){
-      $thisYear = $year;//Carbon::now()->month==1 ? Carbon::now()->year-1 : Carbon::now()->year;
-      $agente = Agent::select('codice', 'descrizion')->where('codice', $codAg)->where(DB::raw('LENGTH(codice)'), strlen($codAg))->orderBy('codice')->first();
-
-      $startDate = Carbon::createFromDate($thisYear, 1, 1);
-      if($year==Carbon::now()->year){
-        $endDate = new Carbon('last day of last month');
+      //Let's Set the Date
+      $thisYear = Carbon::now()->year;
+      $startDate = Carbon::createFromDate($year, 1, 1);
+      if($year==$thisYear){
+        $endDateFT = new Carbon('last day of last month');
       } else {
-        $endDate = Carbon::createFromDate($thisYear, 12, 31);
+        $endDateFT = Carbon::createFromDate($year, 12, 31);
       }
+      $endDateScad = new Carbon('last day of last month');
+
+      $agente = Agent::select('codice', 'descrizion')->where('codice', $codAg)->where(DB::raw('LENGTH(codice)'), strlen($codAg))->orderBy('codice')->first();
 
       $provv_TY = ScadCli::select('id', 'id_doc', 'numfatt', 
                 'datafatt', 'datascad', 'codcf', 'tipomod', 
@@ -35,11 +37,11 @@ class SchedaScadController extends Controller
                 'impeffval', 'importopag', 'idragg', 'tipoacc',
                 'impprovlit', 'impprovliq', 'liquidate', DB::raw('MONTH(datafatt) as Mese')
               )
-              ->whereBetween('datafatt', array($startDate, $endDate))
-              ->where(function ($q) use ($startDate, $endDate) {
-                $q->whereBetween('datascad', array($startDate, $endDate))
-                ->orWhere(function ($query) use ($startDate, $endDate) {
-                  $query->whereBetween('datapag', array($startDate, $endDate));
+              ->whereBetween('datafatt', array($startDate, $endDateFT))
+              ->where(function ($q) use ($startDate, $endDateScad) {
+                $q->whereBetween('datascad', array($startDate, $endDateScad))
+                ->orWhere(function ($query) use ($startDate, $endDateScad) {
+                  $query->whereBetween('datapag', array($startDate, $endDateScad));
                 });
               })
               ->where('codag', $codAg)->where(DB::raw('LENGTH(codag)'), strlen($codAg))
@@ -57,7 +59,7 @@ class SchedaScadController extends Controller
               // ->whereRaw("`pagato` = 1")
               // ->where('datapag', '<=', $endDate)
 
-      $title = "Scheda Provvigioni Agente - ".(string)$thisYear;
+      $title = "Scheda Provvigioni Agente - ".(string)$year;
       $subTitle = $agente->descrizion;
       $view = '_exports.pdf.schedaProvPdf';
       $data = [
