@@ -47,17 +47,19 @@
                       <li class="{{ Ekko::isActiveRoute('doc::list','F') }}"><a href="{{ route('doc::list', 'F') }}">{{ strtoupper(trans('_menu.invoice')) }}</a></li>
                   </ul>
               </li>
-              <li class="treeview {{ Ekko::isActiveRoute('listini::*') }}">
-                  <a href="{{ route('listini::idxCli') }}"><i class='fa fa-list-ul'></i> <span>Listini</span> <i class="fa fa-angle-left pull-right"></i></a>
-                  <ul class="treeview-menu">
-                      <li class="{{ Ekko::isActiveRoute('listini::idxCli') }}"><a href="{{ route('listini::idxCli') }}">Cliente</a></li>
-                      <li class="{{ Ekko::isActiveRoute('listini::grpCli') }}"><a href="{{ route('listini::grpCli') }}">Gruppo Clienti</a></li>
-                      <li><hr></li>
-                      @if (!in_array(RedisUser::get('role'), ['agent', 'client']))
-                        <li class="{{ Ekko::isActiveRoute('listini::grpCli') }}"><a href="{{ route('listini::cliListScad') }}">Listino in Scadenza</a></li>
-                      @endif
-                  </ul>
-              </li>
+              @if (!in_array(RedisUser::get('role'), ['client']))
+                <li class="treeview {{ Ekko::isActiveRoute('listini::*') }}">
+                    <a href="{{ route('listini::idxCli') }}"><i class='fa fa-list-ul'></i> <span>Listini</span> <i class="fa fa-angle-left pull-right"></i></a>
+                    <ul class="treeview-menu">
+                        <li class="{{ Ekko::isActiveRoute('listini::idxCli') }}"><a href="{{ route('listini::idxCli') }}">Cliente</a></li>
+                        <li class="{{ Ekko::isActiveRoute('listini::grpCli') }}"><a href="{{ route('listini::grpCli') }}">Gruppo Clienti</a></li>
+                        <li><hr></li>
+                        @if (!in_array(RedisUser::get('role'), ['agent', 'client']))
+                            <li class="{{ Ekko::isActiveRoute('listini::grpCli') }}"><a href="{{ route('listini::cliListScad') }}">Listino in Scadenza</a></li>
+                        @endif
+                    </ul>
+                </li>
+                @endif
               <li class="{{ Ekko::isActiveRoute('scad::*') }}"><a href="{{ route('scad::list') }}"><i class='fa fa-money'></i> <span>{{ trans('_menu.payment') }}</span></a></li>
               {{-- <li class="{{ Ekko::isActiveRoute('prod::*') }}"><a href="{{ route('prod::list') }}"><i class='fa fa-cube'></i> <span>{{ trans('_menu.products') }}</span></a></li> --}}
               <li><i class='fa fa-empty'></i></li>
