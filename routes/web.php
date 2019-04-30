@@ -320,6 +320,12 @@ Route::group(['as' => 'schedaFat::'], function () {
     'uses' => 'SchedaFattController@downloadZonePDF'
   ]);
 });
+Route::group(['as' => 'schedaAbc::'], function () {
+  Route::get('/schedaAbcPDF/{codAg}', [
+    'as' => 'PDF',
+    'uses' => 'SchedaAbcController@downloadPDF'
+  ]);
+});
 Route::group(['as' => 'schedaScad::'], function () {
   Route::get('/schedaProvPDF/{codAg}/{year?}', [
     'as' => 'ProvPDF',

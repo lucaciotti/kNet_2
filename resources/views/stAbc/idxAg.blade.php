@@ -61,6 +61,19 @@
         @include('stAbc.partials.formIndex', ['gruppi' => $gruppi, 'agente' => $agente, 'customer' => '', 'route' => 'stAbc::idxAg'])
       </div>
     </div>
+    
+    <div class="box box-default collapsed-box">
+      <div class="box-header with-border">
+        <h3 class="box-title" data-widget="collapse"><i class='fa fa-cloud-download'> </i> Download</h3>
+        <div class="box-tools pull-right">
+          <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i></button>
+        </div>
+      </div>
+      <div class="box-body">
+        <a type="button" class="btn btn-default btn-block" target="_blank" href="{{ route('schedaAbc::PDF', $agente) }}">Scheda Abc PDF</a>    {{-- <a type="button" class="btn btn-default btn-block" target="_blank" href="{{ route('schedaFat::ZonePDF', $agente) }}">Scheda Fatturato Zone PDF</a>    --}}
+      </div>
+    </div>
+
   </div>
 
   <div class="col-lg-9">
