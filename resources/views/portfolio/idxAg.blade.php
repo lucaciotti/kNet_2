@@ -192,7 +192,7 @@ Agents Portfolio
             <col width='15%'>
             <tbody>
               <tr>
-                <td colspan="7"></td>
+                <th colspan="7"> --> Escluso da Calcolo Portfolio </th>
               </tr>
               <tr>
                 <th>Diciture (es. Acconti)</th>
