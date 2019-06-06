@@ -12,14 +12,14 @@ use knet\Helpers\RedisUser;
 
 class PortfolioController extends Controller
 {
-	protected $thisYear;
-	protected $prevYear;	
-	protected $dStartMonth; 	
-	protected $dEndMonth;
-	protected $arrayIDOC;
-	protected $arrayIDBO;
-	protected $arrayIDFT;
-	protected $arrayIDprevFT;
+		protected $thisYear;
+		protected $prevYear;	
+		protected $dStartMonth; 	
+		protected $dEndMonth;
+		protected $arrayIDOC;
+		protected $arrayIDBO;
+		protected $arrayIDFT;
+		protected $arrayIDprevFT;
 
     public function __construct(){
       $this->middleware('auth');
@@ -46,24 +46,28 @@ class PortfolioController extends Controller
 		$OCKubica = $this->getOrderToShip(['B06'], $fltAgents, ['B0630'])->sum('totRowPrice');
 		$OCAtomika = $this->getOrderToShip(['B0630'], $fltAgents)->sum('totRowPrice');
 		$OCPlanet = (RedisUser::get('ditta_DB')=='kNet_es') ? $this->getOrderToShip(['D0'], $fltAgents)->sum('totRowPrice') : 0;
+		$OCDIC = $this->getOrderToShip(['DIC'], $fltAgents)->sum('totRowPrice');
 
 		$BOKrona = $this->getDdtNotInvoiced(['A'], $fltAgents)->sum('totRowPrice');
 		$BOKoblenz = $this->getDdtNotInvoiced(['B'], $fltAgents, ['B06'])->sum('totRowPrice');
 		$BOKubica = $this->getDdtNotInvoiced(['B06'], $fltAgents, ['B0630'])->sum('totRowPrice');
 		$BOAtomika = $this->getDdtNotInvoiced(['B0630'], $fltAgents)->sum('totRowPrice');
 		$BOPlanet = (RedisUser::get('ditta_DB')=='kNet_es') ? $this->getDdtNotInvoiced(['D0'], $fltAgents)->sum('totRowPrice') : 0;
+		$BODIC = $this->getDdtNotInvoiced(['DIC'], $fltAgents)->sum('totRowPrice');
 
 		$FTKrona = $this->getInvoice(['A'], $fltAgents)->sum('totRowPrice');
 		$FTKoblenz = $this->getInvoice(['B'], $fltAgents, ['B06'])->sum('totRowPrice');
 		$FTKubica = $this->getInvoice(['B06'], $fltAgents, ['B0630'])->sum('totRowPrice');
 		$FTAtomika = $this->getInvoice(['B0630'], $fltAgents)->sum('totRowPrice');
 		$FTPlanet = (RedisUser::get('ditta_DB')=='kNet_es') ? $this->getInvoice(['D0'], $fltAgents)->sum('totRowPrice') : 0;
+		$FTDIC = $this->getInvoice(['DIC'], $fltAgents)->sum('totRowPrice');
 
 		$FTPrevKrona = $this->getPrevInvoice(['A'], $fltAgents)->sum('totRowPrice');
 		$FTPrevKoblenz = $this->getPrevInvoice(['B'], $fltAgents, ['B06'])->sum('totRowPrice');
 		$FTPrevKubica = $this->getPrevInvoice(['B06'], $fltAgents, ['B0630'])->sum('totRowPrice');
 		$FTPrevAtomika = $this->getPrevInvoice(['B0630'], $fltAgents)->sum('totRowPrice');
 		$FTPrevPlanet = (RedisUser::get('ditta_DB')=='kNet_es') ? $this->getPrevInvoice(['D0'], $fltAgents)->sum('totRowPrice') : 0;
+		$FTPrevDIC = $this->getPrevInvoice(['DIC'], $fltAgents)->sum('totRowPrice');
 		// dd($fltAgents);
 		return view('portfolio.idxAg', [
 			'agents' => $agents,
@@ -76,21 +80,25 @@ class PortfolioController extends Controller
 			'OCKubica' => $OCKubica,
 			'OCAtomika' => $OCAtomika,
 			'OCPlanet' => $OCPlanet,
+			'OCDIC' => $OCDIC,
 			'BOKrona' => $BOKrona,
 			'BOKoblenz' => $BOKoblenz,
 			'BOKubica' => $BOKubica,
 			'BOAtomika' => $BOAtomika,
 			'BOPlanet' => $BOPlanet,
+			'BODIC' => $BODIC,
 			'FTKrona' => $FTKrona,
 			'FTKoblenz' => $FTKoblenz,
 			'FTKubica' => $FTKubica,
 			'FTAtomika' => $FTAtomika,
 			'FTPlanet' => $FTPlanet,
+			'FTDIC' => $FTDIC,
 			'FTPrevKrona' => $FTPrevKrona,
 			'FTPrevKoblenz' => $FTPrevKoblenz,
 			'FTPrevKubica' => $FTPrevKubica,
 			'FTPrevAtomika' => $FTPrevAtomika,
 			'FTPrevPlanet' => $FTPrevPlanet,
+			'FTPrevDIC' => $FTPrevDIC,
 			'urlOrders' => action('DocCliController@showOrderDispachMonth', ['fltAgents'=> $fltAgents, 'mese'=>$mese, 'year' => $this->thisYear]),
 			'urlDdts' => action('DocCliController@showDdtToInvoice', ['fltAgents'=>$fltAgents]),
 			'urlInvoices' => action('DocCliController@showInvoiceMonth', ['fltAgents'=>$fltAgents, 'mese'=>$mese, 'year' => $this->thisYear]),

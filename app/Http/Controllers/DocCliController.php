@@ -376,7 +376,7 @@ class DocCliController extends Controller
 		$dStartMonth = new Carbon('first day of '.Carbon::createFromDate(null, $req->input('mese'), null)->format('F').' '.((string)$thisYear)); 
 		$dEndMonth = new Carbon('last day of '.Carbon::createFromDate(null, $req->input('mese'), null)->format('F').' '.((string)$thisYear));
     $docs = DocCli::select('id', 'tipodoc', 'numerodoc', 'datadoc', 'codicecf', 'numerodocf', 'numrighepr', 'totdoc')
-                    ->whereIn('tipomodulo', ['F', 'N'])
+                    ->whereIn('tipomodulo', ['F', 'N'])->where('tipodoc', '!=', 'FP')
                     ->whereBetween('datadoc', [$dStartMonth, $dEndMonth]);
     if($req->input('fltAgents')){
       $docs->whereIn('agente', $req->input('fltAgents'));

@@ -7,3 +7,7 @@ git merge development (there won't be any conflicts now)
 (resolve any merge conflicts if there are any)
 git checkout dev
 git merge master (there won't be any conflicts now)
+
+
+// DEPLOY
+php artisan deploy -v production
