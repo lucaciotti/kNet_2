@@ -95,8 +95,8 @@
             'fatturato' => $fatThisYear,
             'target' => $fatPrevYear,
             'prevMonth' => \Carbon\Carbon::now()->month,
-            'thisYear' => 2018,
-            'prevYear' => 2017
+            'thisYear' => $thisYear,
+            'prevYear' => $prevYear
             ])
 
             {{-- <div class="chart" id="revenue-chart"></div> --}}
