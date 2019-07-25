@@ -21,6 +21,8 @@ class ProductController extends Controller
 
   public function index (Request $req){
 
+    return redirect()->action('HomeController@index');
+
     $products = Product::select('codice', 'descrizion', 'unmisura', 'gruppo', 'classe', 'listino1', 'listino6', 'u_perscli')
                   ->whereIn('statoart', ['1','8'])
                   ->where('classe', 'NOT LIKE', 'DIC%')
@@ -52,7 +54,11 @@ class ProductController extends Controller
     ]);
   }
 
-  public function fltIndex (Request $req){
+  public function fltIndex (Request $req)
+  {
+
+    return redirect()->action('HomeController@index');
+    
     // dd($req);
     $products = Product::select('codice', 'descrizion', 'unmisura', 'gruppo', 'classe', 'listino1', 'listino6', 'u_perscli')
                   ->whereIn('statoart', ['1','8'])
@@ -146,6 +152,9 @@ class ProductController extends Controller
 
   public function showNewProducts (Request $req){
 
+    return redirect()->action('HomeController@index');
+    
+
     $dt = Carbon::now();
 
     $products = Product::select('codice', 'descrizion', 'unmisura', 'gruppo', 'classe', 'listino1', 'listino6')
@@ -184,6 +193,9 @@ class ProductController extends Controller
   }
 
   public function showDetail (Request $req, $codArt){
+
+    return redirect()->action('HomeController@index');
+    
     $product = Product::with(['grpProd', 'clasProd'])->findOrFail($codArt);
     // dd($product);
     return view('prods.detail', [
@@ -194,6 +206,9 @@ class ProductController extends Controller
 
   // API Function
   public function show (Request $req, $codArt) {
+
+    return redirect()->action('HomeController@index');
+    
     $product = Product::with(['grpProd', 'clasProd'])->findOrFail($codArt);
     // dd($product);
     return response()->json([
