@@ -304,6 +304,35 @@ Route::group(['as' => 'stAbc::'], function(){
   ]);
 });
 
+Route::group(['as' => 'stFattArt::'], function () {
+  Route::get('/stFattArt/{codag?}', [
+    'as' => 'idxAg',
+    'uses' => 'StFattArtController@idxAg'
+  ]);
+  Route::post('/stFattArt', [
+    'as' => 'idxAg',
+    'uses' => 'StFattArtController@idxAg'
+  ]);
+  Route::get('/stFattArtZone', [
+    'as' => 'idxZone',
+    'uses' => 'StFattArtController@idxZone'
+  ]);
+  Route::post('/stFattArtZone', [
+    'as' => 'idxZone',
+    'uses' => 'StFattArtController@idxZone'
+  ]);
+});
+Route::group(['as' => 'schedaFatArt::'], function () {
+  Route::get('/schedaFatArtPDF/{codicecf}', [
+    'as' => 'PDF',
+    'uses' => 'SchedaFatArtController@downloadPDF'
+  ]);
+  Route::get('/schedaFatArtXls/{codicecf}', [
+    'as' => 'XLS',
+    'uses' => 'SchedaFatArtController@downloadXLS'
+  ]);
+});
+
 Route::group(['as' => 'schedaCli::'], function () {
   Route::get('/schedaCliPDF/{codice}', [
     'as' => 'PDF',
