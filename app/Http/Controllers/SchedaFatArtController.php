@@ -29,22 +29,37 @@ class SchedaFatArtController extends Controller
             ->join('anagrafe', 'anagrafe.codice', '=', 'u_statfatt_art.codicecf')
             ->leftJoin('settori', 'settori.codice', '=', 'anagrafe.settore')
             ->select('u_statfatt_art.codicearti')
+            ->selectRaw('MAX(u_statfatt_art.macrogrp) as macrogrp')
             ->selectRaw('MAX(u_statfatt_art.gruppo) as codGruppo')
+            ->selectRaw('MAX(u_statfatt_art.prodotto) as tipoProd')
+            ->selectRaw('SUM(IF(u_statfatt_art.esercizio = ?, u_statfatt_art.qta_tot, 0)) as qtaN', [$thisYear])
+            ->selectRaw('AVG(IF(u_statfatt_art.esercizio = ?, u_statfatt_art.val_tot/u_statfatt_art.qta_tot, 0)) as pmN', [$thisYear])
             ->selectRaw('SUM(IF(u_statfatt_art.esercizio = ?, u_statfatt_art.val_tot, 0)) as fatN', [$thisYear])
+            ->selectRaw('SUM(IF(u_statfatt_art.esercizio = ?, u_statfatt_art.qta_tot, 0)) as qtaN1', [$thisYear - 1])
+            ->selectRaw('AVG(IF(u_statfatt_art.esercizio = ?, u_statfatt_art.val_tot/u_statfatt_art.qta_tot, 0)) as pmN1', [$thisYear - 1])
             ->selectRaw('SUM(IF(u_statfatt_art.esercizio = ?, u_statfatt_art.val_tot, 0)) as fatN1', [$thisYear - 1])
+            ->selectRaw('SUM(IF(u_statfatt_art.esercizio = ?, u_statfatt_art.qta_tot, 0)) as qtaN2', [$thisYear - 2])
+            ->selectRaw('AVG(IF(u_statfatt_art.esercizio = ?, u_statfatt_art.val_tot/u_statfatt_art.qta_tot, 0)) as pmN2', [$thisYear - 2])
             ->selectRaw('SUM(IF(u_statfatt_art.esercizio = ?, u_statfatt_art.val_tot, 0)) as fatN2', [$thisYear - 2]);
 
         switch ($yearBack) {
             case 3:
+                $fatList->selectRaw('SUM(IF(u_statfatt_art.esercizio = ?, u_statfatt_art.qta_tot, 0)) as qtaN3', [$thisYear - 3]);
+                $fatList->selectRaw('AVG(IF(u_statfatt_art.esercizio = ?, u_statfatt_art.val_tot/u_statfatt_art.qta_tot, 0)) as pmN3', [$thisYear - 3]);
                 $fatList->selectRaw('SUM(IF(u_statfatt_art.esercizio = ?, u_statfatt_art.val_tot, 0)) as fatN3', [$thisYear - 3]);
                 break;
             case 4:
+                $fatList->selectRaw('SUM(IF(u_statfatt_art.esercizio = ?, u_statfatt_art.qta_tot, 0)) as qtaN3', [$thisYear - 3]);
+                $fatList->selectRaw('AVG(IF(u_statfatt_art.esercizio = ?, u_statfatt_art.val_tot/u_statfatt_art.qta_tot, 0)) as pmN3', [$thisYear - 3]);
                 $fatList->selectRaw('SUM(IF(u_statfatt_art.esercizio = ?, u_statfatt_art.val_tot, 0)) as fatN3', [$thisYear - 3]);
+                $fatList->selectRaw('SUM(IF(u_statfatt_art.esercizio = ?, u_statfatt_art.qta_tot, 0)) as qtaN4', [$thisYear - 4]);
+                $fatList->selectRaw('AVG(IF(u_statfatt_art.esercizio = ?, u_statfatt_art.val_tot/u_statfatt_art.qta_tot, 0)) as pmN4', [$thisYear - 4]);
                 $fatList->selectRaw('SUM(IF(u_statfatt_art.esercizio = ?, u_statfatt_art.val_tot, 0)) as fatN4', [$thisYear - 4]);
                 break;
         }
         $fatList->whereRaw('u_statfatt_art.codicecf = ?', [$codCli]);
         $fatList->groupBy('codicearti');
+        $fatList->orderBy('codGruppo')->orderBy('codicearti');
 
         dd($fatList->get());
 
@@ -55,6 +70,4 @@ class SchedaFatArtController extends Controller
             'thisYear' => $thisYear,
         ]);
     }
-
-
 }

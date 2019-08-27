@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use knet\Helpers\RedisUser;
 use knet\ArcaModels\Agent;
+use knet\ArcaModels\Settore;
 
 class StFattArtController extends Controller
 {
@@ -22,8 +23,9 @@ class StFattArtController extends Controller
         $agente = (string) (!empty($codAg)) ? $codAg : (!empty(RedisUser::get('codag')) ? RedisUser::get('codag') : $agentList->first()->codice);
         $descrAg = (!empty($agentList->whereStrict('codice', $agente)->first()) ? $agentList->whereStrict('codice', $agente)->first()->descrizion : "");
         $thisYear = (Carbon::now()->year);
-        $settori = ($req->input('settori')) ? $req->input('settori') : null;
+        $settoreSelected = ($req->input('settoreSelected')) ? $req->input('settoreSelected') : null;
         $yearBack = ($req->input('yearback')) ? $req->input('yearback') : 3; // 2->3AnniView; 3->4AnniView; 4->5AnniView
+        $limitVal = ($req->input('limitVal')) ? $req->input('limitVal') : 0;
         // dd($agentList);
 
         // Qui costruisco solo la tabella con il fatturato dei clienti
@@ -54,16 +56,22 @@ class StFattArtController extends Controller
                 break;
         }
         $fatList->whereRaw('anagrafe.agente = ? AND LENGTH(anagrafe.agente) = ?', [$agente, strlen($agente)]);
-        if($settori!=null) $fatList->whereIn('anagrafe.settore', $settori);
-        $fatList->groupBy('codicecf')->havingRaw('fatN > ?', [1000]);
+        if($settoreSelected!=null) $fatList->whereIn('anagrafe.settore', $settoreSelected);
+        $fatList->groupBy('codicecf');
+        // $fatList->havingRaw('fatN > ?', [$limitVal]);
 
-        dd($fatList->get());
+        // dd($fatList->get());
 
-        return view('stFatt.idxAg', [
+        return view('stFattArt.idxAg', [
             'agentList' => $agentList,
             'agente' => $agente,
             'descrAg' => $descrAg,
             'thisYear' => $thisYear,
+            'yearback' => $yearBack,
+            'settoriList' => Settore::all(),
+            'settoreSelected' => $settoreSelected,
+            'limitVal' => $limitVal,
+            'fatList' => $fatList->get(),
         ]);
     }
 }
