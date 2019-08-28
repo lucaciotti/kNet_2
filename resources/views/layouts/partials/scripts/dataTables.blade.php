@@ -3,6 +3,7 @@
 
 <script src="{{ asset('/plugins/datatables/jquery.dataTables.min.js') }}"></script>
 <script src="{{ asset('/plugins/datatables/dataTables.bootstrap.min.js') }}"></script>
+<script src='https://cdn.datatables.net/plug-ins/1.10.19/sorting/currency.js'></script>
 
 <script>
   $(function () {
@@ -110,6 +111,20 @@
             );
           }
       }
+    });
+    $('.dtTbls_stat').DataTable({
+        "iDisplayLength": 25,
+        "paging": true,
+        "lengthChange": false,
+        "searching": false,
+        "ordering": true,
+        "info": true,
+        "autoWidth": false,
+        'aoColumnDefs': [
+            { 'sType': 'currency', 'aTargets': [1] } // In this case 5th column will be sorted on currency basis.
+        ],
+        // "aaSorting": [[0, "desc"]],
+        // "bStateSave": false
     });
   });
 </script>

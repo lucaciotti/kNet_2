@@ -31,7 +31,7 @@
           <option value="€" selected>€</option>
         </select>
       </span>
-      <input type="number" min="0" value="0" step=".01" class="form-control" name="limitVal" value="{{ old('limitVal') }}">
+      <input type="number" min="0" value="{{ $limitVal }}" step=".01" class="form-control" name="limitVal" value="{{ old('limitVal') }}">
     </div>
   </div>
   

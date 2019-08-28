@@ -25,15 +25,16 @@ class StFattArtController extends Controller
         $thisYear = (Carbon::now()->year);
         $settoreSelected = ($req->input('settoreSelected')) ? $req->input('settoreSelected') : null;
         $yearBack = ($req->input('yearback')) ? $req->input('yearback') : 3; // 2->3AnniView; 3->4AnniView; 4->5AnniView
-        $limitVal = ($req->input('limitVal')) ? $req->input('limitVal') : 0;
-        // dd($agentList);
+        $limitVal = ($req->input('limitVal') || $req->input('limitVal')=='0') ? $req->input('limitVal') : 500;
+        // dd($req->input('limitVal'));
 
         // Qui costruisco solo la tabella con il fatturato dei clienti
         $fatList = DB::connection(RedisUser::get('ditta_DB'))->table('u_statfatt_art')
-            ->join('anagrafe', function ($join) use ($agente) {
-                $join->on('anagrafe.codice', '=', 'u_statfatt_art.codicecf')
-                    ->where('anagrafe.agente', '=', $agente);
-            })
+            ->join('anagrafe', 'anagrafe.codice', '=', 'u_statfatt_art.codicecf')
+            // ->join('anagrafe', function ($join) use ($agente) {
+            //     $join->on('anagrafe.codice', '=', 'u_statfatt_art.codicecf')
+            //         ->where('anagrafe.agente', '=', $agente);
+            // })
             ->join('agenti', function ($join) use ($agente) {
                 $join->on('agenti.codice', '=', 'anagrafe.agente')
                     // ->orOn('agenti.codice', '=', 'anagrafe.agente2')
@@ -58,7 +59,7 @@ class StFattArtController extends Controller
         $fatList->whereRaw('anagrafe.agente = ? AND LENGTH(anagrafe.agente) = ?', [$agente, strlen($agente)]);
         if($settoreSelected!=null) $fatList->whereIn('anagrafe.settore', $settoreSelected);
         $fatList->groupBy('codicecf');
-        // $fatList->havingRaw('fatN > ?', [$limitVal]);
+        $fatList->havingRaw('fatN > ?', [$limitVal]);
 
         // dd($fatList->get());
 

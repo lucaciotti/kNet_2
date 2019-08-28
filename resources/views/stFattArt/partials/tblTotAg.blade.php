@@ -1,4 +1,4 @@
-<table class="table table-hover table-striped" id="statFattTot" style="text-align: center;">
+<table class="table table-hover table-striped dtTbls_stat" id="statFattTot" style="text-align: center;">
   <col width="180"> <!--Cliente-->
   @if($yearBack==4) <col width="50"> <!--Val N-4--> @endif
   @if($yearBack>=3) <col width="50"> <!--Val N-3--> @endif
