@@ -42,7 +42,7 @@ class StFattArtController extends Controller
             })
             ->leftJoin('settori', 'settori.codice', '=', 'anagrafe.settore')
             ->select('u_statfatt_art.codicecf')
-            ->selectRaw('MAX(anagrafe.descrizion) as ragionesociale, MAX(settori.descrizion) as settore, MAX(u_statfatt_art.mese_parz) as meseRif')
+            ->selectRaw('MAX(anagrafe.descrizion) as ragionesociale, MAX(settori.descrizion) as settore, MIN(u_statfatt_art.mese_parz) as meseRif')
             ->selectRaw('SUM(IF(u_statfatt_art.esercizio = ?, u_statfatt_art.val_tot, 0)) as fatN', [$thisYear])
             ->selectRaw('SUM(IF(u_statfatt_art.esercizio = ?, u_statfatt_art.val_tot, 0)) as fatN1', [$thisYear-1])
             ->selectRaw('SUM(IF(u_statfatt_art.esercizio = ?, u_statfatt_art.val_tot, 0)) as fatN2', [$thisYear-2]);
@@ -57,6 +57,8 @@ class StFattArtController extends Controller
                 break;
         }
         $fatList->whereRaw('anagrafe.agente = ? AND LENGTH(anagrafe.agente) = ?', [$agente, strlen($agente)]);
+        $fatList->whereRaw('(LEFT(u_statfatt_art.codicearti,4) != ? AND LEFT(u_statfatt_art.codicearti,4) != ? AND LEFT(u_statfatt_art.codicearti,4) != ?)', ['CAMP', 'NOTA', 'BONU']);
+        $fatList->whereRaw('(LEFT(u_statfatt_art.gruppo,1) != ? AND LEFT(u_statfatt_art.gruppo,1) != ? AND LEFT(u_statfatt_art.gruppo,3) != ?)', ['C', '2', 'DIC']);
         if($settoreSelected!=null) $fatList->whereIn('anagrafe.settore', $settoreSelected);
         $fatList->groupBy('codicecf');
         $fatList->havingRaw('fatN > ?', [$limitVal]);

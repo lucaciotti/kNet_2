@@ -3,10 +3,23 @@
 
 <script src="{{ asset('/plugins/datatables/jquery.dataTables.min.js') }}"></script>
 <script src="{{ asset('/plugins/datatables/dataTables.bootstrap.min.js') }}"></script>
-<script src='https://cdn.datatables.net/plug-ins/1.10.19/sorting/currency.js'></script>
+{{-- <script src='https://cdn.datatables.net/plug-ins/1.10.19/sorting/currency.js'></script> --}}
+<script>
+    jQuery.extend( jQuery.fn.dataTableExt.oSort, {
+    "my-currency-pre": function(a) {
+    return parseFloat(a.replace(/[^\d\-]/g, ''));
+    },
+    "my-currency-asc": function(a,b) {
+    return ((a < b) ? -1 : ((a> b) ? 1 : 0));
+        },
+        "my-currency-desc": function(a,b) {
+        return ((a < b) ? 1 : ((a> b) ? -1 : 0));
+            }
+            });
+</script>
 
 <script>
-  $(function () {
+    $(function () {
     $(".dtTbls_full").DataTable({
       "iDisplayLength": 25,
       "aaSorting": [],
@@ -112,7 +125,7 @@
           }
       }
     });
-    $('.dtTbls_stat').DataTable({
+    $('.dtTbls_stat3').DataTable({
         "iDisplayLength": 25,
         "paging": true,
         "lengthChange": false,
@@ -120,26 +133,66 @@
         "ordering": true,
         "info": true,
         "autoWidth": false,
-        'aoColumnDefs': [
-            { 'sType': 'currency', 'aTargets': [1] } // In this case 5th column will be sorted on currency basis.
-        ],
+        "aoColumnDefs": [
+            {"sType": "my-currency", "aTargets": [1]},
+            {"sType": "my-currency", "aTargets": [2]},
+            {"sType": "my-currency", "aTargets": [3]}
+        ]
         // "aaSorting": [[0, "desc"]],
         // "bStateSave": false
+    });
+    $('.dtTbls_stat4').DataTable({
+    "iDisplayLength": 25,
+    "paging": true,
+    "lengthChange": false,
+    "searching": false,
+    "ordering": true,
+    "info": true,
+    "autoWidth": false,
+    "aoColumnDefs": [
+    {"sType": "my-currency", "aTargets": [1]},
+    {"sType": "my-currency", "aTargets": [2]},
+    {"sType": "my-currency", "aTargets": [3]},
+    {"sType": "my-currency", "aTargets": [4]}
+    ]
+    // "aaSorting": [[0, "desc"]],
+    // "bStateSave": false
+    });
+    $('.dtTbls_stat5').DataTable({
+    "iDisplayLength": 25,
+    "paging": true,
+    "lengthChange": false,
+    "searching": false,
+    "ordering": true,
+    "info": true,
+    "autoWidth": false,
+    "aoColumnDefs": [
+    {"sType": "my-currency", "aTargets": [1]},
+    {"sType": "my-currency", "aTargets": [2]},
+    {"sType": "my-currency", "aTargets": [3]},
+    {"sType": "my-currency", "aTargets": [4]},
+    {"sType": "my-currency", "aTargets": [5]}
+    ]
+    // "aaSorting": [[0, "desc"]],
+    // "bStateSave": false
     });
   });
 </script>
 
 <style>
-.dtTbls_light span {
-    display:none;
-}
-.dtTbls_full span {
-    display:none;
-}
-.dtTbls_full_Tot span {
-    display:none;
-}
-.dtTbls_total span {
-    display:none;
-}
+    .dtTbls_light span {
+        display: none;
+    }
+
+    .dtTbls_full span {
+        display: none;
+    }
+
+    .dtTbls_full_Tot span {
+        display: none;
+    }
+
+    .dtTbls_total span {
+        display: none;
+    }
 </style>

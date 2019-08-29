@@ -49,6 +49,7 @@ return [
     'monthly'                 => 'Mensile',
     'cumulative'              => 'Progressivo',
     'revenue'                 => 'Fatturato',
+    'qta'                     => 'Qta',
     'target'                  => 'Target',
     'missing'                 => 'Mancante',
 

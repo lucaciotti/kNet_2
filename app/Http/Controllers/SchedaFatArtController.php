@@ -9,6 +9,8 @@ use knet\Helpers\RedisUser;
 use knet\ArcaModels\Client;
 use knet\ArcaModels\Product;
 
+use knet\Helpers\PdfReport;
+
 class SchedaFatArtController extends Controller
 {
     public function __construct()
@@ -19,7 +21,7 @@ class SchedaFatArtController extends Controller
     public function downloadPDF(Request $req, $codicecf = null)
     {
         $codCli = ($req->input('codicecf')) ? $req->input('codicecf') : $codicecf;
-        $customer = Client::select('codice', 'descrizion')->where('codice', $codCli)->get();
+        $customer = Client::select('codice', 'descrizion')->where('codice', $codCli)->first();
         $thisYear = (Carbon::now()->year);
         // $settori = ($req->input('settori')) ? $req->input('settori') : null;
         $yearBack = ($req->input('yearback')) ? $req->input('yearback') : 3; // 2->3AnniView; 3->4AnniView; 4->5AnniView
@@ -30,44 +32,56 @@ class SchedaFatArtController extends Controller
             ->leftJoin('settori', 'settori.codice', '=', 'anagrafe.settore')
             ->select('u_statfatt_art.codicearti')
             ->selectRaw('MAX(u_statfatt_art.macrogrp) as macrogrp')
+            ->selectRaw('MAX("Descr.macroGruppo") as descrMacrogrp')
             ->selectRaw('MAX(u_statfatt_art.gruppo) as codGruppo')
+            ->selectRaw('MAX("Descr.Gruppo") as descrGruppo')
             ->selectRaw('MAX(u_statfatt_art.prodotto) as tipoProd')
+            ->selectRaw('MIN(u_statfatt_art.mese_parz) as meseRif')
             ->selectRaw('SUM(IF(u_statfatt_art.esercizio = ?, u_statfatt_art.qta_tot, 0)) as qtaN', [$thisYear])
-            ->selectRaw('AVG(IF(u_statfatt_art.esercizio = ?, u_statfatt_art.val_tot/u_statfatt_art.qta_tot, 0)) as pmN', [$thisYear])
+            ->selectRaw('MAX(IFNULL(IF(u_statfatt_art.esercizio = ?, u_statfatt_art.val_tot/u_statfatt_art.qta_tot, 0), 0)) as pmN', [$thisYear])
             ->selectRaw('SUM(IF(u_statfatt_art.esercizio = ?, u_statfatt_art.val_tot, 0)) as fatN', [$thisYear])
             ->selectRaw('SUM(IF(u_statfatt_art.esercizio = ?, u_statfatt_art.qta_tot, 0)) as qtaN1', [$thisYear - 1])
-            ->selectRaw('AVG(IF(u_statfatt_art.esercizio = ?, u_statfatt_art.val_tot/u_statfatt_art.qta_tot, 0)) as pmN1', [$thisYear - 1])
+            ->selectRaw('MAX(IFNULL(IF(u_statfatt_art.esercizio = ?, u_statfatt_art.val_tot/u_statfatt_art.qta_tot, 0), 0)) as pmN1', [$thisYear - 1])
             ->selectRaw('SUM(IF(u_statfatt_art.esercizio = ?, u_statfatt_art.val_tot, 0)) as fatN1', [$thisYear - 1])
             ->selectRaw('SUM(IF(u_statfatt_art.esercizio = ?, u_statfatt_art.qta_tot, 0)) as qtaN2', [$thisYear - 2])
-            ->selectRaw('AVG(IF(u_statfatt_art.esercizio = ?, u_statfatt_art.val_tot/u_statfatt_art.qta_tot, 0)) as pmN2', [$thisYear - 2])
+            ->selectRaw('MAX(IFNULL(IF(u_statfatt_art.esercizio = ?, u_statfatt_art.val_tot/u_statfatt_art.qta_tot, 0), 0)) as pmN2', [$thisYear - 2])
             ->selectRaw('SUM(IF(u_statfatt_art.esercizio = ?, u_statfatt_art.val_tot, 0)) as fatN2', [$thisYear - 2]);
 
         switch ($yearBack) {
             case 3:
                 $fatList->selectRaw('SUM(IF(u_statfatt_art.esercizio = ?, u_statfatt_art.qta_tot, 0)) as qtaN3', [$thisYear - 3]);
-                $fatList->selectRaw('AVG(IF(u_statfatt_art.esercizio = ?, u_statfatt_art.val_tot/u_statfatt_art.qta_tot, 0)) as pmN3', [$thisYear - 3]);
+                $fatList->selectRaw('MAX(IFNULL(IF(u_statfatt_art.esercizio = ?, u_statfatt_art.val_tot/u_statfatt_art.qta_tot, 0),0)) as pmN3', [$thisYear - 3]);
                 $fatList->selectRaw('SUM(IF(u_statfatt_art.esercizio = ?, u_statfatt_art.val_tot, 0)) as fatN3', [$thisYear - 3]);
                 break;
             case 4:
                 $fatList->selectRaw('SUM(IF(u_statfatt_art.esercizio = ?, u_statfatt_art.qta_tot, 0)) as qtaN3', [$thisYear - 3]);
-                $fatList->selectRaw('AVG(IF(u_statfatt_art.esercizio = ?, u_statfatt_art.val_tot/u_statfatt_art.qta_tot, 0)) as pmN3', [$thisYear - 3]);
+                $fatList->selectRaw('MAX(IFNULL(IF(u_statfatt_art.esercizio = ?, u_statfatt_art.val_tot/u_statfatt_art.qta_tot, 0),0)) as pmN3', [$thisYear - 3]);
                 $fatList->selectRaw('SUM(IF(u_statfatt_art.esercizio = ?, u_statfatt_art.val_tot, 0)) as fatN3', [$thisYear - 3]);
                 $fatList->selectRaw('SUM(IF(u_statfatt_art.esercizio = ?, u_statfatt_art.qta_tot, 0)) as qtaN4', [$thisYear - 4]);
-                $fatList->selectRaw('AVG(IF(u_statfatt_art.esercizio = ?, u_statfatt_art.val_tot/u_statfatt_art.qta_tot, 0)) as pmN4', [$thisYear - 4]);
+                $fatList->selectRaw('MAX(IFNULL(IF(u_statfatt_art.esercizio = ?, u_statfatt_art.val_tot/u_statfatt_art.qta_tot, 0),0)) as pmN4', [$thisYear - 4]);
                 $fatList->selectRaw('SUM(IF(u_statfatt_art.esercizio = ?, u_statfatt_art.val_tot, 0)) as fatN4', [$thisYear - 4]);
                 break;
         }
         $fatList->whereRaw('u_statfatt_art.codicecf = ?', [$codCli]);
+        $fatList->whereRaw('u_statfatt_art.esercizio >= ?', [$thisYear - $yearBack]);
+        $fatList->whereRaw('(LEFT(u_statfatt_art.codicearti,4) != ? AND LEFT(u_statfatt_art.codicearti,4) != ? AND LEFT(u_statfatt_art.codicearti,4) != ?)', ['CAMP', 'NOTA', 'BONU']);
+        $fatList->whereRaw('(LEFT(u_statfatt_art.gruppo,1) != ? AND LEFT(u_statfatt_art.gruppo,1) != ? AND LEFT(u_statfatt_art.gruppo,3) != ?)', ['C', '2', 'DIC']);
         $fatList->groupBy('codicearti');
         $fatList->orderBy('codGruppo')->orderBy('codicearti');
 
-        dd($fatList->get());
+        // dd($fatList->get());
 
-        return view('stFatt.idxAg', [
-            'agentList' => $agentList,
-            'agente' => $agente,
-            'descrAg' => $descrAg,
+        $title = "Scheda Fatturato Agente";
+        $subTitle = ($customer) ? $customer->descrizion : "NONE";
+        $view = '_exports.pdf.schedaFatArtPdf';
+        $data = [
+            'customer' => $customer,
+            'fatList' => $fatList->get(),
             'thisYear' => $thisYear,
-        ]);
+            'yearback' => $yearBack,
+        ];
+        $pdf = PdfReport::A4Landscape($view, $data, $title, $subTitle);
+
+        return $pdf->stream($title . '-' . $subTitle . '.pdf');
     }
 }

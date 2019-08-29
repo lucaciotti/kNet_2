@@ -107,7 +107,7 @@
                   </ul>
               </li>
               <li class="treeview {{ Ekko::isActiveRoute('stFattArt::*') }}">
-                  <a href="{{ route('stFatt::idxAg') }}"><i class='fa fa-sort-amount-up'></i> <span>{{ trans('_menu.statsFatt') }}</span> <i class="fa fa-angle-left pull-right"></i></a>
+                  <a href="{{ route('stFatt::idxAg') }}"><i class='fa fa-sort-amount-desc'></i> <span>{{ trans('_menu.statsFatt') }}</span> <i class="fa fa-angle-left pull-right"></i></a>
                   <ul class="treeview-menu">
                       <li class="{{ Ekko::isActiveRoute('stFattArt::idxAg') }}"><a href="{{ route('stFattArt::idxAg') }}">{{ trans('_menu.agent') }}</a></li>
                       {{-- <li class="{{ Ekko::isActiveRoute('stFattArt::idxCli') }}"><a href="{{ route('stFattArt::idxCli') }}">{{ trans('_menu.client') }}</a></li> --}}
