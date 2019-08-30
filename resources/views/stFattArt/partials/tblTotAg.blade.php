@@ -40,7 +40,7 @@
       <td><strong>{{ currency($fatCustomer->fatN) }}</strong></td>      
       <td>
         <a href="{{ route('schedaFatArt::PDF', [$fatCustomer->codicecf]) }}" target="_blank"><i class="fa fa-file-pdf-o fa-lg text-danger"></i></a> 
-        <i class="fa fa-file-excel-o fa-lg text-success"></i>
+        <a href="{{ route('schedaFatArt::XLS', [$fatCustomer->codicecf]) }}"><i class="fa fa-file-excel-o fa-lg text-success"></i></a>
       </td>
     </tr>
     @php

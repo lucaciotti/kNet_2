@@ -82,29 +82,29 @@
         @endphp
         @if($newMacroGrp!=$macroGrp)
             <tr style="font-size: 8pt;">
-                <th colspan="4" bgcolor="#FED8B1" style="text-align: left;">
+                <th colspan="4" style="text-align: left;">
                     {{ $newMacroGrp }} - {{ $fatArt->descrMacrogrp}}
                 </th>
                 @if($yearBack==4)
-                <th colspan="2" bgcolor="#FED8B1">&nbsp;</th>
-                <th bgcolor="#FED8B1">{{currency($fatList->where('macrogrp', $newMacroGrp)->sum('fatN4'))}}</th>
-                <th bgcolor="#FED8B1">&nbsp;</th>
+                <th colspan="2">&nbsp;</th>
+                <th>{{currency($fatList->where('macrogrp', $newMacroGrp)->sum('fatN4'))}}</th>
+                <th>&nbsp;</th>
                 @endif
                 @if($yearBack>=3)
-                <th colspan="2" bgcolor="#FED8B1">&nbsp;</th>
-                <th bgcolor="#FED8B1">{{currency($fatList->where('macrogrp', $newMacroGrp)->sum('fatN3'))}}</th>
-                <th bgcolor="#FED8B1">&nbsp;</th>
+                <th colspan="2">&nbsp;</th>
+                <th>{{currency($fatList->where('macrogrp', $newMacroGrp)->sum('fatN3'))}}</th>
+                <th>&nbsp;</th>
                 @endif
                 @if($yearBack>=2)
-                <th colspan="2" bgcolor="#FED8B1">&nbsp;</th>
-                <th bgcolor="#FED8B1">{{currency($fatList->where('macrogrp', $newMacroGrp)->sum('fatN2'))}}</th>
-                <th bgcolor="#FED8B1">&nbsp;</th>
+                <th colspan="2">&nbsp;</th>
+                <th>{{currency($fatList->where('macrogrp', $newMacroGrp)->sum('fatN2'))}}</th>
+                <th>&nbsp;</th>
                 @endif
-                <th colspan="2" bgcolor="#FED8B1">&nbsp;</th>
-                <th bgcolor="#FED8B1">{{currency($fatList->where('macrogrp', $newMacroGrp)->sum('fatN1'))}}</th>
-                <th bgcolor="#FED8B1">&nbsp;</th>
-                <th colspan="2" bgcolor="#FED8B1">&nbsp;</th>
-                <th bgcolor="#FED8B1">{{currency($fatList->where('macrogrp', $newMacroGrp)->sum('fatN'))}}</th>
+                <th colspan="2">&nbsp;</th>
+                <th>{{currency($fatList->where('macrogrp', $newMacroGrp)->sum('fatN1'))}}</th>
+                <th>&nbsp;</th>
+                <th colspan="2">&nbsp;</th>
+                <th>{{currency($fatList->where('macrogrp', $newMacroGrp)->sum('fatN'))}}</th>
             </tr>
             @php
             $macroGrp=$newMacroGrp;
@@ -113,29 +113,29 @@
         @if($newGruppo!=$gruppo)
             <tr style="font-size: 8pt;">
                 <th>&nbsp;</th>
-                <th colspan="3" bgcolor="#90EE90" style="text-align: left;">
+                <th colspan="3" style="text-align: left;">
                     {{ $newGruppo }} - {{ $fatArt->descrGruppo}}
                 </th>
                 @if($yearBack==4)
-                <th colspan="2" bgcolor="#90EE90">&nbsp;</th>
-                <th bgcolor="#90EE90">{{currency($fatList->where('codGruppo', $newGruppo)->sum('fatN4'))}}</th>
-                <th bgcolor="#90EE90">&nbsp;</th>
+                <th colspan="2">&nbsp;</th>
+                <th>{{currency($fatList->where('codGruppo', $newGruppo)->sum('fatN4'))}}</th>
+                <th>&nbsp;</th>
                 @endif
                 @if($yearBack>=3)
-                <th colspan="2" bgcolor="#90EE90">&nbsp;</th>
-                <th bgcolor="#90EE90">{{currency($fatList->where('codGruppo', $newGruppo)->sum('fatN3'))}}</th>
-                <th bgcolor="#90EE90">&nbsp;</th>
+                <th colspan="2">&nbsp;</th>
+                <th>{{currency($fatList->where('codGruppo', $newGruppo)->sum('fatN3'))}}</th>
+                <th>&nbsp;</th>
                 @endif
                 @if($yearBack>=2)
-                <th colspan="2" bgcolor="#90EE90">&nbsp;</th>
-                <th bgcolor="#90EE90">{{currency($fatList->where('codGruppo', $newGruppo)->sum('fatN2'))}}</th>
-                <th bgcolor="#90EE90">&nbsp;</th>
+                <th colspan="2">&nbsp;</th>
+                <th>{{currency($fatList->where('codGruppo', $newGruppo)->sum('fatN2'))}}</th>
+                <th>&nbsp;</th>
                 @endif
-                <th colspan="2" bgcolor="#90EE90">&nbsp;</th>
-                <th bgcolor="#90EE90">{{currency($fatList->where('codGruppo', $newGruppo)->sum('fatN1'))}}</th>
-                <th bgcolor="#90EE90">&nbsp;</th>
-                <th colspan="2" bgcolor="#90EE90">&nbsp;</th>
-                <th bgcolor="#90EE90">{{currency($fatList->where('codGruppo', $newGruppo)->sum('fatN'))}}</th>
+                <th colspan="2">&nbsp;</th>
+                <th>{{currency($fatList->where('codGruppo', $newGruppo)->sum('fatN1'))}}</th>
+                <th>&nbsp;</th>
+                <th colspan="2">&nbsp;</th>
+                <th>{{currency($fatList->where('codGruppo', $newGruppo)->sum('fatN'))}}</th>
             </tr>
             @php
             $gruppo=$newGruppo;
