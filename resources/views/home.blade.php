@@ -54,6 +54,21 @@
 	</div>
 	<div class="row">
 		<div class="container">
+      @if (!in_array(RedisUser::get('role'), ['client']))
+      <div class="col-lg-6 col-xs-6">
+        <div class="small-box bg-green">
+          <div class="inner">
+            <h3>&nbsp;</h3>
+            <p>Kalendar</p>
+          </div>
+          <div class="icon">
+            <i class="fa fa-calendar"></i>
+          </div>
+          <a href="http://2.115.99.233:8080" target="_blank" class="small-box-footer">{{ trans('home.moreInfo') }}
+            <i class="fa fa-arrow-circle-right"></i></a>
+        </div>
+      </div>
+      @else
       <div class="col-lg-6 col-xs-6">
         <div class="small-box bg-green">
           <div class="inner">
@@ -66,6 +81,7 @@
           <a href="{{ route('prod::newProd') }}" class="small-box-footer">{{ trans('home.moreInfo') }} <i class="fa fa-arrow-circle-right"></i></a>
         </div>
       </div>
+      @endif
       <div class="col-lg-6 col-xs-6">
         <!-- small box -->
         <div class="small-box bg-red">

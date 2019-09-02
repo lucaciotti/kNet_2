@@ -28,6 +28,7 @@ return [
     'products'                => 'Prodotti',
     'insVisits'               => 'Inserimento Visite Clienti',
     'statsFatt'               => 'Statistiche Fatturato',
+    'statsFattArt'            => 'Fatturato Confronto Anni',
     'agent'                   => 'Agente',
     'client'                  => 'Cliente',
     'zone'                    => 'Zona',

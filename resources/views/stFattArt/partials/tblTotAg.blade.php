@@ -32,15 +32,15 @@
     @endphp
     @foreach ($fatList as $fatCustomer)
     <tr>
-      <th>{{$fatCustomer->codicecf}} - {{$fatCustomer->ragionesociale}}</th>
+      <th><a href="{{ route('client::detail', $fatCustomer->codicecf ) }}">{{$fatCustomer->codicecf}} - {{$fatCustomer->ragionesociale}}</a></th>
       @if($yearBack==4) <td><strong>{{ currency($fatCustomer->fatN4) }}</strong></td>@endif
       @if($yearBack>=3) <td><strong>{{ currency($fatCustomer->fatN3) }}</strong></td>@endif
       @if($yearBack>=2) <td><strong>{{ currency($fatCustomer->fatN2) }}</strong></td>@endif
       <td><strong>{{ currency($fatCustomer->fatN1) }}</strong></td>
       <td><strong>{{ currency($fatCustomer->fatN) }}</strong></td>      
       <td>
-        <a href="{{ route('schedaFatArt::PDF', [$fatCustomer->codicecf]) }}" target="_blank"><i class="fa fa-file-pdf-o fa-lg text-danger"></i></a> 
-        <a href="{{ route('schedaFatArt::XLS', [$fatCustomer->codicecf]) }}"><i class="fa fa-file-excel-o fa-lg text-success"></i></a>
+        <a class="btn-sm btn-default" href="{{ route('schedaFatArt::PDF', [$fatCustomer->codicecf]) }}" target="_blank"><i class="fa fa-file-pdf-o fa-lg text-danger"></i></a> 
+        <a class="btn-sm btn-default" href="{{ route('schedaFatArt::XLS', [$fatCustomer->codicecf]) }}"><i class="fa fa-file-excel-o fa-lg text-success"></i></a>
       </td>
     </tr>
     @php

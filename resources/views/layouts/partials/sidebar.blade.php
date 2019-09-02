@@ -106,8 +106,10 @@
                       {{-- <li class="{{ Ekko::isActiveRoute('stAbc::idxManager') }}"><a href="{{ route('stAbc::idxManager') }}">{{ trans('_menu.superAgent') }}</a></li> --}}
                   </ul>
               </li>
+
+              @if (!in_array(RedisUser::get('role'), ['agent', 'client']))
               <li class="treeview {{ Ekko::isActiveRoute('stFattArt::*') }}">
-                  <a href="{{ route('stFatt::idxAg') }}"><i class='fa fa-sort-amount-desc'></i> <span>{{ trans('_menu.statsFatt') }}</span> <i class="fa fa-angle-left pull-right"></i></a>
+                  <a href="{{ route('stFatt::idxAg') }}"><i class='fa fa-sort-amount-desc'></i> <span>{{ trans('_menu.statsFattArt') }}</span> <i class="fa fa-angle-left pull-right"></i></a>
                   <ul class="treeview-menu">
                       <li class="{{ Ekko::isActiveRoute('stFattArt::idxAg') }}"><a href="{{ route('stFattArt::idxAg') }}">{{ trans('_menu.agent') }}</a></li>
                       {{-- <li class="{{ Ekko::isActiveRoute('stFattArt::idxCli') }}"><a href="{{ route('stFattArt::idxCli') }}">{{ trans('_menu.client') }}</a></li> --}}
@@ -117,12 +119,14 @@
                     @endif --}}
                   </ul>
               </li>
-              <li class="treeview {{ Ekko::isActiveRoute('Portfolio::*') }}">
-                  <a href="{{ route('Portfolio::idxAg') }}"><i class='fa fa-stack-overflow'></i> <span>Portafoglio</span> <i class="fa fa-angle-left pull-right"></i></a>
-                  <ul class="treeview-menu">
-                      <li class="{{ Ekko::isActiveRoute('Portfolio::idxAg') }}"><a href="{{ route('Portfolio::idxAg') }}">{{ trans('_menu.agent') }}</a></li>
-                  </ul>
-              </li>
+              @endif
+
+            <li class="treeview {{ Ekko::isActiveRoute('Portfolio::*') }}">
+                <a href="{{ route('Portfolio::idxAg') }}"><i class='fa fa-stack-overflow'></i> <span>Portafoglio</span> <i class="fa fa-angle-left pull-right"></i></a>
+                <ul class="treeview-menu">
+                    <li class="{{ Ekko::isActiveRoute('Portfolio::idxAg') }}"><a href="{{ route('Portfolio::idxAg') }}">{{ trans('_menu.agent') }}</a></li>
+                </ul>
+            </li>
               <li><i class='fa fa-empty'></i></li>
 
               {{-- <li class="header">Forecast & Target</li>
