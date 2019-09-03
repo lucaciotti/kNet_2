@@ -56,7 +56,7 @@ Route::get('formCustomRequest', function (Request $request) {
                 'quantity' => 1200,
                 'periodo_ordinativi' => 'Trimestrale',
                 'target_price' => 3.20,
-                'id_knet' => rand(1, 500),
+                'id_knet' => 1,
                 'ditta' => 'it'
             ),
             array(
@@ -76,7 +76,7 @@ Route::get('formCustomRequest', function (Request $request) {
                 'quantity' => 1200,
                 'periodo_ordinativi' => 'Trimestrale',
                 'target_price' => 4.20,
-                'id_knet' => rand(500, 1000),
+                'id_knet' => 2,
                 'ditta' => 'es'
             ),
         ),
