@@ -60,7 +60,7 @@ Route::get('formCustomRequest', function (Request $request) {
                 'ditta' => 'it'
             ),
             array(
-                'data_ricezione' => (Carbon::now()-4)->format('d/m/Y'),
+                'data_ricezione' => Carbon::now()->format('d/m/Y'),
                 'richiedente' => 'Gustavo Frings',
                 'email_richiedente' => 'ced-it@k-group.com',
                 'ragione_sociale' => 'Ferrete',
