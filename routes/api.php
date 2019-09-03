@@ -38,26 +38,48 @@ Route::middleware('auth:api')->get('customer', function (Request $request) {
 Route::get('formCustomRequest', function (Request $request) {
     
     return array(
-        'data' => [
-            'data_ricezione' => Carbon::now()->format('d/m/Y'),
-            'richiedente' => 'Adolf Haefele',
-            'email_richiedente' => 'ced-it@k-group.com',
-            'ragione_sociale' => 'Haefele DE',
-            'codicecf' => 'C04173',
-            'tipologia_prodotto' => 'Cerniera',
-            'descr_pers' => 'Personalizzazione richiesta su gamma hybrid kombi',
-            'url_pers' => '',
-            'system_kk' => 'System Kombi Hybrid K1019',
-            'system_other' => '',
-            'info_tecn_comm' => 'Vendita per settore industrie Tedesche per porte >80Kg',
-            'imballaggio' => 'Scatola Haefele (3 cerniere per scatola con mostrine e viti)',
-            'um' => 'CF',
-            'quantity' => 1200,
-            'periodo_ordinativi' => 'Trimestrale',
-            'target_price' => 3.20,
-            'id_knet' => rand(1,500),
-            'ditta' => 'it'
-        ],
+        'data' => array(
+            array(
+                'data_ricezione' => Carbon::now()->format('d/m/Y'),
+                'richiedente' => 'Adolf Haefele',
+                'email_richiedente' => 'ced-it@k-group.com',
+                'ragione_sociale' => 'Haefele DE',
+                'codicecf' => 'C04173',
+                'tipologia_prodotto' => 'Cerniera',
+                'descr_pers' => 'Personalizzazione richiesta su gamma hybrid kombi',
+                'url_pers' => '',
+                'system_kk' => 'System Kombi Hybrid K1019',
+                'system_other' => '',
+                'info_tecn_comm' => 'Vendita per settore industrie Tedesche per porte >80Kg',
+                'imballaggio' => 'Scatola Haefele (3 cerniere per scatola con mostrine e viti)',
+                'um' => 'CF',
+                'quantity' => 1200,
+                'periodo_ordinativi' => 'Trimestrale',
+                'target_price' => 3.20,
+                'id_knet' => rand(1, 500),
+                'ditta' => 'it'
+            ),
+            array(
+                'data_ricezione' => (Carbon::now()-4)->format('d/m/Y'),
+                'richiedente' => 'Gustavo Frings',
+                'email_richiedente' => 'ced-it@k-group.com',
+                'ragione_sociale' => 'Ferrete',
+                'codicecf' => 'C00011',
+                'tipologia_prodotto' => 'Cerniera',
+                'descr_pers' => 'Personalizzazione richiesta su system scorrevole',
+                'url_pers' => '',
+                'system_kk' => 'System scorrevole 0500',
+                'system_other' => '',
+                'info_tecn_comm' => 'Vendita per settore industrie Spagnole per porte >80Kg',
+                'imballaggio' => 'Scatola (3 cerniere per scatola con mostrine e viti)',
+                'um' => 'CF',
+                'quantity' => 1200,
+                'periodo_ordinativi' => 'Trimestrale',
+                'target_price' => 4.20,
+                'id_knet' => rand(500, 1000),
+                'ditta' => 'es'
+            ),
+        ),
         'meta' => []
     );
 });
