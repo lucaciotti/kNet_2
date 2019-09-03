@@ -34,8 +34,7 @@
                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
                     <div class="form-group">
                         <label>{{ trans('stFatt.selAgent') }}</label>
-                        <select name="codag[]" class="form-control select2" multiple="multiple" data-placeholder="Select Agents" style="width: 100%;">
-                            <option value=""> </option>
+                        <select name="codag[]" class="form-control select2 codag" multiple="multiple" data-placeholder="Select Agents" style="width: 100%;">
                             @foreach ($agentList as $agent)
                             <option value="{{ $agent->codice }}" 
                                 {{-- @if($agent->codice==$agente && strlen($agent->codice)==strlen($agente)) --}}
@@ -45,7 +44,7 @@
                                 >{{ $agent->descrizion or "Error $agent->codice - No Description" }}</option>
                             @endforeach
                         </select>
-                        <input type="checkbox" id="checkbox" class="selectAll">Select All
+                        <input type="checkbox" id="checkbox" onclick="selectAll('.codag');">Select All
                     </div>
                     <div>
                         <button type="submit" class="btn btn-primary">{{ trans('_message.submit') }}</button>

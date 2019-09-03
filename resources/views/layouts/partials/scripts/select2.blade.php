@@ -6,17 +6,35 @@
 <script src="{{ asset('/plugins/select2/js/select2.full.min.js') }}" type="text/javascript"></script>
 
 <script>
+  // function selectAll(class){
+  // $(class+"> option").prop("selected","selected");
+  // $(".select2").trigger("change");
+  // };
     $(function () {
         $('.select2').select2();
-        $(".selectAll").click(function(){
-        if($("#checkbox.selectAll").is(':checked') ){
-        $(".select2 > option").prop("selected","selected");
-        $(".select2").trigger("change");
-        }else{
-        $(".select2 > option").removeAttr("selected");
-        $(".select2").trigger("change");
-        }
+        // $(".selectAll").parent('[class*="icheckbox"]').hasClass("checked")
+        $("#checkbox.selectAll").on('ifChanged', function(event) {
+          if(event.target.checked){
+            $("#checkbox.selectAll").closest(".select2 > option").prop("selected","selected");
+            $(".select2").trigger("change");
+          }else{
+            $(".select2 > option").removeAttr("selected");
+            $(".select2").trigger("change");
+          }
+          // console.log('checked = ' + event.target.checked);
+          // console.log('value = ' + event.target.value);
         });
+        // FOR a normal CheckBox
+        // $(".selectAll").click(function(){
+        //   console.log('clicked');
+        //   if($(".selectAll").is(':checked') ){
+        //     $(".select2 > option").prop("selected","selected");
+        //     $(".select2").trigger("change");
+        //   }else{
+        //     $(".select2 > option").removeAttr("selected");
+        //     $(".select2").trigger("change");
+        //   }
+        // });
       });
 </script>
 
