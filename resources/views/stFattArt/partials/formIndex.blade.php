@@ -48,7 +48,9 @@
   </div>
   
   <div>
-    <input type="hidden" name="codag" value="{{ $agente }}">
+    @foreach ($fltAgents as $agent)
+        <input type="hidden" name="codag[]" value="{{ $agent }}">
+    @endforeach    
     <button type="submit" class="btn btn-primary">{{ trans('_message.submit') }}</button>
   </div>
 </form>

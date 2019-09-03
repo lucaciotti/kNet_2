@@ -21,10 +21,11 @@ class StFattArtController extends Controller
     {
         $agentList = Agent::select('codice', 'descrizion')->whereNull('u_dataini')->orderBy('codice')->get();
         $codAg = ($req->input('codag')) ? $req->input('codag') : $codAg;
-        $agente = (string) (!empty($codAg)) ? $codAg : (!empty(RedisUser::get('codag')) ? RedisUser::get('codag') : $agentList->first()->codice);
-        $descrAg = (!empty($agentList->whereStrict('codice', $agente)->first()) ? $agentList->whereStrict('codice', $agente)->first()->descrizion : "");
+        // $agente = (string) (!empty($codAg)) ? $codAg : (!empty(RedisUser::get('codag')) ? RedisUser::get('codag') : $agentList->first()->codice);
+        $fltAgents = (!empty($codAg)) ? $codAg : array_wrap((!empty(RedisUser::get('codag')) ? RedisUser::get('codag') : $agentList->first()->codice));
+        // $descrAg = (!empty($agentList->whereStrict('codice', $agente)->first()) ? $agentList->whereStrict('codice', $agente)->first()->descrizion : "");
         $thisYear = (Carbon::now()->year);
-        $zoneList = strpos($codAg, 'A')==0 ? Zona::whereRaw('LEFT(codice,1)=?', ['0'])->get() : Zona::whereRaw('LEFT(codice,1)!=?', ['0'])->get();
+        $zoneList = strpos($codAg[0], 'A')==0 ? Zona::whereRaw('LEFT(codice,1)=?', ['0'])->get() : Zona::whereRaw('LEFT(codice,1)!=?', ['0'])->get();
         $settoreSelected = ($req->input('settoreSelected')) ? $req->input('settoreSelected') : null;
         $zoneSelected = ($req->input('zoneSelected')) ? $req->input('zoneSelected') : null;
         $yearBack = ($req->input('yearback')) ? $req->input('yearback') : 3; // 2->3AnniView; 3->4AnniView; 4->5AnniView
@@ -38,11 +39,11 @@ class StFattArtController extends Controller
             //     $join->on('anagrafe.codice', '=', 'u_statfatt_art.codicecf')
             //         ->where('anagrafe.agente', '=', $agente);
             // })
-            ->join('agenti', function ($join) use ($agente) {
-                $join->on('agenti.codice', '=', 'anagrafe.agente')
-                    // ->orOn('agenti.codice', '=', 'anagrafe.agente2')
-                    ->whereRaw('LENGTH(agenti.codice) = ?', [strlen($agente)]);
-            })
+            // ->join('agenti', function ($join) use ($agente) {
+            //     $join->on('agenti.codice', '=', 'anagrafe.agente')
+            //         // ->orOn('agenti.codice', '=', 'anagrafe.agente2')
+            //         ->whereRaw('LENGTH(agenti.codice) = ?', [strlen($agente)]);
+            // })
             ->leftJoin('settori', 'settori.codice', '=', 'anagrafe.settore')
             ->select('u_statfatt_art.codicecf')
             ->selectRaw('MAX(anagrafe.descrizion) as ragionesociale, MAX(settori.descrizion) as settore, MIN(u_statfatt_art.mese_parz) as meseRif')
@@ -59,7 +60,8 @@ class StFattArtController extends Controller
                 $fatList->selectRaw('SUM(IF(u_statfatt_art.esercizio = ?, u_statfatt_art.val_tot, 0)) as fatN4', [$thisYear - 4]);
                 break;
         }
-        $fatList->whereRaw('anagrafe.agente = ? AND LENGTH(anagrafe.agente) = ?', [$agente, strlen($agente)]);
+        // $fatList->whereRaw('anagrafe.agente = ? AND LENGTH(anagrafe.agente) = ?', [$agente, strlen($agente)]);
+        $fatList->whereIn('anagrafe.agente', $fltAgents);
         $fatList->whereRaw('(LEFT(u_statfatt_art.codicearti,4) != ? AND LEFT(u_statfatt_art.codicearti,4) != ? AND LEFT(u_statfatt_art.codicearti,4) != ?)', ['CAMP', 'NOTA', 'BONU']);
         $fatList->whereRaw('(LEFT(u_statfatt_art.gruppo,1) != ? AND LEFT(u_statfatt_art.gruppo,1) != ? AND LEFT(u_statfatt_art.gruppo,3) != ?)', ['C', '2', 'DIC']);
         if($settoreSelected!=null) $fatList->whereIn('anagrafe.settore', $settoreSelected);
@@ -71,8 +73,8 @@ class StFattArtController extends Controller
 
         return view('stFattArt.idxAg', [
             'agentList' => $agentList,
-            'agente' => $agente,
-            'descrAg' => $descrAg,
+            'fltAgents' => $fltAgents,
+            // 'descrAg' => $descrAg,
             'thisYear' => $thisYear,
             'yearback' => $yearBack,
             'settoriList' => Settore::all(),

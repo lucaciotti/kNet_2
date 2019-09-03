@@ -9,7 +9,7 @@
 @endsection
 
 @section('contentheader_breadcrumb')
-{!! Breadcrumbs::render('agentStFat', $agente) !!}
+{{-- {!! Breadcrumbs::render('agentStFat', $agente) !!} --}}
 @endsection
 
 @push('css-head')
@@ -34,16 +34,18 @@
                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
                     <div class="form-group">
                         <label>{{ trans('stFatt.selAgent') }}</label>
-                        <select name="codag" class="form-control select2" style="width: 100%;">
+                        <select name="codag[]" class="form-control select2" multiple="multiple" data-placeholder="Select Agents" style="width: 100%;">
                             <option value=""> </option>
                             @foreach ($agentList as $agent)
-                            <option value="{{ $agent->codice }}" @if($agent->codice==$agente &&
-                                strlen($agent->codice)==strlen($agente))
+                            <option value="{{ $agent->codice }}" 
+                                {{-- @if($agent->codice==$agente && strlen($agent->codice)==strlen($agente)) --}}
+                                @if(isset($fltAgents) && in_array($agent->codice, $fltAgents, true))
                                 selected
                                 @endif
                                 >{{ $agent->descrizion or "Error $agent->codice - No Description" }}</option>
                             @endforeach
                         </select>
+                        <input type="checkbox" id="checkbox" class="selectAll">Select All
                     </div>
                     <div>
                         <button type="submit" class="btn btn-primary">{{ trans('_message.submit') }}</button>
@@ -68,7 +70,7 @@
                 'zone' => $zone,'zoneSelected' => $zoneSelected,
                 'settoriList' => $settoriList,'settoreSelected' => $settoreSelected,
                 'yearback' => $yearback,
-                'limitVal' => $limitVal, 'agent' => $agent,
+                'limitVal' => $limitVal, 'fltAgents' => $fltAgents,
                 'route' => 'stFattArt::idxAg'
                 ])
             </div>
@@ -83,8 +85,7 @@
                         aria-expanded="true">{{ strtoupper(trans('stFatt.total')) }}</a></li>
                 {{-- <li class=""><a href="#StatDet" data-toggle="tab" aria-expanded="false">{{ trans('stFatt.detailed') }}</a>
                 </li> --}}
-                <li class="pull-left header"><i class="fa fa-th"></i> {{ trans('stFatt.statsTitle') }} -
-                    {{ $descrAg or "..." }}</li>
+                <li class="pull-left header"><i class="fa fa-th"></i> {{ trans('stFatt.statsTitle') }}</li>
             </ul>
             <div class="tab-content">
                 <div class="tab-pane active" id="StatTot">

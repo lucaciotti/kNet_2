@@ -8,6 +8,15 @@
 <script>
     $(function () {
         $('.select2').select2();
+        $(".selectAll").click(function(){
+        if($("#checkbox.selectAll").is(':checked') ){
+        $(".select2 > option").prop("selected","selected");
+        $(".select2").trigger("change");
+        }else{
+        $(".select2 > option").removeAttr("selected");
+        $(".select2").trigger("change");
+        }
+        });
       });
 </script>
 

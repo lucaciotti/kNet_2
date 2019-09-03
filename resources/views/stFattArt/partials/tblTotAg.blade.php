@@ -1,19 +1,22 @@
-<table class="table table-hover table-striped dtTbls_stat{{$yearBack+1}}" id="statFattTot" style="text-align: center;">
-  <col width="180"> <!--Cliente-->
-  @if($yearBack==4) <col width="50"> <!--Val N-4--> @endif
-  @if($yearBack>=3) <col width="50"> <!--Val N-3--> @endif
-  @if($yearBack>=2) <col width="50"> <!--Val N-2--> @endif
-  <col width="50">
-  <col width="50"><!--Val N-->
-  <col width="30">
+<table class="table table-hover table-condensed table-striped dtTbls_stat{{$yearBack+1}}" id="statFattTot">
+  <col width="10"> <!--Cliente-->
+  <col> <!--Rag.Soc-->
+  @if($yearBack==4) <col width="150"> <!--Val N-4--> @endif
+  @if($yearBack>=3) <col width="150"> <!--Val N-3--> @endif
+  @if($yearBack>=2) <col width="150"> <!--Val N-2--> @endif
+  <col width="150">
+  <col width="150"><!--Val N-->
+  <col width="100">
+
   <thead>
     <tr>
-      <th rowspan="1">&nbsp;</th>
+      <th colspan="2">&nbsp;</th>
       <th colspan="{!!1+$yearback!!}" style="text-align: center;">{{ trans('stFatt.revenue')}}</th>
       <th rowspan="1">&nbsp;</th>
     </tr>
     <tr>
       <th style="text-align: center;">Cliente</th>
+      <th style="text-align: center;">Ragione Sociale</th>
       @if($yearBack==4) <th style="text-align: center;">{!! $thisYear-4 !!}</th> @endif
       @if($yearBack>=3) <th style="text-align: center;">{!! $thisYear-3 !!}</th> @endif
       @if($yearBack>=2) <th style="text-align: center;">{!! $thisYear-2 !!}</th> @endif
@@ -32,12 +35,13 @@
     @endphp
     @foreach ($fatList as $fatCustomer)
     <tr>
-      <th><a href="{{ route('client::detail', $fatCustomer->codicecf ) }}">{{$fatCustomer->codicecf}} - {{$fatCustomer->ragionesociale}}</a></th>
-      @if($yearBack==4) <td><strong>{{ currency($fatCustomer->fatN4) }}</strong></td>@endif
-      @if($yearBack>=3) <td><strong>{{ currency($fatCustomer->fatN3) }}</strong></td>@endif
-      @if($yearBack>=2) <td><strong>{{ currency($fatCustomer->fatN2) }}</strong></td>@endif
-      <td><strong>{{ currency($fatCustomer->fatN1) }}</strong></td>
-      <td><strong>{{ currency($fatCustomer->fatN) }}</strong></td>      
+      <td><a href="{{ route('client::detail', $fatCustomer->codicecf ) }}">{{$fatCustomer->codicecf}}</a></td>
+      <td>{{$fatCustomer->ragionesociale}}</td>
+      @if($yearBack==4) <td>{{ currency($fatCustomer->fatN4) }}</td>@endif
+      @if($yearBack>=3) <td>{{ currency($fatCustomer->fatN3) }}</td>@endif
+      @if($yearBack>=2) <td>{{ currency($fatCustomer->fatN2) }}</td>@endif
+      <td>{{ currency($fatCustomer->fatN1) }}</td>
+      <td>{{ currency($fatCustomer->fatN) }}</td>      
       <td>
         <a class="btn-sm btn-default" href="{{ route('schedaFatArt::PDF', [$fatCustomer->codicecf]) }}" target="_blank"><i class="fa fa-file-pdf-o fa-lg text-danger"></i></a> 
         <a class="btn-sm btn-default" href="{{ route('schedaFatArt::XLS', [$fatCustomer->codicecf]) }}"><i class="fa fa-file-excel-o fa-lg text-success"></i></a>
@@ -54,7 +58,7 @@
   </tbody>
   <tfoot class="bg-gray">
     <tr>
-      <th>{{ strtoupper(trans('stFatt.granTot')) }}</th>
+      <th colspan="2">{{ strtoupper(trans('stFatt.granTot')) }}</th>
       @if($yearBack==4) <td><strong>{{ currency($fat_TotN4) }}</strong></td>@endif
       @if($yearBack>=3) <td><strong>{{ currency($fat_TotN3) }}</strong></td>@endif
       @if($yearBack>=2) <td><strong>{{ currency($fat_TotN2) }}</strong></td>@endif
