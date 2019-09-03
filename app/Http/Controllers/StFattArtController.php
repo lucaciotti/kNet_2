@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use knet\Helpers\RedisUser;
 use knet\ArcaModels\Agent;
 use knet\ArcaModels\Settore;
+use knet\ArcaModels\Zona;
 
 class StFattArtController extends Controller
 {
@@ -23,7 +24,9 @@ class StFattArtController extends Controller
         $agente = (string) (!empty($codAg)) ? $codAg : (!empty(RedisUser::get('codag')) ? RedisUser::get('codag') : $agentList->first()->codice);
         $descrAg = (!empty($agentList->whereStrict('codice', $agente)->first()) ? $agentList->whereStrict('codice', $agente)->first()->descrizion : "");
         $thisYear = (Carbon::now()->year);
+        $zoneList = strpos($codAg, 'A')==0 ? Zona::whereRaw('LEFT(codice,1)=?', ['0'])->get() : Zona::whereRaw('LEFT(codice,1)!=?', ['0'])->get();
         $settoreSelected = ($req->input('settoreSelected')) ? $req->input('settoreSelected') : null;
+        $zoneSelected = ($req->input('zoneSelected')) ? $req->input('zoneSelected') : null;
         $yearBack = ($req->input('yearback')) ? $req->input('yearback') : 3; // 2->3AnniView; 3->4AnniView; 4->5AnniView
         $limitVal = ($req->input('limitVal') || $req->input('limitVal')=='0') ? $req->input('limitVal') : 500;
         // dd($req->input('limitVal'));
@@ -60,6 +63,7 @@ class StFattArtController extends Controller
         $fatList->whereRaw('(LEFT(u_statfatt_art.codicearti,4) != ? AND LEFT(u_statfatt_art.codicearti,4) != ? AND LEFT(u_statfatt_art.codicearti,4) != ?)', ['CAMP', 'NOTA', 'BONU']);
         $fatList->whereRaw('(LEFT(u_statfatt_art.gruppo,1) != ? AND LEFT(u_statfatt_art.gruppo,1) != ? AND LEFT(u_statfatt_art.gruppo,3) != ?)', ['C', '2', 'DIC']);
         if($settoreSelected!=null) $fatList->whereIn('anagrafe.settore', $settoreSelected);
+        if($zoneSelected != null) $fatList->whereIn('anagrafe.zona', $zoneSelected);
         $fatList->groupBy('codicecf');
         $fatList->havingRaw('fatN > ?', [$limitVal]);
 
@@ -72,7 +76,9 @@ class StFattArtController extends Controller
             'thisYear' => $thisYear,
             'yearback' => $yearBack,
             'settoriList' => Settore::all(),
+            'zone' => $zoneList,
             'settoreSelected' => $settoreSelected,
+            'zoneSelected' => $zoneSelected,
             'limitVal' => $limitVal,
             'fatList' => $fatList->get(),
         ]);

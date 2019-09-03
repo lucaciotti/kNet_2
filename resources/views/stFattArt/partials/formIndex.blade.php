@@ -1,5 +1,17 @@
 <form action="{{ route($route) }}" method="post">
   <input type="hidden" name="_token" value="{{ csrf_token() }}">
+  
+  <div class="form-group">
+    <label>{{ trans('client.zone') }}</label>
+    <select name="zoneSelected[]" class="form-control select2" multiple="multiple"
+      data-placeholder="{{ trans('client.zone_plchld') }}" style="width: 100%;">
+      @foreach ($zone as $zona)
+      <option value="{{ $zona->codice }}" @if (isset($zoneSelected) && in_array($zona->codice, $zoneSelected)) selected
+        @endif>{{ $zona->descrizion }}</option>
+      @endforeach
+    </select>
+  </div>
+
   <div class="form-group">
     <label>Settore</label>
     <select name="settoreSelected[]" class="form-control select2" multiple="multiple" data-placeholder="Settore" style="width: 100%;">
