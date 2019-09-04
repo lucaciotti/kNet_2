@@ -9,6 +9,7 @@ use knet\Helpers\RedisUser;
 use knet\ArcaModels\Agent;
 use knet\ArcaModels\Settore;
 use knet\ArcaModels\Zona;
+use knet\ArcaModels\SubGrpProd;
 
 class StFattArtController extends Controller
 {
@@ -21,11 +22,15 @@ class StFattArtController extends Controller
     {
         $agentList = Agent::select('codice', 'descrizion')->whereNull('u_dataini')->orderBy('codice')->get();
         $codAg = ($req->input('codag')) ? $req->input('codag') : $codAg;
-        // $agente = (string) (!empty($codAg)) ? $codAg : (!empty(RedisUser::get('codag')) ? RedisUser::get('codag') : $agentList->first()->codice);
         $fltAgents = (!empty($codAg)) ? $codAg : array_wrap((!empty(RedisUser::get('codag')) ? RedisUser::get('codag') : $agentList->first()->codice));
-        // $descrAg = (!empty($agentList->whereStrict('codice', $agente)->first()) ? $agentList->whereStrict('codice', $agente)->first()->descrizion : "");
         $thisYear = (Carbon::now()->year);
         $zoneList = strpos($codAg[0], 'A')==0 ? Zona::whereRaw('LEFT(codice,1)=?', ['0'])->get() : Zona::whereRaw('LEFT(codice,1)!=?', ['0'])->get();
+        $grpPrdList = SubGrpProd::where('codice', 'NOT LIKE', '1%')
+            ->where('codice', 'NOT LIKE', 'DIC%')
+            ->where('codice', 'NOT LIKE', '0%')
+            ->where('codice', 'NOT LIKE', '2%')
+            ->orderBy('codice')
+            ->get(); 
         $settoreSelected = ($req->input('settoreSelected')) ? $req->input('settoreSelected') : null;
         $zoneSelected = ($req->input('zoneSelected')) ? $req->input('zoneSelected') : null;
         $yearBack = ($req->input('yearback')) ? $req->input('yearback') : 3; // 2->3AnniView; 3->4AnniView; 4->5AnniView
@@ -64,8 +69,14 @@ class StFattArtController extends Controller
         $fatList->whereIn('anagrafe.agente', $fltAgents);
         $fatList->whereRaw('(LEFT(u_statfatt_art.codicearti,4) != ? AND LEFT(u_statfatt_art.codicearti,4) != ? AND LEFT(u_statfatt_art.codicearti,4) != ?)', ['CAMP', 'NOTA', 'BONU']);
         $fatList->whereRaw('(LEFT(u_statfatt_art.gruppo,1) != ? AND LEFT(u_statfatt_art.gruppo,1) != ? AND LEFT(u_statfatt_art.gruppo,3) != ?)', ['C', '2', 'DIC']);
-        if($settoreSelected!=null) $fatList->whereIn('anagrafe.settore', $settoreSelected);
-        if($zoneSelected != null) $fatList->whereIn('anagrafe.zona', $zoneSelected);
+        if ($settoreSelected != null) $fatList->whereIn('anagrafe.settore', $settoreSelected);
+        if ($zoneSelected != null) $fatList->whereIn('anagrafe.zona', $zoneSelected);
+        if ($req->input('grpPrdSelected')) {
+            $fatList->whereIn('u_statfatt_art.gruppo', $req->input('grpPrdSelected'));
+        }
+        if (!empty($req->input('optTipoProd'))) {
+            $fatList->where('u_statfatt_art.prodotto', $req->input('optTipoProd'));
+        }
         $fatList->groupBy('codicecf');
         $fatList->havingRaw('fatN > ?', [$limitVal]);
 
@@ -74,13 +85,15 @@ class StFattArtController extends Controller
         return view('stFattArt.idxAg', [
             'agentList' => $agentList,
             'fltAgents' => $fltAgents,
-            // 'descrAg' => $descrAg,
             'thisYear' => $thisYear,
             'yearback' => $yearBack,
             'settoriList' => Settore::all(),
             'zone' => $zoneList,
             'settoreSelected' => $settoreSelected,
             'zoneSelected' => $zoneSelected,
+            'grpPrdList' => $grpPrdList,
+            'grpPrdSelected' => $req->input('grpPrdSelected'),
+            'optTipoProd' => $req->input('optTipoProd'),
             'limitVal' => $limitVal,
             'fatList' => $fatList->get(),
         ]);

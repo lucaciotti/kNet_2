@@ -21,7 +21,6 @@
     <tr>
       <th colspan="2">&nbsp;</th>
       <th colspan="{!!1+$yearback!!}" style="text-align: center;">{{ trans('stFatt.revenue')}}</th>
-      <th rowspan="1">&nbsp;</th>
     </tr>
     <tr>
       <th style="text-align: center;">Cliente</th>
@@ -33,7 +32,6 @@
       <th style="text-align: center;">{!! $thisYear !!}
         @if($fatList->first())({{ trans('stFatt.'.strtolower(Carbon\Carbon::createFromDate(null, $fatList->first()->meseRif, 25)->format('F'))) }})
         @endif</th>
-      <th rowspan="1">&nbsp;</th>
     </tr>
   </thead>
   <tbody>
@@ -53,18 +51,6 @@
       @if($yearBack>=2) <td>{{ currency($fatCustomer->fatN2) }}</td>@endif
       <td>{{ currency($fatCustomer->fatN1) }}</td>
       <td>{{ currency($fatCustomer->fatN) }}</td>
-      <td>
-        <a class="btn-sm btn-default"
-          href="{{ route('schedaFatArt::PDF', [
-              $fatCustomer->codicecf, 
-              'yearback' => $yearBack, 
-              'grpPrdSelected' => $grpPrdSelected,
-              'optTipoProd' => $optTipoProd,
-            ]) }}" target="_blank"><i
-            class="fa fa-file-pdf-o fa-lg text-danger"></i></a>
-        <a class="btn-sm btn-default" href="{{ route('schedaFatArt::XLS', [$fatCustomer->codicecf]) }}"><i
-            class="fa fa-file-excel-o fa-lg text-success"></i></a>
-      </td>
     </tr>
     @php
     $fat_TotN4 += ($yearBack==4) ? $fatCustomer->fatN4 : 0;
@@ -83,20 +69,6 @@
       @if($yearBack>=2) <td><strong>{{ currency($fat_TotN2) }}</strong></td>@endif
       <td><strong>{{ currency($fat_TotN1) }}</strong></td>
       <td><strong>{{ currency($fat_TotN) }}</strong></td>
-      <td>
-        <a class="btn-sm btn-default" href="{{ route('schedaFatArt::PDF-Tot', [
-              'yearBack' => $yearback,
-              'grpPrdSelected' => $grpPrdSelected,
-              'optTipoProd' => $optTipoProd,
-              'codag' => $fltAgents,
-              'zoneSelected' => $zoneSelected,
-              'settoreSelected' => $settoreSelected,
-              'limitVal' => $limitVal
-            ]) }}"
-          target="_blank"><i class="fa fa-file-pdf-o fa-lg text-danger"></i></a>
-        <a class="btn-sm btn-default" href="{{-- {{ route('schedaFatArt::XLSTot', []) }} --}}"><i
-            class="fa fa-file-excel-o fa-lg text-success"></i></a>
-      </td>
     </tr>
   </tfoot>
 </table>

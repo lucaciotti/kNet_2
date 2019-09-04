@@ -20,61 +20,100 @@
 @section('main-content')
 <div class="row">
     <div class="col-lg-3">
-        <div class="box box-default">
-            <div class="box-header with-border">
-                <h3 class="box-title" data-widget="collapse">{{ trans('stFatt.agent') }}</h3>
-                <div class="box-tools pull-right">
-                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
-                            class="fa fa-minus"></i></button>
-                    {{-- <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button> --}}
+        <form action="{{ route('stFattArt::idxAg') }}" method="post">
+            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+            
+            <div class="box box-default">
+                <div class="box-header with-border">
+                    <h3 class="box-title" data-widget="collapse">{{ trans('stFatt.agent') }}</h3>
+                    <div class="box-tools pull-right">
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
+                                class="fa fa-minus"></i></button>
+                    </div>
+                </div>
+                <div class="box-body">                   
+                        <div class="form-group">
+                            <label>{{ trans('stFatt.selAgent') }}</label>
+                            <select name="codag[]" class="form-control select2 selectAll" multiple="multiple" data-placeholder="Select Agents" style="width: 100%;">
+                                @foreach ($agentList as $agent)
+                                <option value="{{ $agent->codice }}" 
+                                    {{-- @if($agent->codice==$agente && strlen($agent->codice)==strlen($agente)) --}}
+                                    @if(isset($fltAgents) && in_array($agent->codice, $fltAgents, true))
+                                    selected
+                                    @endif
+                                    >{{ $agent->descrizion or "Error $agent->codice - No Description" }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>&nbsp;
+                                <input type="checkbox" id="checkbox" class="selectAll"> &nbsp; Select All
+                            </label>
+                        </div>
                 </div>
             </div>
-            <div class="box-body">
-                <form action="{{ route('stFattArt::idxAg') }}" method="post">
-                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                    <div class="form-group">
-                        <label>{{ trans('stFatt.selAgent') }}</label>
-                        <select name="codag[]" class="form-control select2 codag" multiple="multiple" data-placeholder="Select Agents" style="width: 100%;">
-                            @foreach ($agentList as $agent)
-                            <option value="{{ $agent->codice }}" 
-                                {{-- @if($agent->codice==$agente && strlen($agent->codice)==strlen($agente)) --}}
-                                @if(isset($fltAgents) && in_array($agent->codice, $fltAgents, true))
-                                selected
-                                @endif
-                                >{{ $agent->descrizion or "Error $agent->codice - No Description" }}</option>
-                            @endforeach
-                        </select>
-                        <input type="checkbox" id="checkbox" onclick="selectAll('.codag');">Select All
-                    </div>
-                    <div>
-                        <button type="submit" class="btn btn-primary">{{ trans('_message.submit') }}</button>
-                    </div>
-                </form>
-            </div>
-        </div>
 
-        <div class="box box-default">
-            <div class="box-header with-border">
-                <h3 class="box-title" data-widget="collapse">{{ trans('doc.filter') }}</h3>
-                <div class="box-tools pull-right">
-                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
-                            class="fa fa-minus"></i></button>
-                    {{-- <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button> --}}
+            <div class="box box-default collapsed-box">
+                <div class="box-header with-border">
+                    <h3 class="box-title" data-widget="collapse">Filtro Cliente</h3>
+                    <div class="box-tools pull-right">
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                        {{-- <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button> --}}
+                    </div>
+                </div>
+                <div class="box-body">
+                    @include(
+                    'stFattArt.partials.filterCustomer',
+                    [
+                    'zone' => $zone,'zoneSelected' => $zoneSelected,
+                    'settoriList' => $settoriList,'settoreSelected' => $settoreSelected,
+                    ])
                 </div>
             </div>
-            <div class="box-body">
-                @include(
-                'stFattArt.partials.formIndex',
-                [
-                'zone' => $zone,'zoneSelected' => $zoneSelected,
-                'settoriList' => $settoriList,'settoreSelected' => $settoreSelected,
-                'yearback' => $yearback,
-                'limitVal' => $limitVal, 'fltAgents' => $fltAgents,
-                'route' => 'stFattArt::idxAg'
-                ])
-            </div>
-        </div>
 
+            <div class="box box-default collapsed-box">
+                <div class="box-header with-border">
+                    <h3 class="box-title" data-widget="collapse">Filter Product</h3>
+                    <div class="box-tools pull-right">
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                    </div>
+                </div>
+                <div class="box-body">
+                    @include(
+                    'stFattArt.partials.filterPrdInd',
+                    [
+                    'grpPrdList' => $grpPrdList,
+                    'grpPrdSelected' => $grpPrdSelected,
+                    'optTipoProd' => $optTipoProd,
+                    ])
+                </div>
+            </div>
+            
+            <div class="box box-default collapsed-box">
+                <div class="box-header with-border">
+                    <h3 class="box-title" data-widget="collapse">Parametri Stampa</h3>
+                    <div class="box-tools pull-right">
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                        {{-- <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button> --}}
+                    </div>
+                </div>
+                <div class="box-body">
+                    @include(
+                    'stFattArt.partials.filterParam',
+                    [
+                    'yearback' => $yearback,
+                    'limitVal' => $limitVal,
+                    ])
+                </div>
+            </div>
+
+            <div class="box box-default">
+                <div class="box-body">
+                    <button type="submit" class="btn btn-primary btn-block">{{ trans('_message.submit') }}</button>
+                </div>
+            </div>
+
+        </form>
     </div>
 
     <div class="col-lg-9">
@@ -91,7 +130,13 @@
                     @include('stFattArt.partials.tblTotAg', [
                     'fatList' => $fatList,
                     'thisYear' => $thisYear,
-                    'yearBack' => $yearback
+                    'yearBack' => $yearback,
+                    'grpPrdSelected' => $grpPrdSelected,
+                    'optTipoProd' => $optTipoProd,
+                    'fltAgents' => $fltAgents,
+                    'zoneSelected' => $zoneSelected,
+                    'settoreSelected' => $settoreSelected,
+                    'limitVal' => $limitVal
                     ])
                 </div>
             </div>

@@ -327,6 +327,10 @@ Route::group(['as' => 'schedaFatArt::'], function () {
     'as' => 'PDF',
     'uses' => 'SchedaFatArtController@downloadPDF'
   ]);
+  Route::get('/schedaFatArtPDF', [
+    'as' => 'PDF-Tot',
+    'uses' => 'SchedaFatArtController@downloadPDFTot'
+  ]);
   Route::get('/schedaFatArtXls/{codicecf}', [
     'as' => 'XLS',
     'uses' => 'SchedaFatArtController@downloadXLS'

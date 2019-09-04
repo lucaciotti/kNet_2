@@ -15,11 +15,12 @@
         // $(".selectAll").parent('[class*="icheckbox"]').hasClass("checked")
         $("#checkbox.selectAll").on('ifChanged', function(event) {
           if(event.target.checked){
-            $("#checkbox.selectAll").closest(".select2 > option").prop("selected","selected");
-            $(".select2").trigger("change");
+            $(".select2.selectAll > option").prop("selected","selected");
+            $(".select2.selectAll").trigger("change");
           }else{
-            $(".select2 > option").removeAttr("selected");
-            $(".select2").trigger("change");
+            // $(".select2.selectAll > option").removeAttr("selected");
+            $(".select2.selectAll > option").prop("selected","");
+            $(".select2.selectAll").trigger("change");
           }
           // console.log('checked = ' + event.target.checked);
           // console.log('value = ' + event.target.value);

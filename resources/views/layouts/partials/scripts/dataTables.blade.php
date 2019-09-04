@@ -134,9 +134,9 @@
         "info": true,
         "autoWidth": false,
         "aoColumnDefs": [
-            {"sType": "my-currency", "aTargets": [1]},
             {"sType": "my-currency", "aTargets": [2]},
-            {"sType": "my-currency", "aTargets": [3]}
+            {"sType": "my-currency", "aTargets": [3]},
+            {"sType": "my-currency", "aTargets": [4]}
         ]
         // "aaSorting": [[0, "desc"]],
         // "bStateSave": false
@@ -150,10 +150,10 @@
     "info": true,
     "autoWidth": false,
     "aoColumnDefs": [
-    {"sType": "my-currency", "aTargets": [1]},
     {"sType": "my-currency", "aTargets": [2]},
     {"sType": "my-currency", "aTargets": [3]},
-    {"sType": "my-currency", "aTargets": [4]}
+    {"sType": "my-currency", "aTargets": [4]},
+    {"sType": "my-currency", "aTargets": [5]}
     ]
     // "aaSorting": [[0, "desc"]],
     // "bStateSave": false
@@ -167,11 +167,11 @@
     "info": true,
     "autoWidth": false,
     "aoColumnDefs": [
-    {"sType": "my-currency", "aTargets": [1]},
     {"sType": "my-currency", "aTargets": [2]},
     {"sType": "my-currency", "aTargets": [3]},
     {"sType": "my-currency", "aTargets": [4]},
-    {"sType": "my-currency", "aTargets": [5]}
+    {"sType": "my-currency", "aTargets": [5]},
+    {"sType": "my-currency", "aTargets": [6]}
     ]
     // "aaSorting": [[0, "desc"]],
     // "bStateSave": false
