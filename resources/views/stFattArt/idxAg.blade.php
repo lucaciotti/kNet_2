@@ -5,7 +5,7 @@
 @endsection
 
 @section('contentheader_title')
-{{ trans('stFatt.contentTitle_agt') }}
+Fatturato Confronto Anni
 @endsection
 
 @section('contentheader_breadcrumb')

@@ -15,20 +15,20 @@ Agents Portfolio
 @section('main-content')
 <div class="row">
   <div class="col-lg-3">
-    <div class="box box-default">
-      <div class="box-header with-border">
-        <h3 class="box-title" data-widget="collapse">{{ trans('stFatt.agent') }}</h3>
-        <div class="box-tools pull-right">
-          <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
-          {{-- <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button> --}}
+    <form action="{{ route('Portfolio::idxAg') }}" method="post">
+      <input type="hidden" name="_token" value="{{ csrf_token() }}">
+
+      <div class="box box-default">
+        <div class="box-header with-border">
+          <h3 class="box-title" data-widget="collapse">{{ trans('stFatt.agent') }}</h3>
+          <div class="box-tools pull-right">
+            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+          </div>
         </div>
-      </div>
-      <div class="box-body">
-        <form action="{{ route('Portfolio::idxAg') }}" method="post">
-          <input type="hidden" name="_token" value="{{ csrf_token() }}">
+        <div class="box-body">
           <div class="form-group">
             <label>{{ trans('stFatt.selAgent') }}</label>
-            <select name="codag[]" class="form-control select2" multiple="multiple" data-placeholder="Select Agents"
+            <select name="codag[]" class="form-control select2 selectAll" multiple="multiple" data-placeholder="Select Agents"
               style="width: 100%;">
               @foreach ($agents as $agente)
               <option value="{{ $agente->codice }}" @if(isset($fltAgents) && in_array($agente->codice, $fltAgents,
@@ -39,6 +39,23 @@ Agents Portfolio
               @endforeach
             </select>
           </div>
+          <div class="form-group">
+            <label>&nbsp;
+              <input type="checkbox" id="checkbox" class="selectAll"> &nbsp; Select All
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div class="box box-default collapsed-box">
+        <div class="box-header with-border">
+          <h3 class="box-title" data-widget="collapse">Parametri Stampa</h3>
+          <div class="box-tools pull-right">
+            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+            {{-- <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button> --}}
+          </div>
+        </div>
+        <div class="box-body">
           <div class="form-group">
             <label>Select Month</label>
             <select name="mese" class="form-control select2" data-placeholder="Select Mese" style="width: 100%;">
@@ -67,12 +84,16 @@ Agents Portfolio
                 @endfor
             </select>
           </div>
-          <div>
-            <button type="submit" class="btn btn-primary">{{ trans('_message.submit') }}</button>
-          </div>
-        </form>
+        </div>
       </div>
-    </div>
+
+      <div class="box box-default">
+        <div class="box-body">
+          <button type="submit" class="btn btn-primary btn-block">{{ trans('_message.submit') }}</button>
+        </div>
+      </div>
+    
+    </form>
   </div>
 
   <div class="col-lg-9">
