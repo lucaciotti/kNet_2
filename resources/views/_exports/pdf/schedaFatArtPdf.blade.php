@@ -2,14 +2,15 @@
 
 @section('pdf-main')
     <p class="page">
+        @if($customer)
+            @include('_exports.pdf.schedaFatArt.infoCustomer', [
+            'client' => $customer,
+            ])
 
-        @include('_exports.pdf.schedaFatArt.infoCustomer', [
-        'client' => $customer,
-        ])
-
-        <div>
-            <hr class="dividerPage">
-        </div>
+            <div>
+                <hr class="dividerPage">
+            </div>
+        @endif
 
         <div class="row">
             <div class="contentTitle">KRONA</div>

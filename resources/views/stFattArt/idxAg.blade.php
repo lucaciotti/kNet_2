@@ -113,6 +113,30 @@ Fatturato Confronto Anni
                 </div>
             </div>
 
+            {{-- DOWNLOAD --}}
+            <div class="box box-default collapsed-box">
+                <div class="box-header with-border">
+                    <h3 class="box-title" data-widget="collapse"><i class='fa fa-cloud-download'> </i> Download</h3>
+                    <div class="box-tools pull-right">
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i></button>
+                    </div>
+                </div>
+                <div class="box-body">
+                    <a type="button" class="btn btn-default btn-block" target="_blank"
+                        href="{{ route('schedaFatArt::PDFListaCli', [
+                                        'yearBack' => $yearback,
+                                        'grpPrdSelected' => $grpPrdSelected,
+                                        'optTipoProd' => $optTipoProd,
+                                        'codag' => $fltAgents,
+                                        'zoneSelected' => $zoneSelected,
+                                        'settoreSelected' => $settoreSelected,
+                                        'limitVal' => $limitVal
+                                        ]) }}">PDF Lista Clienti</a>
+                    {{-- <a type="button" class="btn btn-default btn-block" target="_blank" href="{{ route('schedaFat::ZonePDF', $agente) }}">Scheda
+                    Fatturato Zone PDF</a> --}}
+                </div>
+            </div>
+
         </form>
     </div>
 

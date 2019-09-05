@@ -62,7 +62,12 @@
               'optTipoProd' => $optTipoProd,
             ]) }}" target="_blank"><i
             class="fa fa-file-pdf-o fa-lg text-danger"></i></a>
-        <a class="btn-sm btn-default" href="{{ route('schedaFatArt::XLS', [$fatCustomer->codicecf]) }}"><i
+        <a class="btn-sm btn-default" href="{{ route('schedaFatArt::XLS', [
+              $fatCustomer->codicecf, 
+              'yearback' => $yearBack, 
+              'grpPrdSelected' => $grpPrdSelected,
+              'optTipoProd' => $optTipoProd,
+            ]) }}"><i
             class="fa fa-file-excel-o fa-lg text-success"></i></a>
       </td>
     </tr>
@@ -84,7 +89,7 @@
       <td><strong>{{ currency($fat_TotN1) }}</strong></td>
       <td><strong>{{ currency($fat_TotN) }}</strong></td>
       <td>
-        <a class="btn-sm btn-default" href="{{ route('schedaFatArt::PDF-Tot', [
+        <a class="btn-sm btn-default" href="{{ route('schedaFatArt::PDFTot', [
               'yearBack' => $yearback,
               'grpPrdSelected' => $grpPrdSelected,
               'optTipoProd' => $optTipoProd,
@@ -94,7 +99,15 @@
               'limitVal' => $limitVal
             ]) }}"
           target="_blank"><i class="fa fa-file-pdf-o fa-lg text-danger"></i></a>
-        <a class="btn-sm btn-default" href="{{-- {{ route('schedaFatArt::XLSTot', []) }} --}}"><i
+        <a class="btn-sm btn-default" href="{{ route('schedaFatArt::XLSTot', [
+              'yearBack' => $yearback,
+              'grpPrdSelected' => $grpPrdSelected,
+              'optTipoProd' => $optTipoProd,
+              'codag' => $fltAgents,
+              'zoneSelected' => $zoneSelected,
+              'settoreSelected' => $settoreSelected,
+              'limitVal' => $limitVal
+            ]) }}"><i
             class="fa fa-file-excel-o fa-lg text-success"></i></a>
       </td>
     </tr>

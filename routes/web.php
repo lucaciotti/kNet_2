@@ -328,12 +328,20 @@ Route::group(['as' => 'schedaFatArt::'], function () {
     'uses' => 'SchedaFatArtController@downloadPDF'
   ]);
   Route::get('/schedaFatArtPDF', [
-    'as' => 'PDF-Tot',
+    'as' => 'PDFTot',
     'uses' => 'SchedaFatArtController@downloadPDFTot'
+  ]);
+  Route::get('/schedaFatArtPDFCli', [
+    'as' => 'PDFListaCli',
+    'uses' => 'SchedaFatArtController@downloadPDFListaCli'
   ]);
   Route::get('/schedaFatArtXls/{codicecf}', [
     'as' => 'XLS',
     'uses' => 'SchedaFatArtController@downloadXLS'
+  ]);
+  Route::get('/schedaFatArtXls', [
+    'as' => 'XLSTot',
+    'uses' => 'SchedaFatArtController@downloadXLSTot'
   ]);
 });
 
