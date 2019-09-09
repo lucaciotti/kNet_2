@@ -40,15 +40,6 @@ class StFattArtController extends Controller
         // Qui costruisco solo la tabella con il fatturato dei clienti
         $fatList = DB::connection(RedisUser::get('ditta_DB'))->table('u_statfatt_art')
             ->join('anagrafe', 'anagrafe.codice', '=', 'u_statfatt_art.codicecf')
-            // ->join('anagrafe', function ($join) use ($agente) {
-            //     $join->on('anagrafe.codice', '=', 'u_statfatt_art.codicecf')
-            //         ->where('anagrafe.agente', '=', $agente);
-            // })
-            // ->join('agenti', function ($join) use ($agente) {
-            //     $join->on('agenti.codice', '=', 'anagrafe.agente')
-            //         // ->orOn('agenti.codice', '=', 'anagrafe.agente2')
-            //         ->whereRaw('LENGTH(agenti.codice) = ?', [strlen($agente)]);
-            // })
             ->leftJoin('settori', 'settori.codice', '=', 'anagrafe.settore')
             ->select('u_statfatt_art.codicecf')
             ->selectRaw('MAX(anagrafe.descrizion) as ragionesociale, MAX(settori.descrizion) as settore, MIN(u_statfatt_art.mese_parz) as meseRif')
@@ -65,7 +56,6 @@ class StFattArtController extends Controller
                 $fatList->selectRaw('SUM(IF(u_statfatt_art.esercizio = ?, u_statfatt_art.val_tot, 0)) as fatN4', [$thisYear - 4]);
                 break;
         }
-        // $fatList->whereRaw('anagrafe.agente = ? AND LENGTH(anagrafe.agente) = ?', [$agente, strlen($agente)]);
         $fatList->whereIn('anagrafe.agente', $fltAgents);
         $fatList->whereRaw('(LEFT(u_statfatt_art.codicearti,4) != ? AND LEFT(u_statfatt_art.codicearti,4) != ? AND LEFT(u_statfatt_art.codicearti,4) != ?)', ['CAMP', 'NOTA', 'BONU']);
         $fatList->whereRaw('(LEFT(u_statfatt_art.gruppo,1) != ? AND LEFT(u_statfatt_art.gruppo,1) != ? AND LEFT(u_statfatt_art.gruppo,3) != ?)', ['C', '2', 'DIC']);
@@ -79,7 +69,9 @@ class StFattArtController extends Controller
         }
         $fatList->groupBy('codicecf');
         $fatList->havingRaw('fatN > ?', [$limitVal]);
+        $fatList=$fatList->get();
 
+        $meseFat= $fatList->first() ? $fatList->first()->meseRif : Carbon::now()->month;
         // dd($fatList->get());
 
         return view('stFattArt.idxAg', [
@@ -95,7 +87,8 @@ class StFattArtController extends Controller
             'grpPrdSelected' => $req->input('grpPrdSelected'),
             'optTipoProd' => $req->input('optTipoProd'),
             'limitVal' => $limitVal,
-            'fatList' => $fatList->get(),
+            'fatList' => $fatList,
+            'mese' => $meseFat
         ]);
     }
 }
