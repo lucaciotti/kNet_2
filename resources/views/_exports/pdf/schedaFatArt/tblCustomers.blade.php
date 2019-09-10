@@ -30,7 +30,8 @@
       @if($yearBack>=2) <th style="text-align: center;">{!! $thisYear-2 !!}</th> @endif
       <th style="text-align: center;">{!! $thisYear-1 !!}</th>
       <th style="text-align: center;">{!! $thisYear !!}
-        @if($fatList->first())({{ trans('stFatt.'.strtolower(Carbon\Carbon::createFromDate(null, $fatList->first()->meseRif, 25)->format('F'))) }})
+        @if(!$pariperiodo && !$onlyMese)
+        ({{ trans('stFatt.'.strtolower(Carbon\Carbon::createFromDate(null, $mese, 25)->format('F'))) }})
         @endif</th>
     </tr>
   </thead>

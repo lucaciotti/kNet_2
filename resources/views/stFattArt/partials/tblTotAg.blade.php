@@ -20,7 +20,11 @@
   <thead>
     <tr>
       <th colspan="2">&nbsp;</th>
-      <th colspan="{!!1+$yearback!!}" style="text-align: center;">{{ trans('stFatt.revenue')}}</th>
+      <th colspan="{!!1+$yearback!!}" style="text-align: center;">
+        {{ trans('stFatt.revenue')}} 
+        @if($pariperiodo && !$onlyMese) [Pari Periodo] { {{ trans('stFatt.'.strtolower(Carbon\Carbon::createFromDate(null, $mese, 25)->format('F'))) }} } @endif 
+        @if($onlyMese) [Solo Mese] { {{ trans('stFatt.'.strtolower(Carbon\Carbon::createFromDate(null, $mese, 25)->format('F'))) }} } @endif 
+      </th>
       <th rowspan="1">&nbsp;</th>
     </tr>
     <tr>
@@ -31,7 +35,8 @@
       @if($yearBack>=2) <th style="text-align: center;">{!! $thisYear-2 !!}</th> @endif
       <th style="text-align: center;">{!! $thisYear-1 !!}</th>
       <th style="text-align: center;">{!! $thisYear !!}
-        @if($fatList->first())({{ trans('stFatt.'.strtolower(Carbon\Carbon::createFromDate(null, $fatList->first()->meseRif, 25)->format('F'))) }})
+        @if(!$pariperiodo && !$onlyMese)
+        ({{ trans('stFatt.'.strtolower(Carbon\Carbon::createFromDate(null, $mese, 25)->format('F'))) }})
         @endif</th>
       <th rowspan="1">&nbsp;</th>
     </tr>
@@ -60,6 +65,9 @@
               'yearback' => $yearBack, 
               'grpPrdSelected' => $grpPrdSelected,
               'optTipoProd' => $optTipoProd,
+              'mese' => $mese,
+              'onlyMese' => $onlyMese,
+              'pariperiodo' => $pariperiodo
             ]) }}" target="_blank"><i
             class="fa fa-file-pdf-o fa-lg text-danger"></i></a>
         <a class="btn-sm btn-default" href="{{ route('schedaFatArt::XLS', [
@@ -67,6 +75,9 @@
               'yearback' => $yearBack, 
               'grpPrdSelected' => $grpPrdSelected,
               'optTipoProd' => $optTipoProd,
+              'mese' => $mese,
+              'onlyMese' => $onlyMese,
+              'pariperiodo' => $pariperiodo
             ]) }}"><i
             class="fa fa-file-excel-o fa-lg text-success"></i></a>
       </td>
@@ -96,7 +107,10 @@
               'codag' => $fltAgents,
               'zoneSelected' => $zoneSelected,
               'settoreSelected' => $settoreSelected,
-              'limitVal' => $limitVal
+              'limitVal' => $limitVal,
+              'mese' => $mese,
+              'onlyMese' => $onlyMese,
+              'pariperiodo' => $pariperiodo
             ]) }}"
           target="_blank"><i class="fa fa-file-pdf-o fa-lg text-danger"></i></a>
         <a class="btn-sm btn-default" href="{{ route('schedaFatArt::XLSTot', [
@@ -106,7 +120,10 @@
               'codag' => $fltAgents,
               'zoneSelected' => $zoneSelected,
               'settoreSelected' => $settoreSelected,
-              'limitVal' => $limitVal
+              'limitVal' => $limitVal,
+              'mese' => $mese,
+              'onlyMese' => $onlyMese,
+              'pariperiodo' => $pariperiodo
             ]) }}"><i
             class="fa fa-file-excel-o fa-lg text-success"></i></a>
       </td>

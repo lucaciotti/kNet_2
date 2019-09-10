@@ -23,7 +23,9 @@
 <hr>
 
 <div class="form-group">
-  <label>Select Month</label>
+  <label>
+    Select Month
+  </label>
   <select name="mese" class="form-control select2" data-placeholder="Select Mese" style="width: 100%;">
     <option value="1" @if($mese==1) selected @endif>{{ __('stFatt.january')}}</option>
     <option value="2" @if($mese==2) selected @endif>{{ __('stFatt.february')}}</option>
@@ -42,6 +44,29 @@
 
 <div class="form-group">
   <label>&nbsp;
-    <input type="checkbox" id="checkbox"> &nbsp; Pari Periodo
+    <input type="checkbox" id="onlyMese" name="onlyMese" @if($onlyMese) checked @endif> &nbsp; Solo Fatturato Mese
   </label>
 </div>
+
+<div class="form-group">
+  <label>&nbsp;
+    <input type="checkbox" id="pariperiodo" name="pariperiodo" @if($pariperiodo) checked @endif @if($onlyMese) disabled @endif> &nbsp; Pari Periodo
+  </label>
+</div>
+
+@push('script-footer')
+<script>
+  $(function () {
+    $("#onlyMese").on('ifChanged', function(event) {
+      if(event.target.checked){
+        $('#pariperiodo').iCheck('check'); 
+        // style="pointer-events: none;"
+        $('#pariperiodo').iCheck('disable');
+      }else{
+        $('#pariperiodo').iCheck('uncheck');
+        $('#pariperiodo').iCheck('enable');
+      }
+    });
+  });
+</script>
+@endpush

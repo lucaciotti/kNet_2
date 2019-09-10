@@ -28,7 +28,15 @@ class SchedaFatArtController extends Controller
         // $settori = ($req->input('settori')) ? $req->input('settori') : null;
         $yearBack = ($req->input('yearback')) ? $req->input('yearback') : 3; // 2->3AnniView; 3->4AnniView; 4->5AnniView
         $limitVal = ($req->input('limitVal') || $req->input('limitVal') == '0') ? $req->input('limitVal') : null;
-        
+        $meseSelected = $req->input('mese');
+        $onlyMese = $req->input('onlyMese') ? $req->input('onlyMese') : false;
+        $isPariPeriodo = $onlyMese ? $onlyMese : ($req->input('pariperiodo') ? $req->input('pariperiodo') : false);
+
+        $querySelect_qta = $meseSelected ? $this->buildQueryPeriodo('u_statfatt_art.qta_', intval($meseSelected), $onlyMese) : 'u_statfatt_art.qta_tot';
+        $querySelect_qtaN = ($isPariPeriodo ? $querySelect_qta : 'u_statfatt_art.qta_tot');
+        $querySelect_fat = $meseSelected ? $this->buildQueryPeriodo('u_statfatt_art.val_', intval($meseSelected), $onlyMese) : 'u_statfatt_art.val_tot';
+        $querySelect_fatN = ($isPariPeriodo ? $querySelect_fat : 'u_statfatt_art.val_tot');
+
         // Qui costruisco solo la tabella con il fatturato dei clienti
         $fatList = DB::connection(RedisUser::get('ditta_DB'))->table('u_statfatt_art')
             ->leftjoin('magart', 'magart.codice', '=', 'u_statfatt_art.codicearti')
@@ -45,29 +53,29 @@ class SchedaFatArtController extends Controller
             ->selectRaw('MAX(maggrp.descrizion) as descrGruppo')
             ->selectRaw('MAX(u_statfatt_art.prodotto) as tipoProd')
             ->selectRaw('MIN(u_statfatt_art.mese_parz) as meseRif')
-            ->selectRaw('SUM(IF(u_statfatt_art.esercizio = ?, u_statfatt_art.qta_tot, 0)) as qtaN', [$thisYear])
-            ->selectRaw('MAX(IFNULL(IF(u_statfatt_art.esercizio = ?, u_statfatt_art.val_tot/u_statfatt_art.qta_tot, 0), 0)) as pmN', [$thisYear])
-            ->selectRaw('SUM(IF(u_statfatt_art.esercizio = ?, u_statfatt_art.val_tot, 0)) as fatN', [$thisYear])
-            ->selectRaw('SUM(IF(u_statfatt_art.esercizio = ?, u_statfatt_art.qta_tot, 0)) as qtaN1', [$thisYear - 1])
-            ->selectRaw('MAX(IFNULL(IF(u_statfatt_art.esercizio = ?, u_statfatt_art.val_tot/u_statfatt_art.qta_tot, 0), 0)) as pmN1', [$thisYear - 1])
-            ->selectRaw('SUM(IF(u_statfatt_art.esercizio = ?, u_statfatt_art.val_tot, 0)) as fatN1', [$thisYear - 1])
-            ->selectRaw('SUM(IF(u_statfatt_art.esercizio = ?, u_statfatt_art.qta_tot, 0)) as qtaN2', [$thisYear - 2])
-            ->selectRaw('MAX(IFNULL(IF(u_statfatt_art.esercizio = ?, u_statfatt_art.val_tot/u_statfatt_art.qta_tot, 0), 0)) as pmN2', [$thisYear - 2])
-            ->selectRaw('SUM(IF(u_statfatt_art.esercizio = ?, u_statfatt_art.val_tot, 0)) as fatN2', [$thisYear - 2]);
+            ->selectRaw('SUM(IF(u_statfatt_art.esercizio = ?,'.$querySelect_qta.', 0)) as qtaN', [$thisYear])
+            ->selectRaw('MAX(IFNULL(IF(u_statfatt_art.esercizio = ?,(' . $querySelect_fat. ')/('.$querySelect_qta.'), 0), 0)) as pmN', [$thisYear])
+            ->selectRaw('SUM(IF(u_statfatt_art.esercizio = ?,' . $querySelect_fat . ', 0)) as fatN', [$thisYear])
+            ->selectRaw('SUM(IF(u_statfatt_art.esercizio = ?,' . $querySelect_qtaN . ', 0)) as qtaN1', [$thisYear - 1])
+            ->selectRaw('MAX(IFNULL(IF(u_statfatt_art.esercizio = ?,(' . $querySelect_fatN . ')/(' . $querySelect_qtaN . '), 0), 0)) as pmN1', [$thisYear - 1])
+            ->selectRaw('SUM(IF(u_statfatt_art.esercizio = ?,' . $querySelect_fatN . ', 0)) as fatN1', [$thisYear - 1])
+            ->selectRaw('SUM(IF(u_statfatt_art.esercizio = ?,' . $querySelect_qtaN . ', 0)) as qtaN2', [$thisYear - 2])
+            ->selectRaw('MAX(IFNULL(IF(u_statfatt_art.esercizio = ?,(' . $querySelect_fatN . ')/(' . $querySelect_qtaN . '), 0), 0)) as pmN2', [$thisYear - 2])
+            ->selectRaw('SUM(IF(u_statfatt_art.esercizio = ?,' . $querySelect_fatN . ', 0)) as fatN2', [$thisYear - 2]);
 
         switch ($yearBack) {
             case 3:
-                $fatList->selectRaw('SUM(IF(u_statfatt_art.esercizio = ?, u_statfatt_art.qta_tot, 0)) as qtaN3', [$thisYear - 3]);
-                $fatList->selectRaw('MAX(IFNULL(IF(u_statfatt_art.esercizio = ?, u_statfatt_art.val_tot/u_statfatt_art.qta_tot, 0),0)) as pmN3', [$thisYear - 3]);
-                $fatList->selectRaw('SUM(IF(u_statfatt_art.esercizio = ?, u_statfatt_art.val_tot, 0)) as fatN3', [$thisYear - 3]);
+                $fatList->selectRaw('SUM(IF(u_statfatt_art.esercizio = ?,' . $querySelect_qtaN . ', 0)) as qtaN3', [$thisYear - 3]);
+                $fatList->selectRaw('MAX(IFNULL(IF(u_statfatt_art.esercizio = ?,(' . $querySelect_fatN . ')/(' . $querySelect_qtaN . '), 0),0)) as pmN3', [$thisYear - 3]);
+                $fatList->selectRaw('SUM(IF(u_statfatt_art.esercizio = ?,' . $querySelect_fatN . ', 0)) as fatN3', [$thisYear - 3]);
                 break;
             case 4:
-                $fatList->selectRaw('SUM(IF(u_statfatt_art.esercizio = ?, u_statfatt_art.qta_tot, 0)) as qtaN3', [$thisYear - 3]);
-                $fatList->selectRaw('MAX(IFNULL(IF(u_statfatt_art.esercizio = ?, u_statfatt_art.val_tot/u_statfatt_art.qta_tot, 0),0)) as pmN3', [$thisYear - 3]);
-                $fatList->selectRaw('SUM(IF(u_statfatt_art.esercizio = ?, u_statfatt_art.val_tot, 0)) as fatN3', [$thisYear - 3]);
-                $fatList->selectRaw('SUM(IF(u_statfatt_art.esercizio = ?, u_statfatt_art.qta_tot, 0)) as qtaN4', [$thisYear - 4]);
-                $fatList->selectRaw('MAX(IFNULL(IF(u_statfatt_art.esercizio = ?, u_statfatt_art.val_tot/u_statfatt_art.qta_tot, 0),0)) as pmN4', [$thisYear - 4]);
-                $fatList->selectRaw('SUM(IF(u_statfatt_art.esercizio = ?, u_statfatt_art.val_tot, 0)) as fatN4', [$thisYear - 4]);
+                $fatList->selectRaw('SUM(IF(u_statfatt_art.esercizio = ?,' . $querySelect_qtaN . ', 0)) as qtaN3', [$thisYear - 3]);
+                $fatList->selectRaw('MAX(IFNULL(IF(u_statfatt_art.esercizio = ?,(' . $querySelect_fatN . ')/(' . $querySelect_qtaN . '), 0),0)) as pmN3', [$thisYear - 3]);
+                $fatList->selectRaw('SUM(IF(u_statfatt_art.esercizio = ?,' . $querySelect_fatN . ', 0)) as fatN3', [$thisYear - 3]);
+                $fatList->selectRaw('SUM(IF(u_statfatt_art.esercizio = ?,' . $querySelect_qtaN . ', 0)) as qtaN4', [$thisYear - 4]);
+                $fatList->selectRaw('MAX(IFNULL(IF(u_statfatt_art.esercizio = ?,(' . $querySelect_fatN . ')/(' . $querySelect_qtaN . '), 0),0)) as pmN4', [$thisYear - 4]);
+                $fatList->selectRaw('SUM(IF(u_statfatt_art.esercizio = ?,' . $querySelect_fatN . ', 0)) as fatN4', [$thisYear - 4]);
                 break;
         }
         $fatList->whereRaw('u_statfatt_art.codicecf = ?', [$codCli]);
@@ -83,17 +91,22 @@ class SchedaFatArtController extends Controller
         $fatList->groupBy('codicearti');
         if($limitVal!=null) { $fatList->havingRaw('fatN > ?', [$limitVal]); }
         $fatList->orderBy('codGruppo')->orderBy('codicearti');
-
+        $fatList = $fatList->get();
         // dd($fatList->toSql());
+
+        $meseRif = $meseSelected ? $meseSelected : ($fatList->first() ? $fatList->first()->meseRif : Carbon::now()->month);
 
         $title = "Scheda Confronto Anni";
         $subTitle = ($customer) ? $customer->descrizion : "NONE";
         $view = '_exports.pdf.schedaFatArtPdf';
         $data = [
             'customer' => $customer,
-            'fatList' => $fatList->get(),
+            'fatList' => $fatList,
             'thisYear' => $thisYear,
             'yearback' => $yearBack,
+            'mese' => $meseRif,
+            'onlyMese' => $onlyMese,
+            'pariperiodo' => $isPariPeriodo
         ];
         $pdf = PdfReport::A4Landscape($view, $data, $title, $subTitle);
 
@@ -391,4 +404,23 @@ class SchedaFatArtController extends Controller
 
         return $pdf->stream($title . '-' . $subTitle . '.pdf');
     }
+
+
+    private function buildQueryPeriodo($prefColumn, $mese, $onlyMese)
+    {
+        $q = '';
+        if ($onlyMese) {
+            $q = $prefColumn . str_pad(strval($mese), 2, "0", STR_PAD_LEFT);
+        } else {
+            for ($i = 1; $i <= $mese; $i++) {
+                if (empty($q)) {
+                    $q .= $prefColumn . str_pad(strval($i), 2, "0", STR_PAD_LEFT);
+                } else {
+                    $q .= '+' . $prefColumn . str_pad(strval($i), 2, "0", STR_PAD_LEFT);
+                }
+            }
+        }
+        return $q;
+    }
+
 }
