@@ -2,7 +2,17 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
         <style>
-            /* @page { font-size: pt } */
+            /* @page { font-size: pt }
+                .keep-together {
+                page-break-inside: avoid;
+                }                
+                .break-before {
+                page-break-before: always;
+                }                
+                .break-after {
+                page-break-after: always;
+                }
+             */
             p.page { page-break-after: always; }
             p.page:last-child { page-break-after: avoid; }
             div.row { font-size: 9pt; }
@@ -34,6 +44,13 @@
                 text-decoration: underline; 
                 padding-top: 15px;
                 padding-bottom: 15px;
+            }
+            span.contentSubTitle {
+                font-size: 10pt;
+                font-stretch: expanded;
+                font-style: oblique;
+                font-weight: normal;
+                text-decoration: none;
             }
             
             /* Style the container with a rounded border, grey background and some padding and margin */

@@ -34,7 +34,7 @@ class StFattArtController extends Controller
         $settoreSelected = ($req->input('settoreSelected')) ? $req->input('settoreSelected') : null;
         $zoneSelected = ($req->input('zoneSelected')) ? $req->input('zoneSelected') : null;
         $yearBack = ($req->input('yearback')) ? $req->input('yearback') : 3; // 2->3AnniView; 3->4AnniView; 4->5AnniView
-        $limitVal = ($req->input('limitVal') || $req->input('limitVal')=='0') ? $req->input('limitVal') : 500;
+        $limitVal = ($req->input('limitVal') || $req->input('limitVal')=='0') ? $req->input('limitVal') : 0;
         $meseSelected = $req->input('mese');
         $onlyMese = $req->input('onlyMese') ? $req->input('onlyMese') : false;
         $isPariPeriodo = $onlyMese ? $onlyMese : ($req->input('pariperiodo') ? $req->input('pariperiodo') : false);
