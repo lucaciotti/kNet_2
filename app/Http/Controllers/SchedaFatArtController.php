@@ -89,7 +89,7 @@ class SchedaFatArtController extends Controller
             $fatList->where('u_statfatt_art.prodotto', $req->input('optTipoProd'));
         }
         $fatList->groupBy('codicearti');
-        if($limitVal!=null) { $fatList->havingRaw('fatN > ?', [$limitVal]); }
+        if($limitVal!=null) { $fatList->havingRaw('fatN >= ?', [$limitVal]); }
         $fatList->orderBy('codGruppo')->orderBy('codicearti');
         $fatList = $fatList->get();
         // dd($fatList->toSql());
@@ -180,7 +180,7 @@ class SchedaFatArtController extends Controller
         }
         $fatList->groupBy('codicearti');
         if ($limitVal != null) {
-            $fatList->havingRaw('fatN > ?', [$limitVal]);
+            $fatList->havingRaw('fatN >= ?', [$limitVal]);
         }
         $fatList->orderBy('codGruppo')->orderBy('codicearti');
         $fatList = $fatList->get();
@@ -267,7 +267,7 @@ class SchedaFatArtController extends Controller
         }
         $fatList->groupBy('codicearti');
         if ($limitVal != null) {
-            $fatList->havingRaw('fatN > ?', [$limitVal]);
+            $fatList->havingRaw('fatN >= ?', [$limitVal]);
         }
         $fatList->orderBy('codGruppo')->orderBy('codicearti');
         $fatList = $fatList->get();
@@ -368,7 +368,7 @@ class SchedaFatArtController extends Controller
         }
         $fatList->groupBy('codicearti');
         if ($limitVal != null) {
-            $fatList->havingRaw('fatN > ?', [$limitVal]);
+            $fatList->havingRaw('fatN >= ?', [$limitVal]);
         }
         $fatList->orderBy('codGruppo')->orderBy('codicearti');
         $fatList = $fatList->get();
@@ -429,7 +429,7 @@ class SchedaFatArtController extends Controller
             $fatList->where('u_statfatt_art.prodotto', $req->input('optTipoProd'));
         }
         $fatList->groupBy('codicecf');
-        $fatList->havingRaw('fatN > ?', [$limitVal]);
+        $fatList->havingRaw('fatN >= ?', [$limitVal]);
         $fatList = $fatList->get();
         // dd($fatList->toSql());
 

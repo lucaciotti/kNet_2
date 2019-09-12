@@ -74,7 +74,7 @@ class StFattArtController extends Controller
             $fatList->where('u_statfatt_art.prodotto', $req->input('optTipoProd'));
         }
         $fatList->groupBy('codicecf');
-        $fatList->havingRaw('fatN > ?', [$limitVal]);
+        $fatList->havingRaw('fatN >= ?', [$limitVal]);
         $fatList=$fatList->get();
 
         $meseRif = $meseSelected ? $meseSelected : ($fatList->first() ? $fatList->first()->meseRif : Carbon::now()->month);
