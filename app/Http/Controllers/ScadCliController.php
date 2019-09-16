@@ -60,6 +60,7 @@ class ScadCliController extends Controller
 
   public function fltIndex (Request $req){
     // dd($req);
+    $agentList = Agent::select('codice', 'descrizion')->whereNull('u_dataini')->orderBy('codice')->get();
     $scads = ScadCli::select('id', 'id_doc', 'numfatt', 
               'datafatt', 'datascad', 'codcf', 'tipomod', 
               'tipo', 'insoluto', 'u_insoluto', 'pagato', 
@@ -131,6 +132,7 @@ class ScadCliController extends Controller
       'chkStato_P' => $req->input('chkStato_P'),
       'optRaggr' => $req->input('optRaggr'),
       'chkPag' => $req->input('chkPag'),
+      'agentList' => $agentList
     ]);
   }
 
