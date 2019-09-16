@@ -8,6 +8,7 @@ use Carbon\Carbon;
 
 use knet\Http\Requests;
 use knet\ArcaModels\ScadCli;
+use knet\ArcaModels\Agent;
 
 use knet\Helpers\RedisUser;
 
@@ -22,6 +23,7 @@ class ScadCliController extends Controller
     $thisYear = Carbon::now()->year;
     $startDate = Carbon::createFromDate($thisYear-1, 1, 1);
     $endDate = Carbon::now();
+    $agentList = Agent::select('codice', 'descrizion')->whereNull('u_dataini')->orderBy('codice')->get();
 
     $scads = ScadCli::select('id', 'id_doc', 'numfatt', 
               'datafatt', 'datascad', 'codcf', 'tipomod', 
@@ -52,6 +54,7 @@ class ScadCliController extends Controller
       'scads' => $scads,
       'startDate' => $startDate,
       'endDate' => $endDate,
+      'agentList' => $agentList
     ]);
   }
 
