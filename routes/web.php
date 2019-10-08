@@ -463,6 +463,29 @@ Route::group(['as' => 'ModCarp01::'], function () {
   ]);
 });
 
+Route::group(['as' => 'ModRicFatt::'], function () {
+  Route::get('/createRicFatt', [
+    'as' => 'create',
+    'uses' => 'ModRicFattController@createModule'
+  ]);
+  Route::post('/storeRicFatt', [
+    'as' => 'store',
+    'uses' => 'ModRicFattController@store'
+  ]);
+  Route::get('/editRicFatt/{id}', [
+    'as' => 'edit',
+    'uses' => 'ModRicFattController@edit'
+  ]);
+  Route::post('/updRicFatt', [
+    'as' => 'update',
+    'uses' => 'ModRicFattController@update'
+  ]);
+  Route::delete('/delRicFatt/{id}', [
+    'as' => 'delete',
+    'uses' => 'ModRicFattController@delete'
+  ]);
+});
+
 Route::group(['as' => 'manuale::'], function () {
   Route::get('/manuale_agente', [
     'as' => 'agente',
