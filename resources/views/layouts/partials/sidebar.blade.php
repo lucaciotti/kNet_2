@@ -107,7 +107,7 @@
                   </ul>
               </li>
 
-              @if (!in_array(RedisUser::get('role'), ['agent', 'client']))
+              @if (!in_array(RedisUser::get('role'), ['client']))
                 <li class="{{ Ekko::isActiveRoute('stFattArt::idxAg') }}">
                     <a href="{{ route('stFattArt::idxAg') }}">
                         <i class='fa fa-sort-amount-desc'></i>
