@@ -13,7 +13,7 @@ class CreateModRichiestaFattibilita extends Migration
      */
     public function up()
     {
-        Schema::create('Modricfat', function (Blueprint $table) {
+        Schema::create('w_modricfat', function (Blueprint $table) {
             $table->increments('id');
             $table->date('data_ricezione')->comment('');
             $table->string('richiedente')->comment('');
@@ -32,6 +32,7 @@ class CreateModRichiestaFattibilita extends Migration
             $table->string('periodo_ordinativi')->comment('');
             $table->double('target_price')->comment('');
             $table->string('ditta')->comment('');
+            $table->bigInteger('user_id')->unsigned()->comment('');
             $table->timestamps();
         });
     }

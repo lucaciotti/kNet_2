@@ -18,6 +18,8 @@ Vue.component("form-carp", require("./components/FormCarp.vue"));
 Vue.component("form-carp-edit", require("./components/FormCarpEdit.vue"));
 Vue.component("form-sys-mkt", require("./components/FormSysMkt.vue"));
 
+Vue.component("form-ric-fat", require("./components/FormRicFat.vue"));
+
 const app = new Vue({
   el: "#app"
 });

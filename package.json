@@ -13,7 +13,7 @@
   },
   "devDependencies": {
     "acacha-forms": "^1.0.0",
-    "admin-lte": "^2.4.10",
+    "admin-lte": "^2.4.2",
     "axios": "^0.8",
     "babel-eslint": "^7.1.1",
     "bootstrap": "3.3.7",
@@ -26,21 +26,21 @@
     "eslint-plugin-html": "^2.0.0",
     "eslint-plugin-promise": "^3.4.0",
     "eslint-plugin-standard": "^2.0.1",
-    "eslint-plugin-vue": "^5.2.2",
+    "eslint-plugin-vue": "^5.1.0",
     "font-awesome": "^4.7.0",
     "icheck": "^1.0.2",
     "ionicons": "^3.0.0",
     "jquery": "^3.2",
-    "jquery-knob": "^1.2.11",
     "laravel-mix": "^2.0",
     "lodash": "^4.17.4",
-    "popper.js": "^1.14.7",
+    "popper.js": "^1.12",
     "pretty-checkbox-vue": "^1.1.9",
-    "raphael": "^2.2.8",
-    "vue": "^2.6.10",
-    "vue-select": "^2.6.3"
+    "vue": "^2.5.7",
+    "jquery-knob": "^1.2.11",
+    "raphael": "^2.2.7",
+    "vue-select": "^2.5.1"
   },
   "dependencies": {
-    "vue-multiselect": "^2.1.4"
+    "vue-multiselect": "^2.1.3"
   }
 }

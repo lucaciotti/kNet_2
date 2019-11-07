@@ -8,3 +8,4 @@ How to use this:
 
 ##TABLE
 
+4 - To rollback php artisan migrate:rollback --step=1
