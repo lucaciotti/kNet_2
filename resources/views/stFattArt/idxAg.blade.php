@@ -132,6 +132,15 @@ Fatturato Confronto Anni
                                         'settoreSelected' => $settoreSelected,
                                         'limitVal' => $limitVal
                                         ]) }}">PDF Lista Clienti</a>
+                    <a type="button" class="btn btn-default btn-block" target="_blank" href="{{ route('schedaFatArt::XLSListaCli', [
+                                        'yearBack' => $yearback,
+                                        'grpPrdSelected' => $grpPrdSelected,
+                                        'optTipoProd' => $optTipoProd,
+                                        'codag' => $fltAgents,
+                                        'zoneSelected' => $zoneSelected,
+                                        'settoreSelected' => $settoreSelected,
+                                        'limitVal' => $limitVal
+                                        ]) }}">XLS Lista Clienti</a>
                     {{-- <a type="button" class="btn btn-default btn-block" target="_blank" href="{{ route('schedaFat::ZonePDF', $agente) }}">Scheda
                     Fatturato Zone PDF</a> --}}
                 </div>

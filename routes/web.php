@@ -343,6 +343,10 @@ Route::group(['as' => 'schedaFatArt::'], function () {
     'as' => 'XLSTot',
     'uses' => 'SchedaFatArtController@downloadXLSTot'
   ]);
+  Route::get('/schedaFatArtXLSCli', [
+    'as' => 'XLSListaCli',
+    'uses' => 'SchedaFatArtController@downloadXLSListaCli'
+  ]);
 });
 
 Route::group(['as' => 'schedaCli::'], function () {
