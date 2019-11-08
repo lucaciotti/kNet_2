@@ -464,7 +464,7 @@ Route::group(['as' => 'ModCarp01::'], function () {
 });
 
 Route::group(['as' => 'ModRicFatt::'], function () {
-  Route::get('/createRicFatt', [
+  Route::get('/createRicFatt/{codicecf}', [
     'as' => 'create',
     'uses' => 'ModRicFattController@createModule'
   ]);

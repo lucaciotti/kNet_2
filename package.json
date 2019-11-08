@@ -41,6 +41,8 @@
     "vue-select": "^2.5.1"
   },
   "dependencies": {
+    "v-money": "^0.8.1",
+    "vue-currency-input": "^1.11.4",
     "vue-multiselect": "^2.1.3"
   }
 }

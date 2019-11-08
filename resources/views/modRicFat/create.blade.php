@@ -1,11 +1,11 @@
 @extends('layouts.app')
 
 @section('htmlheader_title')
-    - Richiesta di Fattibilità
+    - {{trans('modRicFat.headTitle')}}
 @endsection
 
 @section('contentheader_title')
-    Richiesta di Fattibilità
+    {{trans('modRicFat.headTitle')}}
 @endsection
 
 @section('main-content')
