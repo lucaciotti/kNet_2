@@ -37,9 +37,13 @@ Route::middleware('auth:api')->get('customer', function (Request $request) {
 });
 
 Route::get('formCustomRequest', function (Request $request) {
-    
+    $it_forms = DB::connection('kNet_it')->table('w_modricfat')->select('*')->get();
+    $es_forms = DB::connection('kNet_es')->table('w_modricfat')->select('*')->get();
+    $fr_forms = DB::connection('kNet_fr')->table('w_modricfat')->select('*')->get();
+    $merged = $it_forms->merge($es_forms);
+    $merged = $merged->merge($fr_forms);
     return array(
-        'data' => DB::connection('kNet_it')->table('w_modricfat')->select('*')->get(),
+        'data' => $merged,
         'meta' => []
     );
     
