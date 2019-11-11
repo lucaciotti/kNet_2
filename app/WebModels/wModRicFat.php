@@ -31,9 +31,9 @@ class wModRicFat extends Model
         'ditta',
         'user_id'
     ];
-    protected $visible = [
-        'id',
-    ];
+    // protected $visible = [
+    //     'id',
+    // ];
 
     public function __construct($attributes = array())
     {
