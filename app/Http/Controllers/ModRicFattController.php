@@ -33,8 +33,8 @@ class ModRicFattController extends Controller
     }
 
     public function store(Request $req)
-    {
-        $client = Client::find($req->input('codicecf'));
+    {        
+        // $client = Client::find($req->input('codicecf'));
         $modCarp = wModRicFat::create([
             'data_ricezione' => ($req->input('data_ricezione') ? $req->input('data_ricezione') : Carbon::now()),
             'richiedente' => $req->input('richiedente'),
@@ -44,7 +44,7 @@ class ModRicFattController extends Controller
             'tipologia_prodotto' => $req->input('tipologia_prodotto.descrizione'),
             'descr_pers' => $req->input('descr_pers'),
             'url_pers' => ($req->input('url_pers') ? $req->input('url_pers') : ''),
-            'system_kk' => ($req->input('system_kk') ? $req->input('system_kk') : ''),
+            'system_kk' => ($req->input('system_kk') ? $req->input('system_kk.descrizione') : ''),
             'system_other' => ($req->input('system_other') ? $req->input('system_other') : ''),
             'info_tecn_comm' => $req->input('info_tecn_comm'),
             'imballaggio' => ($req->input('imballaggio') ? $req->input('imballaggio') : ''),
@@ -55,7 +55,7 @@ class ModRicFattController extends Controller
             'ditta' => $req->input('ditta'),
             'user_id' =>  Auth::user()->id
         ]);
-
+        // dd($modCarp);
         return ['Richiesta Fattibilità Salvata'];
     }
 
