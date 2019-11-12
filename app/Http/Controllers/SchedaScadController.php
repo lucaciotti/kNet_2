@@ -4,6 +4,7 @@ namespace knet\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use knet\Helpers\RedisUser;
 use Illuminate\Support\Facades\DB;
 
 use knet\ArcaModels\Client;
@@ -66,11 +67,71 @@ class SchedaScadController extends Controller
           'agente' => $agente,
           'descrAg' => $subTitle,
           'thisYear' => $thisYear,
-          'provv_TY' => $provv_TY
+          'provv_TY' => $provv_TY,
+          'provvPP_TY' => null
       ];
       $pdf = PdfReport::A4Landscape($view, $data, $title, $subTitle);
 
       return $pdf->stream($title.'-'.$subTitle.'.pdf');
+    }
+
+    public function downloadProvPP_PDF(Request $req, $codAg, $year)
+    {
+      //Let's Set the Date
+      $thisYear = Carbon::now()->year;
+      $startDate = Carbon::createFromDate($year, 1, 1);
+      if ($year == $thisYear) {
+        $endDateFT = new Carbon('last day of last month');
+      } else {
+        $endDateFT = Carbon::createFromDate($year, 12, 31);
+      }
+      $endDateScad = new Carbon('last day of last month');
+
+      $agente = Agent::select('codice', 'descrizion')->where('codice', $codAg)->where(DB::raw('LENGTH(codice)'), strlen($codAg))->orderBy('codice')->first();
+
+      $provv_TY = DB::connection(RedisUser::get('ditta_DB'))->table('doctes')
+      ->leftjoin('docrig', 'docrig.id_testa', '=', 'doctes.id')
+      ->leftJoin('anagrafe', 'anagrafe.codice', '=', 'doctes.codicecf')
+      ->selectRaw('doctes.id as id')
+      ->selectRaw('MAX(doctes.id) as id_doc')
+      ->selectRaw('MAX(doctes.numerodoc) as numfatt')
+      ->selectRaw('DATE_FORMAT(doctes.datadoc, "%d-%m-%Y") as datafatt')
+      ->selectRaw('DATE_FORMAT(doctes.datadoc, "%d-%m-%Y") as datascad')
+      ->selectRaw('MAX(doctes.codicecf) as codcf')
+      ->selectRaw('MAX(anagrafe.descrizion) as ragione_sociale')
+      ->selectRaw('MIN(doctes.tipodoc) as tipomod')
+      ->selectRaw('MIN(0) as insoluto')
+      ->selectRaw('MIN(0) as u_insoluto')
+      ->selectRaw('MIN(1) as pagato')
+      ->selectRaw('SUM(docrig.prezzotot) as impeffval')
+      ->selectRaw('SUM(ROUND((docrig.prezzotot*docrig.provv)/100,2)) as impprovlit')
+      ->selectRaw('SUM(IF(doctes.numrighepr = 0, 1, 0)) as liquidate')
+      ->selectRaw('MAX(MONTH(doctes.datadoc)) as Mese')
+      ->whereBetween('doctes.datadoc', array($startDate, $endDateFT))
+      ->whereRaw('doctes.tipodoc = "PP"')
+      ->whereRaw('doctes.agente = ?', [$codAg])
+      ->whereRaw('LENGTH(doctes.agente) = ?', [strlen($codAg)])
+      ->groupBy('doctes.id')
+      ->orderBy('id', 'asc')
+      ->get();
+      $provv_TY = $provv_TY->groupBy('Mese');
+      // dd($provv_TY);
+      // ->whereRaw("`pagato` = 1")
+      // ->where('datapag', '<=', $endDate)
+
+      $title = "Scheda Provvigioni Supplementari Agente - " . (string) $year;
+      $subTitle = $agente->descrizion;
+      $view = '_exports.pdf.schedaProvPdf';
+      $data = [
+        'agente' => $agente,
+        'descrAg' => $subTitle,
+        'thisYear' => $thisYear,
+        'provvPP_TY' => $provv_TY,
+        'provv_TY' => null
+      ];
+      $pdf = PdfReport::A4Landscape($view, $data, $title, $subTitle);
+
+      return $pdf->stream($title . '-' . $subTitle . '.pdf');
     }
 
     public function downloadScadPDF(Request $req, $codAg=null){

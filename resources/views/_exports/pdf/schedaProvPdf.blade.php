@@ -6,9 +6,16 @@
         <div class="row">
             <div class="contentTitle">Situatione Provvigioni</div>
 
-            @include('_exports.pdf.schedaScad.tblProv', [
-                'provv' => $provv_TY,
-            ])
+            @if($provv_TY)
+              @include('_exports.pdf.schedaScad.tblProv', [
+                  'provv' => $provv_TY,
+              ])
+            @endif
+            @if($provvPP_TY)
+              @include('_exports.pdf.schedaScad.tblProvPP', [
+              'provv' => $provvPP_TY,
+              ])
+            @endif
 
         </div>
 

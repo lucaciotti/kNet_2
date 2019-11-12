@@ -58,8 +58,18 @@
       </div>
       <div class="box-body">
         @if(RedisUser::get('role')=='agent')
-          <a type="button" class="btn btn-default btn-block" target="_blank" href="{{ route('schedaScad::ProvPDF', [RedisUser::get('codag'), 'year' => Carbon\Carbon::now()->year]) }}">Situaz. Provvigioni da Fatturare PDF</a>
-          <a type="button" class="btn btn-default btn-block" target="_blank" href="{{ route('schedaScad::ProvPDF', [RedisUser::get('codag'), 'year' => (Carbon\Carbon::now()->year)-1]) }}">Situaz. Provvigioni da Fatturare PDF - Anno Prec.</a>
+          <a type="button" class="btn btn-default btn-block" target="_blank" href="{{ route('schedaScad::ProvPDF', [RedisUser::get('codag'), 'year' => Carbon\Carbon::now()->year]) }}"><b>Provvigioni</b> da Fatturare PDF</a>
+          <a type="button" class="btn btn-default btn-block" target="_blank" href="{{ route('schedaScad::ProvPDF', [RedisUser::get('codag'), 'year' => (Carbon\Carbon::now()->year)-1]) }}"><b>Provvigioni</b> da Fatturare PDF - <b>Anno Prec.</b></a>
+          <hr>
+          @if(RedisUser::get('ditta_DB')=='kNet_fr')
+          <a type="button" class="btn btn-default btn-block" target="_blank"
+            href="{{ route('schedaScad::ProvPP_PDF', [RedisUser::get('codag'), 'year' => Carbon\Carbon::now()->year]) }}">
+            <b>Commissions de Plate-forme</b> da Fatturare PDF</a>
+          <a type="button" class="btn btn-default btn-block" target="_blank"
+            href="{{ route('schedaScad::ProvPP_PDF', [RedisUser::get('codag'), 'year' => (Carbon\Carbon::now()->year)-1]) }}">
+            <b>Commissions de Plate-forme</b> da Fatturare PDF - <b>Année Préc.</b></a>
+          <hr>
+          @endif
         @endif
         <a type="button" class="btn btn-default btn-block" target="_blank" href="{{ route('schedaScad::ScadPDF', RedisUser::get('codag')) }}">Scheda Scadenze PDF</a>
       </div>
@@ -86,11 +96,20 @@
             </select>
           </div>     
           <a type="button" class="btn btn-default btn-block" id="btn_prov" target="_blank"
-            href="{{ route('schedaScad::ProvPDF', ['##', 'year' => Carbon\Carbon::now()->year]) }}">Situaz.
-            Provvigioni da Fatturare PDF</a>
+            href="{{ route('schedaScad::ProvPDF', ['##', 'year' => Carbon\Carbon::now()->year]) }}">
+            <b>Provvigioni</b> da Fatturare PDF</a>
           <a type="button" class="btn btn-default btn-block" id="btn_prov2" target="_blank"
-            href="{{ route('schedaScad::ProvPDF', ['##', 'year' => (Carbon\Carbon::now()->year)-1]) }}">Situaz.
-            Provvigioni da Fatturare PDF - Anno Prec.</a>
+            href="{{ route('schedaScad::ProvPDF', ['##', 'year' => (Carbon\Carbon::now()->year)-1]) }}">
+          <b>Provvigioni</b> da Fatturare PDF - <b>Anno Prec.</b></a>
+          @if(RedisUser::get('ditta_DB')=='kNet_fr')
+          <hr>
+          <a type="button" class="btn btn-default btn-block" id="btn_prov3" target="_blank"
+            href="{{ route('schedaScad::ProvPP_PDF', ['##', 'year' => Carbon\Carbon::now()->year]) }}">
+          <b>Commissions de Plate-forme</b> da Fatturare PDF</a>
+          <a type="button" class="btn btn-default btn-block" id="btn_prov4" target="_blank"
+            href="{{ route('schedaScad::ProvPP_PDF', ['##', 'year' => (Carbon\Carbon::now()->year)-1]) }}">
+          <b>Commissions de Plate-forme</b> da Fatturare PDF - <b>Année Préc.</b></a>
+          @endif
         </div>
       </div>
     @endif
@@ -114,8 +133,14 @@
       'schedaProvPDF/'+data+'/'));
       $('#btn_prov2').attr('href',($('#btn_prov2').attr('href')).replace(/schedaProvPDF\/([a-zA-Z0-9_#]+)\//g,
       'schedaProvPDF/'+data+'/'));
+      $('#btn_prov3').attr('href',($('#btn_prov3').attr('href')).replace(/schedaProvPP_PDF\/([a-zA-Z0-9_#]+)\//g,
+      'schedaProvPP_PDF/'+data+'/'));
+      $('#btn_prov4').attr('href',($('#btn_prov4').attr('href')).replace(/schedaProvPP_PDF\/([a-zA-Z0-9_#]+)\//g,
+      'schedaProvPP_PDF/'+data+'/'));
       console.log('linkProv1 = '+$('#btn_prov').attr('href'));
       console.log('linkProv2 = '+$('#btn_prov2').attr('href'));
+      console.log('linkProv3 = '+$('#btn_prov3').attr('href'));
+      console.log('linkProv4 = '+$('#btn_prov4').attr('href'));
     });
   });
 </script>
