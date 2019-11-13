@@ -91,7 +91,7 @@
           </div>
       </div>
 
-      @if($ritana && 1>2)
+      @if($ritana)
         <div class="box box-default">
             <div class="box-header with-border">
               <h3 class="box-title" data-widget="collapse">Dati Enasarco</h3>
@@ -142,7 +142,7 @@
                     <th>% Agente</th>
                     <th>Importo Agente</th>
                     <th>Progressivo</th>
-                    <th>Residuo</th>
+                    {{-- <th>Residuo</th> --}}
                   </tr>
                 </thead>
                 <tbody>
@@ -167,7 +167,7 @@
                       <td>{{ $mov->perenage }}</td>
                       <td>{{ currency($mov->impenage) }}</td>
                       <td>{{ currency($sum_prog) }}</td>
-                      <td>{{ currency($sum_res) }}</td>
+                      {{-- <td>{{ currency($sum_res) }}</td> --}}
                     </tr>
                   @endforeach
                 </tbody>
@@ -182,7 +182,7 @@
                     <td>&nbsp;</td>
                     <td>{{ currency($sum_impenage) }}</td>
                     <td>{{ currency($sum_prog) }}</td>
-                    <td>{{ currency($sum_res) }}</td>
+                    {{-- <td>{{ currency($sum_res) }}</td> --}}
                   </tr>
                 </tfoot>
               </table>
