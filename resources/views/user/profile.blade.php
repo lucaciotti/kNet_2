@@ -91,7 +91,7 @@
           </div>
       </div>
 
-      @if($ritana)
+      @if($ritana && 1>2)
         <div class="box box-default">
             <div class="box-header with-border">
               <h3 class="box-title" data-widget="collapse">Dati Enasarco</h3>
