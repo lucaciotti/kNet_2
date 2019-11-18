@@ -37,7 +37,7 @@ class PortfolioController extends Controller
 			$this->dEndMonth = new Carbon('last day of '.Carbon::createFromDate(null, $mese, null)->format('F').' '.((string)$this->thisYear));
 		}
 
-		$agents = Agent::select('codice', 'descrizion')->whereNull('u_dataini')->orderBy('codice')->get();
+		$agents = Agent::select('codice', 'descrizion')->whereNull('u_dataini')->orWhere('u_dataini', '>=', Carbon::now())->orderBy('codice')->get();
 		$codAg = ($req->input('codag')) ? $req->input('codag') : $codAg;
         $fltAgents = (!empty($codAg)) ? $codAg : array_wrap((!empty(RedisUser::get('codag')) ? RedisUser::get('codag') : $agents->first()->codice)); //$agents->pluck('codice')->toArray();
 

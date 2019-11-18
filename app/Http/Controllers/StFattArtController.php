@@ -20,7 +20,7 @@ class StFattArtController extends Controller
 
     public function idxAg(Request $req, $codAg = null)
     {
-        $agentList = Agent::select('codice', 'descrizion')->whereNull('u_dataini')->orderBy('codice')->get();
+        $agentList = Agent::select('codice', 'descrizion')->whereNull('u_dataini')->orWhere('u_dataini', '>=', Carbon::now())->orderBy('codice')->get();
         $codAg = ($req->input('codag')) ? $req->input('codag') : ($codAg ? array_wrap($codAg) : $codAg);
         $fltAgents = (!empty($codAg)) ? $codAg : array_wrap((!empty(RedisUser::get('codag')) ? RedisUser::get('codag') : $agentList->first()->codice));
         $thisYear = (Carbon::now()->year);

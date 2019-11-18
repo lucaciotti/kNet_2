@@ -25,7 +25,7 @@ class StFattController extends Controller
     }
 
     public function idxAg (Request $req, $codAg=null) {
-      $agents = Agent::select('codice', 'descrizion')->whereNull('u_dataini')->orderBy('codice')->get();
+      $agents = Agent::select('codice', 'descrizion')->whereNull('u_dataini')->orWhere('u_dataini','>=', Carbon::now())->orderBy('codice')->get();
       $codAg = ($req->input('codag')) ? $req->input('codag') : $codAg;
       $agente = (string)(!empty($codAg)) ? $codAg : (!empty(RedisUser::get('codag')) ? RedisUser::get('codag') : $agents->first()->codice);
       $descrAg = (!empty($agents->whereStrict('codice', $agente)->first()) ? $agents->whereStrict('codice', $agente)->first()->descrizion : "");
@@ -359,7 +359,7 @@ class StFattController extends Controller
     }
 
     public function idxZone (Request $req, $codAg=null) {
-      $agents = Agent::select('codice', 'descrizion')->whereNull('u_dataini')->orderBy('codice')->get();
+      $agents = Agent::select('codice', 'descrizion')->whereNull('u_dataini')->orWhere('u_dataini', '>=', Carbon::now())->orderBy('codice')->get();
       $codAg = ($req->input('codag')) ? $req->input('codag') : $codAg;
       $agente = (string)(!empty($codAg)) ? $codAg : (!empty(RedisUser::get('codag')) ? RedisUser::get('codag') : $agents->first()->codice);
       $descrAg = (!empty($agents->whereStrict('agente', $agente)->first()->agent) ? $agents->whereStrict('agente', $agente)->first()->agent->descrizion : "");
