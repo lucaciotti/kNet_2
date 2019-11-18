@@ -164,7 +164,7 @@
                       <td>{{ currency($mov->totfattura) }}</td>
                       <td>{{ currency($mov->compensi) }}</td>
                       @if($sum_compensi > $ritana->impmax)
-                        <td class="orange">{{ currency($sum_compensi) }}</td>
+                        <td class="danger">{{ currency($sum_compensi) }}</td>
                       @else
                         <td>{{ currency($sum_compensi) }}</td>
                       @endif
