@@ -356,11 +356,11 @@ Route::group(['as' => 'schedaCli::'], function () {
   ]);
 });
 Route::group(['as' => 'schedaFat::'], function () {
-  Route::get('/schedaFatPDF/{codAg}', [
+  Route::get('/schedaFatPDF/{codAg?}', [
     'as' => 'PDF',
     'uses' => 'SchedaFattController@downloadPDF'
   ]);
-  Route::get('/schedaFatZonePDF/{codAg}', [
+  Route::get('/schedaFatZonePDF/{codAg?}', [
     'as' => 'ZonePDF',
     'uses' => 'SchedaFattController@downloadZonePDF'
   ]);

@@ -1,8 +1,20 @@
 @extends('_exports.pdf.masterPage.masterPdf')
 
-@section('pdf-main')    
-    @if($fatTot_KR)
-        <p class="page">
+@section('pdf-main')
+    <p class="page">
+        <div class="row">
+            <div class="contentTitle">Agents List</div>
+            <dl class="dl-horizontal">
+                @foreach ($agentList as $agent)
+                <dt>{{$agent->codice}} - {{$agent->descrizion}}</dt>
+                @endforeach
+            </dl>
+        </div>
+        <div>
+            <hr class="dividerPage">
+        </div>
+
+        @if($fatTot_KR)
             <div class="row">
                 <div class="contentTitle">Zone Turnover Situation - KRONA</div>
 
@@ -14,10 +26,10 @@
                     ])
             </div>            
         </p>
-    @endif
+        <p class="page">
+        @endif
     
     @if($fatTot_KO)
-        <p class="page">
             <div class="row">
                 <div class="contentTitle">Zone Turnover Situation - KOBLENZ</div>
 
@@ -29,10 +41,10 @@
                     ])
             </div>            
         </p>
+        <p class="page">
     @endif
     
     @if($fatTot_KU)
-        <p class="page">
             <div class="row">
                 <div class="contentTitle">Zone Turnover Situation - KUBICA</div>
 
@@ -44,10 +56,10 @@
                     ])
             </div>            
         </p>
+        <p class="page">
     @endif
     
     @if($fatTot_PL)
-        <p class="page">
             <div class="row">
                 <div class="contentTitle">Zone Turnover Situation - PLANET</div>
 

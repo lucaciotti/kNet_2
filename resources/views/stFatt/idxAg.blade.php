@@ -9,7 +9,7 @@
 @endsection
 
 @section('contentheader_breadcrumb')
-    {!! Breadcrumbs::render('agentStFat', $agente) !!}
+    {{-- {!! Breadcrumbs::render('agentStFat', $agente) !!} --}}
 @endsection
 
 @push('css-head')
@@ -20,6 +20,7 @@
 @section('main-content')
 <div class="row">
   <div class="col-lg-3">
+    <form action="{{ route('stFatt::idxAg') }}" method="post">
     <div class="box box-default">
       <div class="box-header with-border">
         <h3 class="box-title" data-widget="collapse">{{ trans('stFatt.agent') }}</h3>
@@ -29,41 +30,59 @@
         </div>
       </div>
       <div class="box-body">
-        <form action="{{ route('stFatt::idxAg') }}" method="post">
+        {{-- <form action="{{ route('stFatt::idxAg') }}" method="post"> --}}
           <input type="hidden" name="_token" value="{{ csrf_token() }}">
           <div class="form-group">
             <label>{{ trans('stFatt.selAgent') }}</label>
-            <select name="codag" class="form-control select2" style="width: 100%;">
-              <option value=""> </option>
-              @foreach ($agents as $agent)
-                <option value="{{ $agent->codice }}"
-                  @if($agent->codice==$agente && strlen($agent->codice)==strlen($agente))
-                      selected
-                  @endif
-                  >{{ $agent->descrizion or "Error $agent->codice - No Description" }}</option>
+            <select name="codag[]" class="form-control select2 selectAll" multiple="multiple" data-placeholder="Select Agents"
+              style="width: 100%;">
+              @foreach ($agentList as $agent)
+              <option value="{{ $agent->codice }}"
+                {{-- @if($agent->codice==$agente && strlen($agent->codice)==strlen($agente)) --}} @if(isset($fltAgents) &&
+                in_array($agent->codice, $fltAgents, true))
+                selected
+                @endif
+                >{{ $agent->descrizion or "Error $agent->codice - No Description" }}</option>
               @endforeach
             </select>
           </div>
-          <div>
+          <div class="form-group">
+            <label>&nbsp;
+              <input type="checkbox" id="checkbox" class="selectAll"> &nbsp; Select All
+            </label>
+          </div>
+          {{-- <div>
             <button type="submit" class="btn btn-primary">{{ trans('_message.submit') }}</button>
           </div>
-        </form>
+        </form> --}}
+      </div>
+    </div>
+
+    <div class="box box-default collapsed-box">
+      <div class="box-header with-border">
+      <h3 class="box-title" data-widget="collapse">{{ trans('doc.filter') }}</h3>
+      <div class="box-tools pull-right">
+        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+        {{-- <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button> --}}
+      </div>
+      </div>
+      <div class="box-body">
+        @include('stFatt.partials.formIndex', ['gruppi' => $gruppi, 'agent' => $fltAgents, 'route' => 'stFatt::idxAg'])
       </div>
     </div>
 
     <div class="box box-default">
-      <div class="box-header with-border">
-        <h3 class="box-title" data-widget="collapse">{{ trans('doc.filter') }}</h3>
-        <div class="box-tools pull-right">
-          <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
-          {{-- <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button> --}}
+      <div class="box-body">
+        <div>
+          <button type="submit" class="btn btn-primary btn-block">{{ trans('_message.submit') }}</button>
         </div>
       </div>
-      <div class="box-body">
-        @include('stFatt.partials.formIndex', ['gruppi' => $gruppi, 'agent' => $agent, 'route' => 'stFatt::idxAg'])
-      </div>
     </div>
+    </form>
+  {{-- </div>
 
+
+  <div class="col-lg-3"> --}}
     <div class="box box-default collapsed-box">
       <div class="box-header with-border">
         <h3 class="box-title" data-widget="collapse"><i class='fa fa-cloud-download'> </i> Download</h3>
@@ -72,8 +91,8 @@
         </div>
       </div>
       <div class="box-body">
-        <a type="button" class="btn btn-default btn-block" target="_blank" href="{{ route('schedaFat::PDF', $agente) }}">Scheda Fatturato PDF</a>
-        <a type="button" class="btn btn-default btn-block" target="_blank" href="{{ route('schedaFat::ZonePDF', $agente) }}">Scheda Fatturato Zone PDF</a>
+        <a type="button" class="btn btn-default btn-block" target="_blank" href="{{ route('schedaFat::PDF', ['codAg'=> null, 'fltAgents[]' => $fltAgents]) }}">Scheda Fatturato PDF</a>
+        <a type="button" class="btn btn-default btn-block" target="_blank" href="{{ route('schedaFat::ZonePDF', ['codAg'=> null, 'fltAgents[]' => $fltAgents]) }}">Scheda Fatturato Zone PDF</a>
       </div>
     </div>
 

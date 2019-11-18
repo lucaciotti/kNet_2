@@ -1,4 +1,4 @@
-<form action="{{ route($route) }}" method="post">
+{{-- <form action="{{ route($route) }}" method="post"> --}}
   <input type="hidden" name="_token" value="{{ csrf_token() }}">
   <div class="form-group">
     <label>{{ trans('prod.groupProd') }}</label>
@@ -36,8 +36,8 @@
       @endif
     </div>
   </div>
-  <div>
-    <input type="hidden" name="codag" value="{{ $agente }}">
+  {{-- <div>
+    <input type="hidden" name="codag[]" value="{{ $fltAgents }}">
     <button type="submit" class="btn btn-primary">{{ trans('_message.submit') }}</button>
-  </div>
-</form>
+  </div> --}}
+{{-- </form> --}}

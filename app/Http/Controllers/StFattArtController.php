@@ -63,7 +63,7 @@ class StFattArtController extends Controller
                 break;
         }
         $fatList->whereIn('anagrafe.agente', $fltAgents);
-        $fatList->whereRaw('(LEFT(u_statfatt_art.codicearti,4) != ? AND LEFT(u_statfatt_art.codicearti,4) != ? AND LEFT(u_statfatt_art.codicearti,4) != ?)', ['CAMP', 'NOTA', 'BONU']);
+        $fatList->whereRaw('(LEFT(u_statfatt_art.codicearti,4) != ? AND LEFT(u_statfatt_art.codicearti,4) != ?)', ['CAMP', 'NOTA']);
         $fatList->whereRaw('(LEFT(u_statfatt_art.gruppo,1) != ? AND LEFT(u_statfatt_art.gruppo,1) != ? AND LEFT(u_statfatt_art.gruppo,3) != ?)', ['C', '2', 'DIC']);
         if ($settoreSelected != null) $fatList->whereIn('anagrafe.settore', $settoreSelected);
         if ($zoneSelected != null) $fatList->whereIn('anagrafe.zona', $zoneSelected);

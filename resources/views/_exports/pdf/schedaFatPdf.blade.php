@@ -2,7 +2,18 @@
 
 @section('pdf-main')
     <p class="page">
-
+        <div class="row">
+          <div class="contentTitle">Agents List</div>
+          <dl class="dl-horizontal">
+            @foreach ($agentList as $agent)
+              <dt>{{$agent->codice}} - {{$agent->descrizion}}</dt>
+            @endforeach
+          </dl>
+        </div>
+        <div>
+          <hr class="dividerPage">
+        </div>
+        
         <div class="row">
             <div class="contentTitle">Turnover Situation</div>
 

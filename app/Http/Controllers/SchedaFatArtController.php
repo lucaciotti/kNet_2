@@ -81,7 +81,7 @@ class SchedaFatArtController extends Controller
         }
         $fatList->whereRaw('u_statfatt_art.codicecf = ?', [$codCli]);
         $fatList->whereRaw('u_statfatt_art.esercizio >= ?', [$thisYear - $yearBack]);
-        $fatList->whereRaw('(LEFT(u_statfatt_art.codicearti,4) != ? AND LEFT(u_statfatt_art.codicearti,4) != ? AND LEFT(u_statfatt_art.codicearti,4) != ?)', ['CAMP', 'NOTA', 'BONU']);
+        $fatList->whereRaw('(LEFT(u_statfatt_art.codicearti,4) != ? AND LEFT(u_statfatt_art.codicearti,4) != ?)', ['CAMP', 'NOTA']);
         $fatList->whereRaw('(LEFT(u_statfatt_art.gruppo,1) != ? AND LEFT(u_statfatt_art.gruppo,1) != ? AND LEFT(u_statfatt_art.gruppo,3) != ?)', ['C', '2', 'DIC']);
         if ($req->input('grpPrdSelected')) {
             $fatList->whereIn('u_statfatt_art.gruppo', $req->input('grpPrdSelected'));
