@@ -113,6 +113,31 @@
                 <hr class="dividerPage">
             </div>
         @endif
+
+        @if(!empty($fatList->where('tipoProd', 'BONUS')->first()))
+            <div class="row">
+                <div class="contentTitle">
+                    BONUS
+                    <span class="contentSubTitle">
+                        -
+                        @if($pariperiodo && !$onlyMese) [Pari Periodo] {
+                        {{ trans('stFatt.'.strtolower(Carbon\Carbon::createFromDate(null, $mese, 25)->format('F'))) }} } @endif
+                        @if($onlyMese) [Solo Mese] {
+                        {{ trans('stFatt.'.strtolower(Carbon\Carbon::createFromDate(null, $mese, 25)->format('F'))) }} } @endif
+                    </span>
+                </div>
+            
+                @include('_exports.pdf.schedaFatArt.tblDetail', [
+                'fatList' => $fatList->where('tipoProd', 'BONUS'),
+                'thisYear' => $thisYear,
+                'yearBack' => $yearback,
+                ])
+            </div>
+            
+            <div>
+                <hr class="dividerPage">
+            </div>
+        @endif
         
         <div class="row">
             <div class="contentTitle">TOTAL</div>

@@ -137,6 +137,7 @@
                     <th>Numero</th>
                     <th>Tot. Fattura</th>
                     <th>Imponibile</th>
+                    <th>Progr. Imp.</th>
                     <th>% Ditta</th>
                     <th>Importo Ditta</th>
                     <th>% Agente</th>
@@ -162,6 +163,11 @@
                       <td>{{ $mov->ftnumdoc }} </td>
                       <td>{{ currency($mov->totfattura) }}</td>
                       <td>{{ currency($mov->compensi) }}</td>
+                      @if($sum_compensi > $ritana->impmax)
+                        <td class="orange">{{ currency($sum_compensi) }}</td>
+                      @else
+                        <td>{{ currency($sum_compensi) }}</td>
+                      @endif
                       <td>{{ $mov->perendit }}</td>
                       <td>{{ currency($mov->impendit) }}</td>
                       <td>{{ $mov->perenage }}</td>
@@ -176,6 +182,7 @@
                     <td>&nbsp;</td>
                     <td>&nbsp;</td>
                     <td>{{ currency($sum_totfattura) }}</td>
+                    <td>{{ currency($sum_compensi) }}</td>
                     <td>{{ currency($sum_compensi) }}</td>
                     <td>&nbsp;</td>
                     <td>{{ currency($sum_impendit) }}</td>
