@@ -71,6 +71,10 @@ Route::group(['as' => 'user::'], function () {
     'as' => 'changeLang',
     'uses' => 'UserController@changeSelfLang'
   ]);
+  Route::get('/enasarcoXLS/{id?}', [
+    'as' => 'enasarcoXLS',
+    'uses' => 'UserController@enasarcoXLS'
+  ]);
 });
 
 Route::group(['as' => 'client::'], function () {

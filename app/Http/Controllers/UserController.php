@@ -4,10 +4,11 @@ namespace knet\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
-use Excel;
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Input;
 use Session;
 use knet\Jobs\ImportUsersExcel;
+use knet\Exports\EnasarcoExport;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 
@@ -149,4 +150,15 @@ class UserController extends Controller
     public function allUsers(Request $req){
       return User::with('roles')->get();
     }
+
+    public function enasarcoXLS(Request $req, $id){
+      $user = User::with('client', 'agent')->findOrFail($id);
+      $ritana = RitAna::first();
+      $year = (string) Carbon::now()->year;
+      $ritmov = RitMov::where('ftdatadoc', '>', new Carbon('first day of January ' . $year))->get();
+      return Excel::download(new EnasarcoExport($ritana, $year, $ritmov, $user), 'Sit_Enasarco-'.$user->codag.'.xlsx');
+    }
+
+    public function enasarcoPDF(Request $req)
+    { }
 }

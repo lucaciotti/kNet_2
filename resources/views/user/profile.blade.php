@@ -126,6 +126,9 @@
 
                 <dt>% a Carico Agente</dt>
                 <dd>{{ $ritana->perenage }} %</dd>
+
+                <dt>Enasarco XLS</dt>
+                <dd><a type="button" class="btn btn-default btn-xs" target="_blank" href="{{ route('user::enasarcoXLS', [$user->id]) }}">Download</a></dd>
               </dl>
 
               <hr>
