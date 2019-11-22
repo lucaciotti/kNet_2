@@ -23,7 +23,7 @@ class ScadCliController extends Controller
     $thisYear = Carbon::now()->year;
     $startDate = Carbon::createFromDate($thisYear-1, 1, 1);
     $endDate = Carbon::now();
-    $agentList = Agent::select('codice', 'descrizion')->whereNull('u_dataini')->orderBy('codice')->get();
+    $agentList = Agent::select('codice', 'descrizion')->whereNull('u_dataini')->orWhere('u_dataini', '>=', Carbon::now())->orderBy('codice')->get();
 
     $scads = ScadCli::select('id', 'id_doc', 'numfatt', 
               'datafatt', 'datascad', 'codcf', 'tipomod', 
