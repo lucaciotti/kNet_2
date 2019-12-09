@@ -86,7 +86,7 @@
   @php
     $entrato = false;    
   @endphp
-  @foreach ($rows->where('rifstato', 'X') as $row)
+  @foreach ($rows->where('rifstato', 'X')->where('quantitare', '>', 0) as $row)
     @if(!$entrato)
       @php
       $entrato = true;
