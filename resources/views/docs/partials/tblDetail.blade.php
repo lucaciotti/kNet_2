@@ -111,7 +111,7 @@
           <th>{{ trans('doc.dateDispach_condensed') }}</th>
           <th>&nbsp</th>
           @endif
-          <th>{{ trans('doc.totPrice') }}</th>
+          <th>{{ trans('doc.codeLot') }}</th>
         </thead>
         <tbody>
     @endif
@@ -146,7 +146,7 @@
           <i class="fa fa-info-circle"> </i>
         </a>
       </td>
-      <td>{{ $row->prezzotot }}</td>
+      <td>{{ $row->lotto }}</td>
     </tr>
   @endforeach
   @if($entrato)
