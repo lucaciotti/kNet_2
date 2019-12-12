@@ -197,7 +197,7 @@ class ListiniController extends Controller
             foreach($req->estendi as $listId){
                 $listOk = wListiniOk::create([
                     'listini_id'  =>$listId,
-                    'esercizio' => '2019',
+                    'esercizio' => '2020',
                 ]);
                 $listOk->save();
             }

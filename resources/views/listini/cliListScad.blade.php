@@ -7,14 +7,20 @@ Listini in Scadenza {{ $endOfYear->format('d-m-Y')}}
 @endsection
 
 @section('contentheader_description') 
-Non ancora Estesi al 2019
+Non ancora Estesi al 2020
 @endsection
 
 @section('main-content')
 <div class="row">
     <div class="container">
         <div class="col-lg-12">
-            @include('listini.partials.tblCliScad', [ 'customers' => $customers, ])
+
+            <div class="box box-default">
+                <div class="box-body">
+                    @include('listini.partials.tblCliScad', [ 'customers' => $customers, ])
+                </div>
+            </div>
+
         </div>
     </div>
 </div>
