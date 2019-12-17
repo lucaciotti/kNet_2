@@ -32,10 +32,10 @@ class ListiniController extends Controller
         // $startOfYear = $date->copy()->startOfYear();
         $endOfYear   = $date->copy()->endOfYear();
 
-        if(RedisUser::get('ditta_DB')=='kNet_es' || (RedisUser::get('ditta_DB')=='kNet_it' && RedisUser::get('codag')=='002'))
-        {
-           $endOfYear = new Carbon('last day of December 2018');
-        }
+        // if(RedisUser::get('ditta_DB')=='kNet_es' || (RedisUser::get('ditta_DB')=='kNet_it' && RedisUser::get('codag')=='002'))
+        // {
+        //    $endOfYear = new Carbon('last day of December 2018');
+        // }
 
         // ->where('datafine', '<=', $endOfYear)
         $customers = Listini::select('codclifor')->where('codclifor', '!=', '')
@@ -115,10 +115,10 @@ class ListiniController extends Controller
         $date = Carbon::now();
         // $startOfYear = $date->copy()->startOfYear();
         $endOfYear   = $date->copy()->endOfYear();
-        if(RedisUser::get('ditta_DB')=='kNet_es' || (RedisUser::get('ditta_DB')=='kNet_it' && RedisUser::get('codag')=='002'))
+        /* if(RedisUser::get('ditta_DB')=='kNet_es' || (RedisUser::get('ditta_DB')=='kNet_it' && RedisUser::get('codag')=='002'))
         {
            $endOfYear = new Carbon('last day of December 2018');
-        }
+        } */
         // ->where('datafine', '<=', $endOfYear)
         $cliGrps = Listini::select('gruppocli')->where('gruppocli', '!=', '')
                         ->with(['grpCli'=>function($q){
