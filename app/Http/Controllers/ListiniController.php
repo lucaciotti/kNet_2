@@ -212,7 +212,7 @@ class ListiniController extends Controller
 
     public function cliListScad(Request $req){
         $thisYear = Carbon::now()->year;
-        $date = Carbon::now();
+        $date = Carbon::now()->subMonths(6);
         // $startOfYear = $date->copy()->startOfYear();
         $endOfYear   = $date->copy()->endOfYear();
         /* if(RedisUser::get('ditta_DB')=='kNet_es' || (RedisUser::get('ditta_DB')=='kNet_it' && RedisUser::get('codag')=='002'))
