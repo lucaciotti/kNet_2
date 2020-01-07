@@ -221,23 +221,29 @@ class ListiniController extends Controller
         } */
 
         $customers = Listini::select(
+                            'id',
                             'codclifor',
-                            DB::raw('SUM(IF(codicearti!="", 1, 0)) as nCodArt'),
-                            DB::raw('SUM(IF(gruppomag!="", 1, 0)) as nGrpMag')
+                            DB::raw('IF(gruppomag!="", 1, 0) as nGrpMag'),
+                            DB::raw('IF(codicearti!="", 1, 0) as nCodArt')
+                            // DB::raw('SUM(IF(w_listok.id IS NOT NULL, 1, 0)) as nListOk')
                             )
                         ->where('codclifor', '!=', '')->where('datafine', '<=', $endOfYear)
-                        ->whereDoesntHave('wListOk')
-                        ->with(['client'=>function($q){
-                            $q->select('codice', 'descrizion');
-                        },
-                            // 'wListOk'
+                        // ->whereDoesntHave('wListOk')
+                        // ->whereHas('wListOk')
+                        ->with([
+                            'client'=>function($q){
+                                $q->select('codice', 'descrizion');
+                            },
+                            'wListOk'=>function($q){
+                                $q->select('listini_id', DB::raw('IF(id IS NOT NULL, 1, 0) as nList'));
+                            }
                         ])
-                        ->groupBy('codclifor')
+                        // ->groupBy('codclifor')
                         ->orderBy('codclifor')->get();
-        // dd($customers->first());
+        // dd($customers->groupBy('codclifor')->first()->where('nGrpMag', '!=', '1')->where('wListOk.nList', '==', '1')->count());
 
         return view('listini.cliListScad', [
-            'customers' => $customers,
+            'customers' => $customers->groupBy('codclifor'),
             'thisYear' => $thisYear,
             'endOfYear' => $endOfYear,
         ]);

@@ -4,8 +4,9 @@ namespace knet\ArcaModels;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
-use RedisUser;
+// use RedisUser;
 use Carbon\Carbon;
+use knet\Helpers\RedisUser as RedisUser;
 
 class Listini extends Model
 {
@@ -28,12 +29,7 @@ class Listini extends Model
         parent::boot();
 
         static::addGlobalScope('attivo', function(Builder $builder) {
-            if(RedisUser::get('ditta_DB')=='kNet_es' || (RedisUser::get('ditta_DB')=='kNet_it' && RedisUser::get('codag')=='002'))
-            {
-                $builder->where('datafine', '>=', new Carbon('first day of last year'))->orWhere('datafine', '=', '')->orWhereNull('datafine');
-            } else {
-                $builder->where('datafine', '>=', Carbon::now())->orWhere('datafine', '=', '')->orWhereNull('datafine');
-            }
+                $builder->where('datafine', '>=', Carbon::now()->subMonths(6)->endOfYear()->subDay())->orWhere('datafine', '=', '')->orWhereNull('datafine');
         });
 
         switch (RedisUser::get('role')) {
