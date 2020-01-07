@@ -229,7 +229,9 @@ class ListiniController extends Controller
                         ->whereDoesntHave('wListOk')
                         ->with(['client'=>function($q){
                             $q->select('codice', 'descrizion');
-                        }])
+                        },
+                            // 'wListOk'
+                        ])
                         ->groupBy('codclifor')
                         ->orderBy('codclifor')->get();
         // dd($customers->first());
