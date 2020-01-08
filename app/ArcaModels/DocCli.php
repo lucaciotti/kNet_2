@@ -4,9 +4,10 @@ namespace knet\ArcaModels;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
-use RedisUser;
+// use RedisUser;
 
 use Auth;
+use knet\Helpers\RedisUser as RedisUser;
 
 class DocCli extends Model
 {
@@ -36,9 +37,15 @@ class DocCli extends Model
 
       switch (RedisUser::get('role')) {
         case 'agent':
-          static::addGlobalScope('agent', function(Builder $builder) {
+          if ((RedisUser::get('ditta_DB') == 'kNet_it' && RedisUser::get('codag') == '005'))
+            static::addGlobalScope('agent', function (Builder $builder) {
+              $builder->where('agente', RedisUser::get('codag'))->orWhere('agente', '002');
+            });
+          else {
+            static::addGlobalScope('agent', function (Builder $builder) {
               $builder->where('agente', RedisUser::get('codag'));
-          });
+            });
+          }
           break;
         case 'superAgent':
           static::addGlobalScope('superAgent', function(Builder $builder) {
