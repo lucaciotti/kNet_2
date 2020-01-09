@@ -4,7 +4,8 @@ namespace knet\ArcaModels;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
-use RedisUser;
+// use RedisUser;
+use knet\Helpers\RedisUser as RedisUser;
 
 class Agent extends Model
 {
@@ -31,9 +32,9 @@ class Agent extends Model
 
         switch (RedisUser::get('role')) {
           case 'agent':
-            static::addGlobalScope('agent', function(Builder $builder) {
-                $builder->where('codice', RedisUser::get('codag'));
-            });
+              static::addGlobalScope('agent', function(Builder $builder) {
+                  $builder->where('codice', RedisUser::get('codag'));
+              });
             break;
           case 'superAgent':
             static::addGlobalScope('superAgent', function(Builder $builder) {

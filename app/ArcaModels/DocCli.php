@@ -37,15 +37,9 @@ class DocCli extends Model
 
       switch (RedisUser::get('role')) {
         case 'agent':
-          if ((RedisUser::get('ditta_DB') == 'kNet_it' && RedisUser::get('codag') == '005'))
-            static::addGlobalScope('agent', function (Builder $builder) {
-              $builder->where('agente', RedisUser::get('codag'))->orWhere('agente', '002');
-            });
-          else {
             static::addGlobalScope('agent', function (Builder $builder) {
               $builder->where('agente', RedisUser::get('codag'));
             });
-          }
           break;
         case 'superAgent':
           static::addGlobalScope('superAgent', function(Builder $builder) {
