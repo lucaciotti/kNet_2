@@ -5,6 +5,8 @@ use knet\Http\Resources\CustomerCollection;
 use knet\ArcaModels\Client;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Route;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -16,7 +18,6 @@ use Carbon\Carbon;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });

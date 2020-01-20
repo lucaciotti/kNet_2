@@ -172,7 +172,7 @@ Agents Portfolio
                 <th colspan="1">|</th>
                 <td> {{ currency($FTPrevAtomika) }} </td>
               </tr>
-              @if(RedisUser::get('ditta_DB')=='knet_es')
+              @if(RedisUser::get('ditta_DB')=='kNet_es')
               <tr>
                 <th>Planet</th>
                 <td> {{ currency($OCPlanet) }} </td>
