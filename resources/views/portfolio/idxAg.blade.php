@@ -161,7 +161,7 @@ Agents Portfolio
                 <td> {{ currency($FTKubica) }} </td>
                 <td> {{ currency($OCKubica+$BOKubica+$FTKubica) }} </td>
                 <th colspan="1">|</th>
-                <td> {{ currency($FTPrevKoblenz) }} </td>
+                <td> {{ currency($FTPrevKubica) }} </td>
               </tr>
               <tr>
                 <th>Atomika</th>
