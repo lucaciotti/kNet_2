@@ -53,7 +53,7 @@
                     <ul class="treeview-menu">
                         <li class="{{ Ekko::isActiveRoute('listini::idxCli') }}"><a href="{{ route('listini::idxCli') }}">Cliente</a></li>
                         <li class="{{ Ekko::isActiveRoute('listini::grpCli') }}"><a href="{{ route('listini::grpCli') }}">Gruppo Clienti</a></li>
-                        <li><hr></li>
+                        <li>&nbsp;</li>
                         @if (!in_array(RedisUser::get('role'), ['agent', 'client']))
                             <li class="{{ Ekko::isActiveRoute('listini::grpCli') }}"><a href="{{ route('listini::cliListScad') }}">Listino in Scadenza</a></li>
                         @endif

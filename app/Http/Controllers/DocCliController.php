@@ -33,7 +33,12 @@ class DocCliController extends Controller
     }
     $docs = DocCli::select('id', 'tipodoc', 'numerodoc', 'datadoc', 'codicecf', 'numerodocf', 'numrighepr', 'totdoc');
     if ($tipomodulo){
-      $docs = $docs->where('tipomodulo', $tipomodulo);
+      $docs = $docs->where(function ($query) use ($tipomodulo) {
+        $query->where('tipomodulo', $tipomodulo);
+        if ($tipomodulo == 'B') {
+          $query = $query->orWhereIn('tipodoc', ['BV', 'BI', 'BS']);
+        }
+      });     
     }
     $docs = $docs->where('datadoc', '>=', Carbon::now()->subMonth());
     $docs = $docs->with(['client' => function($query) {
@@ -78,7 +83,16 @@ class DocCliController extends Controller
 
   public function fltIndex (Request $req){
     $docs = DocCli::select('id', 'tipodoc', 'numerodoc', 'datadoc', 'codicecf', 'numerodocf', 'numrighepr', 'totdoc');
-    $docs = $docs->where('tipomodulo', 'LIKE', ($req->input('optTipoDoc')=='' ? '%' : $req->input('optTipoDoc')));
+    $docs = $docs->where(function ($query) use ($req){
+        $query->where('tipomodulo', 'LIKE', ($req->input('optTipoDoc') == '' ? '%' : $req->input('optTipoDoc')));
+        if ($req->input('optTipoDoc') == 'B') {
+          $query = $query->orWhereIn('tipodoc', ['BV', 'BI', 'BS']);
+        }
+    });
+    // $docs = $docs->where('tipomodulo', 'LIKE', ($req->input('optTipoDoc')=='' ? '%' : $req->input('optTipoDoc')));
+    // if ($req->input('optTipoDoc') == 'B') {
+    //   $docs = $docs->orWhereIn('tipodoc', ['BV', 'BK', 'BI', 'BS']);
+    // }
     if($req->input('startDate')){
       $startDate = Carbon::createFromFormat('d/m/Y',$req->input('startDate'));
       $endDate = Carbon::createFromFormat('d/m/Y',$req->input('endDate'));
@@ -161,11 +175,15 @@ class DocCliController extends Controller
 
   public function docCli (Request $req, $codice, $tipomodulo=null){
     $docs = DocCli::select('id', 'tipodoc', 'numerodoc', 'datadoc', 'codicecf', 'numerodocf', 'numrighepr', 'totdoc');
-    if ($tipomodulo){
-      $docs = $docs->where('tipomodulo', $tipomodulo)->where('codicecf', $codice);
-    } else {
-      $docs = $docs->where('codicecf', $codice);
+    if ($tipomodulo) {
+      $docs = $docs->where(function ($query) use ($tipomodulo) {
+        $query->where('tipomodulo', $tipomodulo);
+        if ($tipomodulo == 'B') {
+          $query = $query->orWhereIn('tipodoc', ['BV', 'BI', 'BS']);
+        }
+      });
     }
+    $docs = $docs->where('codicecf', $codice);
     $docs = $docs->with(['client' => function($query) {
       $query
       ->withoutGlobalScope('agent')

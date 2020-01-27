@@ -116,6 +116,17 @@
               <dt>{{ trans('doc.noteReceived') }}</dt>
               <dd>{{$ddtOk->note or ''}}</dd>
             @endif
+
+            @if (!empty($head->patrasf))
+              <hr>
+              <dt>ID Tracking: </dt>
+              <dd>{{$head->patrasf}}</dd>
+              <br>
+              
+              <a type="button" class="btn btn-default btn-block" target="_blank" href={!! str_replace('<IDCOLLO>', $head->patrasf, $head->vettore->note) !!}>
+                <strong> Link Tracking </strong>
+              </a>                
+            @endif
           @else
             <div class="callout callout-danger">
               <p>{{ trans('doc.noDeliveryMessage') }}</p>
