@@ -47,5 +47,13 @@ Route::get('formCustomRequest', function (Request $request) {
         'data' => $merged,
         'meta' => []
     );
-    
 } );
+
+
+Route::get('suppliers', function (Request $request) {
+    $suppliers = DB::connection('kNet_it')->table('anagrafe')->selectRaw('codice, decrizion, partiva, indirizzo, cap, localita, prov, codnazione')->get();
+    return array(
+        'data' => $suppliers,
+        'meta' => []
+    );
+});

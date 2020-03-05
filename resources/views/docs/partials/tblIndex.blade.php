@@ -1,8 +1,8 @@
-@if($tipomodulo)
+{{-- @if($tipomodulo)
   <table class="table table-hover table-condensed dtTbls_full_Tot" id="listDocs">
-@else
+@else --}}
   <table class="table table-hover table-condensed dtTbls_full" id="listDocs">
-@endif
+{{-- @endif --}}
   <thead>
     <th>{{ trans('doc.typeDoc') }}</th>
     <th>{{ trans('doc.#Doc') }}</th>
