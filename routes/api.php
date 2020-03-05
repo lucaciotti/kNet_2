@@ -51,7 +51,7 @@ Route::get('formCustomRequest', function (Request $request) {
 
 
 Route::get('suppliers', function (Request $request) {
-    $suppliers = DB::connection('kNet_it')->table('anagrafe')->selectRaw('codice, descrizion, partiva, indirizzo, cap, localita, prov, codnazione')->get();
+    $suppliers = DB::connection('kNet_it')->table('anagrafe')->selectRaw('codice, descrizion, partiva, indirizzo, cap, localita, prov, codnazione')->where('codice', 'like', 'F%')->get();
     return array(
         'data' => $suppliers,
         'meta' => []
