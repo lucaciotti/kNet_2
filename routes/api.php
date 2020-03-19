@@ -70,7 +70,7 @@ Route::put('auditRispTeste/{id}', 'Audit\AuditRispTesteController@update');
 Route::delete('auditRispTeste/{id}', 'Audit\AuditRispTesteController@delete');
 
 Route::get('auditRispRighe/{id_testa}', 'Audit\AuditRispRigheController@all');
-Route::get('auditRispRighe/{id}', 'Audit\AuditRispRigheController@show');
+Route::get('auditRispRiga/{id}', 'Audit\AuditRispRigheController@show');
 Route::post('auditRispRighe', 'Audit\AuditRispRigheController@store');
 Route::put('auditRispRighe/{id}', 'Audit\AuditRispRigheController@update');
 Route::delete('auditRispRighe/{id}', 'Audit\AuditRispRigheController@delete');
