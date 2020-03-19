@@ -21,21 +21,28 @@ class AuditRispRigheController extends Controller
 
     public function store(Request $request)
     {
-        return AuditRisposteRighe::create($request->all());
+        // dd($request->all());
+        $audit = AuditRisposteRighe::find($request->id);
+        if ($audit) {
+            $audit->update($request->all());
+        } else {
+            $audit = AuditRisposteRighe::create($request->all());
+        }
+        return $audit;
     }
 
     public function update(Request $request, $id)
     {
-        $article = AuditRisposteRighe::findOrFail($id);
-        $article->update($request->all());
+        $audit = AuditRisposteRighe::findOrFail($id);
+        $audit->update($request->all());
 
-        return $article;
+        return $audit;
     }
 
     public function delete(Request $request, $id)
     {
-        $article = AuditRisposteRighe::findOrFail($id);
-        $article->delete();
+        $audit = AuditRisposteRighe::findOrFail($id);
+        $audit->delete();
 
         return 204;
     }

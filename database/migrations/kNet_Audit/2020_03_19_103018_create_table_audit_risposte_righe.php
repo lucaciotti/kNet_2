@@ -17,6 +17,7 @@ class CreateTableAuditRisposteRighe extends Migration
             $table->integer('id')->unsigned();
             $table->integer('id_testa')->unsigned();
             $table->integer('id_domanda')->unsigned();
+            $table->boolean('risposta')->default(false);
             $table->text('osservazioni');
             $table->text('note');
         });

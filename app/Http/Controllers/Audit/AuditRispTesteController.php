@@ -21,21 +21,27 @@ class AuditRispTesteController extends Controller
     public function store(Request $request)
     {
         // dd($request->all());
-        return AuditRisposteTeste::create($request->all());
+        $audit = AuditRisposteTeste::find($request->id);
+        if($audit){
+            $audit->update($request->all());
+        } else {
+            $audit = AuditRisposteTeste::create($request->all());
+        }
+        return $audit;
     }
 
     public function update(Request $request, $id)
     {
-        $article = AuditRisposteTeste::findOrFail($id);
-        $article->update($request->all());
+        $audit = AuditRisposteTeste::findOrFail($id);
+        $audit->update($request->all());
 
-        return $article;
+        return $audit;
     }
 
     public function delete(Request $request, $id)
     {
-        $article = AuditRisposteTeste::findOrFail($id);
-        $article->delete();
+        $audit = AuditRisposteTeste::findOrFail($id);
+        $audit->delete();
 
         return 204;
     }
