@@ -63,8 +63,14 @@ Route::get('suppliers', function (Request $request) {
 });
 
 // KAUDIT
-Route::get('auditRispTeste', 'AuditRispTesteController@all');
-Route::get('auditRispTeste/{id}', 'AuditRispTesteController@show');
-Route::post('auditRispTeste', 'AuditRispTesteController@store');
-Route::put('auditRispTeste/{id}', 'AuditRispTesteController@update');
-Route::delete('auditRispTeste/{id}', 'AuditRispTesteController@delete');
+Route::get('auditRispTeste', 'Audit\AuditRispTesteController@all');
+Route::get('auditRispTeste/{id}', 'Audit\AuditRispTesteController@show');
+Route::post('auditRispTeste', 'Audit\AuditRispTesteController@store');
+Route::put('auditRispTeste/{id}', 'Audit\AuditRispTesteController@update');
+Route::delete('auditRispTeste/{id}', 'Audit\AuditRispTesteController@delete');
+
+Route::get('auditRispRighe/{id_testa}', 'Audit\AuditRispRigheController@all');
+Route::get('auditRispRighe/{id}', 'Audit\AuditRispRigheController@show');
+Route::post('auditRispRighe', 'Audit\AuditRispRigheController@store');
+Route::put('auditRispRighe/{id}', 'Audit\AuditRispRigheController@update');
+Route::delete('auditRispRighe/{id}', 'Audit\AuditRispRigheController@delete');

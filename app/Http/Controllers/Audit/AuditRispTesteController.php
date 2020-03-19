@@ -20,6 +20,7 @@ class AuditRispTesteController extends Controller
 
     public function store(Request $request)
     {
+        // dd($request->all());
         return AuditRisposteTeste::create($request->all());
     }
 

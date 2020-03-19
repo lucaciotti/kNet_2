@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class AuditRisposteRighe extends Model
 {
-    protected $table = 'auditRisposteRighe';
+    protected $table = 'AuditRisposteRighe';
     public $timestamps = false;
     protected $primaryKey = 'id';
     public $incrementing = false;
