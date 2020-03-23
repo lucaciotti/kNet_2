@@ -11,7 +11,7 @@ class AuditDomande extends Model
     protected $primaryKey = 'id';
     public $incrementing = false;
     protected $connection = 'kNet_Audit';
-    protected $fillable = ['codice_modello', 'super_capitolo', 'capitolo', 'sub_capitolo', 'domanda', 'descrizione'];
+    protected $fillable = ['id', 'codice_modello', 'super_capitolo', 'capitolo', 'sub_capitolo', 'domanda', 'descrizione'];
 
     public function __construct($attributes = array())
     {

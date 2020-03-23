@@ -74,3 +74,15 @@ Route::get('auditRispRiga/{id}', 'Audit\AuditRispRigheController@show');
 Route::post('auditRispRighe', 'Audit\AuditRispRigheController@store');
 Route::put('auditRispRighe/{id}', 'Audit\AuditRispRigheController@update');
 Route::delete('auditRispRighe/{id}', 'Audit\AuditRispRigheController@delete');
+
+Route::get('auditModel', 'Audit\AuditModelsController@all');
+Route::get('auditModel/{codice}', 'Audit\AuditModelsController@show');
+Route::post('auditModel', 'Audit\AuditModelsController@store');
+Route::put('auditModel/{codice}', 'Audit\AuditModelsController@update');
+Route::delete('auditModel/{codice}', 'Audit\AuditModelsController@delete');
+
+Route::get('auditDomande/{codice}', 'Audit\AuditDomandeController@all');
+Route::get('auditDomanda/{id}', 'Audit\AuditDomandeController@show');
+Route::post('auditDomande', 'Audit\AuditDomandeController@store');
+Route::put('auditDomande/{id}', 'Audit\AuditDomandeController@update');
+Route::delete('auditDomande/{id}', 'Audit\AuditDomandeController@delete');
