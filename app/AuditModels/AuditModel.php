@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class AuditModel extends Model
 {
     protected $table = 'AuditModels';
-    public $timestamps = false;
+    public $timestamps = true;
     protected $primaryKey = 'codice';
     public $incrementing = false;
     protected $connection = 'kNet_Audit';

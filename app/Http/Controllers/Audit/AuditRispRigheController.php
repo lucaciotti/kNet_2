@@ -24,9 +24,21 @@ class AuditRispRigheController extends Controller
         // dd($request->all());
         $audit = AuditRisposteRighe::find($request->id);
         if ($audit) {
-            $audit->update($request->all());
+            $audit->update([
+                'risposta' => ($request->risposta) ? $request->risposta : 0,
+                'osservazioni' => ($request->osservazioni) ? $request->osservazioni : '',
+                'note' => ($request->note) ? $request->note : ''
+            ]);
         } else {
-            $audit = AuditRisposteRighe::create($request->all());
+            // $audit = AuditRisposteRighe::create($request->all());
+            $audit = AuditRisposteRighe::create([
+                'id' => $request->id,
+                'id_testa' => $request->id_testa,
+                'id_domanda' => $request->id_domanda,
+                'risposta' => ($request->risposta) ? $request->risposta : 0,
+                'osservazioni' => ($request->osservazioni) ? $request->osservazioni : '',
+                'note' => ($request->note) ? $request->note : ''
+            ]);
         }
         return $audit;
     }
@@ -34,7 +46,12 @@ class AuditRispRigheController extends Controller
     public function update(Request $request, $id)
     {
         $audit = AuditRisposteRighe::findOrFail($id);
-        $audit->update($request->all());
+        // $audit->update($request->all());
+        $audit->update([
+            'risposta' => ($request->risposta) ? $request->risposta : 0,
+            'osservazioni' => ($request->osservazioni) ? $request->osservazioni : '',
+            'note' => ($request->note) ? $request->note : ''
+        ]);
 
         return $audit;
     }

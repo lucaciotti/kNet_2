@@ -23,9 +23,23 @@ class AuditRispTesteController extends Controller
         // dd($request->all());
         $audit = AuditRisposteTeste::find($request->id);
         if($audit){
-            $audit->update($request->all());
+            $audit->update([
+                'codice_modello' => $request->codice_modello,
+                'azienda' => $request->azienda,
+                'data' => $request->data,
+                'auditor' => ($request->auditor) ? $request->auditor : '',
+                'persone_intervistate' => ($request->persone_intervistate) ? $request->persone_intervistate : ''
+            ]);
         } else {
-            $audit = AuditRisposteTeste::create($request->all());
+            // $audit = AuditRisposteTeste::create($request->all());
+            $audit = AuditRisposteTeste::create([
+                'id' => $request->id,
+                'codice_modello' => $request->codice_modello,
+                'azienda' => $request->azienda,
+                'data' => $request->data,
+                'auditor' => ($request->auditor) ? $request->auditor : '',
+                'persone_intervistate' => ($request->persone_intervistate) ? $request->persone_intervistate : ''
+            ]);
         }
         return $audit;
     }
@@ -33,7 +47,14 @@ class AuditRispTesteController extends Controller
     public function update(Request $request, $id)
     {
         $audit = AuditRisposteTeste::findOrFail($id);
-        $audit->update($request->all());
+        // $audit->update($request->all());
+        $audit->update([
+            'codice_modello' => $request->codice_modello,
+            'azienda' => $request->azienda,
+            'data' => $request->data,
+            'auditor' => ($request->auditor) ? $request->auditor : '',
+            'persone_intervistate' => ($request->persone_intervistate) ? $request->persone_intervistate : ''
+        ]);
 
         return $audit;
     }

@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class AuditRisposteRighe extends Model
 {
     protected $table = 'AuditRisposteRighe';
-    public $timestamps = false;
+    public $timestamps = true;
     protected $primaryKey = 'id';
     public $incrementing = false;
     protected $connection = 'kNet_Audit';

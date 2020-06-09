@@ -23,9 +23,25 @@ class AuditDomandeController extends Controller
         // dd($request->all());
         $audit = AuditDomande::find($request->id);
         if ($audit) {
-            $audit->update($request->all());
+            $audit->update([
+                'codice_modello' => ($request->codice_modello) ? $request->codice_modello : '',
+                'super_capitolo' => ($request->super_capitolo) ? $request->super_capitolo : '',
+                'capitolo' => ($request->capitolo) ? $request->capitolo : '',
+                'sub_capitolo' => ($request->sub_capitolo) ? $request->sub_capitolo : '',
+                'domanda' => ($request->domanda) ? $request->domanda : '',
+                'descrizione' => ($request->descrizione) ? $request->descrizione : ''
+            ]);
         } else {
-            $audit = AuditDomande::create($request->all());
+            // $audit = AuditDomande::create($request->all());
+            $audit = AuditDomande::create([
+                'id' => $request->id, 
+                'codice_modello' => ($request->codice_modello) ? $request->codice_modello : '',
+                'super_capitolo' => ($request->super_capitolo) ? $request->super_capitolo : '',
+                'capitolo' => ($request->capitolo) ? $request->capitolo : '',
+                'sub_capitolo' => ($request->sub_capitolo) ? $request->sub_capitolo : '',
+                'domanda' => ($request->domanda) ? $request->domanda : '', 
+                'descrizione' => ($request->descrizione) ? $request->descrizione : ''
+            ]);
         }
         return $audit;
     }
@@ -33,7 +49,15 @@ class AuditDomandeController extends Controller
     public function update(Request $request, $id)
     {
         $audit = AuditDomande::findOrFail($id);
-        $audit->update($request->all());
+        // $audit->update($request->all());
+        $audit->update([
+            'codice_modello' => ($request->codice_modello) ? $request->codice_modello : '',
+            'super_capitolo' => ($request->super_capitolo) ? $request->super_capitolo : '',
+            'capitolo' => ($request->capitolo) ? $request->capitolo : '',
+            'sub_capitolo' => ($request->sub_capitolo) ? $request->sub_capitolo : '',
+            'domanda' => ($request->domanda) ? $request->domanda : '',
+            'descrizione' => ($request->descrizione) ? $request->descrizione : ''
+        ]);
 
         return $audit;
     }
