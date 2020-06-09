@@ -11,7 +11,7 @@ class AuditRisposteRighe extends Model
     protected $primaryKey = 'id';
     public $incrementing = false;
     protected $connection = 'kNet_Audit';
-    protected $fillable = ['id', 'id_testa', 'id_domanda', 'risposta', 'osservazioni', 'note'];
+    protected $fillable = ['id', 'id_testa', 'id_domanda', 'risposta', 'osservazioni','note', 'tablet_id'];
 
     public function __construct($attributes = array())
     {

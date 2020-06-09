@@ -27,7 +27,8 @@ class AuditRispRigheController extends Controller
             $audit->update([
                 'risposta' => ($request->risposta) ? $request->risposta : 0,
                 'osservazioni' => ($request->osservazioni) ? $request->osservazioni : '',
-                'note' => ($request->note) ? $request->note : ''
+                'note' => ($request->note) ? $request->note : '',
+                'tablet_id' => ($request->tablet_id) ? $request->tablet_id : '0'
             ]);
         } else {
             // $audit = AuditRisposteRighe::create($request->all());
@@ -37,7 +38,8 @@ class AuditRispRigheController extends Controller
                 'id_domanda' => $request->id_domanda,
                 'risposta' => ($request->risposta) ? $request->risposta : 0,
                 'osservazioni' => ($request->osservazioni) ? $request->osservazioni : '',
-                'note' => ($request->note) ? $request->note : ''
+                'note' => ($request->note) ? $request->note : '',
+                'tablet_id' => ($request->tablet_id) ? $request->tablet_id : '0'
             ]);
         }
         return $audit;
@@ -50,7 +52,8 @@ class AuditRispRigheController extends Controller
         $audit->update([
             'risposta' => ($request->risposta) ? $request->risposta : 0,
             'osservazioni' => ($request->osservazioni) ? $request->osservazioni : '',
-            'note' => ($request->note) ? $request->note : ''
+            'note' => ($request->note) ? $request->note : '',
+            'tablet_id' => ($request->tablet_id) ? $request->tablet_id : '0'
         ]);
 
         return $audit;
