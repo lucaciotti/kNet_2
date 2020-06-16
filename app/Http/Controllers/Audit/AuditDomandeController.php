@@ -29,7 +29,7 @@ class AuditDomandeController extends Controller
                 'capitolo' => ($request->capitolo) ? $request->capitolo : '',
                 'sub_capitolo' => ($request->sub_capitolo) ? $request->sub_capitolo : '',
                 'domanda' => ($request->domanda) ? $request->domanda : '',
-                'descrizione' => ($request->descrizione) ? html_entity_decode($request->descrizione, ENT_QUOTES) : ''
+                'descrizione' => ($request->descrizione) ? $request->descrizione : '' //html_entity_decode($request->descrizione, ENT_QUOTES) : ''
             ]);
         } else {
             // $audit = AuditDomande::create($request->all());
@@ -40,7 +40,7 @@ class AuditDomandeController extends Controller
                 'capitolo' => ($request->capitolo) ? $request->capitolo : '',
                 'sub_capitolo' => ($request->sub_capitolo) ? $request->sub_capitolo : '',
                 'domanda' => ($request->domanda) ? $request->domanda : '', 
-                'descrizione' => ($request->descrizione) ? html_entity_decode($request->descrizione, ENT_QUOTES) : ''
+                'descrizione' => ($request->descrizione) ? $request->descrizione : '' //html_entity_decode($request->descrizione, ENT_QUOTES) : ''
             ]);
         }
         return $audit;
@@ -56,7 +56,7 @@ class AuditDomandeController extends Controller
             'capitolo' => ($request->capitolo) ? $request->capitolo : '',
             'sub_capitolo' => ($request->sub_capitolo) ? $request->sub_capitolo : '',
             'domanda' => ($request->domanda) ? $request->domanda : '',
-            'descrizione' => ($request->descrizione) ? html_entity_decode($request->descrizione, ENT_QUOTES) : ''
+            'descrizione' => ($request->descrizione) ? $request->descrizione : '' //html_entity_decode($request->descrizione, ENT_QUOTES) : ''
         ]);
 
         return $audit;

@@ -26,8 +26,8 @@ class AuditRispRigheController extends Controller
         if ($audit) {
             $audit->update([
                 'risposta' => ($request->risposta) ? $request->risposta : 0,
-                'osservazioni' => ($request->osservazioni) ? $request->osservazioni : '',
-                'note' => ($request->note) ? $request->note : '',
+                'osservazioni' => ($request->osservazioni) ? htmlentities($request->osservazioni) : '',
+                'note' => ($request->note) ? htmlentities($request->note) : '',
                 'tablet_id' => ($request->tablet_id) ? $request->tablet_id : '0'
             ]);
         } else {
@@ -37,8 +37,8 @@ class AuditRispRigheController extends Controller
                 'id_testa' => $request->id_testa,
                 'id_domanda' => $request->id_domanda,
                 'risposta' => ($request->risposta) ? $request->risposta : 0,
-                'osservazioni' => ($request->osservazioni) ? $request->osservazioni : '',
-                'note' => ($request->note) ? $request->note : '',
+                'osservazioni' => ($request->osservazioni) ? htmlentities($request->osservazioni) : '',
+                'note' => ($request->note) ? htmlentities($request->note) : '',
                 'tablet_id' => ($request->tablet_id) ? $request->tablet_id : '0'
             ]);
         }
@@ -51,8 +51,8 @@ class AuditRispRigheController extends Controller
         // $audit->update($request->all());
         $audit->update([
             'risposta' => ($request->risposta) ? $request->risposta : 0,
-            'osservazioni' => ($request->osservazioni) ? $request->osservazioni : '',
-            'note' => ($request->note) ? $request->note : '',
+            'osservazioni' => ($request->osservazioni) ? htmlentities($request->osservazioni) : '',
+            'note' => ($request->note) ? htmlentities($request->note) : '',
             'tablet_id' => ($request->tablet_id) ? $request->tablet_id : '0'
         ]);
 
