@@ -29,7 +29,7 @@ class AuditRispTesteController extends Controller
                 'data' => $request->data,
                 'auditor' => ($request->auditor) ? $request->auditor : '',
                 'persone_intervistate' => ($request->persone_intervistate) ? $request->persone_intervistate : '',
-                'tablet_id' => ($request->id) ? $request->id : '0',
+                'tablet_id' => ($request->id) ? $request->id : 0,
                 'conclusioni' => ($request->conclusioni) ? $request->conclusioni : ''
             ]);
         } else {
@@ -40,7 +40,7 @@ class AuditRispTesteController extends Controller
                 'data' => $request->data,
                 'auditor' => ($request->auditor) ? $request->auditor : '',
                 'persone_intervistate' => ($request->persone_intervistate) ? $request->persone_intervistate : '',
-                'tablet_id' => ($request->id) ? $request->id : '0',
+                'tablet_id' => ($request->id) ? $request->id : 0,
                 'conclusioni' => ($request->conclusioni) ? $request->conclusioni : ''
             ]);
         }
@@ -57,8 +57,8 @@ class AuditRispTesteController extends Controller
             'data' => $request->data,
             'auditor' => ($request->auditor) ? $request->auditor : '',
             'persone_intervistate' => ($request->persone_intervistate) ? $request->persone_intervistate : '',
-            'tablet_id' => ($request->id) ? $request->id : '0',
-                'conclusioni' => ($request->conclusioni) ? $request->conclusioni : ''
+            'tablet_id' => ($request->id) ? $request->id : 0,
+            'conclusioni' => ($request->conclusioni) ? $request->conclusioni : ''
         ]);
 
         return $audit->id;
