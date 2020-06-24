@@ -29,9 +29,9 @@ class AuditRispRigheController extends Controller
                 'risposta' => ($request->risposta) ? $request->risposta : 0,
                 'osservazioni' => ($request->osservazioni) ? htmlentities($request->osservazioni) : '',
                 'note' => ($request->note) ? htmlentities($request->note) : '',
-                'voto' => ($request->voto) ? $request->voto : '',
-                'tablet_id' => ($request->id) ? $request->id : '0',
-                'tablet_idtesta' => ($request->id_testa) ? $request->id_testa : '0'
+                'voto' => ($request->voto) ? $request->voto : 0,
+                'tablet_id' => ($request->id) ? $request->id : 0,
+                'tablet_idtesta' => ($request->id_testa) ? $request->id_testa : 0
             ]);
         } else {
             // $audit = AuditRisposteRighe::create($request->all());
@@ -42,9 +42,9 @@ class AuditRispRigheController extends Controller
                 'risposta' => ($request->risposta) ? $request->risposta : 0,
                 'osservazioni' => ($request->osservazioni) ? htmlentities($request->osservazioni) : '',
                 'note' => ($request->note) ? htmlentities($request->note) : '',
-                'voto' => ($request->voto) ? $request->voto : '',
-                'tablet_id' => ($request->tablet_id) ? $request->tablet_id : '0',
-                'tablet_idtesta' => ($request->id_testa) ? $request->id_testa : '0'
+                'voto' => ($request->voto) ? $request->voto : 0,
+                'tablet_id' => ($request->tablet_id) ? $request->tablet_id : 0,
+                'tablet_idtesta' => ($request->id_testa) ? $request->id_testa : 0
             ]);
         }
         return $audit->id;
@@ -58,9 +58,9 @@ class AuditRispRigheController extends Controller
             'risposta' => ($request->risposta) ? $request->risposta : 0,
             'osservazioni' => ($request->osservazioni) ? htmlentities($request->osservazioni) : '',
             'note' => ($request->note) ? htmlentities($request->note) : '',
-            'voto' => ($request->voto) ? $request->voto : '',
-            'tablet_id' => ($request->tablet_id) ? $request->tablet_id : '0',
-            'tablet_idtesta' => ($request->id_testa) ? $request->id_testa : '0'
+            'voto' => ($request->voto) ? $request->voto : 0,
+            'tablet_id' => ($request->tablet_id) ? $request->tablet_id : 0,
+            'tablet_idtesta' => ($request->id_testa) ? $request->id_testa : 0
         ]);
 
         return $audit->id;
