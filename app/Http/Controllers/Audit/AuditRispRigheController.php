@@ -30,7 +30,8 @@ class AuditRispRigheController extends Controller
                 'osservazioni' => ($request->osservazioni) ? htmlentities($request->osservazioni) : '',
                 'note' => ($request->note) ? htmlentities($request->note) : '',
                 'voto' => ($request->voto) ? $request->voto : '',
-                'tablet_id' => ($request->id) ? $request->id : '0'
+                'tablet_id' => ($request->id) ? $request->id : '0',
+                'tablet_idtesta' => ($request->id_testa) ? $request->id_testa : '0'
             ]);
         } else {
             // $audit = AuditRisposteRighe::create($request->all());
@@ -43,7 +44,8 @@ class AuditRispRigheController extends Controller
                 'osservazioni' => ($request->osservazioni) ? htmlentities($request->osservazioni) : '',
                 'note' => ($request->note) ? htmlentities($request->note) : '',
                 'voto' => ($request->voto) ? $request->voto : '',
-                'tablet_id' => ($request->tablet_id) ? $request->tablet_id : '0'
+                'tablet_id' => ($request->tablet_id) ? $request->tablet_id : '0',
+                'tablet_idtesta' => ($request->id_testa) ? $request->id_testa : '0'
             ]);
         }
         return $audit;
@@ -58,7 +60,8 @@ class AuditRispRigheController extends Controller
             'osservazioni' => ($request->osservazioni) ? htmlentities($request->osservazioni) : '',
             'note' => ($request->note) ? htmlentities($request->note) : '',
             'voto' => ($request->voto) ? $request->voto : '',
-            'tablet_id' => ($request->tablet_id) ? $request->tablet_id : '0'
+            'tablet_id' => ($request->tablet_id) ? $request->tablet_id : '0',
+            'tablet_idtesta' => ($request->id_testa) ? $request->id_testa : '0'
         ]);
 
         return $audit;
