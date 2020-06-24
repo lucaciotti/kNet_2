@@ -37,7 +37,6 @@ class AuditRispRigheController extends Controller
             // $audit = AuditRisposteRighe::create($request->all());
             $auditTes = AuditRisposteTeste::where('tablet_id', $request->id_testa)->get();
             $audit = AuditRisposteRighe::create([
-                'id' => $request->id,
                 'id_testa' => $auditTes->id,
                 'id_domanda' => $request->id_domanda,
                 'risposta' => ($request->risposta) ? $request->risposta : 0,
@@ -48,7 +47,7 @@ class AuditRispRigheController extends Controller
                 'tablet_idtesta' => ($request->id_testa) ? $request->id_testa : '0'
             ]);
         }
-        return $audit;
+        return $audit->id;
     }
 
     public function update(Request $request, $id)
@@ -64,7 +63,7 @@ class AuditRispRigheController extends Controller
             'tablet_idtesta' => ($request->id_testa) ? $request->id_testa : '0'
         ]);
 
-        return $audit;
+        return $audit->id;
     }
 
     public function delete(Request $request, $id)
