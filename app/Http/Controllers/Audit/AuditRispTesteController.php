@@ -21,7 +21,7 @@ class AuditRispTesteController extends Controller
     public function store(Request $request)
     {
         // dd($request->all());
-        $audit = AuditRisposteTeste::find($request->id);
+        $audit = AuditRisposteTeste::find($request->idweb);
         if($audit){
             $audit->update([
                 'codice_modello' => $request->codice_modello,
@@ -29,21 +29,22 @@ class AuditRispTesteController extends Controller
                 'data' => $request->data,
                 'auditor' => ($request->auditor) ? $request->auditor : '',
                 'persone_intervistate' => ($request->persone_intervistate) ? $request->persone_intervistate : '',
-                'tablet_id' => ($request->tablet_id) ? $request->tablet_id : '0'
+                'tablet_id' => ($request->id) ? $request->id : '0',
+                'conclusioni' => ($request->conclusioni) ? $request->conclusioni : ''
             ]);
         } else {
             // $audit = AuditRisposteTeste::create($request->all());
             $audit = AuditRisposteTeste::create([
-                'id' => $request->id,
                 'codice_modello' => $request->codice_modello,
                 'azienda' => $request->azienda,
                 'data' => $request->data,
                 'auditor' => ($request->auditor) ? $request->auditor : '',
                 'persone_intervistate' => ($request->persone_intervistate) ? $request->persone_intervistate : '',
-                'tablet_id' => ($request->tablet_id) ? $request->tablet_id : '0'
+                'tablet_id' => ($request->id) ? $request->id : '0',
+                'conclusioni' => ($request->conclusioni) ? $request->conclusioni : ''
             ]);
         }
-        return $audit;
+        return $audit->id;
     }
 
     public function update(Request $request, $id)
@@ -56,10 +57,11 @@ class AuditRispTesteController extends Controller
             'data' => $request->data,
             'auditor' => ($request->auditor) ? $request->auditor : '',
             'persone_intervistate' => ($request->persone_intervistate) ? $request->persone_intervistate : '',
-            'tablet_id' => ($request->tablet_id) ? $request->tablet_id : '0'
+            'tablet_id' => ($request->id) ? $request->id : '0',
+                'conclusioni' => ($request->conclusioni) ? $request->conclusioni : ''
         ]);
 
-        return $audit;
+        return $audit->id;
     }
 
     public function delete(Request $request, $id)

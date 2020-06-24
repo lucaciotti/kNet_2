@@ -9,9 +9,9 @@ class AuditRisposteRighe extends Model
     protected $table = 'AuditRisposteRighe';
     public $timestamps = true;
     protected $primaryKey = 'id';
-    public $incrementing = false;
+    public $incrementing = true;
     protected $connection = 'kNet_Audit';
-    protected $fillable = ['id', 'id_testa', 'id_domanda', 'risposta', 'osservazioni','note', 'tablet_id'];
+    protected $fillable = ['id_testa', 'id_domanda', 'risposta', 'osservazioni','note', 'tablet_id', 'voto'];
 
     public function __construct($attributes = array())
     {

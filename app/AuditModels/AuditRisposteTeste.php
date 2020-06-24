@@ -9,9 +9,9 @@ class AuditRisposteTeste extends Model
     protected $table = 'AuditRisposteTeste';
     public $timestamps = true;
     protected $primaryKey = 'id';
-    public $incrementing = false;
+    public $incrementing = true;
     protected $connection = 'kNet_Audit';
-    protected $fillable = ['id', 'codice_modello', 'azienda', 'data', 'auditor', 'persone_intervistate', 'tablet_id'];
+    protected $fillable = ['id', 'codice_modello', 'azienda', 'data', 'auditor', 'persone_intervistate', 'tablet_id', 'conclusioni'];
     // protected $dates = ['data'];
 
     public function __construct($attributes = array())

@@ -4,6 +4,7 @@ namespace knet\Http\Controllers\Audit;
 
 use Illuminate\Http\Request;
 use knet\AuditModels\AuditRisposteRighe;
+use knet\AuditModels\AuditRisposteTeste;
 use knet\Http\Controllers\Controller;
 
 class AuditRispRigheController extends Controller
@@ -22,23 +23,26 @@ class AuditRispRigheController extends Controller
     public function store(Request $request)
     {
         // dd($request->all());
-        $audit = AuditRisposteRighe::find($request->id);
+        $audit = AuditRisposteRighe::find($request->idweb);
         if ($audit) {
             $audit->update([
                 'risposta' => ($request->risposta) ? $request->risposta : 0,
                 'osservazioni' => ($request->osservazioni) ? htmlentities($request->osservazioni) : '',
                 'note' => ($request->note) ? htmlentities($request->note) : '',
-                'tablet_id' => ($request->tablet_id) ? $request->tablet_id : '0'
+                'voto' => ($request->voto) ? $request->voto : '',
+                'tablet_id' => ($request->id) ? $request->id : '0'
             ]);
         } else {
             // $audit = AuditRisposteRighe::create($request->all());
+            $auditTes = AuditRisposteTeste::where('tablet_id', $request->id_testa)->get();
             $audit = AuditRisposteRighe::create([
                 'id' => $request->id,
-                'id_testa' => $request->id_testa,
+                'id_testa' => $auditTes->id,
                 'id_domanda' => $request->id_domanda,
                 'risposta' => ($request->risposta) ? $request->risposta : 0,
                 'osservazioni' => ($request->osservazioni) ? htmlentities($request->osservazioni) : '',
                 'note' => ($request->note) ? htmlentities($request->note) : '',
+                'voto' => ($request->voto) ? $request->voto : '',
                 'tablet_id' => ($request->tablet_id) ? $request->tablet_id : '0'
             ]);
         }
@@ -53,6 +57,7 @@ class AuditRispRigheController extends Controller
             'risposta' => ($request->risposta) ? $request->risposta : 0,
             'osservazioni' => ($request->osservazioni) ? htmlentities($request->osservazioni) : '',
             'note' => ($request->note) ? htmlentities($request->note) : '',
+            'voto' => ($request->voto) ? $request->voto : '',
             'tablet_id' => ($request->tablet_id) ? $request->tablet_id : '0'
         ]);
 
