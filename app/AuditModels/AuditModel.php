@@ -11,7 +11,7 @@ class AuditModel extends Model
     protected $primaryKey = 'codice';
     public $incrementing = false;
     protected $connection = 'kNet_Audit';
-    protected $fillable = ['codice', 'descrizione', 'versione'];
+    protected $fillable = ['codice', 'descrizione', 'versione', 'tipologia'];
 
     public function __construct($attributes = array())
     {

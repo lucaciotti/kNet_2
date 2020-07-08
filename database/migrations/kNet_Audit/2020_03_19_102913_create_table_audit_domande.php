@@ -20,7 +20,7 @@ class CreateTableAuditDomande extends Migration
             $table->string('capitolo');
             $table->string('sub_capitolo');
             $table->string('domanda');
-            $table->string('descrizione');
+            $table->text('descrizione');
             $table->timestamps();
         });
     }
