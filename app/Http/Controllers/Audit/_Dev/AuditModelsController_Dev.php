@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use knet\AuditModels\_Dev\AuditModel_Dev;
 use knet\Http\Controllers\Controller;
 
-class AuditModelsController extends Controller
+class AuditModelsController_Dev extends Controller
 {
     public function all()
     {

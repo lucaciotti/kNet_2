@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use knet\AuditModels\_Dev\AuditRisposteTeste_Dev;
 use knet\Http\Controllers\Controller;
 
-class AuditRispTesteController extends Controller
+class AuditRispTesteController_Dev extends Controller
 {
     public function all()
     {
