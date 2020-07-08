@@ -117,5 +117,18 @@ Route::group(['middleware' => 'throttle:60,1'], function () {
         Route::delete('auditDomande/{id}', 'Audit\_Dev\AuditDomandeController_Dev@delete');
         Route::delete('auditDomandeForModello/{codice_modello}', 'Audit\_Dev\AuditDomandeController_Dev@deleteForModello');
         Route::delete('auditDomandeAll', 'Audit\_Dev\AuditDomandeController_Dev@deleteAll');
+
+        Route::get('suppliers', function (Request $request) {
+            $suppliers = DB::connection('kNet_it')
+            ->table('anagrafe')
+            ->selectRaw('codice, descrizion, partiva, indirizzo, cap, localita, prov, codnazione')
+            ->where('codice', 'like', 'F%')
+            ->whereIn('statocf', ['N', 'U'])
+            ->get();
+            return array(
+                    'data' => $suppliers,
+                    'meta' => []
+                );
+        });
     });
 });
