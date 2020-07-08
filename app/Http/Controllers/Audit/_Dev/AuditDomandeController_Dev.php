@@ -1,27 +1,27 @@
 <?php
 
-namespace knet\Http\Controllers\Audit;
+namespace knet\Http\Controllers\Audit\_Dev;
 
 use Illuminate\Http\Request;
-use knet\AuditModels\AuditDomande;
+use knet\AuditModels\_Dev\AuditDomande_Dev;
 use knet\Http\Controllers\Controller;
 
-class AuditDomandeController extends Controller
+class AuditDomandeController_Dev extends Controller
 {
     public function all($codice)
     {
-        return AuditDomande::where('codice_modello', $codice)->get();
+        return AuditDomande_Dev::where('codice_modello', $codice)->get();
     }
 
     public function show($id)
     {
-        return AuditDomande::find($id);
+        return AuditDomande_Dev::find($id);
     }
 
     public function store(Request $request)
     {
         // dd($request->all());
-        $audit = AuditDomande::find($request->id);
+        $audit = AuditDomande_Dev::find($request->id);
         if ($audit) {
             $audit->update([
                 'codice_modello' => ($request->codice_modello) ? $request->codice_modello : '',
@@ -33,7 +33,7 @@ class AuditDomandeController extends Controller
             ]);
         } else {
             // $audit = AuditDomande::create($request->all()); html_entity_decode($request->descrizione, ENT_QUOTES) : ''
-            $audit = AuditDomande::create([
+            $audit = AuditDomande_Dev::create([
                 'id' => $request->id, 
                 'codice_modello' => ($request->codice_modello) ? $request->codice_modello : '',
                 'super_capitolo' => ($request->super_capitolo) ? $request->super_capitolo : '',
@@ -48,7 +48,7 @@ class AuditDomandeController extends Controller
 
     public function update(Request $request, $id)
     {
-        $audit = AuditDomande::findOrFail($id);
+        $audit = AuditDomande_Dev::findOrFail($id);
         // $audit->update($request->all());
         $audit->update([
             'codice_modello' => ($request->codice_modello) ? $request->codice_modello : '',
@@ -64,7 +64,7 @@ class AuditDomandeController extends Controller
 
     public function delete(Request $request, $id)
     {
-        $audit = AuditDomande::findOrFail($id);
+        $audit = AuditDomande_Dev::findOrFail($id);
         $audit->delete();
 
         return 204;
@@ -72,13 +72,13 @@ class AuditDomandeController extends Controller
 
     public function deleteForModello(Request $request, $codice_modello)
     {
-        $auditList = AuditDomande::where('codice_modello', $codice_modello)->delete();
+        $auditList = AuditDomande_Dev::where('codice_modello', $codice_modello)->delete();
         return 204;
     }
 
     public function deleteAll(Request $request)
     {
-        $auditList = AuditDomande::truncate();
+        $auditList = AuditDomande_Dev::truncate();
         return 204;
     }
 }

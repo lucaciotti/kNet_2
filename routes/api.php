@@ -86,3 +86,35 @@ Route::get('auditDomanda/{id}', 'Audit\AuditDomandeController@show');
 Route::post('auditDomande', 'Audit\AuditDomandeController@store');
 Route::put('auditDomande/{id}', 'Audit\AuditDomandeController@update');
 Route::delete('auditDomande/{id}', 'Audit\AuditDomandeController@delete');
+Route::delete('auditDomandeForModello/{codice_modello}', 'Audit\AuditDomandeController@deleteForModello');
+Route::delete('auditDomandeAll', 'Audit\AuditDomandeController@deleteAll');
+
+
+// KAUDIT_DEV
+Route::group(['prefix' => 'dev'], function () {
+    Route::get('auditRispTeste', 'Audit\_Dev\AuditRispTesteController_Dev@all');
+    Route::get('auditRispTeste/{id}', 'Audit\_Dev\AuditRispTesteController_Dev@show');
+    Route::post('auditRispTeste', 'Audit\_Dev\AuditRispTesteController_Dev@store');
+    Route::put('auditRispTeste/{id}', 'Audit\_Dev\AuditRispTesteController_Dev@update');
+    Route::delete('auditRispTeste/{id}', 'Audit\_Dev\AuditRispTesteController_Dev@delete');
+
+    Route::get('auditRispRighe/{id_testa}', 'Audit\_Dev\AuditRispRigheController_Dev@all');
+    Route::get('auditRispRiga/{id}', 'Audit\_Dev\AuditRispRigheController_Dev@show');
+    Route::post('auditRispRighe', 'Audit\_Dev\AuditRispRigheController_Dev@store');
+    Route::put('auditRispRighe/{id}', 'Audit\_Dev\AuditRispRigheController_Dev@update');
+    Route::delete('auditRispRighe/{id}', 'Audit\_Dev\AuditRispRigheController_Dev@delete');
+
+    Route::get('auditModel', 'Audit\_Dev\AuditModelsController_Dev@all');
+    Route::get('auditModel/{codice}', 'Audit\_Dev\AuditModelsController_Dev@show');
+    Route::post('auditModel', 'Audit\_Dev\AuditModelsController_Dev@store');
+    Route::put('auditModel/{codice}', 'Audit\_Dev\AuditModelsController_Dev@update');
+    Route::delete('auditModel/{codice}', 'Audit\_Dev\AuditModelsController_Dev@delete');
+
+    Route::get('auditDomande/{codice}', 'Audit\_Dev\AuditDomandeController_Dev@all');
+    Route::get('auditDomanda/{id}', 'Audit\_Dev\AuditDomandeController_Dev@show');
+    Route::post('auditDomande', 'Audit\_Dev\AuditDomandeController_Dev@store');
+    Route::put('auditDomande/{id}', 'Audit\_Dev\AuditDomandeController_Dev@update');
+    Route::delete('auditDomande/{id}', 'Audit\_Dev\AuditDomandeController_Dev@delete');
+    Route::delete('auditDomandeForModello/{codice_modello}', 'Audit\_Dev\AuditDomandeController_Dev@deleteForModello');
+    Route::delete('auditDomandeAll', 'Audit\_Dev\AuditDomandeController_Dev@deleteAll');
+});
