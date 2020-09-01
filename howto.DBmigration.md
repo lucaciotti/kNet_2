@@ -6,6 +6,14 @@ How to use this:
 
 3 - Create a new migration: php artisan make:migration ****** --create=** --path=./database/migrations/kNet_DB
 
-##TABLE
+##ROLLBACK
 
 4 - To rollback php artisan migrate:rollback --step=1
+
+##MODEL
+
+5 - php artisan make:model ArcaModels/***** -table=****
+
+##CONTROLLER
+
+6 - php artisan make:controller ....

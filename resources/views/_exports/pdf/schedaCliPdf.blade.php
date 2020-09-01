@@ -87,10 +87,8 @@
         </div>
 
         <div><hr class="dividerPage"></div>
-
         <div class="row">
             <div class="contentTitle">Turnover Situation</div>
-
             @include('_exports.pdf.schedaCli.tblFatt', [
             'fatturato' => $fatThisYear,
             'target' => $fatPrevYear,
@@ -98,24 +96,54 @@
             'thisYear' => $thisYear,
             'prevYear' => $prevYear
             ])
-
             {{-- <div class="chart" id="revenue-chart"></div> --}}
-
         </div>
 
-        <div><hr class="dividerPage"></div>
-
+        <div><hr class="dividerPage"></div>        
         <div class="row">
             <div class="contentTitle">{{ trans('client.paymentCli') }}</div>
-
             @include('_exports.pdf.schedaCli.tblPayment', $scads)
-
         </div>
+   
+        @if ($client->anagNote)
+            <div><hr class="dividerPage"></div>
+            <div class="row">
+                <div class="contentTitle">Commercial Notes</div>
+            
+                <div class="box-body">
+                    <strong>{!! $client->anagNote->note !!}</strong>
+                </div>
+            </div>
+        @endif
 
-        <div><hr class="dividerPage"></div>
+        @if (!$visits->isEmpty())
+            <div><hr class="dividerPage"></div>
+            <div class="row">
+                <div class="contentTitle">Agent Reports</div>
+        
+                @include('_exports.pdf.schedaCli.timeline', [
+                'visits' => $visits,
+                'codcli' => $client->codice,
+                'dateNow' => $dateNow,
+                ])
+            </div>
+        @endif    
     </p>
     
     <p class="page">
+        @if (!$listProds->isEmpty())
+            <div class="row">
+                <div class="contentTitle">Custom Price List</div>
+            
+                @include('_exports.pdf.schedaCli.tblListProd', [
+                'ListProds' => $listProds,
+                'customer' => $client->codice,
+                'customerDesc' => $client->descrizion,
+                'noCli'=> false
+                ])
+            </div>
+        @endif
+        <div><hr class="dividerPage"></div>
         <div class="row">
             <div class="contentTitle">Abc Items</div>
 
@@ -126,22 +154,7 @@
                 'thisMonth' => $thisMonth
                 ])
         </div>
-        
     </p>
-    
-    @if (!$visits->isEmpty())
-        <p class="page">
-            <div class="row">
-                <div class="contentTitle">Events</div>
-
-                @include('_exports.pdf.schedaCli.timeline', [
-                    'visits' => $visits,
-                    'codcli' => $client->codice,
-                    'dateNow' => $dateNow,
-                    ])
-            </div>
-        </p>
-    @endif
 @endsection
 
 {{-- @push('scripts')

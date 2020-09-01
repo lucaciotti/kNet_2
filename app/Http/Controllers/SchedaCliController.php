@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
 use knet\ArcaModels\Client;
+use knet\ArcaModels\Listini;
 use knet\ArcaModels\Nazione;
 use knet\ArcaModels\Settore;
 use knet\ArcaModels\Zona;
@@ -25,7 +26,7 @@ class SchedaCliController extends Controller
     }
 
     public function downloadPDF(Request $req, $codice){
-        $client = Client::with(['agent', 'detNation', 'detZona', 'detSect', 'clasCli', 'detPag', 'detStato'])->findOrFail($codice);
+        $client = Client::with(['agent', 'detNation', 'detZona', 'detSect', 'clasCli', 'detPag', 'detStato', 'anagNote'])->findOrFail($codice);
         $scadToPay = ScadCli::where('codcf', $codice)->where('pagato',0)->whereIn('tipoacc', ['F', ''])->orderBy('datascad','desc')->get();
         $visits = wVisit::where('codicecf', $codice)->with('user')->take(3)->orderBy('data', 'desc')->orderBy('id')->get();
         $thisYear = (string)(Carbon::now()->year);
@@ -120,6 +121,18 @@ class SchedaCliController extends Controller
                       ->orderBy('qta_TY', 'DESC')
                       ->get();
 
+        $listProds = Listini::where('codclifor', $codice)
+                        ->where('codicearti', '!=', '')
+                        ->with([
+                          'product' => function ($query) {
+                            $query->select('codice', 'descrizion', 'unmisura', 'gruppo', 'listino6', 'listino1')
+                              ->withoutGlobalScope('Listino')
+                              ->with('grpProd');
+                          },
+                        ])
+                        ->orderBy('codicearti')
+                        ->get();
+
         $prevMonth = (Carbon::now()->month);
         $valMese = 'valore' . $prevMonth;
         $prevMonth = $fatThisYear->isEmpty() ? $prevMonth : (($fatThisYear->first()->$valMese == 0) ? $prevMonth-1 : $prevMonth);
@@ -136,6 +149,7 @@ class SchedaCliController extends Controller
             'fatThisYear' => $fatThisYear,
             'fatPrevYear' => $fatPrevYear,
             'AbcItems' => $AbcItems,
+            'listProds' => $listProds,
             'thisYear' => $thisYear,
             'prevYear' =>$prevYear,
             'thisMonth' => $thisMonth,

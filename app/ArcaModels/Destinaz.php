@@ -3,7 +3,7 @@
 namespace knet\ArcaModels;
 
 use Illuminate\Database\Eloquent\Model;
-use RedisUser;
+use knet\Helpers\RedisUser;
 
 class Destinaz extends Model
 {

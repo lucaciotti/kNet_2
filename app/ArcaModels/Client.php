@@ -5,7 +5,6 @@ namespace knet\ArcaModels;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
-// use RedisUser;
 use knet\Helpers\RedisUser as RedisUser;
 
 use Request;
@@ -103,6 +102,11 @@ class Client extends Model
 
     public function scadenza(){
       return $this->hasMany('knet\ArcaModels\ScadCli', 'codcf', 'codice');
+    }
+
+    public function anagNote()
+    {
+      return $this->hasOne('knet\ArcaModels\AnagNote', 'codicecf', 'codice');
     }
 
     //Multator

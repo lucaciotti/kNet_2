@@ -4,7 +4,7 @@ namespace knet\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Carbon\Carbon;
-use Session;
+use Illuminate\Support\Facades\Session;
 use Cornford\Googlmapper\Facades\MapperFacade as Mapper;
 use Illuminate\Support\Facades\DB;
 
@@ -18,7 +18,7 @@ use knet\WebModels\wVisit;
 
 use Auth;
 use knet\User;
-use RedisUser;
+use knet\Helpers\RedisUser;
 
 class ClientController extends Controller
 {
@@ -116,7 +116,7 @@ class ClientController extends Controller
     }
 
     public function detail (Request $req, $codCli){
-      $client = Client::with(['agent', 'detNation', 'detZona', 'detSect', 'clasCli', 'detPag', 'detStato', 'grpCli'])->findOrFail($codCli);
+      $client = Client::with(['agent', 'detNation', 'detZona', 'detSect', 'clasCli', 'detPag', 'detStato', 'grpCli', 'anagNote'])->findOrFail($codCli);
       $scadToPay = ScadCli::where('codcf', $codCli)->where('pagato',0)->whereIn('tipoacc', ['F', ''])->orderBy('datascad','desc')->get();
       $address = $client->indirizzo.", ".$client->localita.", ".$client->nazione;
       $expt = '';
@@ -136,7 +136,7 @@ class ClientController extends Controller
       }
       $visits = wVisit::where('codicecf', $codCli)->with('user')->take(3)->orderBy('data', 'desc')->orderBy('id')->get();
       // dd($visits->isEmpty());
-      // dd($visits);
+      // dd($client);
       return view('client.detail', [
         'client' => $client,
         'scads' => $scadToPay,

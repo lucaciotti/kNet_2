@@ -300,7 +300,11 @@
         </div>
       </div>
       <div class="box-body">
-        <strong>{!! $client->note !!}</strong>
+        @if ($client->anagNote)
+          <strong>{!! $client->anagNote->note !!}</strong>  
+        @else
+          <strong>{!! $client->note !!}</strong>          
+        @endif
       </div>
     </div>
 
