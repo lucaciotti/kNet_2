@@ -81,7 +81,7 @@ class DocCli extends Model
   }
 
   public function scadenza(){
-    return $this->hasOne('knet\ArcaModels\ScadCli', 'id_doc', 'id');
+    return $this->hasMany('knet\ArcaModels\ScadCli', 'id_doc', 'id');
   }
 
   public function wDdtOk(){

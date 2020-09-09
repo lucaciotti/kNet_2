@@ -9,7 +9,9 @@
 @endsection
 
 @section('contentheader_breadcrumb')
+   @if ($agente)
     {!! Breadcrumbs::render('agentStFat', $agente) !!}
+   @endif        
 @endsection
 
 @push('css-head')
@@ -27,35 +29,48 @@
         </div>
       </div>
       <div class="box-body">
-        {{-- <form action="{{ route('stAbc::idxAg') }}" method="post">
+        <dl class="dl-horizontal">
+            <dt>Cod. Art.</dt>
+            <dd>
+              <big><strong>{{$codArt}}</strong></big><br>
+              <small>{{$AbcProds->first()->product->descrizion or "Error $codArt - No Description"}}</small>
+            </dd>
+            @if ($agente)
+              <br>
+              <dt>Agente</dt>
+              <dd>{{ $descrAg or "Error $agente - No Description" }}</dd>                
+            @endif
+          </dl>
+      </div>
+    </div>
+
+    <div class="box box-default">
+      <div class="box-header with-border">
+        <h3 class="box-title" data-widget="collapse">Zona{{-- {{ trans('stFatt.zone') }} --}}</h3>
+        <div class="box-tools pull-right">
+          <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+          {{-- <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button> --}}
+        </div>
+      </div>
+      <div class="box-body">
+        <form action="{{ route('stAbc::detailArt', ['codArt'=>$codArt]) }}" method="post">
           <input type="hidden" name="_token" value="{{ csrf_token() }}">
           <div class="form-group">
-            <label>{{ trans('stFatt.selAgent') }}</label>
-            <select name="codag" class="form-control select2" style="width: 100%;">
+            <label>Seleziona Zona</label>
+            <select name="codzona" class="form-control select2" style="width: 100%;">
               <option value=""> </option>
-              @foreach ($agents as $agent)
-                <option value="{{ $agent->codice }}"
-                  @if($agent->codice==$agente)
-                      selected
-                  @endif
-                  >{{ $agent->descrizion or "Error $agent->codice - No Description" }}</option>
+              @foreach ($zone as $zona)
+              <option value="{{ $zona->codice }}" @if($zona->codice==$codZona)
+                selected
+                @endif
+                >{{ $zona->descrizion or "Error $zona->codice - No Description" }}</option>
               @endforeach
             </select>
           </div>
           <div>
             <button type="submit" class="btn btn-primary">{{ trans('_message.submit') }}</button>
           </div>
-        </form> --}}
-        <dl class="dl-horizontal">
-            <dt>Cod. Art.</dt>
-            <dd>
-              <big><strong>{{$AbcProds->first()->articolo}}</strong></big><br>
-              <small>{{$AbcProds->first()->product->descrizion}}</small>
-            </dd>
-            <br>
-            <dt>Agente</dt>
-            <dd>{{ $descrAg or "Error $agente - No Description" }}</dd>
-          </dl>
+        </form>
       </div>
     </div>
   </div>
@@ -69,7 +84,7 @@
       <div class="tab-content">
         <div class="tab-pane active" id="statAbc">
         @include('stAbc.partials.tblDetArt', [
-          'agente' => $agente,
+          // 'agente' => $agente,
           'AbcProds' => $AbcProds,
           'thisYear' => $thisYear,
           'prevYear' => $prevYear,

@@ -19,8 +19,10 @@
             span.floatleft { float: left; width: 49%; } /* border-left:1px solid grey; */
             span.floatright { float: right; width: 49%; }
             span.floatleft20 { float: left; width: 25%; } 
+            span.floatright20 { float: right; width: 25%; }
             span.floatright80 { float: right; width: 75%; }
             hr.divider { width: 80%; float:left; margin-right: 20%;}
+            hr.smalldivider { width: 50%; float:left; margin-right: 50%;}
             hr.dividerPage { width: 80%; float:middle; margin-right: 10%;}
             dt { font-size: 8pt; font-style: italic; }
             table { width: 100%; font-size: 9pt; }
@@ -35,6 +37,7 @@
             table tbody td.red { background-color: #ffb3b3; }
             table thead { display: table-header-group; }
             table tfoot { background-color: darkgrey; display: table-header-group; }
+            table tfoot th.orange { background-color: #f0d45e; }
             div.contentTitle { 
                 font-size: 11pt; 
                 font-stretch: expanded; 
@@ -47,10 +50,10 @@
             }
             span.contentSubTitle {
                 font-size: 10pt;
+                font-weight: bold;
                 font-stretch: expanded;
                 font-style: oblique;
-                font-weight: normal;
-                text-decoration: none;
+                text-decoration: underline;
             }
             
             /* Style the container with a rounded border, grey background and some padding and margin */

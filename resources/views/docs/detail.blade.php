@@ -196,6 +196,10 @@
         <a type="button" class="btn btn-default btn-block" target="_blank" href="{{ route('doc::downloadXLS', $head->id) }}">
           <strong> Excel File</strong>
         </a>
+        <hr>
+        <a type="button" class="btn btn-primary btn-block" target="_blank" href="{{ route('doc::downloadPDF', $head->id) }}">
+          <strong> PDF File</strong>
+        </a>
       </div>
     </div>
 
@@ -220,25 +224,28 @@
                 <th>{{ trans('doc.valuePayed') }}</th>
               </thead>
               <tbody>
-                    @if($head->scadenza->insoluto==1 || $head->scadenza->u_insoluto==1)
-                    <tr class="danger">
-                    @elseif($head->scadenza->datascad < \Carbon\Carbon::now())
-                    <tr class="warning">
-                    @else
-                    <tr>
+                    @if ($head->scadenza->count()>0)
+                        @foreach ($head->scadenza as $scad)
+                            @if($scad->insoluto==1 || $scad->u_insoluto==1)
+                            <tr class="danger">
+                              @elseif($scad->datascad < \Carbon\Carbon::now()) <tr class="warning">
+                                @else
+                            <tr>
+                              @endif
+                              <td>
+                                <span>{{$scad->datascad->format('Ymd')}}</span>
+                                <a href=""> {{ $scad->datascad->format('d-m-Y') }}</a>
+                              </td>
+                              <td>{{ $scad->numfatt }}</td>
+                              <td><span>{{$scad->datafatt->format('Ymd')}}</span>{{ $scad->datafatt->format('d-m-Y') }}</td>
+                              <td>@if($scad->idragg>0)
+                                <a href=""> {{ trans('doc.merged') }}</a>
+                                @endif</td>
+                              <td>{{ $scad->impeffval }}</td>
+                              <td>{{ $scad->importopag }}</td>
+                            </tr>
+                        @endforeach
                     @endif
-                      <td>
-                        <span>{{$head->scadenza->datascad->format('Ymd')}}</span>
-                        <a href=""> {{ $head->scadenza->datascad->format('d-m-Y') }}</a>
-                      </td>
-                      <td>{{ $head->scadenza->numfatt }}</td>
-                      <td><span>{{$head->scadenza->datafatt->format('Ymd')}}</span>{{ $head->scadenza->datafatt->format('d-m-Y') }}</td>
-                      <td>@if($head->scadenza->idragg>0)
-                        <a href=""> {{ trans('doc.merged') }}</a>
-                      @endif</td>
-                      <td>{{ $head->scadenza->impeffval }}</td>
-                      <td>{{ $head->scadenza->importopag }}</td>
-                    </tr>
               </tbody>
             </table>
           @endif

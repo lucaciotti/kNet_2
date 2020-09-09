@@ -17,7 +17,8 @@ use knet\Helpers\RedisUser;
 use knet\ExportsXLS\DocExport;
 
 use Spatie\ArrayToXml\ArrayToXml;
-use File;
+use Illuminate\Support\Facades\File;
+use knet\Helpers\PdfReport;
 use PDF;
 
 class DocCliController extends Controller
@@ -503,4 +504,56 @@ class DocCliController extends Controller
     return $pdf->stream('test.pdf'); */
   }
 
+  public function downloadPDF(Request $req, $id_testa)
+  {
+    $tipoDoc = DocCli::select('tipomodulo')->findOrFail($id_testa);
+    $head = DocCli::with(['client' => function ($query) {
+      $query
+        ->withoutGlobalScope('agent')
+        ->withoutGlobalScope('superAgent')
+        ->withoutGlobalScope('client');
+    }, 'agent']);
+    if ($tipoDoc->tipomodulo == 'F') {
+      $head = $head->with(['scadenza' => function ($query) {
+        $query
+          ->withoutGlobalScope('agent')
+          ->withoutGlobalScope('superAgent')
+          ->withoutGlobalScope('client');
+      }]);
+    } elseif ($tipoDoc->tipomodulo == 'B') {
+      $head = $head->with('vettore', 'detBeni');
+    }
+    $head = $head->findOrFail($id_testa);
+    if ($tipoDoc->tipomodulo == 'B') {
+      $destDiv = Destinaz::where('codicecf', $head->codicecf)->where('codicedes', $head->destdiv)->first();
+      $ddtOk = wDdtOk::where('id_testa', $head->id)->first();
+    } else {
+      $destDiv = null;
+      $ddtOk = null;
+    }
+    $rows = DocRow::where('id_testa', $id_testa)->orderBy('numeroriga', 'asc')->get();
+    $prevIds = DocRow::distinct('riffromt')->where('id_testa', $id_testa)->where('riffromt', '!=', 0)->get();
+    $prevDocs = DocCli::select('id', 'tipodoc', 'numerodoc', 'datadoc')->whereIn('id', $prevIds->pluck('riffromt'))->get();
+    $nextIds = DocRow::distinct('id_testa')->where('riffromt', $id_testa)->get();
+    $nextDocs = DocCli::select('id', 'tipodoc', 'numerodoc', 'datadoc')->whereIn('id', $nextIds->pluck('id_testa'))->get();
+
+    $totValueFOC = $rows->where('ommerce', true)->sum('prezzotot');
+    // dd($head->scadenza);
+    $title = "Doc Detail";
+    $subTitle = $head->tipodoc."_".$head->numerodoc."/".$head->esercizio;
+    $view = '_exports.pdf.docDetailPdf';
+    $data = [
+      'head' => $head,
+      'rows' => $rows,
+      'prevDocs' => $prevDocs,
+      'nextDocs' => $nextDocs,
+      'destinaz' => $destDiv,
+      'ddtOk' => $ddtOk,
+      'totValueFOC' => $totValueFOC,
+    ];
+    $pdf = PdfReport::A4Portrait($view, $data, $title, $subTitle);
+
+    return $pdf->stream($title . '-' . $subTitle . '.pdf');
+
+  }
 }

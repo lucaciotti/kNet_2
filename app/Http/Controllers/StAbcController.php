@@ -19,6 +19,7 @@ use knet\ArcaModels\Nazione;
 use knet\ArcaModels\SubGrpProd;
 use knet\ArcaModels\DocCli;
 use knet\ArcaModels\DocRow;
+use knet\ArcaModels\Zona;
 
 class StAbcController extends Controller
 {
@@ -194,12 +195,99 @@ class StAbcController extends Controller
       ]);
     }
 
-    public function detailArt (Request $req, $codArt, $codAg = null, $codZona = null) {
-      $agents = Agent::select('codice', 'descrizion')->whereNull('u_dataini')->orWhere('u_dataini', '>=', Carbon::now())->orderBy('codice')->get();
-      $codAg = ($req->input('codag')) ? $req->input('codag') : $codAg;
-      $agente = (!empty($codAg)) ? $codAg : $agents->first()->codice;
-      $descrAg = (!empty($agents->whereStrict('codice', $agente)->first()) ? $agents->whereStrict('codice', $agente)->first()->descrizion : "");
+    public function idxArt(Request $req, $codAg = null)
+    {
+      $thisYear =  Carbon::now()->year;
+      $prevYear = $thisYear - 1;
+      $thisMonth = Carbon::now()->month;
+      // (Legenda PY -> Previous Year ; TY -> This Year)
+      $AbcProds = StatABC::select(
+        'articolo',
+        'codag',
+        DB::raw('MAX(prodotto) as prodotto'),
+        DB::raw('MAX(gruppo) as gruppo'),
+        DB::raw('SUM(IF(esercizio=' . $thisYear . ', qta, 0)) as qta_TY'),
+        DB::raw('SUM(IF(esercizio=' . $prevYear . ', qta, 0)) as qta_PY'),
+        DB::raw('SUM(IF(esercizio=' . $thisYear . ', qta1, 0)) as qta_TY_1'),
+        DB::raw('SUM(IF(esercizio=' . $thisYear . ', qta2, 0)) as qta_TY_2'),
+        DB::raw('SUM(IF(esercizio=' . $thisYear . ', qta3, 0)) as qta_TY_3'),
+        DB::raw('SUM(IF(esercizio=' . $thisYear . ', qta4, 0)) as qta_TY_4'),
+        DB::raw('SUM(IF(esercizio=' . $thisYear . ', qta5, 0)) as qta_TY_5'),
+        DB::raw('SUM(IF(esercizio=' . $thisYear . ', qta6, 0)) as qta_TY_6'),
+        DB::raw('SUM(IF(esercizio=' . $thisYear . ', qta7, 0)) as qta_TY_7'),
+        DB::raw('SUM(IF(esercizio=' . $thisYear . ', qta8, 0)) as qta_TY_8'),
+        DB::raw('SUM(IF(esercizio=' . $thisYear . ', qta9, 0)) as qta_TY_9'),
+        DB::raw('SUM(IF(esercizio=' . $thisYear . ', qta10, 0)) as qta_TY_10'),
+        DB::raw('SUM(IF(esercizio=' . $thisYear . ', qta11, 0)) as qta_TY_11'),
+        DB::raw('SUM(IF(esercizio=' . $thisYear . ', qta12, 0)) as qta_TY_12'),
+        DB::raw('SUM(IF(esercizio=' . $prevYear . ', qta1, 0)) as qta_PY_1'),
+        DB::raw('SUM(IF(esercizio=' . $prevYear . ', qta2, 0)) as qta_PY_2'),
+        DB::raw('SUM(IF(esercizio=' . $prevYear . ', qta3, 0)) as qta_PY_3'),
+        DB::raw('SUM(IF(esercizio=' . $prevYear . ', qta4, 0)) as qta_PY_4'),
+        DB::raw('SUM(IF(esercizio=' . $prevYear . ', qta5, 0)) as qta_PY_5'),
+        DB::raw('SUM(IF(esercizio=' . $prevYear . ', qta6, 0)) as qta_PY_6'),
+        DB::raw('SUM(IF(esercizio=' . $prevYear . ', qta7, 0)) as qta_PY_7'),
+        DB::raw('SUM(IF(esercizio=' . $prevYear . ', qta8, 0)) as qta_PY_8'),
+        DB::raw('SUM(IF(esercizio=' . $prevYear . ', qta9, 0)) as qta_PY_9'),
+        DB::raw('SUM(IF(esercizio=' . $prevYear . ', qta10, 0)) as qta_PY_10'),
+        DB::raw('SUM(IF(esercizio=' . $prevYear . ', qta11, 0)) as qta_PY_11'),
+        DB::raw('SUM(IF(esercizio=' . $prevYear . ', qta12, 0)) as qta_PY_12')
+      )
+        ->where('isomaggio', false)
+        ->whereIn('esercizio', ['' . $thisYear . '', '' . $prevYear . '']);
+      if ($req->input('gruppo')) {
+        $AbcProds = $AbcProds->whereIn('gruppo', $req->input('gruppo'));
+      }
+      if (!empty($req->input('optTipoDoc'))) {
+        $AbcProds = $AbcProds->where('prodotto', $req->input('optTipoDoc'));
+      } else {
+        $AbcProds = $AbcProds->whereIn('prodotto', ['KRONA', 'KOBLENZ', 'KUBICA', 'PLANET']);
+      }
+      $AbcProds->whereHas('product', function ($query) {
+        $query->where('u_artlis', true);
+      });
+      $AbcProds = $AbcProds->groupBy(['articolo'])
+      ->with([
+        'grpProd' => function ($query) {
+          $query->select('codice', 'descrizion');
+        },
+        'product' => function ($query) {
+          $query->select('codice', 'descrizion', 'unmisura');
+        }
+      ])
+        ->orderBy('qta_TY', 'DESC')
+        ->get();
 
+      $gruppi = SubGrpProd::where('codice', 'NOT LIKE', '1%')
+      ->where('codice', 'NOT LIKE', 'DIC%')
+        ->where('codice', 'NOT LIKE', '0%')
+        ->where('codice', 'NOT LIKE', '2%')
+        ->orderBy('codice')
+        ->get();
+
+      return view('stAbc.idxArt', [
+        'AbcProds' => $AbcProds,
+        'thisYear' => $thisYear,
+        'prevYear' => $prevYear,
+        'thisMonth' => $thisMonth,
+        'gruppi' => $gruppi,
+      ]);
+    }
+
+    public function detailArt (Request $req, $codArt, $codAg = null, $codZona = null) {
+      $isDetAg = !empty($req->input('codag')) || !empty($codAg);
+      if($isDetAg){
+        $agents = Agent::select('codice', 'descrizion')->whereNull('u_dataini')->orWhere('u_dataini', '>=', Carbon::now())->orderBy('codice')->get();
+        $codAg = ($req->input('codag')) ? $req->input('codag') : $codAg;
+        $agente = (!empty($codAg)) ? $codAg : $agents->first()->codice;
+        $descrAg = (!empty($agents->whereStrict('codice', $agente)->first()) ? $agents->whereStrict('codice', $agente)->first()->descrizion : "");
+      }
+      $isZona = !empty($req->input('codzona')) || !empty($codZona);
+      if ($isZona) {
+        $codZona = !empty($codZona) ? $codZona : $req->input('codzona');
+      }
+      // dd($req->input('codzona'));
+      $codArt = !empty($codArt) ? $codArt : $req->input('codart');
       $thisYear =  Carbon::now()->year;
       $prevYear = $thisYear-1;
       $thisMonth = Carbon::now()->month;
@@ -233,52 +321,51 @@ class StAbcController extends Controller
                     DB::raw('SUM(IF(esercizio='.$prevYear.', qta10, 0)) as qta_PY_10'),
                     DB::raw('SUM(IF(esercizio='.$prevYear.', qta11, 0)) as qta_PY_11'),
                     DB::raw('SUM(IF(esercizio='.$prevYear.', qta12, 0)) as qta_PY_12')
-                    )
-                    ->where('codag', $agente)
-                    ->where('articolo', $codArt)
-                    ->where('isomaggio', false)
-                    ->whereIn('esercizio', [''.$thisYear.'', ''.$prevYear.'']);
-      if($codZona){              
-        $AbcProds->with(['client' => function ($query) use ($codZona){
-                        $query->select('codice', 'descrizion', 'zona')->where('zona', $codZona)
-                        ->withoutGlobalScope('agent')
-                        ->withoutGlobalScope('superAgent')
-                        ->withoutGlobalScope('client');
-                      }, 
-                      'grpProd' => function($query){
-                        $query->select('codice', 'descrizion');
-                      }, 
-                      'product' => function($query){
-                        $query->select('codice', 'descrizion', 'unmisura');
-                      }
-                    ]);
-      } else {
-        $AbcProds->with([
-                      'client' => function($query){
-                        $query->select('codice', 'descrizion')
-                        ->withoutGlobalScope('agent')
-                        ->withoutGlobalScope('superAgent')
-                        ->withoutGlobalScope('client');
-                      }, 
-                      'grpProd' => function($query){
-                        $query->select('codice', 'descrizion');
-                      }, 
-                      'product' => function($query){
-                        $query->select('codice', 'descrizion', 'unmisura');
-                      }
-                    ]);
+                  )
+                  ->where('articolo', $codArt)
+                  ->where('isomaggio', false)
+                  ->whereIn('esercizio', ['' . $thisYear . '', '' . $prevYear . '']);
+      if($isDetAg){
+        $AbcProds->where('codag', $agente);
+      }                    
+                    
+      if($isZona){
+      $AbcProds->select('codice', 'descrizion', 'zona')->whereHas('client', function ($query) use ($codZona) {
+          $query->where('zona', $codZona);
+        });
       }
+      $AbcProds->with([
+                    'client' => function($query){
+                      $query->select('codice', 'descrizion', 'zona')
+                      ->withoutGlobalScope('agent')
+                      ->withoutGlobalScope('superAgent')
+                      ->withoutGlobalScope('client');
+                    }, 
+                    'grpProd' => function($query){
+                      $query->select('codice', 'descrizion');
+                    }, 
+                    'product' => function($query){
+                      $query->select('codice', 'descrizion', 'unmisura');
+                    }
+                  ]);
+      
       $AbcProds = $AbcProds->groupBy(['codicecf'])
                     ->orderBy('qta_TY', 'DESC')
                     ->get();
+
+      $zone = Zona::whereIn('codice', $AbcProds->client->pluck('zona')->all())->get();
+
       return view('stAbc.detailArt', [
-        'agents' => $agents,
-        'agente' => $agente,
-        'descrAg' => $descrAg,
+        'agents' => $isDetAg ? $agents : null,
+        'agente' => $isDetAg ? $agente : null,
+        'descrAg' => $isDetAg ? $descrAg : null,
+        'codArt' => $codArt,
         'AbcProds' => $AbcProds,
         'thisYear' => $thisYear,
         'prevYear' => $prevYear,
         'thisMonth' => $thisMonth,
+        'zone' => $zone,
+        'codZona' => $isZona ? $codZona : null,
       ]);
     }
 

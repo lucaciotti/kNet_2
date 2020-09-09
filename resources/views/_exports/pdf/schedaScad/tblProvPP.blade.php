@@ -65,7 +65,7 @@
               @endif
             </td>
             <td style="text-align: center;">
-                {{ $scad->tipomod }} {{ $scad->numfatt }}
+                <a href="{{ route('doc::downloadPDF', $scad->id_doc) }}"> {{ $scad->tipomod }} {{ $scad->numfatt }} </a>
             </td>
             <td style="text-align: center;">{{ $scad->datafatt }}</td>
             <td>

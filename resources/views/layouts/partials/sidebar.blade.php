@@ -100,6 +100,7 @@
               <li class="treeview {{ Ekko::isActiveRoute('stAbc::*') }}">
                   <a href="{{ route('stAbc::idxAg') }}"><i class='fa fa-sort-alpha-asc'></i> <span>{{ trans('_menu.AbcArt') }}</span> <i class="fa fa-angle-left pull-right"></i></a>
                   <ul class="treeview-menu">
+                      <li class="{{ Ekko::isActiveRoute('stAbc::idxArt') }}"><a href="{{ route('stAbc::idxArt') }}">{{ trans('_menu.products') }}</a></li>
                       <li class="{{ Ekko::isActiveRoute('stAbc::idxAg') }}"><a href="{{ route('stAbc::idxAg') }}">{{ trans('_menu.agent') }}</a></li>
                       <li class="{{ Ekko::isActiveRoute('stAbc::idxCli') }}"><a href="{{ route('stAbc::idxCli') }}">{{ trans('_menu.client') }}</a></li>
                       {{-- <li class="{{ Ekko::isActiveRoute('stAbc::idxZone') }}"><a href="{{ route('stAbc::idxZone') }}">{{ trans('_menu.zone') }}</a></li> --}}
