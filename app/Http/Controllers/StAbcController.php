@@ -286,7 +286,7 @@ class StAbcController extends Controller
       if ($isZona) {
         $codZona = !empty($codZona) ? $codZona : $req->input('codzona');
       }
-      // dd($req->input('codzona'));
+      // dd($agente);
       $codArt = !empty($codArt) ? $codArt : $req->input('codart');
       $thisYear =  Carbon::now()->year;
       $prevYear = $thisYear-1;
@@ -330,8 +330,8 @@ class StAbcController extends Controller
       }                    
                     
       if($isZona){
-      $AbcProds->select('codice', 'descrizion', 'zona')->whereHas('client', function ($query) use ($codZona) {
-          $query->where('zona', $codZona);
+      $AbcProds->whereHas('client', function ($query) use ($codZona) {
+          $query->select('codice', 'descrizion', 'zona')->where('zona', $codZona);
         });
       }
       $AbcProds->with([
@@ -352,8 +352,8 @@ class StAbcController extends Controller
       $AbcProds = $AbcProds->groupBy(['codicecf'])
                     ->orderBy('qta_TY', 'DESC')
                     ->get();
-
-      $zone = Zona::whereIn('codice', $AbcProds->client->pluck('zona')->all())->get();
+                    
+      $zone = Zona::whereIn('codice', $AbcProds->pluck('client')->pluck('zona')->all())->get();
 
       return view('stAbc.detailArt', [
         'agents' => $isDetAg ? $agents : null,

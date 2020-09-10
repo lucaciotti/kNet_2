@@ -2,7 +2,11 @@
     <span class="contentSubTitle">{{ trans('doc.dataDoc') }}</span>
     <dl class="dl-horizontal">
         <dt>{{ trans('doc.document') }}</dt>
-        <dd><strong>{{$head->tipodoc}} {{$head->numerodoc}}</strong></dd>
+        <dd>
+            <a href="{{ route('doc::detail', $head->id) }}">
+                <strong>{{$head->tipodoc}} {{$head->numerodoc}}</strong>
+            </a>
+        </dd>
 
         <dt>{{ trans('doc.client') }}</dt>
         <dd><strong>{{$head->client->descrizion}} [{{$head->codicecf}}]</strong></dd>

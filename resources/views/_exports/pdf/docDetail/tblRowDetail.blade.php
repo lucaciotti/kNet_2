@@ -55,7 +55,7 @@
                 <td style="text-align: center;">
                     @if (!empty($row->codicearti)) {{ $row->quantita }} {{ $row->unmisura }} @endif
                 </td>
-                @if($head->tipomodulo=='O' && $row->rifstato!='X' && $row->quantitare>0)
+                @if($head->tipomodulo=='O')
                 <td style="text-align: center;">{{ $row->quantitare }}</td>
                 @endif
                 @if($row->ommerce)
@@ -101,7 +101,7 @@
     </tbody>
     <tfoot>
         <tr>
-            <th colspan="7" style="text-align:right">Total:</th>
+            <th @if($head->tipomodulo=='O') colspan="9" @else colspan="7" @endif style="text-align:right">Total:</th>
             <th style="text-align: right;">{{ currency($totMerce) }}</th>
             @if (!in_array(RedisUser::get('role'), ['client']) && ($head->tipomodulo == 'F' || $head->tipomodulo == 'N' || $head->tipodoc == 'PP'))
             <th></th>
@@ -113,7 +113,7 @@
     @if ($head->sconti)
         <tfoot>
             <tr>
-                <th colspan="7" style="text-align:right">{{ trans('doc.scontoMerce') }}: {{$head->sconti}} %</th>
+                <th @if($head->tipomodulo=='O') colspan="9" @else colspan="7" @endif style="text-align:right">{{ trans('doc.scontoMerce') }}: {{$head->sconti}} %</th>
                 <th style="text-align: right;">{{ currency($head->totmerce) }}</th>
                 @if (!in_array(RedisUser::get('role'), ['client']) && ($head->tipomodulo == 'F' || $head->tipomodulo == 'N' ||
                 $head->tipodoc == 'PP'))
@@ -127,7 +127,7 @@
     @if ($totOmaggio>0)
     <tfoot>
         <tr>
-            <th colspan="7" style="text-align:right">Total Value of Goods Free of Charge: </th>
+            <th @if($head->tipomodulo=='O') colspan="9" @else colspan="7" @endif style="text-align:right">Total Value of Goods Free of Charge: </th>
             <th style="text-align: right;">{{ currency(-$totOmaggio) }}</th>
             @if (!in_array(RedisUser::get('role'), ['client']) && ($head->tipomodulo == 'F' || $head->tipomodulo == 'N' ||
             $head->tipodoc == 'PP'))

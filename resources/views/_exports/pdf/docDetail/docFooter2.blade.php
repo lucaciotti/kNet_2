@@ -107,22 +107,28 @@
     <span class="contentSubTitle">{{ trans('doc.linkedDocs') }}</span>
         @foreach($prevDocs as $doc)
             <dl>
+                <a href="{{ route('doc::detail', $doc->id) }}">
+                    {{$doc->tipodoc}} {{$doc->numerodoc}} - {{$doc->datadoc->format('d/m/Y')}}
+                </a>
                 <a href="{{ route('doc::downloadPDF', $doc->id) }}">
-                    {{$doc->tipodoc}} {{$doc->numerodoc}} del {{$doc->datadoc->format('d/m/Y')}}
+                    [PDF]
                 </a>
             </dl>
         @endforeach
     @endif
     
-    @if($prevDocs->count()>0)
+    @if($nextDocs->count()>0)
     <span class="contentSubTitle">{{ trans('doc.nextDocs') }}</span>
-    @foreach($nextDocs as $doc)
-    <dl>
-        <a href="{{ route('doc::downloadPDF', $doc->id) }}">
-            {{$doc->tipodoc}} {{$doc->numerodoc}} del {{$doc->datadoc->format('d/m/Y')}}
-        </a>
-    </dl>
-    @endforeach
+        @foreach($nextDocs as $doc)
+            <dl>
+                <a href="{{ route('doc::detail', $doc->id) }}">
+                    {{$doc->tipodoc}} {{$doc->numerodoc}} - {{$doc->datadoc->format('d/m/Y')}}
+                </a>
+                <a href="{{ route('doc::downloadPDF', $doc->id) }}">
+                    [PDF]
+                </a>
+            </dl>
+        @endforeach
     @endif
 
 </span>

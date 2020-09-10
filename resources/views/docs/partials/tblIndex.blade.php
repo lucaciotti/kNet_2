@@ -10,6 +10,7 @@
     <th>{{ trans('doc.client') }}</th>
     <th>{{ trans('doc.referenceDoc_condensed') }}</th>
     <th>{{ trans('doc.totDoc_condensed') }}</th>
+    <th>PDF</th>
   </thead>
   @if($tipomodulo)
     <tfoot>
@@ -35,6 +36,11 @@
         <td>{{ $doc->client->descrizion }} [{{ $doc->codicecf }}]</td>
         <td>{{ $doc->numerodocf }}</td>
         <td>{{ $doc->totdoc }}</td>
+        <td>
+          <a class="btn-sm btn-default" href="{{ route('doc::downloadPDF', $doc->id ) }}" target="_blank">
+            <i class="fa fa-file-pdf-o fa-lg text-danger"></i>
+          </a>
+        </td>
       </tr>
     @endforeach
   </tbody>
