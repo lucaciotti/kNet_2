@@ -125,23 +125,39 @@
 @endsection
 
 @push('script-footer')
-<script>
-  $(function () {
-    $("#selectAgent").on('change', function() {
-      var data = $("#selectAgent option:selected").val();
-      $('#btn_prov').attr('href',($('#btn_prov').attr('href')).replace(/schedaProvPDF\/([a-zA-Z0-9_#]+)\//g,
-      'schedaProvPDF/'+data+'/'));
-      $('#btn_prov2').attr('href',($('#btn_prov2').attr('href')).replace(/schedaProvPDF\/([a-zA-Z0-9_#]+)\//g,
-      'schedaProvPDF/'+data+'/'));
-      $('#btn_prov3').attr('href',($('#btn_prov3').attr('href')).replace(/schedaProvPP_PDF\/([a-zA-Z0-9_#]+)\//g,
-      'schedaProvPP_PDF/'+data+'/'));
-      $('#btn_prov4').attr('href',($('#btn_prov4').attr('href')).replace(/schedaProvPP_PDF\/([a-zA-Z0-9_#]+)\//g,
-      'schedaProvPP_PDF/'+data+'/'));
-      console.log('linkProv1 = '+$('#btn_prov').attr('href'));
-      console.log('linkProv2 = '+$('#btn_prov2').attr('href'));
-      console.log('linkProv3 = '+$('#btn_prov3').attr('href'));
-      console.log('linkProv4 = '+$('#btn_prov4').attr('href'));
+@if(RedisUser::get('ditta_DB')=='kNet_fr')
+  <script>
+    $(function () {
+      $("#selectAgent").on('change', function() {
+        var data = $("#selectAgent option:selected").val();
+        $('#btn_prov').attr('href',($('#btn_prov').attr('href')).replace(/schedaProvPDF\/([a-zA-Z0-9_#]+)\//g,
+        'schedaProvPDF/'+data+'/'));
+        console.log('linkProv1 = '+$('#btn_prov').attr('href'));
+        $('#btn_prov2').attr('href',($('#btn_prov2').attr('href')).replace(/schedaProvPDF\/([a-zA-Z0-9_#]+)\//g,
+        'schedaProvPDF/'+data+'/'));
+        console.log('linkProv2 = '+$('#btn_prov2').attr('href'));
+        $('#btn_prov3').attr('href',($('#btn_prov3').attr('href')).replace(/schedaProvPP_PDF\/([a-zA-Z0-9_#]+)\//g,
+        'schedaProvPP_PDF/'+data+'/'));
+        console.log('linkProv3 = '+$('#btn_prov3').attr('href'));
+        $('#btn_prov4').attr('href',($('#btn_prov4').attr('href')).replace(/schedaProvPP_PDF\/([a-zA-Z0-9_#]+)\//g,
+        'schedaProvPP_PDF/'+data+'/'));
+        console.log('linkProv4 = '+$('#btn_prov4').attr('href'));
+      });
     });
-  });
-</script>
+  </script>
+@else
+  <script>
+    $(function () {
+      $("#selectAgent").on('change', function() {
+        var data = $("#selectAgent option:selected").val();
+        $('#btn_prov').attr('href',($('#btn_prov').attr('href')).replace(/schedaProvPDF\/([a-zA-Z0-9_#]+)\//g,
+        'schedaProvPDF/'+data+'/'));
+        console.log('linkProv1 = '+$('#btn_prov').attr('href'));
+        $('#btn_prov2').attr('href',($('#btn_prov2').attr('href')).replace(/schedaProvPDF\/([a-zA-Z0-9_#]+)\//g,
+        'schedaProvPDF/'+data+'/'));
+        console.log('linkProv2 = '+$('#btn_prov2').attr('href'));
+      });
+    });
+  </script>
+@endif
 @endpush

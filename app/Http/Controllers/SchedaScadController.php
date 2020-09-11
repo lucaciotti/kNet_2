@@ -47,7 +47,6 @@ class SchedaScadController extends Controller
               })
               ->where('codag', $codAg)->where(DB::raw('LENGTH(codag)'), strlen($codAg))
               ->whereIn('tipoacc', ['F', ''])
-              ->where('id_doc', '!=', 0)
               ->with(array('client' => function($query) {
                 $query->select('codice', 'descrizion')
                 ->withoutGlobalScope('agent')
