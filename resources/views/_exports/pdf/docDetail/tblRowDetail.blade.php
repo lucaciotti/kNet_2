@@ -1,7 +1,7 @@
 <table class="table table-hover table-condensed">
-    <col width="50">
+    <col width="30">
     <col width="100">
-    <col width="200">
+    <col width="250">
     <col width="100">
     <col width="80">
     @if($head->tipomodulo=='O')
@@ -50,7 +50,13 @@
             <tr>
                 <td style="text-align: center;">{{ $row->numeroriga }}</td>
                 <td>{{ $row->codicearti }}</td>
-                <td>{{ $row->descrizion }}</td>
+                <td>
+                    @if (RedisUser::get('lang')=='en' && $row->descrLangEN)
+                        {{ Illuminate\Support\Str::ucfirst(Illuminate\Support\Str::lower($row->descrLangEN->descrizion)) }}   
+                    @else 
+                        {{ Illuminate\Support\Str::ucfirst(Illuminate\Support\Str::lower($row->descrizion)) }}
+                    @endif                    
+                </td>
                 <td style="text-align: center;">{{ $row->lotto }}</td>
                 <td style="text-align: center;">
                     @if (!empty($row->codicearti)) {{ $row->quantita }} {{ $row->unmisura }} @endif

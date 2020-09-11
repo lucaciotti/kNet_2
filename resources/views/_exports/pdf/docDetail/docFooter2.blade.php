@@ -121,10 +121,10 @@
     <span class="contentSubTitle">{{ trans('doc.nextDocs') }}</span>
         @foreach($nextDocs as $doc)
             <dl>
-                <a href="{{ route('doc::detail', $doc->id) }}">
-                    {{$doc->tipodoc}} {{$doc->numerodoc}} - {{$doc->datadoc->format('d/m/Y')}}
-                </a>
-                <a href="{{ route('doc::downloadPDF', $doc->id) }}">
+                <a href="{{ route('doc::detail', $doc->id) }}" title="kNetPage">
+                    {{$doc->tipodoc}} {{$doc->numerodoc}}
+                </a> - {{$doc->datadoc->format('d/m/Y')}}
+                <a href="{{ route('doc::downloadPDF', $doc->id) }}" title="kNetPDF">
                     [PDF]
                 </a>
             </dl>

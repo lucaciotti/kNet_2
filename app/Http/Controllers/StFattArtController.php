@@ -10,6 +10,7 @@ use knet\ArcaModels\Agent;
 use knet\ArcaModels\Settore;
 use knet\ArcaModels\Zona;
 use knet\ArcaModels\SubGrpProd;
+use knet\Helpers\AgentFltUtils;
 
 class StFattArtController extends Controller
 {
@@ -23,6 +24,7 @@ class StFattArtController extends Controller
         $agentList = Agent::select('codice', 'descrizion')->whereNull('u_dataini')->orWhere('u_dataini', '>=', Carbon::now())->orderBy('codice')->get();
         $codAg = ($req->input('codag')) ? $req->input('codag') : ($codAg ? array_wrap($codAg) : $codAg);
         $fltAgents = (!empty($codAg)) ? $codAg : array_wrap((!empty(RedisUser::get('codag')) ? RedisUser::get('codag') : $agentList->first()->codice));
+        $fltAgents = AgentFltUtils::checkSpecialRules($fltAgents);
         $thisYear = (Carbon::now()->year);
         $zoneList = strpos($codAg[0], 'A')==0 ? Zona::whereRaw('LEFT(codice,1)=?', ['0'])->get() : Zona::whereRaw('LEFT(codice,1)!=?', ['0'])->get();
         $grpPrdList = SubGrpProd::where('codice', 'NOT LIKE', '1%')

@@ -531,14 +531,19 @@ class DocCliController extends Controller
       $destDiv = null;
       $ddtOk = null;
     }
-    $rows = DocRow::where('id_testa', $id_testa)->orderBy('numeroriga', 'asc')->get();
+    $rows = DocRow::where('id_testa', $id_testa)->orderBy('numeroriga', 'asc');
+    if (RedisUser::get('location') != RedisUser::get('lang')) {
+      // dd(RedisUser::getAll());
+      $rows->with('descrLangEN');
+    }
+    $rows=$rows->get();
     $prevIds = DocRow::distinct('riffromt')->where('id_testa', $id_testa)->where('riffromt', '!=', 0)->get();
     $prevDocs = DocCli::select('id', 'tipodoc', 'numerodoc', 'datadoc')->whereIn('id', $prevIds->pluck('riffromt'))->get();
     $nextIds = DocRow::distinct('id_testa')->where('riffromt', $id_testa)->get();
     $nextDocs = DocCli::select('id', 'tipodoc', 'numerodoc', 'datadoc')->whereIn('id', $nextIds->pluck('id_testa'))->get();
 
     $totValueFOC = $rows->where('ommerce', true)->sum('prezzotot');
-    // dd($head->scadenza);
+    // dd($rows);
     $title = "Doc Detail";
     $subTitle = $head->tipodoc."_".$head->numerodoc."/".$head->esercizio;
     $view = '_exports.pdf.docDetailPdf';

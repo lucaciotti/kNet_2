@@ -11,6 +11,7 @@ use knet\ArcaModels\Agent;
 use knet\ArcaModels\Product;
 use knet\Exports\StatFatArtExport;
 use knet\Exports\StatFatArtListCliExport;
+use knet\Helpers\AgentFltUtils;
 use knet\Helpers\PdfReport;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -197,6 +198,7 @@ class SchedaFatArtController extends Controller
         $agentList = Agent::select('codice', 'descrizion')->whereNull('u_dataini')->orderBy('codice')->get();
         $codAg = ($req->input('codag')) ? $req->input('codag') : $codAg;
         $fltAgents = (!empty($codAg)) ? $codAg : array_wrap((!empty(RedisUser::get('codag')) ? RedisUser::get('codag') : $agentList->first()->codice));
+        $fltAgents = AgentFltUtils::checkSpecialRules($fltAgents);
         $thisYear = (Carbon::now()->year);
         $settoreSelected = ($req->input('settoreSelected')) ? $req->input('settoreSelected') : null;
         $zoneSelected = ($req->input('zoneSelected')) ? $req->input('zoneSelected') : null;
@@ -298,6 +300,7 @@ class SchedaFatArtController extends Controller
         $agentList = Agent::select('codice', 'descrizion')->whereNull('u_dataini')->orderBy('codice')->get();
         $codAg = ($req->input('codag')) ? $req->input('codag') : $codAg;
         $fltAgents = (!empty($codAg)) ? $codAg : array_wrap((!empty(RedisUser::get('codag')) ? RedisUser::get('codag') : $agentList->first()->codice));
+        $fltAgents = AgentFltUtils::checkSpecialRules($fltAgents);
         $thisYear = (Carbon::now()->year);
         $settoreSelected = ($req->input('settoreSelected')) ? $req->input('settoreSelected') : null;
         $zoneSelected = ($req->input('zoneSelected')) ? $req->input('zoneSelected') : null;
@@ -385,6 +388,7 @@ class SchedaFatArtController extends Controller
         $agentList = Agent::select('codice', 'descrizion')->whereNull('u_dataini')->orderBy('codice')->get();
         $codAg = ($req->input('codag')) ? $req->input('codag') : $codAg;
         $fltAgents = (!empty($codAg)) ? $codAg : array_wrap((!empty(RedisUser::get('codag')) ? RedisUser::get('codag') : $agentList->first()->codice));
+        $fltAgents = AgentFltUtils::checkSpecialRules($fltAgents);
         $thisYear = (Carbon::now()->year);
         $settoreSelected = ($req->input('settoreSelected')) ? $req->input('settoreSelected') : null;
         $zoneSelected = ($req->input('zoneSelected')) ? $req->input('zoneSelected') : null;
@@ -460,6 +464,7 @@ class SchedaFatArtController extends Controller
         $agentList = Agent::select('codice', 'descrizion')->whereNull('u_dataini')->orderBy('codice')->get();
         $codAg = ($req->input('codag')) ? $req->input('codag') : $codAg;
         $fltAgents = (!empty($codAg)) ? $codAg : array_wrap((!empty(RedisUser::get('codag')) ? RedisUser::get('codag') : $agentList->first()->codice));
+        $fltAgents = AgentFltUtils::checkSpecialRules($fltAgents);
         $thisYear = (Carbon::now()->year);
         $settoreSelected = ($req->input('settoreSelected')) ? $req->input('settoreSelected') : null;
         $zoneSelected = ($req->input('zoneSelected')) ? $req->input('zoneSelected') : null;

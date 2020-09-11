@@ -85,7 +85,7 @@
 
     @include('auth.terms')
 
-    <script>
+    {{-- <script>
         $(function () {
             $('input').iCheck({
                 checkboxClass: 'icheckbox_flat-aero',
@@ -93,7 +93,7 @@
                 increaseArea: '20%' // optional
             });
         });
-    </script>
+    </script> --}}
 </body>
 
 @endsection

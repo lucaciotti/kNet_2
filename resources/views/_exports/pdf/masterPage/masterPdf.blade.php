@@ -25,7 +25,8 @@
             hr.smalldivider { width: 50%; float:left; margin-right: 50%;}
             hr.dividerPage { width: 80%; float:middle; margin-right: 10%;}
             dt { font-size: 8pt; font-style: italic; }
-            a { text-decoration: none; color: #000; }
+            a { text-decoration: none; }
+            a.black { color: #000; }
             table { width: 100%; font-size: 9pt; }
             table tr { page-break-inside: avoid; }
             table .fontsmall { font-size:  8pt; }

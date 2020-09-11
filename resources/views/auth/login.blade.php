@@ -36,9 +36,9 @@
         </div>
         <div class="row">
             <div class="col-xs-8">
-                <div class="checkbox icheck">
+                <div class="form-group">
                     <label>
-                        <input type="checkbox" name="remember"/> {{ trans('_message.remember') }}
+                        <input type="checkbox" name="remember"/>&nbsp;&nbsp;{{ trans('_message.remember') }}
                     </label>
                 </div>
             </div><!-- /.col -->
@@ -51,14 +51,17 @@
     {{-- @include('auth.partials.social_login') --}}
 
     <a href="{{ url('/password/reset') }}">{{ trans('_message.forgotpassword') }}</a><br>
-    <a href="{{ url('/register') }}" class="text-center">{{ trans('_message.registermember') }}</a>
+    {{-- <a href="{{ url('/register') }}" class="text-center">{{ trans('_message.registermember') }}</a> --}}
 
 </div><!-- /.login-box-body -->
 
 </div><!-- /.login-box -->
 
     @include('layouts.partials.scripts_auth')
-
+    {{-- <link href="{{ asset('/plugins/iCheck/flat/_all.css') }}" rel="stylesheet" type="text/css" />
+    
+    <!-- iCheck -->
+    <script src="{{ asset('/plugins/iCheck/icheck.min.js') }}" type="text/javascript"></script>
     <script>
         $(function () {
             $('input').iCheck({
@@ -66,7 +69,7 @@
                 radioClass: 'iradio_square-blue',
                 increaseArea: '20%' // optional
             });
-        });
+        }); --}}
     </script>
 </body>
 

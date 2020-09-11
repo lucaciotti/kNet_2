@@ -62,7 +62,7 @@ Landing page based on Pratt: http://blacktie.co/demo/pratt/
             <ul class="nav navbar-nav navbar-right">
                 @if (Auth::guest())
                     <li><a href="{{ url('/login') }}">{{ trans('_message.login') }}</a></li>
-                    <li><a href="{{ url('/register') }}">{{ trans('_message.register') }}</a></li>
+                    {{-- <li><a href="{{ url('/register') }}">{{ trans('_message.register') }}</a></li> --}}
                 @else
                     <li><a href="/home">{{ Auth::user()->name }}</a></li>
                 @endif
@@ -72,20 +72,18 @@ Landing page based on Pratt: http://blacktie.co/demo/pratt/
 </div>
 
 
-<section id="home" name="home"></section>
+<section id="home" name="home">
 <div id="headerwrap">
     <div class="container">
         <div class="row centered">
             <div class="col-lg-12">
-                <h1>kNet <b><a href="http://knet.kronakoblenz.it">2.0</a></b></h1>
+                <h1>kNet <b><a href="{{ url('/login') }}">2.0</a></b></h1>
                 <h3>{{ trans('landing.knetMission') }}</h3>
             </div>
         </div>
     </div> <!--/ .container -->
 </div><!--/ #headerwrap -->
 
-
-<section id="desc" name="desc"></section>
 <!-- INTRO WRAP -->
 <div id="intro">
     <div class="container">
@@ -111,10 +109,20 @@ Landing page based on Pratt: http://blacktie.co/demo/pratt/
         </div>
         <br>
         <hr>
+    </div>
+    <div class="container">
+        <div class="row centered">
+            <div class="col-lg-12">
+                <h1><b><a href="{{ url('/login') }}">Enter</a></b></h1>
+                <br>
+                
+            </div>
+        </div>
     </div> <!--/ .container -->
 </div><!--/ #introwrap -->
+</section>
 
-<section id="contact" name="contact"></section>
+<section id="contact" name="contact">
 <div id="footerwrap">
     <div class="container">
         <div class="col-lg-5">
@@ -129,6 +137,7 @@ Landing page based on Pratt: http://blacktie.co/demo/pratt/
 
     </div>
 </div>
+</section>
 <div id="c">
     <div class="container">
         <p>

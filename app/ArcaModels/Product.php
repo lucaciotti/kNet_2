@@ -4,7 +4,7 @@ namespace knet\ArcaModels;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
-use RedisUser;
+use knet\Helpers\RedisUser;
 
 class Product extends Model
 {
@@ -89,6 +89,11 @@ class Product extends Model
 
   public function grpProd(){
     return $this->hasOne('knet\ArcaModels\SubGrpProd', 'codice', 'gruppo');
+  }
+
+  public function descrLang(String $lang)
+  {
+    return $this->hasOne('knet\ArcaModels\ProdLang', 'codicearti', 'codice')->where('codlingua', strtoupper($lang));
   }
 
   //Multator

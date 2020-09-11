@@ -7,6 +7,7 @@ use Carbon\Carbon;
 use knet\ArcaModels\Agent;
 use knet\ArcaModels\DocCli;
 use knet\ArcaModels\DocRow;
+use knet\Helpers\AgentFltUtils;
 use knet\Helpers\Utils;
 use knet\Helpers\RedisUser;
 
@@ -39,7 +40,8 @@ class PortfolioController extends Controller
 
 		$agents = Agent::select('codice', 'descrizion')->whereNull('u_dataini')->orWhere('u_dataini', '>=', Carbon::now())->orderBy('codice')->get();
 		$codAg = ($req->input('codag')) ? $req->input('codag') : $codAg;
-        $fltAgents = (!empty($codAg)) ? $codAg : array_wrap((!empty(RedisUser::get('codag')) ? RedisUser::get('codag') : $agents->first()->codice)); //$agents->pluck('codice')->toArray();
+		$fltAgents = (!empty($codAg)) ? $codAg : array_wrap((!empty(RedisUser::get('codag')) ? RedisUser::get('codag') : $agents->first()->codice)); //$agents->pluck('codice')->toArray();
+		$fltAgents = AgentFltUtils::checkSpecialRules($fltAgents);
 
 		$OCKrona = $this->getOrderToShip(['A'], $fltAgents)->sum('totRowPrice');
 		$OCKoblenz = $this->getOrderToShip(['B'], $fltAgents, ['B06'])->sum('totRowPrice');

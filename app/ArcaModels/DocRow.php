@@ -33,4 +33,9 @@ class DocRow extends Model
     return $this->belongsTo('knet\ArcaModels\Product', 'codicearti', 'codice');
   }
 
+  public function descrLangEN()
+  {
+    return $this->hasOne('knet\ArcaModels\ProdLang', 'codicearti', 'codicearti')->where('codlingua', 'UK');
+  }
+
 }
