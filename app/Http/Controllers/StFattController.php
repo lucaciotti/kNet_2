@@ -224,6 +224,8 @@ class StFattController extends Controller
                               ->withoutGlobalScope('client');
                             }
                             ])
+                          ->withoutGlobalScope('agent')
+                          ->withoutGlobalScope('superAgent')
                           ->get();
       
       $gruppi = GrpProd::where('codice', 'NOT LIKE', '1%')
