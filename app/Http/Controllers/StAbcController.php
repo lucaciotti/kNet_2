@@ -175,6 +175,8 @@ class StAbcController extends Controller
                   }
                 ])
                 ->orderBy('qta_TY', 'DESC')
+                ->withoutGlobalScope('agent')
+                ->withoutGlobalScope('superAgent')
                 ->get();
                 
       $gruppi = SubGrpProd::where('codice', 'NOT LIKE', '1%')
