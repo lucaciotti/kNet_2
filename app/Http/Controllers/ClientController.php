@@ -49,7 +49,7 @@ class ClientController extends Controller
       Session::forget('_old_input');
       return view('client.index', [
         'clients' => $clients,
-        'fltClients' => $clients,//Client::select('codice', 'descrizion')->orderBy('descrizion')->get(),
+        'fltClients' => Client::select('codice', 'descrizion')->orderBy('descrizion')->get(),
         'nazioni' => $nazioni,
         'settori' => $settori,
         'zone' => $zone,
