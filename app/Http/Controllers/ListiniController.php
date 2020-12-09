@@ -67,7 +67,9 @@ class ListiniController extends Controller
                             ->withoutGlobalScope('Listino')
                             ->with('grpProd');
                     },
-                    'wListOk'
+                    'wListOk' => function ($query) {
+                        $query->where('esercizio', '2021');
+                    }
                     ])
                     ->orderBy('codicearti')
                     ->get();
@@ -85,7 +87,9 @@ class ListiniController extends Controller
                     'masterProd' => function($query){
                         $query->select('codice', 'descrizion');
                     },
-                    'wListOk'
+                    'wListOk' => function ($query) {
+                        $query->where('esercizio', '2021');
+                    }
                     ])
                     ->orderBy('gruppomag')
                     ->get();
@@ -197,7 +201,7 @@ class ListiniController extends Controller
             foreach($req->estendi as $listId){
                 $listOk = wListiniOk::create([
                     'listini_id'  =>$listId,
-                    'esercizio' => '2020',
+                    'esercizio' => '2021',
                 ]);
                 $listOk->save();
             }
@@ -235,7 +239,7 @@ class ListiniController extends Controller
                                 $q->select('codice', 'descrizion');
                             },
                             'wListOk'=>function($q){
-                                $q->select('listini_id', DB::raw('IF(id IS NOT NULL, 1, 0) as nList'));
+                                $q->select('listini_id', DB::raw('IF(id IS NOT NULL, 1, 0) as nList'))->where('esercizio', '2021');
                             }
                         ])
                         // ->groupBy('codclifor')
