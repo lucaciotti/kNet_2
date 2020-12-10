@@ -232,6 +232,7 @@ class ListiniController extends Controller
                             // DB::raw('SUM(IF(w_listok.id IS NOT NULL, 1, 0)) as nListOk')
                             )
                         ->where('codclifor', '!=', '')->where('datafine', '<=', $endOfYear)
+                        ->where('id', 209273)
                         // ->whereDoesntHave('wListOk')
                         // ->whereHas('wListOk')
                         ->with([
@@ -239,12 +240,16 @@ class ListiniController extends Controller
                                 $q->select('codice', 'descrizion');
                             },
                             'wListOk'=>function($q){
-                                $q->select('listini_id', DB::raw('IF(id IS NOT NULL, 1, 0) as nList'))->where('esercizio', '2021');
-                            }
+                                $q->select('listini_id', DB::raw('IF(id IS NOT NULL, 1, 0) as nList'))->where('esercizio', '2020');
+                            },
+                            'promo' => function ($q) {
+                                $q->select('id', 'id_listino', DB::raw('IF(id IS NOT NULL, 1, 0) as nPromo'));
+                            },
                         ])
                         // ->groupBy('codclifor')
                         ->orderBy('codclifor')->get();
         // dd($customers->groupBy('codclifor')->first()->where('nGrpMag', '!=', '1')->where('wListOk.nList', '==', '1')->count());
+        dd($customers->promo());
 
         return view('listini.cliListScad', [
             'customers' => $customers->groupBy('codclifor'),

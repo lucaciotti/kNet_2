@@ -62,8 +62,12 @@ class Product extends Model
   }
 
   public function getListinoAttribute(){
-      if(substr($this->attributes['gruppo'],0,1)=='B'){
-        $listino = $this->attributes['listino6'];
+      if(RedisUser::get('ditta_DB')== "kNet_it") {
+        if(substr($this->attributes['gruppo'],0,1)=='B'){
+          $listino = $this->attributes['listino6'];
+        } else {
+          $listino = $this->attributes['listino1'];
+        }
       } else {
         $listino = $this->attributes['listino1'];
       }

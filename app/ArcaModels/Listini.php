@@ -120,4 +120,16 @@ class Listini extends Model
         return $this->hasOne('knet\WebModels\wListiniOk', 'listini_id', 'id');
     }
 
+    public function promo()
+    {
+        return $this->hasManyThrough(
+            Promo::class,
+            PromoLis::class,
+            'id_listino',
+            'id',
+            'id',
+            'id_promo'
+        )->latest();
+    }
+
 }

@@ -8,26 +8,21 @@ use Illuminate\Database\Eloquent\Builder;
 use Carbon\Carbon;
 use knet\Helpers\RedisUser as RedisUser;
 
-class Promo extends Model
+class PromoLis extends Model
 {
-    protected $table = 'u_promo';
+    protected $table = 'u_promolis';
     public $timestamps = false;
     // protected $primaryKey = 'id';
     public $incrementing = false;
     protected $connection = '';
 
-    protected $dates = ['dataini', 'datafine'];
+    // protected $dates = ['dataini', 'datafine'];
     // protected $appends = ['master_clas', 'master_grup', 'listino', 'tipo_prod'];
 
     // Scope that garante to find only Supplier from anagrafe
     protected static function boot()
     {
         parent::boot();
-
-        static::addGlobalScope('attivo', function (Builder $builder) {
-            $builder->where('datafine', '>=', Carbon::now()->subMonths(6)->endOfYear()->subDay());
-            // ->orWhere('datafine', '=', '')->orWhereNull('datafine')
-        });
     }
 
     public function __construct($attributes = array())
@@ -39,20 +34,13 @@ class Promo extends Model
     }
 
     // JOIN Tables
-    public function product()
+    public function promo()
     {
-        return $this->belongsTo('knet\ArcaModels\Product', 'codicearti', 'codice');
+        return $this->belongsTo('knet\ArcaModels\Promo', 'id_promo', 'id');
     }
 
-    public function listino()
+    public function listini()
     {
-        return $this->hasManyThrough(
-            Listini::class,
-            PromoLis::class,
-            'id_promo',
-            'id',
-            'id',
-            'id_listino'
-        );
+        return $this->belongsTo('knet\ArcaModels\Listini', 'id_listino', 'id');
     }
 }

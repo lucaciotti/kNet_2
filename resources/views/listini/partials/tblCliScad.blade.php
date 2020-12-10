@@ -39,7 +39,7 @@
 
             <th colspan="1">|</th>
 
-            <td style="text-align: center; color:red;"><b>{{ $customer->where('nCodArt', '==', '1')->count() - $customer->where('nCodArt', '==', '1')->where('wListOk.nList', '==', '1')->count() }}</b></td>
+            <td style="text-align: center; color:red;"><b>{{ $customer->where('nCodArt', '==', '1')->count() - $customer->where('nCodArt', '==', '1')->where('wListOk.nList', '==', '1')->count() }} [{{ $customer->where('nPromo', '==', '1')->count() }}]</b></td>
             <td style="text-align: center;">{{ $customer->where('nCodArt', '==', '1')->where('wListOk.nList', '==', '1')->count() }}</td>
            
             <th colspan="1">|</th>

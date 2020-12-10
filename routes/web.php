@@ -203,6 +203,13 @@ Route::group(['as' => 'listini::'], function () {
   ]);
 });
 
+Route::group(['as' => 'promo::'], function () {
+  Route::get('/promoList', [
+    'as' => 'idx',
+    'uses' => 'PromoController@idx'
+  ]);
+});
+
 Route::post('ddtConfirm/{id}', [
   'as' => 'ddtConfirm',
   'uses' => 'DdtOkController@store'
