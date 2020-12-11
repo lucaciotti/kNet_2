@@ -3,7 +3,11 @@
         <tr>
             <th colspan="5"></th>
             <th colspan="1">|</th>
+            @if (RedisUser::get('ditta_DB')=='kNet_it')
             <th colspan="4" style="text-align: center;">n° Cod.Art.</th>
+            @else
+            <th colspan="2" style="text-align: center;">n° Cod.Art.</th>
+            @endif
             <th colspan="1">|</th>
             <th colspan="2" style="text-align: center;">n° Gruppo Prod.</th>
         </tr>
