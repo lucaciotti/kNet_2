@@ -201,6 +201,10 @@ Route::group(['as' => 'listini::'], function () {
     'as' => 'cliListScad',
     'uses' => 'ListiniController@cliListScad'
   ]);
+  Route::get('/grpListScad', [
+    'as' => 'grpListScad',
+    'uses' => 'ListiniController@grpListScad'
+  ]);
 });
 
 Route::group(['as' => 'promo::'], function () {

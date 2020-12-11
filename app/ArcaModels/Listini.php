@@ -104,6 +104,11 @@ class Listini extends Model
       return $this->hasOne('knet\ArcaModels\GrpCli', 'codice', 'gruppocli');
     }
 
+    public function cliGrp()
+    {
+        return $this->hasMany('knet\ArcaModels\Client', 'gruppolist', 'gruppocli');
+    }
+
     public function product(){
         return $this->belongsTo('knet\ArcaModels\Product', 'codicearti', 'codice');
     }
