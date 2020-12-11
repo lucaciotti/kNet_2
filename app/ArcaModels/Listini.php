@@ -129,7 +129,7 @@ class Listini extends Model
             'id',
             'id',
             'id_promo'
-        )->latest();
+        );
     }
 
 }

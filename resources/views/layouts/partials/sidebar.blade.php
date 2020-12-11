@@ -58,9 +58,9 @@
                             <li class="{{ Ekko::isActiveRoute('listini::grpCli') }}"><a href="{{ route('listini::cliListScad') }}">Listino in Scadenza</a></li>
                         @endif
                         <li>&nbsp;</li>
-                        @if (!in_array(RedisUser::get('role'), ['agent', 'client']))
+                        {{-- @if (!in_array(RedisUser::get('role'), ['agent', 'client']))
                         <li class="{{ Ekko::isActiveRoute('promo::idx') }}"><a href="{{ route('promo::idx') }}">Promo Attive</a></li>
-                        @endif
+                        @endif --}}
                     </ul>
                 </li>
                 @endif

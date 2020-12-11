@@ -69,7 +69,8 @@ class ListiniController extends Controller
                     },
                     'wListOk' => function ($query) {
                         $query->where('esercizio', '2021');
-                    }
+                    },
+                    'promo'
                     ])
                     ->orderBy('codicearti')
                     ->get();
@@ -228,11 +229,12 @@ class ListiniController extends Controller
                             'id',
                             'codclifor',
                             DB::raw('IF(gruppomag!="", 1, 0) as nGrpMag'),
-                            DB::raw('IF(codicearti!="", 1, 0) as nCodArt')
+                            DB::raw('IF(codicearti!="", 1, 0) as nCodArt'),
+                            DB::raw('0 as isPromo')
                             // DB::raw('SUM(IF(w_listok.id IS NOT NULL, 1, 0)) as nListOk')
                             )
                         ->where('codclifor', '!=', '')->where('datafine', '<=', $endOfYear)
-                        ->where('id', 209273)
+                        // ->where('codclifor', 'C00023')
                         // ->whereDoesntHave('wListOk')
                         // ->whereHas('wListOk')
                         ->with([
@@ -240,7 +242,7 @@ class ListiniController extends Controller
                                 $q->select('codice', 'descrizion');
                             },
                             'wListOk'=>function($q){
-                                $q->select('listini_id', DB::raw('IF(id IS NOT NULL, 1, 0) as nList'))->where('esercizio', '2020');
+                                $q->select('listini_id', DB::raw('IF(id IS NOT NULL, 1, 0) as nList'))->where('esercizio', '2021');
                             },
                             'promo' => function ($q) {
                                 $q->select('id', 'id_listino', DB::raw('IF(id IS NOT NULL, 1, 0) as nPromo'));
@@ -248,8 +250,13 @@ class ListiniController extends Controller
                         ])
                         // ->groupBy('codclifor')
                         ->orderBy('codclifor')->get();
+        // WorkAround for Promo
+        $customers->each(function ($listino, $key) {
+            $listino->isPromo = ($listino->promo->first() ? 1 : 0); 
+        });
+        // dd($customers->groupBy('codclifor'));
         // dd($customers->groupBy('codclifor')->first()->where('nGrpMag', '!=', '1')->where('wListOk.nList', '==', '1')->count());
-        dd($customers->promo());
+        // dd($customers->groupBy('codclifor')->firstWhere('promo.nPromo', '==', '1'));
 
         return view('listini.cliListScad', [
             'customers' => $customers->groupBy('codclifor'),

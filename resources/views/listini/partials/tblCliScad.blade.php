@@ -3,7 +3,7 @@
         <tr>
             <th colspan="5"></th>
             <th colspan="1">|</th>
-            <th colspan="2" style="text-align: center;">n° Cod.Art.</th>
+            <th colspan="4" style="text-align: center;">n° Cod.Art.</th>
             <th colspan="1">|</th>
             <th colspan="2" style="text-align: center;">n° Gruppo Prod.</th>
         </tr>
@@ -19,6 +19,10 @@
             <th colspan="1">|</th>
             <th style="text-align: center;">Residui</th>
             <th style="text-align: center;">Elaborati</th>
+            @if (RedisUser::get('ditta_DB')=='kNet_it')   
+                <th colspan="1">|</th>
+                <th style="text-align: center;">PROMO</th>
+            @endif
 
             <th colspan="1">|</th>
             <th style="text-align: center;">Residui</th>
@@ -39,8 +43,12 @@
 
             <th colspan="1">|</th>
 
-            <td style="text-align: center; color:red;"><b>{{ $customer->where('nCodArt', '==', '1')->count() - $customer->where('nCodArt', '==', '1')->where('wListOk.nList', '==', '1')->count() }} [{{ $customer->where('nPromo', '==', '1')->count() }}]</b></td>
+            <td style="text-align: center; color:red;"><b>{{ $customer->where('nCodArt', '==', '1')->count() - $customer->where('nCodArt', '==', '1')->where('wListOk.nList', '==', '1')->count() - $customer->where('isPromo', '==', '1')->count() }}</b></td>
             <td style="text-align: center;">{{ $customer->where('nCodArt', '==', '1')->where('wListOk.nList', '==', '1')->count() }}</td>
+            @if (RedisUser::get('ditta_DB')=='kNet_it')
+                <th colspan="1">|</th>
+                <td style="text-align: center;"><b>{{ $customer->where('isPromo', '==', '1')->count() }}</b></td>
+            @endif
            
             <th colspan="1">|</th>
             <td style="text-align: center; color:red;"><b>{{ $customer->where('nGrpMag', '==', '1')->count() - $customer->where('nGrpMag', '==', '1')->where('wListOk.nList', '==', '1')->count() }}</b></td>

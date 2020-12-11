@@ -28,7 +28,11 @@
     </thead>
     <tbody>
       @foreach ($ListProds as $list)
+        @if($list->promo->first())
+        <tr class="warning">
+        @else
         <tr>
+        @endif
           @if(!$noCli)
             <td><a href="{{ route('stAbc::docsArtCli', ['codArt' => $list->codicearti, 'codcli' => $customer]) }}" target="_blank"> {{ $list->codicearti }} </a></td>
           @else
@@ -58,14 +62,22 @@
               data-placement="right">
               <i class="fa fa-info-circle"> </i>
             </a>
-            @if($list->u_noprzmin)
-              <a href="#" data-toggle="popover" title="Attenzione!" data-trigger="focus"
-                data-content="<div>
-                  Prezzo Direzionale
-                </div>" 
-                data-placement="right">
-                <i class="fa fa-exclamation-triangle" style="color:darkred"></i>
+            @if($list->promo->first())
+              <a href="#" data-toggle="popover" title="PROMO!" data-trigger="focus" data-content="<div>
+                                  {{ ($list->promo->first()->descrizion) }}
+                                </div>" data-placement="right">
+                <i class="fa fa-exclamation-circle" style="color:darkred"></i>
               </a>
+            @else
+              @if($list->u_noprzmin)
+                <a href="#" data-toggle="popover" title="Attenzione!" data-trigger="focus"
+                  data-content="<div>
+                    Prezzo Direzionale
+                  </div>" 
+                  data-placement="right">
+                  <i class="fa fa-exclamation-triangle" style="color:darkred"></i>
+                </a>
+              @endif
             @endif
           </td>
           @php
@@ -93,19 +105,24 @@
                 $goOn = $list->datafine && ($list->datafine <= ($endOfYear));
                 // dd($endOfYear);
             @endphp
-            @if($goOn) 
-              @if(!$list->wListOk)
-                <td style="text-align: center;">
-                  <input type="checkbox" name="estendi[]" id="estendi[]" value="{{ $list->id }}">
-                </td>
-              @else
-                <td style="text-align: center;">
-                  <input type="checkbox" name="estese[]" id="estese[]" value="{{ $list->id }}" checked disabled readonly>
-                </td>
-              @endif
+            @if($list->promo->first())
+            <td style="text-align: center;">PROMO
+            </td>
             @else
-                <td style="text-align: center;">
-                </td>
+              @if($goOn) 
+                @if(!$list->wListOk)
+                  <td style="text-align: center;">
+                    <input type="checkbox" name="estendi[]" id="estendi[]" value="{{ $list->id }}">
+                  </td>
+                @else
+                  <td style="text-align: center;">
+                    <input type="checkbox" name="estese[]" id="estese[]" value="{{ $list->id }}" checked disabled readonly>
+                  </td>
+                @endif
+              @else
+                  <td style="text-align: center;">
+                  </td>
+              @endif
             @endif
           @endif
           {{-- <input type="hidden" name="list_id_{{ $list->id }}" value="{{ $list->id }}"> --}}
