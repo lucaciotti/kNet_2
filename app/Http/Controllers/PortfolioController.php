@@ -307,7 +307,7 @@ class PortfolioController extends Controller
 		$dStartDate = $this->dStartMonth;
 		$dEndDate = $this->dEndMonth;
 		$dStartDate = $dStartDate->subYear();
-		$dEndDate = new Carbon('last day of ' . Carbon::now()->format('F') . ' ' . ((string)$this->thisYear->subYear()));
+		$dEndDate = new Carbon('last day of ' . Carbon::now()->format('F') . ' ' . ((string)$this->prevYear));
 		if(empty($this->arrayIDprevFT)){
 			$docTes = DocCli::select('id')							
 								->whereIn('esercizio', [(string)$this->prevYear])
