@@ -107,7 +107,7 @@ class SchedaScadController extends Controller
           ->selectRaw('MIN(1) as pagato')
           ->selectRaw('SUM(docrig.prezzotot) as impeffval')
           ->selectRaw('SUM(ROUND((docrig.prezzotot*docrig.provv)/100,2)) as impprovlit')
-          ->selectRaw('SUM(IF(doctes.numrighepr = 0, 1, 0)) as liquidate')
+          ->selectRaw('MAX(IF(doctes.numrighepr = 0, 1, 0)) as liquidate')
           ->selectRaw('MAX(MONTH(doctes.datadoc)) as Mese')
           ->whereBetween('doctes.datadoc', array($startDate, $endDateFT))
           ->whereRaw('doctes.tipodoc = "PP"')
@@ -117,7 +117,7 @@ class SchedaScadController extends Controller
           ->orderBy('id', 'asc')
           ->get();
         $provv_TY = $provv_TY->groupBy('Mese');
-        dd($provv_TY);
+        // dd($provv_TY);
       } else {
         $provv_TY = ScadCli::select(
           'id',
