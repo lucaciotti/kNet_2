@@ -42,7 +42,7 @@
           @php
             $totCalcolato += ($scad->pagato==0 && $scad->liquidate==0) ? $scad->impprovlit : 0;
             $totMaturato += ($scad->pagato==1 && $scad->liquidate==0) ? $scad->impprovlit : 0;
-            $totLiquidate += ($scad->liquidate==1) ? $scad->impprovlit : 0; ;
+            $totLiquidate += ($scad->liquidate==1) ? $scad->impprovlit : 0;
           @endphp
           @if($scad->liquidate==1)
           <tr>

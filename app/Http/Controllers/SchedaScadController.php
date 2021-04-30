@@ -46,6 +46,7 @@ class SchedaScadController extends Controller
                 });
               })
               ->where('codag', $codAg)->where(DB::raw('LENGTH(codag)'), strlen($codAg))
+              ->where('tipomod', '!=', 'PP')
               ->whereIn('tipoacc', ['F', ''])
               ->with(array('client' => function($query) {
                 $query->select('codice', 'descrizion')
@@ -89,32 +90,75 @@ class SchedaScadController extends Controller
 
       $agente = Agent::select('codice', 'descrizion')->where('codice', $codAg)->where(DB::raw('LENGTH(codice)'), strlen($codAg))->orderBy('codice')->first();
 
-      $provv_TY = DB::connection(RedisUser::get('ditta_DB'))->table('doctes')
-      ->leftjoin('docrig', 'docrig.id_testa', '=', 'doctes.id')
-      ->leftJoin('anagrafe', 'anagrafe.codice', '=', 'doctes.codicecf')
-      ->selectRaw('doctes.id as id')
-      ->selectRaw('MAX(doctes.id) as id_doc')
-      ->selectRaw('MAX(doctes.numerodoc) as numfatt')
-      ->selectRaw('DATE_FORMAT(doctes.datadoc, "%d-%m-%Y") as datafatt')
-      ->selectRaw('DATE_FORMAT(doctes.datadoc, "%d-%m-%Y") as datascad')
-      ->selectRaw('MAX(doctes.codicecf) as codcf')
-      ->selectRaw('MAX(anagrafe.descrizion) as ragione_sociale')
-      ->selectRaw('MIN(doctes.tipodoc) as tipomod')
-      ->selectRaw('MIN(0) as insoluto')
-      ->selectRaw('MIN(0) as u_insoluto')
-      ->selectRaw('MIN(1) as pagato')
-      ->selectRaw('SUM(docrig.prezzotot) as impeffval')
-      ->selectRaw('SUM(ROUND((docrig.prezzotot*docrig.provv)/100,2)) as impprovlit')
-      ->selectRaw('SUM(IF(doctes.numrighepr = 0, 1, 0)) as liquidate')
-      ->selectRaw('MAX(MONTH(doctes.datadoc)) as Mese')
-      ->whereBetween('doctes.datadoc', array($startDate, $endDateFT))
-      ->whereRaw('doctes.tipodoc = "PP"')
-      ->whereRaw('doctes.agente = ?', [$codAg])
-      ->whereRaw('LENGTH(doctes.agente) = ?', [strlen($codAg)])
-      ->groupBy('doctes.id')
-      ->orderBy('id', 'asc')
-      ->get();
-      $provv_TY = $provv_TY->groupBy('Mese');
+      if($year<2021){
+        $provv_TY = DB::connection(RedisUser::get('ditta_DB'))->table('doctes')
+          ->leftjoin('docrig', 'docrig.id_testa', '=', 'doctes.id')
+          ->leftJoin('anagrafe', 'anagrafe.codice', '=', 'doctes.codicecf')
+          ->selectRaw('doctes.id as id')
+          ->selectRaw('MAX(doctes.id) as id_doc')
+          ->selectRaw('MAX(doctes.numerodoc) as numfatt')
+          ->selectRaw('DATE_FORMAT(doctes.datadoc, "%d-%m-%Y") as datafatt')
+          ->selectRaw('DATE_FORMAT(doctes.datadoc, "%d-%m-%Y") as datascad')
+          ->selectRaw('MAX(doctes.codicecf) as codcf')
+          ->selectRaw('MAX(anagrafe.descrizion) as ragione_sociale')
+          ->selectRaw('MIN(doctes.tipodoc) as tipomod')
+          ->selectRaw('MIN(0) as insoluto')
+          ->selectRaw('MIN(0) as u_insoluto')
+          ->selectRaw('MIN(1) as pagato')
+          ->selectRaw('SUM(docrig.prezzotot) as impeffval')
+          ->selectRaw('SUM(ROUND((docrig.prezzotot*docrig.provv)/100,2)) as impprovlit')
+          ->selectRaw('SUM(IF(doctes.numrighepr = 0, 1, 0)) as liquidate')
+          ->selectRaw('MAX(MONTH(doctes.datadoc)) as Mese')
+          ->whereBetween('doctes.datadoc', array($startDate, $endDateFT))
+          ->whereRaw('doctes.tipodoc = "PP"')
+          ->whereRaw('doctes.agente = ?', [$codAg])
+          ->whereRaw('LENGTH(doctes.agente) = ?', [strlen($codAg)])
+          ->groupBy('doctes.id')
+          ->orderBy('id', 'asc')
+          ->get();
+        $provv_TY = $provv_TY->groupBy('Mese');
+      } else {
+        $provv_TY = ScadCli::select(
+          'id',
+          'id_doc',
+          'numfatt',
+          'datafatt',
+          'datascad',
+          'codcf',
+          'tipomod',
+          'tipo',
+          'insoluto',
+          'u_insoluto',
+          'pagato',
+          'impeffval',
+          'importopag',
+          'idragg',
+          'tipoacc',
+          'impprovlit',
+          'impprovliq',
+          'liquidate',
+          DB::raw('MONTH(datafatt) as Mese')
+        )
+          ->whereBetween('datafatt', array($startDate, $endDateFT))
+          ->where(function ($q) use ($startDate, $endDateScad) {
+            $q->whereBetween('datapag', array($startDate, $endDateScad))
+              ->orWhere(function ($query) use ($startDate, $endDateScad) {
+                $query->whereBetween('datascad', array($startDate, $endDateScad))->where('pagato', false);
+              });
+          })
+          ->where('codag', $codAg)->where(DB::raw('LENGTH(codag)'), strlen($codAg))
+          ->where('tipomod', 'PP')
+          ->whereIn('tipoacc', ['F', ''])
+          ->with(array('client' => function ($query) {
+            $query->select('codice', 'descrizion')
+            ->withoutGlobalScope('agent')
+              ->withoutGlobalScope('superAgent')
+              ->withoutGlobalScope('client');
+          }))
+          ->orderBy('datafatt', 'asc')->orderBy('datascad', 'asc')->orderBy('id', 'desc')
+          ->get();
+        $provv_TY = $provv_TY->groupBy('Mese');
+      }
       // dd($provv_TY);
       // ->whereRaw("`pagato` = 1")
       // ->where('datapag', '<=', $endDate)
@@ -122,13 +166,23 @@ class SchedaScadController extends Controller
       $title = "Scheda Provvigioni Supplementari Agente - " . (string) $year;
       $subTitle = $agente->descrizion;
       $view = '_exports.pdf.schedaProvPdf';
-      $data = [
-        'agente' => $agente,
-        'descrAg' => $subTitle,
-        'thisYear' => $thisYear,
-        'provvPP_TY' => $provv_TY,
-        'provv_TY' => null
-      ];
+      if ($year < 2021) {
+        $data = [
+          'agente' => $agente,
+          'descrAg' => $subTitle,
+          'thisYear' => $thisYear,
+          'provvPP_TY' => $provv_TY,
+          'provv_TY' => null
+        ];
+      } else {
+        $data = [
+          'agente' => $agente,
+          'descrAg' => $subTitle,
+          'thisYear' => $thisYear,
+          'provvPP_TY' => null,
+          'provv_TY' => $provv_TY
+        ];
+      }
       $pdf = PdfReport::A4Landscape($view, $data, $title, $subTitle);
 
       return $pdf->stream($title . '-' . $subTitle . '.pdf');
