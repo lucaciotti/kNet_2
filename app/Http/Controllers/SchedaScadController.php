@@ -117,6 +117,7 @@ class SchedaScadController extends Controller
           ->orderBy('id', 'asc')
           ->get();
         $provv_TY = $provv_TY->groupBy('Mese');
+        dd($provv_TY);
       } else {
         $provv_TY = ScadCli::select(
           'id',
