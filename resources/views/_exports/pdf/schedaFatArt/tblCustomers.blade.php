@@ -45,19 +45,7 @@
     @endphp
     @foreach ($fatList as $fatCustomer)
     <tr>
-      <td><a href="{{ route('schedaFatArt::XLS', [
-              $fatCustomer->codicecf, 
-              'yearback' => $yearBack, 
-              'grpPrdSelected' => $grpPrdSelected,
-              'optTipoProd' => $optTipoProd,
-              'zoneSelected' => $zoneSelected,
-              'settoreSelected' => $settoreSelected,
-              'limitVal' => $limitVal,
-              'mese' => $mese,
-              'onlyMese' => $onlyMese,
-              'startYear' => $thisYear,
-              'pariperiodo' => $pariperiodo
-            ]) }}">{{$fatCustomer->codicecf}}</a></td>
+      <td><a href="{{ route('client::detail', $fatCustomer->codicecf ) }}">{{$fatCustomer->codicecf}}</a></td>
       <td>{{$fatCustomer->ragionesociale}}</td>
       @if($yearBack==4) <td>{{ currency($fatCustomer->fatN4) }}</td>@endif
       @if($yearBack>=3) <td>{{ currency($fatCustomer->fatN3) }}</td>@endif
