@@ -103,6 +103,7 @@ Fatturato Confronto Anni
                     [
                     'yearback' => $yearback,
                     'limitVal' => $limitVal,
+                    'thisYear' => $thisYear,
                     ])
                 </div>
             </div>
@@ -130,7 +131,8 @@ Fatturato Confronto Anni
                                         'codag' => $fltAgents,
                                         'zoneSelected' => $zoneSelected,
                                         'settoreSelected' => $settoreSelected,
-                                        'limitVal' => $limitVal
+                                        'thisYear' => $thisYear,
+                                        'limitVal' => $limitVal,
                                         ]) }}">PDF Lista Clienti</a>
                     <a type="button" class="btn btn-default btn-block" target="_blank" href="{{ route('schedaFatArt::XLSListaCli', [
                                         'yearBack' => $yearback,
@@ -139,6 +141,7 @@ Fatturato Confronto Anni
                                         'codag' => $fltAgents,
                                         'zoneSelected' => $zoneSelected,
                                         'settoreSelected' => $settoreSelected,
+                                        'thisYear' => $thisYear,
                                         'limitVal' => $limitVal
                                         ]) }}">XLS Lista Clienti</a>
                     {{-- <a type="button" class="btn btn-default btn-block" target="_blank" href="{{ route('schedaFat::ZonePDF', $agente) }}">Scheda

@@ -26,7 +26,7 @@ class SchedaFatArtController extends Controller
     {
         $codCli = ($req->input('codicecf')) ? $req->input('codicecf') : $codicecf;
         $customer = Client::with(['agent', 'detNation', 'detZona', 'detSect', 'clasCli', 'detPag', 'detStato'])->findOrFail($codCli);
-        $thisYear = (Carbon::now()->year);
+        $thisYear = ($req->input('startYear')) ? $req->input('startYear') : (Carbon::now()->year);
         // $settori = ($req->input('settori')) ? $req->input('settori') : null;
         $yearBack = ($req->input('yearback')) ? $req->input('yearback') : 3; // 2->3AnniView; 3->4AnniView; 4->5AnniView
         $limitVal = ($req->input('limitVal') || $req->input('limitVal') == '0') ? $req->input('limitVal') : null;
@@ -118,7 +118,7 @@ class SchedaFatArtController extends Controller
     public function downloadXLS(Request $req, $codicecf = null)
     {
         $codCli = ($req->input('codicecf')) ? $req->input('codicecf') : $codicecf;
-        $thisYear = (Carbon::now()->year);
+        $thisYear = ($req->input('startYear')) ? $req->input('startYear') : (Carbon::now()->year);
         $yearBack = ($req->input('yearback')) ? $req->input('yearback') : 3; // 2->3AnniView; 3->4AnniView; 4->5AnniView
         $limitVal = ($req->input('limitVal') || $req->input('limitVal') == '0') ? $req->input('limitVal') : null;
         $meseSelected = $req->input('mese');
@@ -199,7 +199,7 @@ class SchedaFatArtController extends Controller
         $codAg = ($req->input('codag')) ? $req->input('codag') : $codAg;
         $fltAgents = (!empty($codAg)) ? $codAg : array_wrap((!empty(RedisUser::get('codag')) ? RedisUser::get('codag') : $agentList->first()->codice));
         $fltAgents = AgentFltUtils::checkSpecialRules($fltAgents);
-        $thisYear = (Carbon::now()->year);
+        $thisYear = ($req->input('startYear')) ? $req->input('startYear') : (Carbon::now()->year);
         $settoreSelected = ($req->input('settoreSelected')) ? $req->input('settoreSelected') : null;
         $zoneSelected = ($req->input('zoneSelected')) ? $req->input('zoneSelected') : null;
         $yearBack = ($req->input('yearback')) ? $req->input('yearback') : 3; // 2->3AnniView; 3->4AnniView; 4->5AnniView
@@ -301,7 +301,7 @@ class SchedaFatArtController extends Controller
         $codAg = ($req->input('codag')) ? $req->input('codag') : $codAg;
         $fltAgents = (!empty($codAg)) ? $codAg : array_wrap((!empty(RedisUser::get('codag')) ? RedisUser::get('codag') : $agentList->first()->codice));
         $fltAgents = AgentFltUtils::checkSpecialRules($fltAgents);
-        $thisYear = (Carbon::now()->year);
+        $thisYear = ($req->input('startYear')) ? $req->input('startYear') : (Carbon::now()->year);
         $settoreSelected = ($req->input('settoreSelected')) ? $req->input('settoreSelected') : null;
         $zoneSelected = ($req->input('zoneSelected')) ? $req->input('zoneSelected') : null;
         $yearBack = ($req->input('yearback')) ? $req->input('yearback') : 3; // 2->3AnniView; 3->4AnniView; 4->5AnniView
@@ -389,7 +389,7 @@ class SchedaFatArtController extends Controller
         $codAg = ($req->input('codag')) ? $req->input('codag') : $codAg;
         $fltAgents = (!empty($codAg)) ? $codAg : array_wrap((!empty(RedisUser::get('codag')) ? RedisUser::get('codag') : $agentList->first()->codice));
         $fltAgents = AgentFltUtils::checkSpecialRules($fltAgents);
-        $thisYear = (Carbon::now()->year);
+        $thisYear = ($req->input('startYear')) ? $req->input('startYear') : (Carbon::now()->year);
         $settoreSelected = ($req->input('settoreSelected')) ? $req->input('settoreSelected') : null;
         $zoneSelected = ($req->input('zoneSelected')) ? $req->input('zoneSelected') : null;
         $yearBack = ($req->input('yearback')) ? $req->input('yearback') : 3; // 2->3AnniView; 3->4AnniView; 4->5AnniView
@@ -465,7 +465,7 @@ class SchedaFatArtController extends Controller
         $codAg = ($req->input('codag')) ? $req->input('codag') : $codAg;
         $fltAgents = (!empty($codAg)) ? $codAg : array_wrap((!empty(RedisUser::get('codag')) ? RedisUser::get('codag') : $agentList->first()->codice));
         $fltAgents = AgentFltUtils::checkSpecialRules($fltAgents);
-        $thisYear = (Carbon::now()->year);
+        $thisYear = ($req->input('startYear')) ? $req->input('startYear') : (Carbon::now()->year);
         $settoreSelected = ($req->input('settoreSelected')) ? $req->input('settoreSelected') : null;
         $zoneSelected = ($req->input('zoneSelected')) ? $req->input('zoneSelected') : null;
         $yearBack = ($req->input('yearback')) ? $req->input('yearback') : 3; // 2->3AnniView; 3->4AnniView; 4->5AnniView

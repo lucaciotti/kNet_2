@@ -9,6 +9,17 @@
 </div>
 
 <div class="form-group">
+  <label>Anno di Partenza</label>
+  <select name="startYear" class="form-control select2" data-placeholder="Anno di Partenza" style="width: 100%;">
+    @for($i=2015; $i<=now()->year ; $i++)
+      <option value="{{ $i }}" @if($thisYear==$i) selected @endif>{{ $i }}</option>
+    @endfor
+  </select>
+</div>
+
+<hr>
+
+<div class="form-group">
   <label>Fatturato Minimo Anno Corrente</label>
   <div class="input-group">
     <span class="input-group-btn">

@@ -67,7 +67,8 @@
               'optTipoProd' => $optTipoProd,
               'mese' => $mese,
               'onlyMese' => $onlyMese,
-              'pariperiodo' => $pariperiodo
+              'pariperiodo' => $pariperiodo,
+              'thisYear' => $thisYear,
             ]) }}" target="_blank"><i
             class="fa fa-file-pdf-o fa-lg text-danger"></i></a>
         <a class="btn-sm btn-default" href="{{ route('schedaFatArt::XLS', [
@@ -77,7 +78,8 @@
               'optTipoProd' => $optTipoProd,
               'mese' => $mese,
               'onlyMese' => $onlyMese,
-              'pariperiodo' => $pariperiodo
+              'pariperiodo' => $pariperiodo,
+              'thisYear' => $thisYear,
             ]) }}"><i
             class="fa fa-file-excel-o fa-lg text-success"></i></a>
       </td>
@@ -110,6 +112,7 @@
               'limitVal' => $limitVal,
               'mese' => $mese,
               'onlyMese' => $onlyMese,
+              'thisYear' => $thisYear,
               'pariperiodo' => $pariperiodo
             ]) }}"
           target="_blank"><i class="fa fa-file-pdf-o fa-lg text-danger"></i></a>
@@ -123,6 +126,7 @@
               'limitVal' => $limitVal,
               'mese' => $mese,
               'onlyMese' => $onlyMese,
+              'thisYear' => $thisYear,
               'pariperiodo' => $pariperiodo
             ]) }}"><i
             class="fa fa-file-excel-o fa-lg text-success"></i></a>
