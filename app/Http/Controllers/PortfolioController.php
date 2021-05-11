@@ -43,34 +43,34 @@ class PortfolioController extends Controller
 		$fltAgents = (!empty($codAg)) ? $codAg : array_wrap((!empty(RedisUser::get('codag')) ? RedisUser::get('codag') : $agents->first()->codice)); //$agents->pluck('codice')->toArray();
 		$fltAgents = AgentFltUtils::checkSpecialRules($fltAgents);
 
-		$OCKrona = $this->getOrderToShip(['A'], $fltAgents)->sum('totRowPrice');
-		$OCKoblenz = $this->getOrderToShip(['B'], $fltAgents, ['B06'])->sum('totRowPrice');
+		$OCKrona = $this->getOrderToShip(['A'],$fltAgents, ['A99'])->sum('totRowPrice');
+		$OCKoblenz = $this->getOrderToShip(['B'],$fltAgents, ['B06', 'B99'])->sum('totRowPrice');
 		$OCKubica = $this->getOrderToShip(['B06'], $fltAgents, ['B0630'])->sum('totRowPrice');
 		$OCAtomika = $this->getOrderToShip(['B0630'], $fltAgents)->sum('totRowPrice');
 		$OCPlanet = (RedisUser::get('ditta_DB')=='kNet_es') ? $this->getOrderToShip(['D0'], $fltAgents)->sum('totRowPrice') : 0;
-		$OCDIC = $this->getOrderToShip(['DIC'], $fltAgents)->sum('totRowPrice');
+		$OCDIC = $this->getOrderToShip(['DIC', 'B99', 'A99'], $fltAgents)->sum('totRowPrice');
 
-		$BOKrona = $this->getDdtNotInvoiced(['A'], $fltAgents)->sum('totRowPrice');
-		$BOKoblenz = $this->getDdtNotInvoiced(['B'], $fltAgents, ['B06'])->sum('totRowPrice');
+		$BOKrona = $this->getDdtNotInvoiced(['A'],$fltAgents, ['A99'])->sum('totRowPrice');
+		$BOKoblenz = $this->getDdtNotInvoiced(['B'],$fltAgents, ['B06', 'B99'])->sum('totRowPrice');
 		$BOKubica = $this->getDdtNotInvoiced(['B06'], $fltAgents, ['B0630'])->sum('totRowPrice');
 		$BOAtomika = $this->getDdtNotInvoiced(['B0630'], $fltAgents)->sum('totRowPrice');
 		$BOPlanet = (RedisUser::get('ditta_DB')=='kNet_es') ? $this->getDdtNotInvoiced(['D0'], $fltAgents)->sum('totRowPrice') : 0;
-		$BODIC = $this->getDdtNotInvoiced(['DIC'], $fltAgents)->sum('totRowPrice');
+		$BODIC = $this->getDdtNotInvoiced(['DIC', 'B99', 'A99'], $fltAgents)->sum('totRowPrice');
 
-		$FTKrona = $this->getInvoice(['A'], $fltAgents)->sum('totRowPrice');
-		$FTKoblenz = $this->getInvoice(['B'], $fltAgents, ['B06'])->sum('totRowPrice');
+		$FTKrona = $this->getInvoice(['A'],$fltAgents, ['A99'])->sum('totRowPrice');
+		$FTKoblenz = $this->getInvoice(['B'],$fltAgents, ['B06', 'B99'])->sum('totRowPrice');
 		$FTKubica = $this->getInvoice(['B06'], $fltAgents, ['B0630'])->sum('totRowPrice');
 		$FTAtomika = $this->getInvoice(['B0630'], $fltAgents)->sum('totRowPrice');
 		$FTPlanet = (RedisUser::get('ditta_DB')=='kNet_es') ? $this->getInvoice(['D0'], $fltAgents)->sum('totRowPrice') : 0;
-		$FTDIC = $this->getInvoice(['DIC'], $fltAgents)->sum('totRowPrice');
+		$FTDIC = $this->getInvoice(['DIC', 'B99', 'A99'], $fltAgents)->sum('totRowPrice');
 
-		$FTPrevKrona = $this->getPrevInvoice(['A'], $fltAgents)->sum('totRowPrice');
-		$FTPrevKoblenz = $this->getPrevInvoice(['B'], $fltAgents, ['B06'])->sum('totRowPrice');
+		$FTPrevKrona = $this->getPrevInvoice(['A'], $fltAgents, ['A99'])->sum('totRowPrice');
+		$FTPrevKoblenz = $this->getPrevInvoice(['B'], $fltAgents, ['B06', 'B99'])->sum('totRowPrice');
 		$FTPrevKubica = $this->getPrevInvoice(['B06'], $fltAgents, ['B0630'])->sum('totRowPrice');
 		$FTPrevAtomika = $this->getPrevInvoice(['B0630'], $fltAgents)->sum('totRowPrice');
 		$FTPrevPlanet = (RedisUser::get('ditta_DB')=='kNet_es') ? $this->getPrevInvoice(['D0'], $fltAgents)->sum('totRowPrice') : 0;
-		$FTPrevDIC = $this->getPrevInvoice(['DIC'], $fltAgents)->sum('totRowPrice');
-		// dd($fltAgents);
+		$FTPrevDIC = $this->getPrevInvoice(['DIC', 'B99', 'A99'], $fltAgents)->sum('totRowPrice');
+		// dd($FTPrevKubica+ $FTPrevAtomika);
 		return view('portfolio.idxAg', [
 			'agents' => $agents,
 			'mese' => $mese,
@@ -104,6 +104,7 @@ class PortfolioController extends Controller
 			'urlOrders' => action('DocCliController@showOrderDispachMonth', ['fltAgents'=> $fltAgents, 'mese'=>$mese, 'year' => $this->thisYear]),
 			'urlDdts' => action('DocCliController@showDdtToInvoice', ['fltAgents'=>$fltAgents]),
 			'urlInvoices' => action('DocCliController@showInvoiceMonth', ['fltAgents'=>$fltAgents, 'mese'=>$mese, 'year' => $this->thisYear]),
+			'urlInvoicesPrec' => action('DocCliController@showInvoiceMonth', ['fltAgents' => $fltAgents, 'mese' => $mese, 'year' => $this->prevYear]),
 		]);
 	}
 
@@ -173,7 +174,7 @@ class PortfolioController extends Controller
 				$q->where('gruppo', 'NOT LIKE', $grupNotIn[0].'%');
 				if(count($grupNotIn)>1){
 					for($i=1; $i<count($grupNotIn); $i++){
-						$q->orWhere('gruppo', 'NOT LIKE', $grupNotIn[$i].'%');
+						$q->where('gruppo', 'NOT LIKE', $grupNotIn[$i].'%');
 					}
 				}
 			});
@@ -228,12 +229,12 @@ class PortfolioController extends Controller
 				}
 			});
 		}
-		if(!empty($grupNotIn)){
-			$docRow->where(function ($q) use ($grupNotIn){
-				$q->where('gruppo', 'NOT LIKE', $grupNotIn[0].'%');
-				if(count($grupNotIn)>1){
-					for($i=1; $i<count($grupNotIn); $i++){
-						$q->orWhere('gruppo', 'NOT LIKE', $grupNotIn[$i].'%');
+		if (!empty($grupNotIn)) {
+			$docRow->where(function ($q) use ($grupNotIn) {
+				$q->where('gruppo', 'NOT LIKE', $grupNotIn[0] . '%');
+				if (count($grupNotIn) > 1) {
+					for ($i = 1; $i < count($grupNotIn); $i++) {
+						$q->where('gruppo', 'NOT LIKE', $grupNotIn[$i] . '%');
 					}
 				}
 			});
@@ -254,7 +255,7 @@ class PortfolioController extends Controller
 		if(empty($this->arrayIDFT)){
 			$docTes = DocCli::select('id')							
 								->whereIn('esercizio', [(string)$this->thisYear])
-								->whereIn('tipodoc', ['FT', 'FE', 'NC', 'NE', 'EQ', 'EF']);
+								->whereIn('tipodoc', ['FT', 'FE', 'NC', 'NE', 'EQ', 'EF', 'NB']);
 			if(!$filiali && RedisUser::get('ditta_DB')=='knet_it'){					
 				$docTes->whereNotIn('codicecf',['C00973', 'C03000', 'C07000', 'C06000', 'C01253']);
 			}
@@ -285,12 +286,12 @@ class PortfolioController extends Controller
 				}
 			});
 		}
-		if(!empty($grupNotIn)){
-			$docRow->where(function ($q) use ($grupNotIn){
-				$q->where('gruppo', 'NOT LIKE', $grupNotIn[0].'%');
-				if(count($grupNotIn)>1){
-					for($i=1; $i<count($grupNotIn); $i++){
-						$q->orWhere('gruppo', 'NOT LIKE', $grupNotIn[$i].'%');
+		if (!empty($grupNotIn)) {
+			$docRow->where(function ($q) use ($grupNotIn) {
+				$q->where('gruppo', 'NOT LIKE', $grupNotIn[0] . '%');
+				if (count($grupNotIn) > 1) {
+					for ($i = 1; $i < count($grupNotIn); $i++) {
+						$q->where('gruppo', 'NOT LIKE', $grupNotIn[$i] . '%');
 					}
 				}
 			});
@@ -307,11 +308,11 @@ class PortfolioController extends Controller
 		$dStartDate = $this->dStartMonth;
 		$dEndDate = $this->dEndMonth;
 		$dStartDate = $dStartDate->subYear();
-		$dEndDate = new Carbon('last day of ' . Carbon::now()->format('F') . ' ' . ((string)$this->prevYear));
+		$dEndDate = new Carbon('last day of ' . $dEndDate->format('F') . ' ' . ((string)$this->prevYear));
 		if(empty($this->arrayIDprevFT)){
 			$docTes = DocCli::select('id')							
 								->whereIn('esercizio', [(string)$this->prevYear])
-								->whereIn('tipodoc', ['FT', 'FE', 'NC', 'NE', 'EQ', 'EF']);
+								->whereIn('tipodoc', ['FT', 'FE', 'NC', 'NE', 'EQ', 'EF', 'NB']);
 			if(!$filiali && RedisUser::get('ditta_DB')=='knet_it'){					
 				$docTes->whereNotIn('codicecf',['C00973', 'C03000', 'C07000', 'C06000', 'C01253']);
 			}
@@ -341,12 +342,12 @@ class PortfolioController extends Controller
 				}
 			});
 		}
-		if(!empty($grupNotIn)){
-			$docRow->where(function ($q) use ($grupNotIn){
-				$q->where('gruppo', 'NOT LIKE', $grupNotIn[0].'%');
-				if(count($grupNotIn)>1){
-					for($i=1; $i<count($grupNotIn); $i++){
-						$q->orWhere('gruppo', 'NOT LIKE', $grupNotIn[$i].'%');
+		if (!empty($grupNotIn)) {
+			$docRow->where(function ($q) use ($grupNotIn) {
+				$q->where('gruppo', 'NOT LIKE', $grupNotIn[0] . '%');
+				if (count($grupNotIn) > 1) {
+					for ($i = 1; $i < count($grupNotIn); $i++) {
+						$q->where('gruppo', 'NOT LIKE', $grupNotIn[$i] . '%');
 					}
 				}
 			});
@@ -354,6 +355,7 @@ class PortfolioController extends Controller
 		$docRow = $docRow->whereIn('id_testa', $this->arrayIDprevFT)->get();
 		
 		$docRow = $this->calcTotRowPrice($docRow);
+		// dd($docRow);
 		return $docRow;
 	}
 

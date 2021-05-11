@@ -132,7 +132,7 @@ Agents Portfolio
                 <th style="text-align: center;"><a href="{{$urlInvoices}}" target="_blank">Invoice</a></th>
                 <th style="text-align: center;">Tot.</th>
                 <th colspan="1">|</th>
-                <th style="text-align: center;">Tot. Invoice</th>
+                <th style="text-align: center;"><a href="{{$urlInvoicesPrec}}" target="_blank">Tot. Invoice</a></th>
               </tr>
             </thead>
             <tbody>
@@ -189,16 +189,16 @@ Agents Portfolio
               $totOC = $OCKrona+$OCKoblenz+$OCKubica+$OCAtomika+$OCPlanet;
               $totBO = $BOKrona+$BOKoblenz+$BOKubica+$BOAtomika+$BOPlanet;
               $totFT = $FTKrona+$FTKoblenz+$FTKubica+$FTAtomika+$FTPlanet;
-
+              $totPrevFT = $FTPrevKrona+$FTPrevKoblenz+$FTPrevKubica+$FTPrevAtomika+$FTPrevPlanet;
               @endphp
               <tr>
-                <th>TOTALE</th>
+                <th>TOTALE PORTFOLIO PRODOTTO</th>
                 <td> {{ currency($totOC) }} </td>
                 <td> {{ currency($totBO) }} </td>
                 <td> {{ currency($totFT) }} </td>
                 <td> {{ currency($totOC+$totBO+$totFT) }} </td>
                 <th colspan="1">|</th>
-                <td> {{ currency($FTPrevKrona+$FTPrevKoblenz+$FTPrevKubica+$FTPrevAtomika+$FTPrevPlanet) }} </td>
+                <td> {{ currency($totPrevFT) }} </td>
               </tr>
             </tfoot>
           </table>
@@ -213,10 +213,10 @@ Agents Portfolio
             <col width='15%'>
             <tbody>
               <tr>
-                <th colspan="7"> --> Escluso da Calcolo Portfolio </th>
+                <th colspan="7"> <strong>--> Escluso da Calcolo Portfolio</strong> </th>
               </tr>
               <tr>
-                <th>Diciture (es. Acconti)</th>
+                <th>Diciture (es. Acconti, Bonus Clienti)</th>
                 <td> {{ currency($OCDIC) }} </td>
                 <td> {{ currency($BODIC) }} </td>
                 <td> {{ currency($FTDIC) }} </td>
@@ -228,6 +228,23 @@ Agents Portfolio
                 <td colspan="7"></td>
               </tr>
             </tbody>
+            <tfoot class="bg-gray">
+              @php
+              $totOC = $totOC+$OCDIC;
+              $totBO = $totBO+$BODIC;
+              $totFT = $totFT+$FTDIC;
+              $totPrevFT = $totPrevFT+$FTPrevDIC;
+              @endphp
+              <tr>
+                <th>TOTALE GENERALE</th>
+                <td> {{ currency($totOC) }} </td>
+                <td> {{ currency($totBO) }} </td>
+                <td> {{ currency($totFT) }} </td>
+                <td> {{ currency($totOC+$totBO+$totFT) }} </td>
+                <th colspan="1">|</th>
+                <td> {{ currency($totPrevFT) }} </td>
+              </tr>
+            </tfoot>
           </table>
         </div>
       </div>
