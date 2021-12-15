@@ -76,7 +76,8 @@
             <td style="text-align: center;">{{ $scad->datafatt->format('d-m-Y') }}</td>
             <td>
               @if($scad->client)
-                  {{ $scad->client->descrizion }} [{{$scad->codcf}}]
+                  {{ htmlspecialchars(strtr(utf8_decode($scad->client->descrizion),'àáâãäçèéêëìíîïñòóôõöùúûüýÿÀÁÂÃÄÇÈÉÊËÌÍÎÏÑÒÓÔÕÖÙÚÛÜÝ','aaaaaceeeeiiiinooooouuuuyyAAAAACEEEEIIIINOOOOOUUUUY')) }}
+                  [{{$scad->codcf }}]
               @endif
             </td>
             <td style="text-align: center;">

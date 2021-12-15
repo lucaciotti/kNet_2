@@ -103,6 +103,7 @@ class UserController extends Controller
       $user->email = $req->input('email');
       $user->codag = $req->input('codag');
       $user->codcli = $req->input('codcli');
+      $user->ditta = $req->input('ditta');
       $user->isActive = $req->input('isActive');
       $user->save();
       RedisUser::store();

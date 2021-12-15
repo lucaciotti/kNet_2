@@ -7,7 +7,7 @@ Listini in Scadenza {{ $endOfYear->format('d-m-Y')}}
 @endsection
 
 @section('contentheader_description') 
-Non ancora Estesi al 2021
+Non ancora Estesi al 2022
 @endsection
 
 @section('main-content')

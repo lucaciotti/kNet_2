@@ -68,7 +68,7 @@ class ListiniController extends Controller
                             ->with('grpProd');
                     },
                     'wListOk' => function ($query) {
-                        $query->where('esercizio', '2021');
+                        $query->where('esercizio', '2022');
                     },
                     'promo'
                     ])
@@ -89,7 +89,7 @@ class ListiniController extends Controller
                         $query->select('codice', 'descrizion');
                     },
                     'wListOk' => function ($query) {
-                        $query->where('esercizio', '2021');
+                        $query->where('esercizio', '2022');
                     }
                     ])
                     ->orderBy('gruppomag')
@@ -157,7 +157,7 @@ class ListiniController extends Controller
                             ->with('grpProd');
                     },
                     'wListOk' => function ($query) {
-                        $query->where('esercizio', '2021');
+                        $query->where('esercizio', '2022');
                     }
                     ])
                     ->orderBy('codicearti')
@@ -177,7 +177,7 @@ class ListiniController extends Controller
                         $query->select('codice', 'descrizion');
                     },
                     'wListOk' => function ($query) {
-                        $query->where('esercizio', '2021');
+                        $query->where('esercizio', '2022');
                     }
                     ])
                     ->orderBy('gruppomag')
@@ -208,7 +208,7 @@ class ListiniController extends Controller
             foreach($req->estendi as $listId){
                 $listOk = wListiniOk::create([
                     'listini_id'  =>$listId,
-                    'esercizio' => '2021',
+                    'esercizio' => '2022',
                 ]);
                 $listOk->save();
             }
@@ -248,7 +248,7 @@ class ListiniController extends Controller
                                 $q->select('codice', 'descrizion');
                             },
                             'wListOk'=>function($q){
-                                $q->select('listini_id', DB::raw('IF(id IS NOT NULL, 1, 0) as nList'))->where('esercizio', '2021');
+                                $q->select('listini_id', DB::raw('IF(id IS NOT NULL, 1, 0) as nList'))->where('esercizio', '2022');
                             },
                             'promo' => function ($q) {
                                 $q->select('id', 'id_listino', DB::raw('IF(id IS NOT NULL, 1, 0) as nPromo'));
@@ -304,7 +304,7 @@ class ListiniController extends Controller
                     $q->select('codice', 'descrizion', 'gruppolist');
                 },
                 'wListOk' => function ($q) {
-                    $q->select('listini_id', DB::raw('IF(id IS NOT NULL, 1, 0) as nList'))->where('esercizio', '2021');
+                    $q->select('listini_id', DB::raw('IF(id IS NOT NULL, 1, 0) as nList'))->where('esercizio', '2022');
                 },
                 'promo' => function ($q) {
                     $q->select('id', 'id_listino', DB::raw('IF(id IS NOT NULL, 1, 0) as nPromo'));

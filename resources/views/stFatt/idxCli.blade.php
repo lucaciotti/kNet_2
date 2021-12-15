@@ -40,7 +40,7 @@
                   @if($client->codicecf==$cliente)
                       selected
                   @endif
-                  >{{ $client->client->descrizion or 'cDeleted' }}</option>
+                  >{{ $client->client->descrizion or 'cDeleted' }} [{{ $client->codicecf }}]</option>
               @endforeach
             </select>
           </div>
