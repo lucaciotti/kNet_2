@@ -1,6 +1,10 @@
-<input type="checkbox" name="estendiAllGrpProd" id="estendiAllGrpProd">
 <form action="{{ route('listini::wListOk') }}" method="post">
   <input type="hidden" name="_token" value="{{ csrf_token() }}">
+  <div>
+    <input type="checkbox" name="estendiAllGrpProd" id="estendiAllGrpProd">
+    <label for="estendiAllGrpProd"> Seleziona Tutti</label>
+  </div>
+
   <table class="table table-hover table-condensed dtTbls_light" id="listProdTable">
     <thead>
       <tr>
