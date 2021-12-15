@@ -25,5 +25,17 @@
           $('.daterange-btn span').html('Seleziona Data');
           $('.daterange-btn').prop('disabled', false);
         });
+
+        $('#estendiAllProd').on('ifChecked', function(event){
+          $('#listProd input[name="estendi[]"][type=checkbox]').prop("checked","checked").iCheck('update')[0].checked;
+        }).on('ifUnchecked', function(event){
+          $('#listProd input[name="estendi[]"][type=checkbox]').prop("checked","").iCheck('update')[0].checked;
+        })
+
+        $('#estendiAllGrpProd').on('ifChecked', function(event){
+          $('#listGrpProd input[name="estendi[]"][type=checkbox]').prop("checked","checked").iCheck('update')[0].checked;
+        }).on('ifUnchecked', function(event){
+          $('#listGrpProd input[name="estendi[]"][type=checkbox]').prop("checked","").iCheck('update')[0].checked;
+        })
     });
 </script>
