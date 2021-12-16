@@ -28,6 +28,7 @@ return [
     'products'                => 'Produits',
     'insVisits'               => 'Saisies Visites Clients',
     'statsFatt'               => 'Statistiques Chiffre d\'affaires',
+    'statsFattArt'            => 'Chiffre d\'affaires pluriannuel',
     'agent'                   => 'Agent',
     'client'                  => 'Client',
     'zone'                   => 'Zone',

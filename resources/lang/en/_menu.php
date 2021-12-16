@@ -28,6 +28,7 @@ return [
     'products'                => 'Products',
     'insVisits'               => 'Customer Visit Input',
     'statsFatt'               => 'Turnover Statistics',
+    'statsFattArt'            => 'Turnover Comparison Years',
     'agent'                   => 'Agent',
     'client'                  => 'Customer',
     'zone'                    => 'Area',

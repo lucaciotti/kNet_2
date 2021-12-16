@@ -57,16 +57,15 @@
       @if (!in_array(RedisUser::get('role'), ['client']))
       <div class="col-lg-6 col-xs-6">
         <div class="small-box bg-green">
-          <a href="http://kalendar.kronakoblenz.it:8080" target="_blank">
-          <div class="inner">
-            <h3>&nbsp;</h3>
-            <p>Kalendar</p>
-          </div>
-          <div class="icon">
-            <i class="fa fa-calendar"></i>
-          </div>
-          </a>
-          <a href="http://kalendar.kronakoblenz.it:8080" target="_blank" class="small-box-footer">{{ trans('home.moreInfo') }}
+          <div class="inner"><a href="http://kalendar.kronakoblenz.it:8080" target="_blank" style="text-decoration: inherit;
+            color: inherit;">
+              <h3>Kalendar</h3>
+            </a> <a href="http://kalendar.kronakoblenz.it:8080" target="_blank" style="text-decoration: inherit;
+            color: inherit;">
+              <p>Accedi</p>
+            </a></div>
+          <div class="icon"><i class="fa fa-calendar"></i></div> <a href="http://kalendar.kronakoblenz.it:8080" target="_blank"
+            class="small-box-footer">Più Info
             <i class="fa fa-arrow-circle-right"></i></a>
         </div>
       </div>
