@@ -9,6 +9,7 @@
     <th>{{ trans('doc.dateDoc_condensed') }}</th>
     <th>{{ trans('doc.client') }}</th>
     <th>{{ trans('doc.referenceDoc_condensed') }}</th>
+    <th>{{ trans('client.agent') }}</th>
     <th>{{ trans('doc.totDoc_condensed') }}</th>
     <th>PDF</th>
   </thead>
@@ -35,6 +36,7 @@
         <td><span>{{$doc->datadoc->format('Ymd')}}</span>{{ $doc->datadoc->format('d-m-Y') }}</td>
         <td>{{ $doc->client->descrizion }} [{{ $doc->codicecf }}]</td>
         <td>{{ $doc->numerodocf }}</td>
+        <td>@if($doc->agent) {{ $doc->agent->descrizion }} @endif</td>
         <td>{{ $doc->totdoc }}</td>
         <td>
           <a class="btn-sm btn-default" href="{{ route('doc::downloadPDF', $doc->id ) }}" target="_blank">

@@ -125,6 +125,21 @@
           }
       }
     });
+    $('.dtTbls_stat2').DataTable({
+        "iDisplayLength": 25,
+        "paging": true,
+        "lengthChange": false,
+        "searching": false,
+        "ordering": true,
+        "info": true,
+        "autoWidth": false,
+        "aoColumnDefs": [
+            {"sType": "my-currency", "aTargets": [2]},
+            {"sType": "my-currency", "aTargets": [3]}
+        ]
+        // "aaSorting": [[0, "desc"]],
+        // "bStateSave": false
+    });
     $('.dtTbls_stat3').DataTable({
         "iDisplayLength": 25,
         "paging": true,

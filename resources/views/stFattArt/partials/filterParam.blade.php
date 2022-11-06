@@ -2,6 +2,7 @@
   <label>Anni Precedenti?</label>
   <select name="yearback" class="form-control select2"
     data-placeholder="Anni Precedenti" style="width: 100%;">
+    <option value="1" @if($yearback==1) selected @endif>2 Anni Precedenti</option>
     <option value="2" @if($yearback==2) selected @endif>3 Anni Precedenti</option>
     <option value="3" @if($yearback==3) selected @endif>4 Anni Precedenti</option>
     <option value="4" @if($yearback==4) selected @endif>5 Anni Precedenti</option>

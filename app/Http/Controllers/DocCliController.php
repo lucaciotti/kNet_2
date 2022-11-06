@@ -32,7 +32,7 @@ class DocCliController extends Controller
     if(RedisUser::get('role')=='client'){
       return redirect()->action('DocCliController@docCli', ['codice'=> RedisUser::get('codcli'), 'tipomodulo'=>$tipomodulo]);
     }
-    $docs = DocCli::select('id', 'tipodoc', 'numerodoc', 'datadoc', 'codicecf', 'numerodocf', 'numrighepr', 'totdoc');
+    $docs = DocCli::select('id', 'tipodoc', 'numerodoc', 'datadoc', 'codicecf', 'numerodocf', 'numrighepr', 'totdoc', 'agente');
     if ($tipomodulo){
       $docs = $docs->where(function ($query) use ($tipomodulo) {
         $query->where('tipomodulo', $tipomodulo);
@@ -47,7 +47,8 @@ class DocCliController extends Controller
       ->withoutGlobalScope('agent')
       ->withoutGlobalScope('superAgent')
       ->withoutGlobalScope('client');
-    }]);
+    }, 'agent']);
+    // $docs = $docs->with('agents');
     $docs = $docs->orderBy('datadoc', 'desc')->orderBy('id', 'desc')->get();
     // dd($docs);
 

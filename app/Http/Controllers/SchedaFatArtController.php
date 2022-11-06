@@ -150,18 +150,25 @@ class SchedaFatArtController extends Controller
             ->selectRaw('SUM(IF(u_statfatt_art.esercizio = ?,' . $querySelect_fat . ', 0)) as fatN', [$thisYear])
             ->selectRaw('SUM(IF(u_statfatt_art.esercizio = ?,' . $querySelect_qtaN . ', 0)) as qtaN1', [$thisYear - 1])
             ->selectRaw('MAX(IFNULL(IF(u_statfatt_art.esercizio = ?,(' . $querySelect_fatN . ')/(' . $querySelect_qtaN . '), 0), 0)) as pmN1', [$thisYear - 1])
-            ->selectRaw('SUM(IF(u_statfatt_art.esercizio = ?,' . $querySelect_fatN . ', 0)) as fatN1', [$thisYear - 1])
-            ->selectRaw('SUM(IF(u_statfatt_art.esercizio = ?,' . $querySelect_qtaN . ', 0)) as qtaN2', [$thisYear - 2])
-            ->selectRaw('MAX(IFNULL(IF(u_statfatt_art.esercizio = ?,(' . $querySelect_fatN . ')/(' . $querySelect_qtaN . '), 0), 0)) as pmN2', [$thisYear - 2])
-            ->selectRaw('SUM(IF(u_statfatt_art.esercizio = ?,' . $querySelect_fatN . ', 0)) as fatN2', [$thisYear - 2]);
+            ->selectRaw('SUM(IF(u_statfatt_art.esercizio = ?,' . $querySelect_fatN . ', 0)) as fatN1', [$thisYear - 1]);
 
         switch ($yearBack) {
+            case 2:
+                $fatList->selectRaw('SUM(IF(u_statfatt_art.esercizio = ?,' . $querySelect_qtaN . ', 0)) as qtaN2', [$thisYear - 2]);
+                $fatList->selectRaw('MAX(IFNULL(IF(u_statfatt_art.esercizio = ?,(' . $querySelect_fatN . ')/(' . $querySelect_qtaN . '), 0), 0)) as pmN2', [$thisYear - 2]);
+                $fatList->selectRaw('SUM(IF(u_statfatt_art.esercizio = ?,' . $querySelect_fatN . ', 0)) as fatN2', [$thisYear - 2]);
             case 3:
+                $fatList->selectRaw('SUM(IF(u_statfatt_art.esercizio = ?,' . $querySelect_qtaN . ', 0)) as qtaN2', [$thisYear - 2]);
+                $fatList->selectRaw('MAX(IFNULL(IF(u_statfatt_art.esercizio = ?,(' . $querySelect_fatN . ')/(' . $querySelect_qtaN . '), 0), 0)) as pmN2', [$thisYear - 2]);
+                $fatList->selectRaw('SUM(IF(u_statfatt_art.esercizio = ?,' . $querySelect_fatN . ', 0)) as fatN2', [$thisYear - 2]);
                 $fatList->selectRaw('SUM(IF(u_statfatt_art.esercizio = ?,' . $querySelect_qtaN . ', 0)) as qtaN3', [$thisYear - 3]);
                 $fatList->selectRaw('MAX(IFNULL(IF(u_statfatt_art.esercizio = ?,(' . $querySelect_fatN . ')/(' . $querySelect_qtaN . '), 0),0)) as pmN3', [$thisYear - 3]);
                 $fatList->selectRaw('SUM(IF(u_statfatt_art.esercizio = ?,' . $querySelect_fatN . ', 0)) as fatN3', [$thisYear - 3]);
                 break;
             case 4:
+                $fatList->selectRaw('SUM(IF(u_statfatt_art.esercizio = ?,' . $querySelect_qtaN . ', 0)) as qtaN2', [$thisYear - 2]);
+                $fatList->selectRaw('MAX(IFNULL(IF(u_statfatt_art.esercizio = ?,(' . $querySelect_fatN . ')/(' . $querySelect_qtaN . '), 0), 0)) as pmN2', [$thisYear - 2]);
+                $fatList->selectRaw('SUM(IF(u_statfatt_art.esercizio = ?,' . $querySelect_fatN . ', 0)) as fatN2', [$thisYear - 2]);
                 $fatList->selectRaw('SUM(IF(u_statfatt_art.esercizio = ?,' . $querySelect_qtaN . ', 0)) as qtaN3', [$thisYear - 3]);
                 $fatList->selectRaw('MAX(IFNULL(IF(u_statfatt_art.esercizio = ?,(' . $querySelect_fatN . ')/(' . $querySelect_qtaN . '), 0),0)) as pmN3', [$thisYear - 3]);
                 $fatList->selectRaw('SUM(IF(u_statfatt_art.esercizio = ?,' . $querySelect_fatN . ', 0)) as fatN3', [$thisYear - 3]);
@@ -202,7 +209,7 @@ class SchedaFatArtController extends Controller
         $thisYear = ($req->input('startYear')) ? $req->input('startYear') : (Carbon::now()->year);
         $settoreSelected = ($req->input('settoreSelected')) ? $req->input('settoreSelected') : null;
         $zoneSelected = ($req->input('zoneSelected')) ? $req->input('zoneSelected') : null;
-        $yearBack = ($req->input('yearback')) ? $req->input('yearback') : 3; // 2->3AnniView; 3->4AnniView; 4->5AnniView
+        $yearBack = ($req->input('yearBack')) ? $req->input('yearBack') : 3; // 2->3AnniView; 3->4AnniView; 4->5AnniView
         $limitVal = ($req->input('limitVal') || $req->input('limitVal') == '0') ? $req->input('limitVal') : null;
         $meseSelected = $req->input('mese');
         $onlyMese = $req->input('onlyMese') ? $req->input('onlyMese') : false;
@@ -236,18 +243,25 @@ class SchedaFatArtController extends Controller
             ->selectRaw('SUM(IF(u_statfatt_art.esercizio = ?,' . $querySelect_fat . ', 0)) as fatN', [$thisYear])
             ->selectRaw('SUM(IF(u_statfatt_art.esercizio = ?,' . $querySelect_qtaN . ', 0)) as qtaN1', [$thisYear - 1])
             ->selectRaw('MAX(IFNULL(IF(u_statfatt_art.esercizio = ?,(' . $querySelect_fatN . ')/(' . $querySelect_qtaN . '), 0), 0)) as pmN1', [$thisYear - 1])
-            ->selectRaw('SUM(IF(u_statfatt_art.esercizio = ?,' . $querySelect_fatN . ', 0)) as fatN1', [$thisYear - 1])
-            ->selectRaw('SUM(IF(u_statfatt_art.esercizio = ?,' . $querySelect_qtaN . ', 0)) as qtaN2', [$thisYear - 2])
-            ->selectRaw('MAX(IFNULL(IF(u_statfatt_art.esercizio = ?,(' . $querySelect_fatN . ')/(' . $querySelect_qtaN . '), 0), 0)) as pmN2', [$thisYear - 2])
-            ->selectRaw('SUM(IF(u_statfatt_art.esercizio = ?,' . $querySelect_fatN . ', 0)) as fatN2', [$thisYear - 2]);
+            ->selectRaw('SUM(IF(u_statfatt_art.esercizio = ?,' . $querySelect_fatN . ', 0)) as fatN1', [$thisYear - 1]);
 
         switch ($yearBack) {
+            case 2:
+                $fatList->selectRaw('SUM(IF(u_statfatt_art.esercizio = ?,' . $querySelect_qtaN . ', 0)) as qtaN2', [$thisYear - 2]);
+                $fatList->selectRaw('MAX(IFNULL(IF(u_statfatt_art.esercizio = ?,(' . $querySelect_fatN . ')/(' . $querySelect_qtaN . '), 0), 0)) as pmN2', [$thisYear - 2]);
+                $fatList->selectRaw('SUM(IF(u_statfatt_art.esercizio = ?,' . $querySelect_fatN . ', 0)) as fatN2', [$thisYear - 2]);
             case 3:
+                $fatList->selectRaw('SUM(IF(u_statfatt_art.esercizio = ?,' . $querySelect_qtaN . ', 0)) as qtaN2', [$thisYear - 2]);
+                $fatList->selectRaw('MAX(IFNULL(IF(u_statfatt_art.esercizio = ?,(' . $querySelect_fatN . ')/(' . $querySelect_qtaN . '), 0), 0)) as pmN2', [$thisYear - 2]);
+                $fatList->selectRaw('SUM(IF(u_statfatt_art.esercizio = ?,' . $querySelect_fatN . ', 0)) as fatN2', [$thisYear - 2]);
                 $fatList->selectRaw('SUM(IF(u_statfatt_art.esercizio = ?,' . $querySelect_qtaN . ', 0)) as qtaN3', [$thisYear - 3]);
                 $fatList->selectRaw('MAX(IFNULL(IF(u_statfatt_art.esercizio = ?,(' . $querySelect_fatN . ')/(' . $querySelect_qtaN . '), 0),0)) as pmN3', [$thisYear - 3]);
                 $fatList->selectRaw('SUM(IF(u_statfatt_art.esercizio = ?,' . $querySelect_fatN . ', 0)) as fatN3', [$thisYear - 3]);
                 break;
             case 4:
+                $fatList->selectRaw('SUM(IF(u_statfatt_art.esercizio = ?,' . $querySelect_qtaN . ', 0)) as qtaN2', [$thisYear - 2]);
+                $fatList->selectRaw('MAX(IFNULL(IF(u_statfatt_art.esercizio = ?,(' . $querySelect_fatN . ')/(' . $querySelect_qtaN . '), 0), 0)) as pmN2', [$thisYear - 2]);
+                $fatList->selectRaw('SUM(IF(u_statfatt_art.esercizio = ?,' . $querySelect_fatN . ', 0)) as fatN2', [$thisYear - 2]);
                 $fatList->selectRaw('SUM(IF(u_statfatt_art.esercizio = ?,' . $querySelect_qtaN . ', 0)) as qtaN3', [$thisYear - 3]);
                 $fatList->selectRaw('MAX(IFNULL(IF(u_statfatt_art.esercizio = ?,(' . $querySelect_fatN . ')/(' . $querySelect_qtaN . '), 0),0)) as pmN3', [$thisYear - 3]);
                 $fatList->selectRaw('SUM(IF(u_statfatt_art.esercizio = ?,' . $querySelect_fatN . ', 0)) as fatN3', [$thisYear - 3]);
@@ -304,7 +318,7 @@ class SchedaFatArtController extends Controller
         $thisYear = ($req->input('startYear')) ? $req->input('startYear') : (Carbon::now()->year);
         $settoreSelected = ($req->input('settoreSelected')) ? $req->input('settoreSelected') : null;
         $zoneSelected = ($req->input('zoneSelected')) ? $req->input('zoneSelected') : null;
-        $yearBack = ($req->input('yearback')) ? $req->input('yearback') : 3; // 2->3AnniView; 3->4AnniView; 4->5AnniView
+        $yearBack = ($req->input('yearBack')) ? $req->input('yearBack') : 3; // 2->3AnniView; 3->4AnniView; 4->5AnniView
         $limitVal = ($req->input('limitVal') || $req->input('limitVal') == '0') ? $req->input('limitVal') : null;
         $meseSelected = $req->input('mese');
         $onlyMese = $req->input('onlyMese') ? $req->input('onlyMese') : false;
@@ -338,18 +352,25 @@ class SchedaFatArtController extends Controller
             ->selectRaw('SUM(IF(u_statfatt_art.esercizio = ?,' . $querySelect_fat . ', 0)) as fatN', [$thisYear])
             ->selectRaw('SUM(IF(u_statfatt_art.esercizio = ?,' . $querySelect_qtaN . ', 0)) as qtaN1', [$thisYear - 1])
             ->selectRaw('MAX(IFNULL(IF(u_statfatt_art.esercizio = ?,(' . $querySelect_fatN . ')/(' . $querySelect_qtaN . '), 0), 0)) as pmN1', [$thisYear - 1])
-            ->selectRaw('SUM(IF(u_statfatt_art.esercizio = ?,' . $querySelect_fatN . ', 0)) as fatN1', [$thisYear - 1])
-            ->selectRaw('SUM(IF(u_statfatt_art.esercizio = ?,' . $querySelect_qtaN . ', 0)) as qtaN2', [$thisYear - 2])
-            ->selectRaw('MAX(IFNULL(IF(u_statfatt_art.esercizio = ?,(' . $querySelect_fatN . ')/(' . $querySelect_qtaN . '), 0), 0)) as pmN2', [$thisYear - 2])
-            ->selectRaw('SUM(IF(u_statfatt_art.esercizio = ?,' . $querySelect_fatN . ', 0)) as fatN2', [$thisYear - 2]);
+            ->selectRaw('SUM(IF(u_statfatt_art.esercizio = ?,' . $querySelect_fatN . ', 0)) as fatN1', [$thisYear - 1]);
 
         switch ($yearBack) {
+            case 2:
+                $fatList->selectRaw('SUM(IF(u_statfatt_art.esercizio = ?,' . $querySelect_qtaN . ', 0)) as qtaN2', [$thisYear - 2]);
+                $fatList->selectRaw('MAX(IFNULL(IF(u_statfatt_art.esercizio = ?,(' . $querySelect_fatN . ')/(' . $querySelect_qtaN . '), 0), 0)) as pmN2', [$thisYear - 2]);
+                $fatList->selectRaw('SUM(IF(u_statfatt_art.esercizio = ?,' . $querySelect_fatN . ', 0)) as fatN2', [$thisYear - 2]);
             case 3:
+                $fatList->selectRaw('SUM(IF(u_statfatt_art.esercizio = ?,' . $querySelect_qtaN . ', 0)) as qtaN2', [$thisYear - 2]);
+                $fatList->selectRaw('MAX(IFNULL(IF(u_statfatt_art.esercizio = ?,(' . $querySelect_fatN . ')/(' . $querySelect_qtaN . '), 0), 0)) as pmN2', [$thisYear - 2]);
+                $fatList->selectRaw('SUM(IF(u_statfatt_art.esercizio = ?,' . $querySelect_fatN . ', 0)) as fatN2', [$thisYear - 2]);
                 $fatList->selectRaw('SUM(IF(u_statfatt_art.esercizio = ?,' . $querySelect_qtaN . ', 0)) as qtaN3', [$thisYear - 3]);
                 $fatList->selectRaw('MAX(IFNULL(IF(u_statfatt_art.esercizio = ?,(' . $querySelect_fatN . ')/(' . $querySelect_qtaN . '), 0),0)) as pmN3', [$thisYear - 3]);
                 $fatList->selectRaw('SUM(IF(u_statfatt_art.esercizio = ?,' . $querySelect_fatN . ', 0)) as fatN3', [$thisYear - 3]);
                 break;
             case 4:
+                $fatList->selectRaw('SUM(IF(u_statfatt_art.esercizio = ?,' . $querySelect_qtaN . ', 0)) as qtaN2', [$thisYear - 2]);
+                $fatList->selectRaw('MAX(IFNULL(IF(u_statfatt_art.esercizio = ?,(' . $querySelect_fatN . ')/(' . $querySelect_qtaN . '), 0), 0)) as pmN2', [$thisYear - 2]);
+                $fatList->selectRaw('SUM(IF(u_statfatt_art.esercizio = ?,' . $querySelect_fatN . ', 0)) as fatN2', [$thisYear - 2]);
                 $fatList->selectRaw('SUM(IF(u_statfatt_art.esercizio = ?,' . $querySelect_qtaN . ', 0)) as qtaN3', [$thisYear - 3]);
                 $fatList->selectRaw('MAX(IFNULL(IF(u_statfatt_art.esercizio = ?,(' . $querySelect_fatN . ')/(' . $querySelect_qtaN . '), 0),0)) as pmN3', [$thisYear - 3]);
                 $fatList->selectRaw('SUM(IF(u_statfatt_art.esercizio = ?,' . $querySelect_fatN . ', 0)) as fatN3', [$thisYear - 3]);
@@ -392,7 +413,7 @@ class SchedaFatArtController extends Controller
         $thisYear = ($req->input('startYear')) ? $req->input('startYear') : (Carbon::now()->year);
         $settoreSelected = ($req->input('settoreSelected')) ? $req->input('settoreSelected') : null;
         $zoneSelected = ($req->input('zoneSelected')) ? $req->input('zoneSelected') : null;
-        $yearBack = ($req->input('yearback')) ? $req->input('yearback') : 3; // 2->3AnniView; 3->4AnniView; 4->5AnniView
+        $yearBack = ($req->input('yearBack')) ? $req->input('yearBack') : 3; // 2->3AnniView; 3->4AnniView; 4->5AnniView
         $limitVal = ($req->input('limitVal') || $req->input('limitVal') == '0') ? $req->input('limitVal') : 500;
         $meseSelected = $req->input('mese');
         $onlyMese = $req->input('onlyMese') ? $req->input('onlyMese') : false;
@@ -409,14 +430,17 @@ class SchedaFatArtController extends Controller
             ->select('u_statfatt_art.codicecf')
             ->selectRaw('MAX(anagrafe.descrizion) as ragionesociale, MAX(settori.descrizion) as settore, MIN(u_statfatt_art.mese_parz) as meseRif')
             ->selectRaw('SUM(IF(u_statfatt_art.esercizio = ?,' . $querySelect_fat . ', 0)) as fatN', [$thisYear])
-            ->selectRaw('SUM(IF(u_statfatt_art.esercizio = ?,' . $querySelect_fatN . ', 0)) as fatN1', [$thisYear - 1])
-            ->selectRaw('SUM(IF(u_statfatt_art.esercizio = ?,' . $querySelect_fatN . ', 0)) as fatN2', [$thisYear - 2]);
+            ->selectRaw('SUM(IF(u_statfatt_art.esercizio = ?,' . $querySelect_fatN . ', 0)) as fatN1', [$thisYear - 1]);
 
         switch ($yearBack) {
+            case 2:
+                $fatList->selectRaw('SUM(IF(u_statfatt_art.esercizio = ?,' . $querySelect_fatN . ', 0)) as fatN2', [$thisYear - 2]);
             case 3:
+                $fatList->selectRaw('SUM(IF(u_statfatt_art.esercizio = ?,' . $querySelect_fatN . ', 0)) as fatN2', [$thisYear - 2]);
                 $fatList->selectRaw('SUM(IF(u_statfatt_art.esercizio = ?,' . $querySelect_fatN . ', 0)) as fatN3', [$thisYear - 3]);
                 break;
             case 4:
+                $fatList->selectRaw('SUM(IF(u_statfatt_art.esercizio = ?,' . $querySelect_fatN . ', 0)) as fatN2', [$thisYear - 2]);
                 $fatList->selectRaw('SUM(IF(u_statfatt_art.esercizio = ?,' . $querySelect_fatN . ', 0)) as fatN3', [$thisYear - 3]);
                 $fatList->selectRaw('SUM(IF(u_statfatt_art.esercizio = ?,' . $querySelect_fatN . ', 0)) as fatN4', [$thisYear - 4]);
                 break;
@@ -425,6 +449,7 @@ class SchedaFatArtController extends Controller
         $fatList->whereIn('anagrafe.agente', $fltAgents);
         $fatList->whereRaw('(LEFT(u_statfatt_art.codicearti,4) != ? AND LEFT(u_statfatt_art.codicearti,4) != ?)', ['CAMP', 'NOTA']);
         $fatList->whereRaw('(LEFT(u_statfatt_art.gruppo,1) != ? AND LEFT(u_statfatt_art.gruppo,1) != ? AND LEFT(u_statfatt_art.gruppo,3) != ?)', ['C', '2', 'DIC']);
+        $fatList->whereRaw('u_statfatt_art.esercizio >= ?', [$thisYear - $yearBack]);
         if ($settoreSelected != null) $fatList->whereIn('anagrafe.settore', $settoreSelected);
         if ($zoneSelected != null) $fatList->whereIn('anagrafe.zona', $zoneSelected);
         if ($req->input('grpPrdSelected')) {
@@ -468,7 +493,7 @@ class SchedaFatArtController extends Controller
         $thisYear = ($req->input('startYear')) ? $req->input('startYear') : (Carbon::now()->year);
         $settoreSelected = ($req->input('settoreSelected')) ? $req->input('settoreSelected') : null;
         $zoneSelected = ($req->input('zoneSelected')) ? $req->input('zoneSelected') : null;
-        $yearBack = ($req->input('yearback')) ? $req->input('yearback') : 3; // 2->3AnniView; 3->4AnniView; 4->5AnniView
+        $yearBack = ($req->input('yearBack')) ? $req->input('yearBack') : 3; // 2->3AnniView; 3->4AnniView; 4->5AnniView
         $limitVal = ($req->input('limitVal') || $req->input('limitVal') == '0') ? $req->input('limitVal') : 500;
         $meseSelected = $req->input('mese');
         $onlyMese = $req->input('onlyMese') ? $req->input('onlyMese') : false;
@@ -486,13 +511,17 @@ class SchedaFatArtController extends Controller
             ->selectRaw('MAX(anagrafe.descrizion) as ragionesociale, MAX(settori.descrizion) as settore, MIN(u_statfatt_art.mese_parz) as meseRif')
             ->selectRaw('SUM(IF(u_statfatt_art.esercizio = ?,' . $querySelect_fat . ', 0)) as fatN', [$thisYear])
             ->selectRaw('SUM(IF(u_statfatt_art.esercizio = ?,' . $querySelect_fatN . ', 0)) as fatN1', [$thisYear - 1])
-            ->selectRaw('SUM(IF(u_statfatt_art.esercizio = ?,' . $querySelect_fatN . ', 0)) as fatN2', [$thisYear - 2]);
+            ->selectRaw('SUM(IF(u_statfatt_art.esercizio = ?,' . $querySelect_fatN . ', 0)) as fatN1', [$thisYear - 1]);
 
         switch ($yearBack) {
+            case 2:
+                $fatList->selectRaw('SUM(IF(u_statfatt_art.esercizio = ?,' . $querySelect_fatN . ', 0)) as fatN2', [$thisYear - 2]);
             case 3:
+                $fatList->selectRaw('SUM(IF(u_statfatt_art.esercizio = ?,' . $querySelect_fatN . ', 0)) as fatN2', [$thisYear - 2]);
                 $fatList->selectRaw('SUM(IF(u_statfatt_art.esercizio = ?,' . $querySelect_fatN . ', 0)) as fatN3', [$thisYear - 3]);
                 break;
             case 4:
+                $fatList->selectRaw('SUM(IF(u_statfatt_art.esercizio = ?,' . $querySelect_fatN . ', 0)) as fatN2', [$thisYear - 2]);
                 $fatList->selectRaw('SUM(IF(u_statfatt_art.esercizio = ?,' . $querySelect_fatN . ', 0)) as fatN3', [$thisYear - 3]);
                 $fatList->selectRaw('SUM(IF(u_statfatt_art.esercizio = ?,' . $querySelect_fatN . ', 0)) as fatN4', [$thisYear - 4]);
                 break;
@@ -501,6 +530,7 @@ class SchedaFatArtController extends Controller
         $fatList->whereIn('anagrafe.agente', $fltAgents);
         $fatList->whereRaw('(LEFT(u_statfatt_art.codicearti,4) != ? AND LEFT(u_statfatt_art.codicearti,4) != ?)', ['CAMP', 'NOTA']);
         $fatList->whereRaw('(LEFT(u_statfatt_art.gruppo,1) != ? AND LEFT(u_statfatt_art.gruppo,1) != ? AND LEFT(u_statfatt_art.gruppo,3) != ?)', ['C', '2', 'DIC']);
+        $fatList->whereRaw('u_statfatt_art.esercizio >= ?', [$thisYear - $yearBack]);
         if ($settoreSelected != null) $fatList->whereIn('anagrafe.settore', $settoreSelected);
         if ($zoneSelected != null) $fatList->whereIn('anagrafe.zona', $zoneSelected);
         if ($req->input('grpPrdSelected')) {
