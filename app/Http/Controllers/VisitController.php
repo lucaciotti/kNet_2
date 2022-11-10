@@ -4,6 +4,7 @@ namespace knet\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Input;
 use Carbon\Carbon;
 
 use knet\Http\Requests;
@@ -11,7 +12,14 @@ use knet\Http\Requests;
 use knet\ArcaModels\Client;
 use knet\WebModels\wVisit;
 use knet\WebModels\wRubrica;
+use knet\User;
 use Auth;
+
+use Session;
+
+use knet\ExportsXLS\VisitImport;
+
+use knet\Helpers\PdfReport;
 
 class VisitController extends Controller
 {
@@ -49,19 +57,25 @@ class VisitController extends Controller
     public function store(Request $req){
       // dd($req);
       $visit = wVisit::create([
-        'codicecf' => ($req->input('codcli') ? $req->input('codcli') : ''),
-        'rubri_id' => ($req->input('rubri_id') ? $req->input('rubri_id') : 0),
+        'codicecf' => ($req->input('codcli') ? $req->input('codcli') : null),
+        'rubri_id' => ($req->input('rubri_id') ? $req->input('rubri_id') : null),
         'user_id' => Auth::user()->id,
         'data' => new Carbon($req->input('data')),
         'tipo' => $req->input('tipo'),
         'descrizione' => $req->input('descrizione'),
-        'note' => $req->input('note')
+        'note' => $req->input('note'),
+        'conclusione' => $req->input('conclusione'),
+        'persona_contatto' => $req->input('persona'),
+        'funzione_contatto' => $req->input('rolePersona'),
+        'ordine' => $req->input('optOrdine'),
+        'data_prox' => (new Carbon($req->input('dateNext')))
       ]);
 
       if($req->input('rubri_id')){
         $contact = wRubrica::find($req->input('rubri_id'));
         $contact->date_lastvisit = new Carbon($req->input('data'));
-        $contact->date_nextvisit = (new Carbon($req->input('data')))->addDays(60);
+        // $contact->date_nextvisit = (new Carbon($req->input('data')))->addDays(60);
+        $contact->date_nextvisit = (new Carbon($req->input('dateNext')));
         $contact->save();
         return Redirect::route('visit::showRubri', $req->input('rubri_id'));
       }
@@ -92,5 +106,189 @@ class VisitController extends Controller
         'client' => $client,
         'dateNow' => Carbon::now(),
         ]);
+    }
+
+    public function report(Request $req) {
+      $visits = wVisit::select('*');
+
+      if($req->input('startDate') and !$req->input('noDate')){
+        $startDate = Carbon::createFromFormat('d/m/Y',$req->input('startDate'));
+        $endDate = Carbon::createFromFormat('d/m/Y',$req->input('endDate'));
+      } else {
+        $startDate = Carbon::now()->subYear();
+        $endDate = Carbon::now();
+      }
+      if(!$req->input('noDate')){
+        $visits = $visits->whereBetween('data', [$startDate, $endDate]);
+      }
+
+      if($req->input('ragsoc')) {
+        $ragsoc = strtoupper($req->input('ragsoc'));
+        if($req->input('ragsocOp')=='eql'){
+          $visits = $visits->whereHas('client', function ($query) use ($ragsoc){
+            $query->where('descrizion', $ragsoc);
+          })->orWhereHas('rubri', function ($query) use ($ragsoc){
+            $query->where('descrizion', $ragsoc);
+          });
+        }
+        if($req->input('ragsocOp')=='stw'){
+          $visits = $visits->whereHas('client', function ($query) use ($ragsoc){
+            $query->where('descrizion', 'like', $ragsoc.'%');
+          })->orWhereHas('rubri', function ($query) use ($ragsoc){
+            $query->where('descrizion', 'like', $ragsoc.'%');
+          });
+        }
+        if($req->input('ragsocOp')=='cnt'){
+          $visits = $visits->whereHas('client', function ($query) use ($ragsoc){
+            $query->where('descrizion', 'like', '%'.$ragsoc.'%');
+          })->orWhereHas('rubri', function ($query) use ($ragsoc){
+            $query->where('descrizion', 'like', '%'.$ragsoc.'%');
+          });
+        }
+      }
+
+      if($req->input('optTipo')){
+        $visits->where('tipo', $req->input('optTipo'));
+      }
+
+      if($req->input('relat')) {
+        $relat = strtoupper($req->input('relat'));
+        if($req->input('relatOp')=='eql'){
+          $user_ids = User::where('name', $relat)->pluck('id')->toArray();
+        }
+        if($req->input('relatOp')=='stw'){
+          $user_ids = User::where('name', 'like', $relat.'%')->pluck('id')->toArray();
+        }
+        if($req->input('relatOp')=='cnt'){
+          $user_ids = User::where('name', 'like', '%'.$relat.'%')->pluck('id')->toArray();
+        }
+        $visits->whereIn('user_id', $user_ids);
+      }
+
+      $visits = $visits->with(['client', 'rubri', 'user']);
+
+      $visits = $visits->orderBy('data', 'desc')->orderBy('id', 'desc')->get();
+
+      $dataForReport = [
+        'ragSoc' => $req->input('ragsoc') ?? '',
+        'ragsocOp' => $req->input('ragsocOp'),
+        'tipomodulo' => $req->input('optTipoDoc') ?? '',
+        'startDate' => !$req->input('noDate') ? $startDate : "",
+        'endDate' => !$req->input('noDate') ? $endDate : "",
+        'optTipo' => $req->input('optTipo'),
+        'relat' => $req->input('relat'),
+        'relatOp' => $req->input('relatOp'),
+        'noDate' => $req->input('noDate'),
+        'groupBy' => 'user_id'
+      ];
+
+      return view('visit.report', [
+        'visits' => $visits,
+        'ragSoc' => $req->input('ragsoc') ?? '',
+        'ragsocOp' => $req->input('ragsocOp'),
+        'tipomodulo' => $req->input('optTipoDoc') ?? '',
+        'startDate' => !$req->input('noDate') ? $startDate : "",
+        'endDate' => !$req->input('noDate') ? $endDate : "",
+        'optTipo' => $req->input('optTipo'),
+        'relat' => $req->input('relat'),
+        'relatOp' => $req->input('relatOp'),
+        'dataForReport' => $dataForReport
+      ]);
+    }
+
+    public function reportPDF(Request $req){
+      //Let's Set the Date
+      $visits = wVisit::select('*');
+
+      if($req->input('startDate') and !$req->input('noDate')){
+        $startDate = Carbon::createFromFormat('d/m/Y',$req->input('startDate'));
+        $endDate = Carbon::createFromFormat('d/m/Y',$req->input('endDate'));
+      } else {
+        $startDate = Carbon::now()->subYear();
+        $endDate = Carbon::now();
+      }
+      if(!$req->input('noDate')){
+        $visits = $visits->whereBetween('data', [$startDate, $endDate]);
+      }
+
+      if($req->input('ragsoc')) {
+        $ragsoc = strtoupper($req->input('ragsoc'));
+        if($req->input('ragsocOp')=='eql'){
+          $visits = $visits->whereHas('client', function ($query) use ($ragsoc){
+            $query->where('descrizion', $ragsoc);
+          })->orWhereHas('rubri', function ($query) use ($ragsoc){
+            $query->where('descrizion', $ragsoc);
+          });
+        }
+        if($req->input('ragsocOp')=='stw'){
+          $visits = $visits->whereHas('client', function ($query) use ($ragsoc){
+            $query->where('descrizion', 'like', $ragsoc.'%');
+          })->orWhereHas('rubri', function ($query) use ($ragsoc){
+            $query->where('descrizion', 'like', $ragsoc.'%');
+          });
+        }
+        if($req->input('ragsocOp')=='cnt'){
+          $visits = $visits->whereHas('client', function ($query) use ($ragsoc){
+            $query->where('descrizion', 'like', '%'.$ragsoc.'%');
+          })->orWhereHas('rubri', function ($query) use ($ragsoc){
+            $query->where('descrizion', 'like', '%'.$ragsoc.'%');
+          });
+        }
+      }
+
+      if($req->input('optTipo')){
+        $visits->where('tipo', $req->input('optTipo'));
+      }
+
+      if($req->input('relat')) {
+        $relat = strtoupper($req->input('relat'));
+        if($req->input('relatOp')=='eql'){
+          $user_ids = User::where('name', $relat)->pluck('id')->toArray();
+        }
+        if($req->input('relatOp')=='stw'){
+          $user_ids = User::where('name', 'like', $relat.'%')->pluck('id')->toArray();
+        }
+        if($req->input('relatOp')=='cnt'){
+          $user_ids = User::where('name', 'like', '%'.$relat.'%')->pluck('id')->toArray();
+        }
+        $visits->whereIn('user_id', $user_ids);
+      }
+
+      $visits = $visits->with(['client', 'rubri', 'user']);
+
+      $visits = $visits->orderBy('data', 'desc')->orderBy('id', 'desc')->get();
+      
+      if($req->input('groupBy')){
+        $visits = $visits->groupBy($req->input('groupBy'));
+      }
+
+      $title = "Scheda Visite ";
+      $subTitle = $startDate->format('Y-m-d').' - '. $endDate->format('Y-m-d');
+      $view = '_exports.pdf.schedaVisitPdf';
+      $data = [
+          'visits' => $visits,
+      ];
+      $pdf = PdfReport::A4Portrait($view, $data, $title, $subTitle);
+
+      return $pdf->stream($title.'-'.$subTitle.'.pdf');
+    }
+
+    //SEZIONE IMPORT FILE EXCEL
+    public function showImportXls(Request $req){
+      return view('visit.import');
+    }
+
+    public function doImportXls(Request $req){
+      $destinationPath = storage_path('app')."/upload/Visit/";
+      if (!is_dir($destinationPath)) {  mkdir($destinationPath,0777,true);  }
+      $extension = Input::file('file')->getClientOriginalExtension(); // getting image extension
+      $fileName = time() . '_file.'.$extension; // renameing image
+      Input::file('file')->move($destinationPath, $fileName);
+      if(!((new VisitImport($fileName))->getResult())){  
+        Session::flash('fail', 'Import failed');
+      } else {
+        Session::flash('success', 'Import successfull');
+      }
+      return Redirect::back();
     }
 }

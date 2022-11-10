@@ -240,6 +240,29 @@ Route::group(['as' => 'visit::'], function(){
     'as' => 'store',
     'uses' => 'VisitController@store'
   ]);
+
+  Route::get('/visit_report', [
+    'as' => 'report',
+    'uses' => 'VisitController@report'
+  ]);
+  Route::post('/visit_report', [
+    'as' => 'report',
+    'uses' => 'VisitController@report'
+  ]);
+  Route::get('/visit_reportPDF', [
+    'as' => 'reportPDF',
+    'uses' => 'VisitController@reportPDF'
+  ]);
+  
+
+  Route::get('/visit_importXls', [
+    'as' => 'importXls',
+    'uses' => 'VisitController@showImportXls'
+  ]);
+  Route::post('/visit_importXls', [
+    'as' => 'importXls',
+    'uses' => 'VisitController@doImportXls'
+  ]);
 });
 
 Route::group(['as' => 'stFatt::'], function(){
@@ -474,6 +497,14 @@ Route::group(['as' => 'rubri::'], function () {
     'as' => 'close',
     'uses' => 'RubriController@closeContact'
   ]);
+  Route::get('/rubri_insertOrEdit/{rubri_id?}', [
+    'as' => 'insertOrEdit',
+    'uses' => 'RubriController@insertOrEdit'
+  ]);
+  Route::post('/rubri_store', [
+    'as' => 'store',
+    'uses' => 'RubriController@store'
+  ]);
 });
 
 Route::group(['as' => 'sysMkt::'], function () {
@@ -538,6 +569,8 @@ Route::group(['as' => 'manuale::'], function () {
   ]);
 });
 
+
+Route::get('logs', [\Rap2hpoutre\LaravelLogViewer\LogViewerController::class, 'index']);
 // Route::any('zipcode', function() {
 
 //     echo

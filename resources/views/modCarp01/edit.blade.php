@@ -1,11 +1,11 @@
 @extends('layouts.app')
 
 @section('htmlheader_title')
-    - Analisi Mercato 2019
+    - Analisi Mercato
 @endsection
 
 @section('contentheader_title')
-    Revisione Analisi Mercato 2019 
+    Revisione Analisi Mercato 
 @endsection
 
 @section('main-content')

@@ -163,6 +163,8 @@ return [
         knet\Providers\RedisUserServiceProvider::class,
 
         PragmaRX\ZipCode\Vendor\Laravel\ServiceProvider::class,
+        Rap2hpoutre\LaravelLogViewer\LaravelLogViewerServiceProvider::class,
+
 
     ],
 

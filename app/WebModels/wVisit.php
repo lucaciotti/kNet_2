@@ -13,7 +13,7 @@ class wVisit extends Model
 
   protected $table = 'w_visite';
   protected $dates = ['data', 'created_at', 'updated_at'];
-  protected $fillable = ['codicecf', 'user_id', 'data', 'tipo', 'descrizione', 'note', 'rubri_id'];
+  protected $fillable = ['codicecf', 'user_id', 'data', 'tipo', 'descrizione', 'note', 'rubri_id', 'persona_contatto', 'funzione_contatto', 'conclusione', 'ordine', 'data_prox'];
   protected $connection = '';
 
   public function __construct ($attributes = array())
@@ -23,8 +23,40 @@ class wVisit extends Model
     $this->setConnection(RedisUser::get('ditta_DB'));
   }
 
+
+  public function getTipoVisitAttribute(){
+      switch ($this->attributes['tipo']) {
+        case 'Meet':
+          return trans('visit.eventMeeting');
+          break;
+        case 'Mail':
+          return trans('visit.eventMail');
+          break;
+        case 'Prod':
+          return trans('visit.eventProduct');
+          break;
+        case 'Scad':
+          return trans('visit.eventDebt');
+          break;
+        case 'RNC':
+          return trans('visit.eventRNC');
+          break;
+        default:
+          return trans('visit.eventGeneric');
+          break;          
+      }
+  }
+
   public function user(){
     return $this->hasOne('knet\User', 'id', 'user_id');
+  }
+
+  public function client(){
+    return $this->hasOne('knet\ArcaModels\Client', 'codice', 'codicecf');
+  }
+
+  public function rubri(){
+    return $this->hasOne('knet\WebModels\wRubrica', 'id', 'rubri_id');
   }
 
   /**

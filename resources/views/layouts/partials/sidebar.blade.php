@@ -72,21 +72,22 @@
               {{-- @if (!Auth::user()->hasRole('client')) --}}
               @if (!in_array(RedisUser::get('role'), ['client']))
               <li class="header">Funzioni Web</li>
-              @if (RedisUser::get('ditta_DB')=='kNet_it')
+              {{-- @if (RedisUser::get('ditta_DB')=='kNet_it') --}}
                 <li class=""><a href="{{ route('rubri::list') }}"><i class="fa fa-address-card-o"></i> <span>Rubrica Contatti</span></a></li>
-              @endif
+              {{-- @endif --}}
               {{-- <li class=""><a href="{{ route('doc::list', 'O') }}"><i class='fa fa-pencil-square-o'></i> <span>Pre-Ordini via Web</span></a></li> --}}              
               <li class="treeview {{ Ekko::isActiveRoute('visit::*') }}">
                 <a href="{{ route('visit::insert') }}"><i class='fa fa-weixin'></i> <span>Visite & Eventi</span><i class="fa fa-angle-left pull-right"></i></a>
                 <ul class="treeview-menu">
                     <li class="{{ Ekko::isActiveRoute('visit::*') }}"><a href="{{ route('visit::insert') }}"> <span>{{ trans('_menu.insVisits') }}</span></a></li>
-                    @if (RedisUser::get('ditta_DB')=='kNet_it')
+                    <li class="{{ Ekko::isActiveRoute('visit::*') }}"><a href="{{ route('visit::report') }}"> <span>{{ trans('_menu.reportVisits') }}</span></a></li>
+                    {{-- @if (RedisUser::get('ditta_DB')=='kNet_it')
                         <li class="{{ Ekko::isActiveRoute('visit::*') }}"><a href="{{ route('visit::insertRubri') }}"> <span>Inserimento Visita Contatto</span></a></li>    
-                    @endif
+                    @endif --}}
                 </ul>
               </li>
               {{-- @if (in_array(RedisUser::get('ditta_DB'), ['kNet_it'])) --}}
-                <li class=""><a href="http://2.115.99.233:8080" target="_blank"><i class='fa fa-calendar'></i> <span>Kalendar</span></a></li>
+                <li class=""><a href="http://kalendar.kronakoblenz.it:8080/" target="_blank"><i class='fa fa-calendar'></i> <span>Kalendar</span></a></li>
               {{-- @endif --}}
               <li><i class='fa fa-empty'></i></li>
 

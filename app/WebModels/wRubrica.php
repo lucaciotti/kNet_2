@@ -28,6 +28,7 @@ class wRubrica extends Model
                         'codfiscale',
                         'legalerapp',
                         'agente',
+                        'statocf',
                         'nDipendenti', 
                         'codicecf', 
                         'prod_mobili', 

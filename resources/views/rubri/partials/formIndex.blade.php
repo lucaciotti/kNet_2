@@ -83,7 +83,7 @@
 
   {{-- isModule --}}  
     <div class="form-group">
-      <label>Analisi di Mercato 2019</label>
+      <label>Analisi di Mercato</label>
       <div class="radio">
         <label>
           <input type="radio" name="optModCarp" id="optMod1" @if (old('optModCarp')=='S') checked @endif value="S">Si

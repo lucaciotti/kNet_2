@@ -18,6 +18,10 @@ use knet\ArcaModels\Zona;
 use knet\ArcaModels\ScadCli;
 use knet\WebModels\wVisit;
 
+use knet\Helpers\RedisUser;
+use knet\ArcaModels\Agent;
+use Auth;
+
 class RubriController extends Controller
 {
     public function __construct(){
@@ -97,6 +101,54 @@ class RubriController extends Controller
         'agenti' => $agenti,
         'mapsException' => ''
       ]);
+    }
+
+    public function insertOrEdit (Request $req, $rubri_id=null){
+      if (!empty($rubri_id)) {
+        $contact = wRubrica::select('id', 'descrizion')->findOrFail($rubri_id);
+      }
+      
+      $nazioni = Nazione::all();
+      $settori = Settore::all();
+      $agenti = $agentList = Agent::select('codice', 'descrizion')->whereNull('u_dataini')->orWhere('u_dataini', '>=', Carbon::now())->orderBy('codice')->get();;
+
+      $returnToVisit = ($req->input('visit')) ? True : False;
+
+      return view('rubri.insertOrEdit', [
+        'contact' => $contact ?? '',
+        'nazioni' => $nazioni,
+        'settori' => $settori,
+        'agenti' => $agenti,
+        'returnToVisit' => $returnToVisit
+      ]);
+    }
+
+    public function store (Request $req){
+      // dd($req);
+      $rubri = wRubrica::create([
+        'descrizion' => $req->input('ragsoc'),
+        'partiva' => ($req->input('vatCode') ? $req->input('vatCode') : ''),
+        'user_id' => Auth::user()->id,
+        'settore' => $req->input('sector'),
+        'statocf' => 'T',
+        'codnazione' => $req->input('nation'),
+        'localita' => $req->input('location'),
+        'indirizzo' => $req->input('address'),
+        'cap' => $req->input('posteCode'),
+        'email' => ($req->input('email') ? $req->input('email') : ''),
+        'agente' => $req->input('referenceAgent'),
+        'persdacont' => ($req->input('persdacont') ? $req->input('persdacont') : ''),
+        'posperscon' => ($req->input('pospersdacont') ? $req->input('pospersdacont') : ''),
+        'telefono' => ($req->input('phone') ? $req->input('phone') : ''),
+        'sitoweb' => ($req->input('site') ? $req->input('site') : ''),
+      ]);
+
+      // if($req->input('rubri_id')){
+      if($req->input('insertVisit')){
+        return Redirect::route('visit::insertRubri', $rubri->id);
+      }
+
+      return Redirect::route('rubri::detail', $req->input('rubri_id'));
     }
 
     public function detail (Request $req, $rubri_id){

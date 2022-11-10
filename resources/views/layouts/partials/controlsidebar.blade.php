@@ -66,6 +66,16 @@
                         </div>
                     </a>
                 </li>
+                <hr>
+                <li>
+                    <a href="{{route('visit::importXls')}}">
+                        <i class="menu-icon fa fa-user-plus bg-yellow"></i>
+                        <div class="menu-info">
+                            <h4 class="control-sidebar-subheading">Import XLS Visite Agenti</h4>
+                            <p>{{ trans('_configMenu.importUsersDesc') }}</p>
+                        </div>
+                    </a>
+                </li>
             </ul>
         </div>
     </div>

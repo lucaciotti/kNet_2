@@ -26,7 +26,7 @@ return [
     'notecredito'             => 'Gutschriften',
     'payment'                 => 'Fristen',
     'products'                => 'Produkte',
-    'insVisits'               => 'Kundenbesuch Eingabe',
+    'insVisits'               => 'Besuch Eingabe',
     'statsFatt'               => 'Umsatzstatistik',
     'agent'                   => 'Agent',
     'client'                  => 'Kunde',

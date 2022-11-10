@@ -20,6 +20,8 @@ Vue.component("form-sys-mkt", require("./components/FormSysMkt.vue"));
 
 Vue.component("form-ric-fat", require("./components/FormRicFat.vue"));
 
+Vue.component("form-visit", require("./components/FormVisit.vue"));
+
 const app = new Vue({
   el: "#app"
 });

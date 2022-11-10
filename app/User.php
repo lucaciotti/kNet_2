@@ -38,6 +38,10 @@ class User extends Authenticatable
         return 'kNet_'.$value;
     } */
 
+    public function roleFirst() {
+        return $this->roles()->first();
+    }
+
     public function client(){
       return $this->hasOne('knet\ArcaModels\Client', 'codice', 'codcli');
     }

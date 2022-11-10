@@ -14,7 +14,7 @@ class AlterVisitTable extends Migration
     public function up()
     {
         Schema::table('w_visite', function (Blueprint $table) {
-            $table->bigInteger('modCarp_id')->nullable()->after('note')->comment('Riferimento a Analisi di Mercato 2019');
+            $table->bigInteger('modCarp_id')->nullable()->after('note')->comment('Riferimento a Analisi di Mercato');
             $table->string('codicecf',6)->nullable()->change();
         });
     }

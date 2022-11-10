@@ -98,7 +98,7 @@ class ModCarp01Controller extends Controller
             'user_id' => Auth::user()->id,
             'data' => Carbon::now(),
             'tipo' => "MCarp",
-            'descrizione' => "Compilazione Analisi di Mercato 2019",
+            'descrizione' => "Compilazione Analisi di Mercato",
             'modCarp_id' => $modCarp->id
         ]);
 
@@ -120,7 +120,7 @@ class ModCarp01Controller extends Controller
         $contact->save();
 
 
-        return ['Analisi di Mercato 2019 Salvata'];
+        return ['Analisi di Mercato Salvata'];
     }
 
     public function edit(Request $req, $rubri_id){
@@ -204,7 +204,7 @@ class ModCarp01Controller extends Controller
             'user_id' => Auth::user()->id,
             'data' => Carbon::now(),
             'tipo' => "MCarp",
-            'descrizione' => "Modificato Analisi di Mercato 2019",
+            'descrizione' => "Modificato Analisi di Mercato",
             'modCarp_id' => $modCarp->id
         ]);
 
@@ -224,7 +224,7 @@ class ModCarp01Controller extends Controller
         $contact->save();
 
 
-        return ['Analisi Mercato 2019 Salvato'];
+        return ['Analisi Mercato Salvato'];
     }
 
     public function delete(Request $req, $rubri_id){

@@ -42,10 +42,21 @@
           @break
         @endswitch
         
-      <div><hr class="dividerPage"></div>
+      <div>
+        <span class="contentSubTitle">
+          @if($visit->client)
+          Cliente:
+            <a href="{{ route('client::detail', $visit->codicecf ) }}">{{ $visit->client->descrizion }} [{{ $visit->codicecf }}]</a>
+          @else
+          Potenziale Cliente:
+            <a href="{{ route('rubri::detail', $visit->rubri_id ?? 0 ) }}">{{ $visit->rubri->descrizion ?? 'Error' }}</a>
+          @endif
+        </span>
+      </div>
+
       <div>
        <span class="floatleft10">
-        <dl class="dl-horizontal">
+        <dl class="dl-horizontal">           
             <dt>Data</dt>
             <dd>
                 <big><strong>{{ $visit->data->format('d M. Y') }}</strong></big>
@@ -76,5 +87,6 @@
 
       </span>
       </div>
-    @endforeach
+      
       <div><hr class="dividerPage"></div>
+    @endforeach

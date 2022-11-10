@@ -26,7 +26,7 @@ return [
     'notecredito'             => 'Note de Crédit',
     'payment'                 => 'Echéances',
     'products'                => 'Produits',
-    'insVisits'               => 'Saisies Visites Clients',
+    'insVisits'               => 'Saisies Visites',
     'statsFatt'               => 'Statistiques Chiffre d\'affaires',
     'statsFattArt'            => 'Chiffre d\'affaires pluriannuel',
     'agent'                   => 'Agent',

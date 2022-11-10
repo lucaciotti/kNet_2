@@ -137,7 +137,7 @@ class SchedaCliController extends Controller
         $valMese = 'valore' . $prevMonth;
         $prevMonth = $fatThisYear->isEmpty() ? $prevMonth : (($fatThisYear->first()->$valMese == 0) ? $prevMonth-1 : $prevMonth);
         
-        $visits = wVisit::where('codicecf', $codice)->with('user')->take(3)->orderBy('data', 'desc')->orderBy('id')->get();
+        $visits = wVisit::where('codicecf', $codice)->with('user')->orderBy('data', 'desc')->orderBy('id')->get();
 
         $title = "Scheda Cliente";
         $subTitle = $client->descrizion;

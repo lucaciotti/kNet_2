@@ -27,7 +27,7 @@ class Agent extends Model
         parent::boot();
 
         static::addGlobalScope('default', function(Builder $builder) {
-            $builder->where('codice', '!=', '')->where('codice', '!=', '00');
+            $builder->where('codice', '!=', '000')->where('codice', '!=', '00')->where('codice', '!=', 'DIR')->where('codice', '!=', 'Z00');
         });
 
         switch (RedisUser::get('role')) {

@@ -26,7 +26,7 @@ return [
     'notecredito'             => 'Abonos',
     'payment'                 => 'Vencimientos',
     'products'                => 'Productos',
-    'insVisits'               => 'Insertar visitas clientes',
+    'insVisits'               => 'Insertar visitas',
     'statsFatt'               => 'Estadísticas facturación',
     'statsFattArt'            => 'Años de comparación de facturación',
     'agent'                   => 'Agente',

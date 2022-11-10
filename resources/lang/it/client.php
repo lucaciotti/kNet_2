@@ -72,6 +72,7 @@ return [
     'relationEnd'             => 'Data Fine Rapporto',
 
     'referencePerson'         => 'Persona da Contattare',
+    'roleReferencePerson'     => 'Ruolo Persona da Contattare',
     'referenceAgent'          => 'Agente di Riferimento',
 
     'phone'                   => 'Telefono',
@@ -79,6 +80,7 @@ return [
     'phone2'                  => 'Telefono 2',
     'mobilePhone'             => 'Cellulare',
 
+    'site'                    => 'Sito Aziendale',
     'email'                   => 'eMail Generale',
     'emailAdm'                => 'eMail Amministrazione',
     'emailOrder'              => 'eMail Invio Ordini',

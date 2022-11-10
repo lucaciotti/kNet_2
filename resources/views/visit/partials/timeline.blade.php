@@ -68,11 +68,23 @@
           <h3 class="timeline-header"><strong>{{ $visit->descrizione }}</strong> - <small> {{ $message }} </small></h3>
 
           <div class="timeline-body">
+            @if($visit->persona_contatto)
+              <i class="fa fa-arrow-right" aria-hidden="true"></i> Persona Contatta: {{ $visit->persona_contatto }} [{{ $visit->funzione_contatto }}]
+            @endif
+            <hr>
+              <i class="fa fa-arrow-right" aria-hidden="true"></i> Note:
             {!! $visit->note !!}
+            <hr>
+              <i class="fa fa-arrow-right" aria-hidden="true"></i> Conclusione:
+            {!! $visit->conclusione !!}
+            @if($visit->ordine)
+            <hr>
+              <i class="fa fa-arrow-right" aria-hidden="true"></i> Effettuerà Ordine            
+            @endif
           </div>
-          <div class="timeline-footer">
+          {{-- <div class="timeline-footer">
             <a class="btn btn-primary btn-xs">{{ trans('visit.readMore') }}</a>
-          </div>
+          </div> --}}
         </div>
       </li>
     @endforeach
@@ -89,7 +101,7 @@
       @if($codcli)
         <a class="btn btn-sm btn-default" href="{{ route('visit::insert', $codcli) }}"> <i class="fa fa-plus"></i> <span>{{ trans('visit.insEvent') }}</span></a>
       @else
-        <a class="btn btn-sm btn-default" href="{{ route('visit::insertRubri', $rubri_id) }}"> <i class="fa fa-plus"></i> <span>{{ trans('visit.insEvent') }}</span></a>
+        <a class="btn btn-sm btn-default" href="{{ route('visit::insertRubri', $rubri_id) }}"> <i class="fa fa-plus"></i> <span>{{ trans('visit.insEventRubri') }}</span></a>
       @endif
     </span>
   </li>

@@ -19,8 +19,10 @@
             span.floatleft { float: left; width: 49%; } /* border-left:1px solid grey; */
             span.floatright { float: right; width: 49%; }
             span.floatleft20 { float: left; width: 25%; } 
+            span.floatleft10 { float: left; width: 15%; } 
             span.floatright20 { float: right; width: 25%; }
             span.floatright80 { float: right; width: 75%; }
+            span.floatright90 { float: right; width: 85%; }
             hr.divider { width: 80%; float:left; margin-right: 20%;}
             hr.smalldivider { width: 50%; float:left; margin-right: 50%;}
             hr.dividerPage { width: 80%; float:middle; margin-right: 10%;}

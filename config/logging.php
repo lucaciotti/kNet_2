@@ -51,6 +51,12 @@ return [
             'days' => 7,
         ],
 
+        'insertVisit' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/insertVisit' . (new \DateTime)->format('Y-m-d-H-i') . '.log'),
+            'days' => 1,
+        ],
+
         'slack' => [
             'driver' => 'slack',
             'url' => env('LOG_SLACK_WEBHOOK_URL'),
