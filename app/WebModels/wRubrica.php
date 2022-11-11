@@ -47,7 +47,7 @@ class wRubrica extends Model
                         'user_id'];
 
     
-                        public function __construct ($attributes = array())
+    public function __construct ($attributes = array())
     {
         parent::__construct($attributes);
         //Imposto la Connessione al Database

@@ -3,6 +3,8 @@
 namespace knet\WebModels;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\DB;
 
 use Spatie\Activitylog\Traits\LogsActivity;
 use RedisUser;
@@ -22,6 +24,44 @@ class wVisit extends Model
     //Imposto la Connessione al Database
     $this->setConnection(RedisUser::get('ditta_DB'));
   }
+
+  protected static function boot()
+    {
+        parent::boot();
+
+        switch (RedisUser::get('role')) {
+          case 'agent':
+              static::addGlobalScope('agent', function (Builder $builder) {
+                 $builder->whereHas('client', function ($query){
+                  $query->where('agente', RedisUser::get('codag'));
+                })->orWhereHas('rubri', function ($query){
+                  $query->where('codag', RedisUser::get('codag'));
+                });
+              });
+            break;
+          case 'superAgent':
+            static::addGlobalScope('superAgent', function(Builder $builder) {
+              $builder->whereHas('client', function ($query){
+                  $query->whereHas('agent', function ($q){
+                    $q->where('u_capoa', RedisUser::get('codag'));
+                  });
+                })->orWhereHas('rubri', function ($query){
+                  $query->whereHas('agent', function ($q){
+                    $q->where('u_capoa', RedisUser::get('codag'));
+                  });
+                });
+            });
+            break;
+          case 'client':
+            static::addGlobalScope('client', function(Builder $builder) {
+                $builder->where('codice', RedisUser::get('codcli'));
+            });
+            break;
+
+          default:
+            break;
+        }
+    }
 
 
   public function getTipoVisitAttribute(){
