@@ -34,7 +34,7 @@
           <a href="{{ route('doc::detail', $doc->id) }}"> {{ $doc->numerodoc }} </a>
         </td>
         <td><span>{{$doc->datadoc->format('Ymd')}}</span>{{ $doc->datadoc->format('d-m-Y') }}</td>
-        <td>{{ $doc->client->descrizion }} [{{ $doc->codicecf }}]</td>
+        <td>{{ $doc->client->descrizion ?? '' }} [{{ $doc->codicecf }}]</td>
         <td>{{ $doc->numerodocf }}</td>
         <td>@if($doc->agent) {{ $doc->agent->descrizion }} @endif</td>
         <td>{{ $doc->totdoc }}</td>

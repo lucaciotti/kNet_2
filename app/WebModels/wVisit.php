@@ -35,7 +35,7 @@ class wVisit extends Model
                  $builder->whereHas('client', function ($query){
                   $query->where('agente', RedisUser::get('codag'));
                 })->orWhereHas('rubri', function ($query){
-                  $query->where('codag', RedisUser::get('codag'));
+                  $query->where('agente', RedisUser::get('codag'));
                 });
               });
             break;
