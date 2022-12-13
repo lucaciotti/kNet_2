@@ -24,7 +24,7 @@
         <th style="text-align: center;">Fasce Qta</th>
         @if(!in_array(RedisUser::get('role'), ['agent', 'client']))
           <th colspan="1">|</th>
-          <th style="text-align: center;">Estendi a 2022</th>
+          <th style="text-align: center;">Estendi a 2023</th>
         @endif
       </tr>
     </thead>
