@@ -92,6 +92,7 @@
               <li><i class='fa fa-empty'></i></li>
 
               <li class="header">Statistiche</li>
+              @if (!in_array(RedisUser::get('role'), ['marketing']))
               <li class="treeview {{ Ekko::isActiveRoute('stFatt::*') }}">
                   <a href="{{ route('stFatt::idxAg') }}"><i class='fa fa-line-chart'></i> <span>{{ trans('_menu.statsFatt') }}</span> <i class="fa fa-angle-left pull-right"></i></a>
                   <ul class="treeview-menu">
@@ -103,6 +104,7 @@
                     @endif --}}
                   </ul>
               </li>
+              @endif
               <li class="treeview {{ Ekko::isActiveRoute('stAbc::*') }}">
                   <a href="{{ route('stAbc::idxAg') }}"><i class='fa fa-sort-alpha-asc'></i> <span>{{ trans('_menu.AbcArt') }}</span> <i class="fa fa-angle-left pull-right"></i></a>
                   <ul class="treeview-menu">
@@ -113,8 +115,8 @@
                       {{-- <li class="{{ Ekko::isActiveRoute('stAbc::idxManager') }}"><a href="{{ route('stAbc::idxManager') }}">{{ trans('_menu.superAgent') }}</a></li> --}}
                   </ul>
               </li>
-
-              @if (!in_array(RedisUser::get('role'), ['client']))
+              
+              @if (!in_array(RedisUser::get('role'), ['client', 'marketing']))
                 <li class="{{ Ekko::isActiveRoute('stFattArt::idxAg') }}">
                     <a href="{{ route('stFattArt::idxAg') }}">
                         <i class='fa fa-sort-amount-desc'></i>
@@ -124,12 +126,14 @@
                 @endif
             <li><i class='fa fa-empty'></i></li>
 
+            @if (!in_array(RedisUser::get('role'), ['marketing']))
             <li class="{{ Ekko::isActiveRoute('Portfolio::idxAg') }}">
                 <a href="{{ route('Portfolio::idxAg') }}">
                     <i class='fa fa-stack-overflow'></i>
                     <span>Portafoglio</span>
                 </a>
             </li>
+            @endif
 
               {{-- <li class="header">Forecast & Target</li>
               <li class="treeview {{ Ekko::isActiveRoute('target::*') }}">
