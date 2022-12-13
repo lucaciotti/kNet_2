@@ -30,6 +30,7 @@
         <div class="tab-pane" id="control-sidebar-settings-tab">
             <h3 class="control-sidebar-heading"> {{ trans('_configMenu.extraSettings') }}</h3>
             <ul class='control-sidebar-menu'>
+                @if (!in_array(RedisUser::get('role'), ['marketing']))
                 <li>
                     <a href="{{route('user::users.index')}}">
                         <i class="menu-icon fa fa-users bg-info"></i>
@@ -57,6 +58,7 @@
                         </div>
                     </a>
                 </li>
+                @endif
                 <li>
                     <a href="{{route('rubri::import')}}">
                         <i class="menu-icon fa fa-user-plus bg-yellow"></i>
