@@ -27,6 +27,7 @@ return [
     'payment'                 => 'Due Dates',
     'products'                => 'Products',
     'insVisits'               => 'Visit Input',
+    'reportVisits'            => 'Visit Reports',
     'statsFatt'               => 'Turnover Statistics',
     'statsFattArt'            => 'Turnover Comparison Years',
     'agent'                   => 'Agent',

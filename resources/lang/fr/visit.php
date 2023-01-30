@@ -14,6 +14,7 @@ return [
     'contentDesc_ins'         => '',
 
     'insEvent'                => 'Insertion Evénement',
+    'insEventRubri'           => 'Visitas Contactos',
 
     /*
     |--------------------------------------------------------------------------
@@ -23,10 +24,15 @@ return [
     */
 
     'client'                  => 'Client',
+    'eventPers'               => 'Personne contactée',
+    'eventRolePers'           => 'Rôle commercial',
     'eventType'               => 'Typologie Rencontre',
     'eventDate'               => 'Date',
+    'eventDateNext'           => 'Date de la prochaine réunion',
     'eventDesc'               => 'Brève Description',
     'eventNote'               => 'Notes',
+    'eventConclusion'         => 'Conclusion',
+    'eventOrd'                => 'Suivra-t-il la commande client?',
 
     'eventMeeting'            => 'Meeting',
     'eventMail'               => 'eMail envoyé',
@@ -38,7 +44,10 @@ return [
     'readMore'                => 'Lis davantage',
 
     // Form PlaceHolder
+    'pers_plchld'             => 'Personne contactée',
+    'rolePers_plchld'         => 'Rôle commercial',
     'desc_plchld'             => 'Description',
     'note_plchld'             => 'Ecrivez ici',
+    'conclusion_plchld'       => 'Entrez la conclusion de la visite ici',
 
 ];

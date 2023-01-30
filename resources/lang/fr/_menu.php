@@ -27,6 +27,7 @@ return [
     'payment'                 => 'Echéances',
     'products'                => 'Produits',
     'insVisits'               => 'Saisies Visites',
+    'reportVisits'            => 'Rapports de visite',
     'statsFatt'               => 'Statistiques Chiffre d\'affaires',
     'statsFattArt'            => 'Chiffre d\'affaires pluriannuel',
     'agent'                   => 'Agent',

@@ -27,6 +27,7 @@ return [
     'payment'                 => 'Vencimientos',
     'products'                => 'Productos',
     'insVisits'               => 'Insertar visitas',
+    'reportVisits'            => 'Informes de visitas',
     'statsFatt'               => 'Estadísticas facturación',
     'statsFattArt'            => 'Años de comparación de facturación',
     'agent'                   => 'Agente',

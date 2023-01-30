@@ -217,11 +217,19 @@
         $('#conclusione').focus();
         return false;
         }
-        if($('#dateNext').val()=='') {
-          alert('Indicare Data prox incontro');
-          $('#dateNext').focus();
-          return false;
-        } else {
+        // if($('#dateNext').val()=='') {
+        //   alert('Indicare Data prox incontro');
+        //   $('#dateNext').focus();
+        //   return false;
+        // } else {
+        //   var inputDate = new Date($('#dateNext').val());
+        //   var todaysDate = new Date();
+        //   if(inputDate.setHours(0,0,0,0) <= todaysDate.setHours(0,0,0,0)) {
+        //     alert('La data dell\'incotro non può essere antecedente a oggi');
+        //     $('#dateNext').focus();
+        //     return false;
+        // }
+        if($('#dateNext').val()!='') {
           var inputDate = new Date($('#dateNext').val());
           var todaysDate = new Date();
           if(inputDate.setHours(0,0,0,0) <= todaysDate.setHours(0,0,0,0)) {
