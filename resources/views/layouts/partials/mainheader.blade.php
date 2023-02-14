@@ -65,7 +65,7 @@
                         </ul>
                     </li>
                 @endif
-                @if (!in_array(RedisUser::get('role'), ['client', 'agent', 'superAgent', 'user']))
+                @if (!in_array(RedisUser::get('role'), ['client', 'agent', 'superAgent', 'user', 'tecnical_sales']))
                   <!-- Control Sidebar Toggle Button -->
                   <li>
                       <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>

@@ -54,7 +54,7 @@
                         <li class="{{ Ekko::isActiveRoute('listini::idxCli') }}"><a href="{{ route('listini::idxCli') }}">Cliente</a></li>
                         <li class="{{ Ekko::isActiveRoute('listini::grpCli') }}"><a href="{{ route('listini::grpCli') }}">Gruppo Clienti</a></li>
                         <li>&nbsp;</li>
-                        @if (!in_array(RedisUser::get('role'), ['agent', 'client', 'marketing']))
+                        @if (!in_array(RedisUser::get('role'), ['agent', 'client', 'marketing', 'tecnical_sales']))
                             <li class="{{ Ekko::isActiveRoute('listini::grpCli') }}"><a href="{{ route('listini::cliListScad') }}">Listino Clienti in Scadenza</a></li>
                             <li class="{{ Ekko::isActiveRoute('listini::grpCli') }}"><a href="{{ route('listini::grpListScad') }}">Listino Gruppi in Scadenza</a></li>
                         @endif
@@ -65,7 +65,7 @@
                     </ul>
                 </li>
               @endif
-              @if (!in_array(RedisUser::get('role'), ['marketing']))
+              @if (!in_array(RedisUser::get('role'), ['marketing', 'tecnical_sales']))
               <li class="{{ Ekko::isActiveRoute('scad::*') }}"><a href="{{ route('scad::list') }}"><i class='fa fa-money'></i> <span>{{ trans('_menu.payment') }}</span></a></li>
               @endif
               {{-- <li class="{{ Ekko::isActiveRoute('prod::*') }}"><a href="{{ route('prod::list') }}"><i class='fa fa-cube'></i> <span>{{ trans('_menu.products') }}</span></a></li> --}}
@@ -98,9 +98,13 @@
               <li class="treeview {{ Ekko::isActiveRoute('stFatt::*') }}">
                   <a href="{{ route('stFatt::idxAg') }}"><i class='fa fa-line-chart'></i> <span>{{ trans('_menu.statsFatt') }}</span> <i class="fa fa-angle-left pull-right"></i></a>
                   <ul class="treeview-menu">
+                    @if (!in_array(RedisUser::get('role'), ['marketing', 'tecnical_sales']))
                       <li class="{{ Ekko::isActiveRoute('stFatt::idxAg') }}"><a href="{{ route('stFatt::idxAg') }}">{{ trans('_menu.agent') }}</a></li>
+                    @endif
                       <li class="{{ Ekko::isActiveRoute('stFatt::idxCli') }}"><a href="{{ route('stFatt::idxCli') }}">{{ trans('_menu.client') }}</a></li>
+                    @if (!in_array(RedisUser::get('role'), ['marketing', 'tecnical_sales']))
                       <li class="{{ Ekko::isActiveRoute('stFatt::idxZone') }}"><a href="{{ route('stFatt::idxZone') }}">{{ trans('_menu.zone') }}</a></li>
+                    @endif
                     {{-- @if (!in_array(RedisUser::get('role'), ['agent']))
                         <li class="{{ Ekko::isActiveRoute('stFatt::idxManager') }}"><a href="{{ route('stFatt::idxManager') }}">{{ trans('_menu.superAgent') }}</a></li>
                     @endif --}}
@@ -111,14 +115,16 @@
                   <a href="{{ route('stAbc::idxAg') }}"><i class='fa fa-sort-alpha-asc'></i> <span>{{ trans('_menu.AbcArt') }}</span> <i class="fa fa-angle-left pull-right"></i></a>
                   <ul class="treeview-menu">
                       <li class="{{ Ekko::isActiveRoute('stAbc::idxArt') }}"><a href="{{ route('stAbc::idxArt') }}">{{ trans('_menu.products') }}</a></li>
+                      @if (!in_array(RedisUser::get('role'), ['marketing', 'tecnical_sales']))
                       <li class="{{ Ekko::isActiveRoute('stAbc::idxAg') }}"><a href="{{ route('stAbc::idxAg') }}">{{ trans('_menu.agent') }}</a></li>
+                      @endif
                       <li class="{{ Ekko::isActiveRoute('stAbc::idxCli') }}"><a href="{{ route('stAbc::idxCli') }}">{{ trans('_menu.client') }}</a></li>
                       {{-- <li class="{{ Ekko::isActiveRoute('stAbc::idxZone') }}"><a href="{{ route('stAbc::idxZone') }}">{{ trans('_menu.zone') }}</a></li> --}}
                       {{-- <li class="{{ Ekko::isActiveRoute('stAbc::idxManager') }}"><a href="{{ route('stAbc::idxManager') }}">{{ trans('_menu.superAgent') }}</a></li> --}}
                   </ul>
               </li>
               
-              @if (!in_array(RedisUser::get('role'), ['client', 'marketing']))
+              @if (!in_array(RedisUser::get('role'), ['client', 'marketing', 'tecnical_sales']))
                 <li class="{{ Ekko::isActiveRoute('stFattArt::idxAg') }}">
                     <a href="{{ route('stFattArt::idxAg') }}">
                         <i class='fa fa-sort-amount-desc'></i>
@@ -128,7 +134,7 @@
                 @endif
             <li><i class='fa fa-empty'></i></li>
 
-            @if (!in_array(RedisUser::get('role'), ['marketing']))
+            @if (!in_array(RedisUser::get('role'), ['marketing', 'tecnical_sales']))
             <li class="{{ Ekko::isActiveRoute('Portfolio::idxAg') }}">
                 <a href="{{ route('Portfolio::idxAg') }}">
                     <i class='fa fa-stack-overflow'></i>
