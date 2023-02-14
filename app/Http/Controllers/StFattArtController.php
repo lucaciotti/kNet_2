@@ -64,7 +64,11 @@ class StFattArtController extends Controller
                 $fatList->selectRaw('SUM(IF(u_statfatt_art.esercizio = ?,' . $querySelect_fatN . ', 0)) as fatN4', [$thisYear - 4]);
                 break;
         }
-        $fatList->whereIn('anagrafe.agente', $fltAgents);
+        if(RedisUser::get('ditta_DB')=='kNet_es' && RedisUser::get('codag')=='A6'){
+            $fatList->where('u_statfatt_art.gruppo', 'like', 'A%');
+        } else {
+            $fatList->whereIn('anagrafe.agente', $fltAgents);
+        }
         $fatList->whereRaw('(LEFT(u_statfatt_art.codicearti,4) != ? AND LEFT(u_statfatt_art.codicearti,4) != ?)', ['CAMP', 'NOTA']);
         $fatList->whereRaw('(LEFT(u_statfatt_art.gruppo,1) != ? AND LEFT(u_statfatt_art.gruppo,1) != ? AND LEFT(u_statfatt_art.gruppo,3) != ?)', ['C', '2', 'DIC']);
         if ($settoreSelected != null) $fatList->whereIn('anagrafe.settore', $settoreSelected);

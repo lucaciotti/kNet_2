@@ -87,6 +87,9 @@ class SchedaFatArtController extends Controller
         if ($req->input('grpPrdSelected')) {
             $fatList->whereIn('u_statfatt_art.gruppo', $req->input('grpPrdSelected'));
         }
+        if(RedisUser::get('ditta_DB')=='kNet_es' && RedisUser::get('codag')=='A6'){
+            $fatList->where('u_statfatt_art.gruppo', 'like', 'A%');
+        }
         if (!empty($req->input('optTipoProd'))) {
             $fatList->where('u_statfatt_art.prodotto', $req->input('optTipoProd'));
         }

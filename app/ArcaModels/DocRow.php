@@ -3,6 +3,7 @@
 namespace knet\ArcaModels;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 use RedisUser;
 
 class DocRow extends Model
@@ -18,6 +19,17 @@ class DocRow extends Model
     parent::__construct($attributes);
     //Imposto la Connessione al Database
     $this->setConnection(RedisUser::get('ditta_DB'));
+  }
+
+  protected static function boot()
+  {
+      parent::boot();
+
+      if(RedisUser::get('ditta_DB')=='kNet_es' && RedisUser::get('codag')=='A6'){
+        static::addGlobalScope('agent', function (Builder $builder) {
+          $builder->where('gruppo', 'like', 'A%')->orWhere('gruppo', '');
+        });
+      } 
   }
 
   // JOIN Tables

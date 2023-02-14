@@ -26,28 +26,32 @@ class Client extends Model
         static::addGlobalScope('clients', function(Builder $builder) {
             $builder->where('codice', 'like', 'C%');
         });
-
-        switch (RedisUser::get('role')) {
-          case 'agent':
-              static::addGlobalScope('agent', function (Builder $builder) {
-                $builder->where('agente', RedisUser::get('codag'));
-              });
-            break;
-          case 'superAgent':
-            static::addGlobalScope('superAgent', function(Builder $builder) {
-              $builder->whereHas('agent', function ($query){
-                  $query->where('u_capoa', RedisUser::get('codag'));
+        
+        if(RedisUser::get('ditta_DB')=='kNet_es' && RedisUser::get('codag')=='A6'){
+          return;
+        } else {
+          switch (RedisUser::get('role')) {
+            case 'agent':
+                static::addGlobalScope('agent', function (Builder $builder) {
+                  $builder->where('agente', RedisUser::get('codag'));
                 });
-            });
-            break;
-          case 'client':
-            static::addGlobalScope('client', function(Builder $builder) {
-                $builder->where('codice', RedisUser::get('codcli'));
-            });
-            break;
+              break;
+            case 'superAgent':
+              static::addGlobalScope('superAgent', function(Builder $builder) {
+                $builder->whereHas('agent', function ($query){
+                    $query->where('u_capoa', RedisUser::get('codag'));
+                  });
+              });
+              break;
+            case 'client':
+              static::addGlobalScope('client', function(Builder $builder) {
+                  $builder->where('codice', RedisUser::get('codcli'));
+              });
+              break;
 
-          default:
-            break;
+            default:
+              break;
+          }
         }
     }
 

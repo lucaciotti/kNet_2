@@ -65,9 +65,13 @@ class StAbcController extends Controller
                     DB::raw('SUM(IF(esercizio='.$prevYear.', qta11, 0)) as qta_PY_11'),
                     DB::raw('SUM(IF(esercizio='.$prevYear.', qta12, 0)) as qta_PY_12')
                     )
-                    ->where('codag', $agente)
                     ->where('isomaggio', false)
                     ->whereIn('esercizio', [''.$thisYear.'', ''.$prevYear.'']);
+      if(RedisUser::get('ditta_DB')=='kNet_es' && RedisUser::get('codag')=='A6'){
+            $AbcProds = $AbcProds->where('gruppo', 'like', 'A%');
+        } else {
+            $AbcProds = $AbcProds->where('codag', $agente);
+        }
       if($req->input('gruppo')) {
         $AbcProds = $AbcProds->whereIn('gruppo', $req->input('gruppo'));
       }
@@ -160,6 +164,9 @@ class StAbcController extends Controller
       if($req->input('gruppo')) {
         $AbcProds = $AbcProds->whereIn('gruppo', $req->input('gruppo'));
       }
+      if(RedisUser::get('ditta_DB')=='kNet_es' && RedisUser::get('codag')=='A6'){
+            $AbcProds = $AbcProds->where('gruppo', 'like', 'A%');
+        }
       if(!empty($req->input('optTipoDoc'))) {
         $AbcProds = $AbcProds->where('prodotto', $req->input('optTipoDoc'));
       } else {
@@ -239,6 +246,9 @@ class StAbcController extends Controller
         ->whereIn('esercizio', ['' . $thisYear . '', '' . $prevYear . '']);
       if ($req->input('gruppo')) {
         $AbcProds = $AbcProds->whereIn('gruppo', $req->input('gruppo'));
+      }
+      if(RedisUser::get('ditta_DB')=='kNet_es' && RedisUser::get('codag')=='A6'){
+        $AbcProds = $AbcProds->where('gruppo', 'like', 'A%');
       }
       if (!empty($req->input('optTipoDoc'))) {
         $AbcProds = $AbcProds->where('prodotto', $req->input('optTipoDoc'));

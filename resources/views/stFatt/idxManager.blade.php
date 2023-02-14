@@ -79,7 +79,7 @@
         $fatMese = $fatTot->isempty() ? 0 : $fatTot->first()->fattmese;
         $deltaProg = $tgtMese==0 ? 0 : round((($fatMese) / $tgtMese) * 100,2);
         $deltaProg = $deltaProg > 100 ? 100 : $deltaProg;
-        $colorDelta = ($deltaProg < 33) ? 'red' : ($deltaProg > 33 && $deltaProg < 66) ? 'orange' : 'green';
+        $colorDelta = ($deltaProg < 33) ? 'red' : (($deltaProg > 33 && $deltaProg < 66) ? 'orange' : 'green');
         @endphp
           <input type="text" class="knob" data-thickness="0.2" data-angleArc="250" data-angleOffset="-125" value="{{ $deltaProg }}" data-width="120" data-height="120" data-fgColor="{{ $colorDelta }}">
 
