@@ -20,7 +20,7 @@
       <tr>
       @endif
         <td>{{ $visit->tipoVisit }}</td>
-        <td><span>{{$visit->data->format('Ymd')}}</span>{{ $visit->data->format('d-m-Y') }}</td>
+        <td width='100'><span>{{$visit->data->format('Ymd')}}</span>{{ $visit->data->format('d-m-Y') }}</td>
         @if($visit->client)
         <td><a href="{{ route('client::detail', $visit->codicecf ) }}">{{ $visit->client->descrizion }} [{{ $visit->codicecf }}]</a></td>
         @else
@@ -28,14 +28,19 @@
         @endif
         <td>{{ $visit->user->name }}</td>
         <td>{{ $visit->descrizione }}</td>
-        <td>
+        <td width='150'>
+          <a href='{{ route('visit::edit', ['id'=>$visit->id]) }}' class="btn btn-primary btn-sm" target="_blank">Edit</a>
           @if($visit->client)
-          <a class="btn-sm btn-default" href="{{ route('visit::show', $visit->codicecf ) }}" target="_blank">
+          <a class="btn btn-sm btn-default" href="{{ route('visit::show', $visit->codicecf ) }}" target="_blank">
           @else
-          <a class="btn-sm btn-default" href="{{ route('visit::showRubri', $visit->rubri_id ?? 0 ) }}" target="_blank">
+          <a class="btn btn-sm btn-default" href="{{ route('visit::showRubri', $visit->rubri_id ?? 0 ) }}" target="_blank">
           @endif
             <i class="fa fa-external-link text-danger"></i>
           </a>
+          <form action="{{ route('visit::delete', ['id'=>$visit->id]) }}" method="post" style="display: inline;" id="delete_visit_form" onsubmit="return deleteVisit()">
+            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+            <button type='submit' class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></button>
+          </form>
         </td>
         {{-- <td>
           <a href="{{ route('doc::detail', $doc->id) }}"> {{ $doc->numerodoc }} </a>
@@ -64,3 +69,16 @@
     } );
     </script>
 @endpush --}}
+
+@section('extra_script')
+<script>
+  function deleteVisit(){
+    var result = confirm("Eliminare visita selezionata?");
+    if (result) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+</script>
+@endsection

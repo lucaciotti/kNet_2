@@ -224,6 +224,14 @@ Route::group(['as' => 'visit::'], function(){
     'as' => 'insert',
     'uses' => 'VisitController@index'
   ]);
+  Route::get('/visit/edit/{id}', [
+    'as' => 'edit',
+    'uses' => 'VisitController@edit'
+  ]);
+  Route::post('/visit/delete/{id}', [
+    'as' => 'delete',
+    'uses' => 'VisitController@delete'
+  ]);
   Route::get('/visit/insertRubri/{rubri_id?}', [
     'as' => 'insertRubri',
     'uses' => 'VisitController@indexRubri'

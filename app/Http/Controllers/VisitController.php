@@ -41,6 +41,24 @@ class VisitController extends Controller
       ]);
     }
 
+    public function edit(Request $req, $id){
+      // Redirect to Form Page
+      $visit = wVisit::with('user')->findOrFail($id);
+      if (!empty($visit->rubri_id)) return $this->editRubri($req, $id);
+      $client = Client::select('codice', 'descrizion')->findOrFail($visit->codicecf);
+      return view('visit.insert', [
+        'visit' => $visit,
+        'client' => $client,
+        'contact' => '',
+      ]);
+    }
+
+    public function delete(Request $req, $id){
+      // Redirect to Form Page
+      $visit = wVisit::findOrFail($id)->delete();
+      return $this->report($req);
+    }
+
     public function indexRubri(Request $req, $rubri_id=null){
       // Redirect to Form Page
       if (empty($rubri_id)) {
@@ -54,28 +72,58 @@ class VisitController extends Controller
       ]);
     }
 
+    public function editRubri(Request $req, $id){
+      // Redirect to Form Page
+      $visit = wVisit::with('user')->findOrFail($id);
+      $contact = wRubrica::select('id', 'descrizion')->findOrFail($visit->rubri_id);
+      return view('visit.insertRubri', [
+        'visit' => $visit,
+        'client' => '',
+        'contact' => $contact,
+      ]);
+    }
+
     public function store(Request $req){
       // dd($req);
-      $visit = wVisit::create([
-        'codicecf' => ($req->input('codcli') ? $req->input('codcli') : null),
-        'rubri_id' => ($req->input('rubri_id') ? $req->input('rubri_id') : null),
-        'user_id' => Auth::user()->id,
-        'data' => new Carbon($req->input('data')),
-        'tipo' => $req->input('tipo'),
-        'descrizione' => $req->input('descrizione'),
-        'note' => $req->input('note'),
-        'conclusione' => $req->input('conclusione'),
-        'persona_contatto' => $req->input('persona'),
-        'funzione_contatto' => $req->input('rolePersona'),
-        'ordine' => $req->input('optOrdine'),
-        'data_prox' => (new Carbon($req->input('dateNext')))
-      ]);
+      if(!empty($req->input('id'))){
+        $visit = wVisit::where('id', $req->input('id'))->update([
+          'codicecf' => ($req->input('codcli') ? $req->input('codcli') : null),
+          'rubri_id' => ($req->input('rubri_id') ? $req->input('rubri_id') : null),
+          'user_id' => Auth::user()->id,
+          'data' => new Carbon($req->input('data')),
+          'tipo' => $req->input('tipo'),
+          'descrizione' => $req->input('descrizione'),
+          'note' => $req->input('note'),
+          'conclusione' => $req->input('conclusione'),
+          'persona_contatto' => $req->input('persona'),
+          'funzione_contatto' => $req->input('rolePersona'),
+          'ordine' => $req->input('optOrdine'),
+          'data_prox' => $req->input('dateNext')!=null ? (new Carbon($req->input('dateNext'))) : null
+        ]);
+      } else {
+        $visit = wVisit::create([
+          'codicecf' => ($req->input('codcli') ? $req->input('codcli') : null),
+          'rubri_id' => ($req->input('rubri_id') ? $req->input('rubri_id') : null),
+          'user_id' => Auth::user()->id,
+          'data' => new Carbon($req->input('data')),
+          'tipo' => $req->input('tipo'),
+          'descrizione' => $req->input('descrizione'),
+          'note' => $req->input('note'),
+          'conclusione' => $req->input('conclusione'),
+          'persona_contatto' => $req->input('persona'),
+          'funzione_contatto' => $req->input('rolePersona'),
+          'ordine' => $req->input('optOrdine'),
+          'data_prox' => $req->input('dateNext')!=null ? (new Carbon($req->input('dateNext'))) : null
+        ]);
+      }
 
       if($req->input('rubri_id')){
         $contact = wRubrica::find($req->input('rubri_id'));
         $contact->date_lastvisit = new Carbon($req->input('data'));
         // $contact->date_nextvisit = (new Carbon($req->input('data')))->addDays(60);
-        $contact->date_nextvisit = (new Carbon($req->input('dateNext')));
+        if(!empty($req->input('dateNext'))){
+          $contact->date_nextvisit = (new Carbon($req->input('dateNext')));
+        }
         $contact->save();
         return Redirect::route('visit::showRubri', $req->input('rubri_id'));
       }

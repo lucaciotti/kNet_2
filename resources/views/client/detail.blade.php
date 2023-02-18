@@ -284,7 +284,7 @@
 <div class="row">
 
   <div class="col-lg-6">
-    @include('client.partials.timeline', [
+    @include('visit.partials.timeline', [
       'visits' => $visits,
       'codcli' => $client->codice,
       'dateNow' => $dateNow,

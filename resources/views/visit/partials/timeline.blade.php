@@ -67,24 +67,26 @@
 
           <h3 class="timeline-header"><strong>{{ $visit->descrizione }}</strong> - <small> {{ $message }} </small></h3>
 
-          <div class="timeline-body">
+          <div class="timeline-body" style="padding-bottom: 5px">
             @if($visit->persona_contatto)
-              <i class="fa fa-arrow-right" aria-hidden="true"></i> Persona Contatta: {{ $visit->persona_contatto }} [{{ $visit->funzione_contatto }}]
+              <i class="fa fa-arrow-right" aria-hidden="true"></i> <small>Persona Contatta:</small><br> 
+              <p style="font-size:large; margin-left: 25px">{{ $visit->persona_contatto }} [{{ $visit->funzione_contatto }}]</p>
             @endif
-            <hr>
-              <i class="fa fa-arrow-right" aria-hidden="true"></i> Note:
-            {!! $visit->note !!}
-            <hr>
-              <i class="fa fa-arrow-right" aria-hidden="true"></i> Conclusione:
-            {!! $visit->conclusione !!}
+              <i class="fa fa-arrow-right" aria-hidden="true"></i> <small>Note:</small><br>
+              <p style="font-size:large;margin-left: 25px">{!! $visit->note !!}</p>
+              <i class="fa fa-arrow-right" aria-hidden="true"></i> <small>Conclusione:</small><br>
+              <p style="font-size:large;margin-left: 25px">{!! $visit->conclusione !!}</p>
             @if($visit->ordine)
-            <hr>
-              <i class="fa fa-arrow-right" aria-hidden="true"></i> Effettuerà Ordine            
+              <i class="fa fa-arrow-right" aria-hidden="true"></i> <strong>Effettuerà Ordine!</strong>         
             @endif
           </div>
-          {{-- <div class="timeline-footer">
-            <a class="btn btn-primary btn-xs">{{ trans('visit.readMore') }}</a>
-          </div> --}}
+          <div class="timeline-footer text-right">
+            <a href='{{ route('visit::edit', ['id'=>$visit->id]) }}' class="btn btn-primary btn-sm">Edit</a>
+            <form action="{{ route('visit::delete', ['id'=>$visit->id]) }}" method="post" style="display: inline;" id="delete_visit_form" onsubmit="return deleteVisit()">
+              <input type="hidden" name="_token" value="{{ csrf_token() }}">
+              <button type='submit' class="btn btn-danger btn-sm">Delete</button>
+            </form>
+          </div>
         </div>
       </li>
     @endforeach
@@ -106,3 +108,18 @@
     </span>
   </li>
 </ul>
+
+
+@section('extra_script')
+<script>
+  function deleteVisit(){
+    var result = confirm("Eliminare visita selezionata?");
+    if (result) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+</script>
+@endsection
+

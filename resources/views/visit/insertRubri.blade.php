@@ -45,36 +45,39 @@
                 </select> 
               @endif
             </div>
-
-            <a type="button" class="btn btn-success btn-block" target="" href="{{ route('rubri::insertOrEdit', [null, 'visit' => 1]) }}">
-              <strong> + Inserisci Nuovo Contatto</strong>
-            </a>
+            @if (empty($visit->id))
+              <a type="button" class="btn btn-success btn-block" target="" href="{{ route('rubri::insertOrEdit', [null, 'visit' => 1]) }}">
+                <strong> + Inserisci Nuovo Contatto</strong>
+              </a>    
+            @endif
             <hr>
 
             <div class="form-group">
               <label>{{ trans('visit.eventPers') }}</label>
-              <input id='pers' type="text" class="form-control" name="persona" value=""
+              <input id='pers' type="text" class="form-control" name="persona" value="{{ $visit->persona_contatto or '' }}"
                 placeholder="{{ trans('visit.pers_plchld') }}">
             </div>
             
             <div class="form-group">
               <label>{{ trans('visit.eventRolePers') }}</label>
-              <input id='rolePers' type="text" class="form-control" name="rolePersona" value=""
+              <input id='rolePers' type="text" class="form-control" name="rolePersona" value="{{ $visit->funzione_contatto or '' }}"
                 placeholder="{{ trans('visit.rolePers_plchld') }}">
             </div>
             
             <hr>
 
-            <div class="form-group">
-              <label>{{ trans('visit.eventType') }}</label>
-              <select id='tipo' name="tipo" class="form-control select2" style="width: 100%;">
-                <option value=""> </option>
-                <option value="Meet">{{ trans('visit.eventMeeting') }}</option>
-                <option value="Mail">{{ trans('visit.eventMail') }}</option>
-                <option value="Prod">{{ trans('visit.eventProduct') }}</option>
-                <option value="Scad">{{ trans('visit.eventDebt') }}</option>
-                <option value="RNC">{{ trans('visit.eventRNC') }}</option>
-              </select>
+            <div class="form-group">@php
+            $tipo = !empty($visit) ? $visit->tipo : '';
+            @endphp
+            <label>{{ trans('visit.eventType') }}</label>
+            <select id='tipo' name="tipo" class="form-control select2" style="width: 100%;">
+              <option value=""> </option>
+              <option value="Meet" @if ($tipo=='Meet' ) selected @endif>{{ trans('visit.eventMeeting') }}</option>
+              <option value="Mail" @if ($tipo=='Mail' ) selected @endif>{{ trans('visit.eventMail') }}</option>
+              <option value="Prod" @if ($tipo=='Prod' ) selected @endif>{{ trans('visit.eventProduct') }}</option>
+              <option value="Scad" @if ($tipo=='Scad' ) selected @endif>{{ trans('visit.eventDebt') }}</option>
+              <option value="RNC" @if ($tipo=='RNC' ) selected @endif>{{ trans('visit.eventRNC') }}</option>
+            </select>
             </div>
 
             <div class="form-group">
@@ -83,20 +86,20 @@
                 <div class="input-group-addon">
                   <i class="fa fa-calendar"></i>
                 </div>
-                <input id='date' type="text" class="form-control pull-right datepicker" name="data" readonly="true">
+                <input id='date' type="text" class="form-control pull-right datepicker" name="data" readonly="true" value='{{ $visit->data or '' }}'>
               </div>
             </div>
 
             <div class="form-group">
               <label>{{ trans('visit.eventDesc') }}</label>
-              <input id='desc' type="text" class="form-control" name="descrizione" value="" placeholder="{{ trans('visit.desc_plchld') }}">
+              <input id='desc' type="text" class="form-control" name="descrizione" value="{{ $visit->descrizione or '' }}"placeholder="{{ trans('visit.desc_plchld') }}">
             </div>
 
             <div class="form-group">
               <label>{{ trans('visit.eventNote') }}</label>
               {{-- <textarea class="form-control" rows="6" name="note" placeholder="Dettagli &hellip;"></textarea>
               style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"--}}
-              <textarea class="textarea" placeholder="{{ trans('visit.note_plchld') }}" name="note"
+              <textarea id='note' class="textarea" placeholder="{{ trans('visit.note_plchld') }}" name="note"
                 style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>
             </div>
 
@@ -111,13 +114,16 @@
             </div>
             
             <div class="form-group">
+              @php
+              $optOrdine = !empty($visit) ? $visit->ordine : 0;
+              @endphp
               <label>{{ trans('visit.eventOrd') }}</label>
               <div class="radio">
                 <label>
-                  <input type="radio" name="optOrdine" id="opt1" value="0" checked> No
+                  <input type="radio" name="optOrdine" id="opt1" value="0" @if ($optOrdine==0) checked @endif> No
                 </label>
                 <label>
-                  <input type="radio" name="optOrdine" id="opt2" value="1"> Si
+                  <input type="radio" name="optOrdine" id="opt2" value="1" @if ($optOrdine==1) checked @endif> Si
                 </label>
               </div>
             </div>
@@ -129,7 +135,7 @@
                 <div class="input-group-addon">
                   <i class="fa fa-calendar"></i>
                 </div>
-                <input id='dateNext' type="text" class="form-control pull-right datepicker" name="dateNext" readonly="true">
+                <input id='dateNext' type="text" class="form-control pull-right datepicker" name="dateNext" readonly="true" value='{{ $visit->data_prox or '' }}'>
               </div>
             </div>
 
@@ -138,11 +144,15 @@
             @endpush
 
             @push('script-footer')
-              <script src="{{ asset('/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js') }}" type="text/javascript"></script>
+              <script src="{{ asset('/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.js') }}" type="text/javascript"></script>
               <script type="text/javascript">
                     $(function () {
                       //bootstrap WYSIHTML5 - text editor
                       $(".textarea").wysihtml5();
+                      @if (!empty($visit))
+                      $('#note').data("wysihtml5").editor.setValue('{!! $visit->note !!}');
+                      $('#conclusione').data("wysihtml5").editor.setValue('{!! $visit->conclusione !!}');
+                      @endif
                     });
               </script>
             @endpush
