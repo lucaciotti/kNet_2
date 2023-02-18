@@ -24,7 +24,6 @@
         </tr>
     </thead>
     <tbody>
-        @if ($scads->count()>0)
         @php
             $totScad=0;
             $totPag=0;
@@ -32,6 +31,7 @@
             $totMat=0;
             $totLiq=0;
         @endphp
+        @if ($scads->count()>0)
             @foreach ($scads as $scad)
                 <tr>
                     <td style="text-align: center;">
