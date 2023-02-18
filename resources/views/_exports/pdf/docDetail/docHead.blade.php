@@ -26,7 +26,7 @@
         <dd>{{$head->numerodocf}}</dd>
 
         <dt>{{ trans('client.agent') }}</dt>
-        <dd>{{$head->agente}} - {{$head->agent->descrizion}}</dd>
+        <dd>{{$head->agente}} - {{$head->agent->descrizion ?? ''}}</dd>
     </dl>
 </span>
 

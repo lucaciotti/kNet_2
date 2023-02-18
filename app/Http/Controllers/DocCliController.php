@@ -513,7 +513,11 @@ class DocCliController extends Controller
         ->withoutGlobalScope('agent')
         ->withoutGlobalScope('superAgent')
         ->withoutGlobalScope('client');
-    }, 'agent']);
+    }, 'agent' => function ($query) {
+      $query
+        ->withoutGlobalScope('agent')
+        ->withoutGlobalScope('superAgent');
+    }]);
     if ($tipoDoc->tipomodulo == 'F') {
       $head = $head->with(['scadenza' => function ($query) {
         $query
