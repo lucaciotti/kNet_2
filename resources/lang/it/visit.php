@@ -14,6 +14,7 @@ return [
     'contentDesc_ins'         => '',
 
     'insEvent'                => 'Visita Cliente',
+    'insEventSupplier'        => 'Visita Fornitore',
     'insEventRubri'           => 'Visita Contatto',
 
     /*
@@ -24,6 +25,8 @@ return [
     */
 
     'client'                  => 'Cliente',
+    'supplier'                  => 'Fornitore',
+    'rubricontact'             => 'Contatto',
     'eventPers'               => 'Persona contattata',
     'eventRolePers'           => 'Ruole Aziendale persona',
     'eventType'               => 'Tipologia Incontro',
@@ -49,5 +52,10 @@ return [
     'desc_plchld'             => 'Descrizione',
     'note_plchld'             => 'Inserire testo qui',
     'conclusion_plchld'       => 'Inserire conclusioni incotro qui',
+
+    'btnEventRubri'           => 'Inserisci visita CONTATTO',
+    'btnEventClient'          => 'Inserisci visita CLIENTE',
+    'btnEventSupplier'        => 'Inserisci visita FORNITORE',
+    'btnNewRubri'             => '+ Inserisci Nuovo Contatto'
 
 ];

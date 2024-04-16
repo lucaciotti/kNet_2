@@ -14,7 +14,8 @@ use knet\WebModels\wVisit;
 use knet\WebModels\wRubrica;
 use knet\User;
 use Auth;
-
+use Illuminate\Support\Str;
+use knet\ArcaModels\Supplier;
 use Session;
 
 use knet\ExportsXLS\VisitImport;
@@ -127,8 +128,11 @@ class VisitController extends Controller
         $contact->save();
         return Redirect::route('visit::showRubri', $req->input('rubri_id'));
       }
-
-      return Redirect::route('visit::show', $req->input('codcli'));
+      if (Str::startsWith($req->input('codcli'), 'F')) {
+        return Redirect::route('visit::showSupplier', $req->input('codcli'));
+      } else {
+        return Redirect::route('visit::show', $req->input('codcli'));
+      }
     }
 
     public function show(Request $req, $codCli=null ){
@@ -142,6 +146,54 @@ class VisitController extends Controller
         'client' => $client,
         'dateNow' => Carbon::now(),
         ]);
+    }
+
+    public function indexSupplier(Request $req, $codCli = null)
+    {
+      // Redirect to Form Page
+      if (empty($codCli)) {
+        $client = Supplier::select('codice', 'descrizion')->get();
+      } else {
+        $client = Supplier::select('codice', 'descrizion')->findOrFail($codCli);
+      }
+      return view('visit.insertSupplier', [
+        'client' => $client,
+        'contact' => '',
+      ]);
+    }
+
+    public function editSupplier(Request $req, $id)
+    {
+      // Redirect to Form Page
+      $visit = wVisit::with('user')->findOrFail($id);
+      if (!empty($visit->rubri_id)) return $this->editRubri($req, $id);
+      $client = Supplier::select('codice', 'descrizion')->findOrFail($visit->codicecf);
+      return view('visit.insertSupplier', [
+        'visit' => $visit,
+        'client' => $client,
+        'contact' => '',
+      ]);
+    }
+
+    public function deleteSupplier(Request $req, $id)
+    {
+      // Redirect to Form Page
+      $visit = wVisit::findOrFail($id)->delete();
+      return $this->report($req);
+    }
+    
+    public function showSupplier(Request $req, $codice = null)
+    {
+      // dd($req);
+      $visits = wVisit::where('codicecf', $codice)->with('user')->orderBy('data', 'desc')->orderBy('id')->get();
+      $client = Supplier::findOrFail($codice);
+      // dd($visits);
+
+      return view('visit.showSupplier', [
+        'visits' => $visits,
+        'client' => $client,
+        'dateNow' => Carbon::now(),
+      ]);
     }
 
     public function showRubri(Request $req, $rubri_id=null ){
@@ -177,6 +229,8 @@ class VisitController extends Controller
             $query->where('descrizion', $ragsoc);
           })->orWhereHas('rubri', function ($query) use ($ragsoc){
             $query->where('descrizion', $ragsoc);
+          })->orWhereHas('supplier', function ($query) use ($ragsoc) {
+            $query->where('descrizion', $ragsoc);
           });
         }
         if($req->input('ragsocOp')=='stw'){
@@ -184,12 +238,16 @@ class VisitController extends Controller
             $query->where('descrizion', 'like', $ragsoc.'%');
           })->orWhereHas('rubri', function ($query) use ($ragsoc){
             $query->where('descrizion', 'like', $ragsoc.'%');
+          })->orWhereHas('supplier', function ($query) use ($ragsoc){
+            $query->where('descrizion', 'like', $ragsoc.'%');
           });
         }
         if($req->input('ragsocOp')=='cnt'){
           $visits = $visits->whereHas('client', function ($query) use ($ragsoc){
             $query->where('descrizion', 'like', '%'.$ragsoc.'%');
           })->orWhereHas('rubri', function ($query) use ($ragsoc){
+            $query->where('descrizion', 'like', '%'.$ragsoc.'%');
+          })->orWhereHas('supplier', function ($query) use ($ragsoc){
             $query->where('descrizion', 'like', '%'.$ragsoc.'%');
           });
         }
@@ -259,27 +317,33 @@ class VisitController extends Controller
         $visits = $visits->whereBetween('data', [$startDate, $endDate]);
       }
 
-      if($req->input('ragsoc')) {
+      if ($req->input('ragsoc')) {
         $ragsoc = strtoupper($req->input('ragsoc'));
-        if($req->input('ragsocOp')=='eql'){
-          $visits = $visits->whereHas('client', function ($query) use ($ragsoc){
+        if ($req->input('ragsocOp') == 'eql') {
+          $visits = $visits->whereHas('client', function ($query) use ($ragsoc) {
             $query->where('descrizion', $ragsoc);
-          })->orWhereHas('rubri', function ($query) use ($ragsoc){
+          })->orWhereHas('rubri', function ($query) use ($ragsoc) {
+            $query->where('descrizion', $ragsoc);
+          })->orWhereHas('supplier', function ($query) use ($ragsoc) {
             $query->where('descrizion', $ragsoc);
           });
         }
-        if($req->input('ragsocOp')=='stw'){
-          $visits = $visits->whereHas('client', function ($query) use ($ragsoc){
-            $query->where('descrizion', 'like', $ragsoc.'%');
-          })->orWhereHas('rubri', function ($query) use ($ragsoc){
-            $query->where('descrizion', 'like', $ragsoc.'%');
+        if ($req->input('ragsocOp') == 'stw') {
+          $visits = $visits->whereHas('client', function ($query) use ($ragsoc) {
+            $query->where('descrizion', 'like', $ragsoc . '%');
+          })->orWhereHas('rubri', function ($query) use ($ragsoc) {
+            $query->where('descrizion', 'like', $ragsoc . '%');
+          })->orWhereHas('supplier', function ($query) use ($ragsoc) {
+            $query->where('descrizion', 'like', $ragsoc . '%');
           });
         }
-        if($req->input('ragsocOp')=='cnt'){
-          $visits = $visits->whereHas('client', function ($query) use ($ragsoc){
-            $query->where('descrizion', 'like', '%'.$ragsoc.'%');
-          })->orWhereHas('rubri', function ($query) use ($ragsoc){
-            $query->where('descrizion', 'like', '%'.$ragsoc.'%');
+        if ($req->input('ragsocOp') == 'cnt') {
+          $visits = $visits->whereHas('client', function ($query) use ($ragsoc) {
+            $query->where('descrizion', 'like', '%' . $ragsoc . '%');
+          })->orWhereHas('rubri', function ($query) use ($ragsoc) {
+            $query->where('descrizion', 'like', '%' . $ragsoc . '%');
+          })->orWhereHas('supplier', function ($query) use ($ragsoc) {
+            $query->where('descrizion', 'like', '%' . $ragsoc . '%');
           });
         }
       }

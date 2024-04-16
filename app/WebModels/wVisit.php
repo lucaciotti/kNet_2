@@ -39,6 +39,15 @@ class wVisit extends Model
                 });
               });
             break;
+          case 'quality':
+              static::addGlobalScope('agent', function (Builder $builder) {
+                 $builder->whereHas('supplier', function ($query){
+                  $query->where('agente', RedisUser::get('codag'));
+                })->orWhereHas('rubri', function ($query){
+                  $query->where('agente', RedisUser::get('codag'));
+                });
+              });
+            break;
           case 'superAgent':
             static::addGlobalScope('superAgent', function(Builder $builder) {
               $builder->whereHas('client', function ($query){
@@ -93,6 +102,10 @@ class wVisit extends Model
 
   public function client(){
     return $this->hasOne('knet\ArcaModels\Client', 'codice', 'codicecf');
+  }
+
+  public function supplier(){
+    return $this->hasOne('knet\ArcaModels\Supplier', 'codice', 'codicecf');
   }
 
   public function rubri(){

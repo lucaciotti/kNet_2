@@ -3,12 +3,13 @@
     <th>{{ trans('prod.codeArt') }}</th>
     <th>{{ trans('prod.descArt') }}</th>
     <th>{{ trans('prod.groupProd') }}</th>
+    <th></th>
     <th>{{ trans('prod.listPrice') }}</th>
   </thead>
   <tbody>
     @foreach ($products as $prod)
       <tr>
-        <td><a href="#"> {{ $prod->codice }} </a>
+        <td><a href="{{ route('prod::detail', $prod->codice) }}"> {{ $prod->codice }} </a>
           @if($prod->u_perscli==1)
             &nbsp&nbsp<small class="label bg-yellow">Personal.</small>
           @endif
@@ -20,8 +21,8 @@
           @if($prod->grpProd)
             {{ $prod->grpProd->descrizion }}
           @endif
-          &nbsp&nbsp<small class="label bg-green">{{ $prod->tipo_prod }}</small>
         </td>
+        <td>&nbsp&nbsp<small class="label bg-green">{{ $prod->tipo_prod }}</small></td>
         <td>{{ $prod->listino }}</td>
       </tr>
     @endforeach

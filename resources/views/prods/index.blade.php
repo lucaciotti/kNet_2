@@ -14,7 +14,7 @@
 
 @section('main-content')
 <div class="row">
-  <div class="col-lg-7">
+  <div class="col-lg-9">
     <div class="box box-default">
       <div class="box-header with-border">
         <h3 class="box-title" data-widget="collapse">{{ trans('prod.listProds') }}</h3>
@@ -28,7 +28,7 @@
     </div>
   </div>
 
-  <div class="col-lg-5">
+  <div class="col-lg-3">
     <div class="box box-default">
       <div class="box-header with-border">
         <h3 class="box-title" data-widget="collapse">{{ trans('prod.filter') }}</h3>

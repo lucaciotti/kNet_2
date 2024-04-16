@@ -27,6 +27,18 @@ Breadcrumbs::register('client', function($breadcrumbs, $codClient)
     $breadcrumbs->push($codClient, route('client::detail', $codClient));
 });
 
+// Home > Client
+Breadcrumbs::register('suppliers', function ($breadcrumbs) {
+  $breadcrumbs->parent('home');
+  $breadcrumbs->push(trans('_breadcrumbs.suppliers'), route('supplier::list'));
+});
+
+// Home > Supplier > [Supplier]
+Breadcrumbs::register('supplier', function ($breadcrumbs, $codClient) {
+  $breadcrumbs->parent('suppliers');
+  $breadcrumbs->push($codClient, route('supplier::detail', $codClient));
+});
+
 // Home > Client > [Client] > [TipoDocs]
 Breadcrumbs::register('clientDocs', function($breadcrumbs, $codClient, $tipoDoc)
 {
@@ -145,4 +157,9 @@ Breadcrumbs::register('visitIns', function($breadcrumbs)
 {
     $breadcrumbs->parent('home');
     $breadcrumbs->push(trans('_breadcrumbs.insEvent'), route('visit::insert'));
+});
+
+Breadcrumbs::register('humanresource', function ($breadcrumbs) {
+  $breadcrumbs->parent('home');
+  $breadcrumbs->push('Ferie&Permessi', route('user::events'));
 });

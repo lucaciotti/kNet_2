@@ -65,6 +65,11 @@ class wRubrica extends Model
                     $builder->where('agente', RedisUser::get('codag'));
                 });
                 break;
+            case 'quality':
+                static::addGlobalScope('agent', function (Builder $builder) {
+                    $builder->where('agente', RedisUser::get('codag'));
+                });
+                break;
             case 'superAgent':
                 static::addGlobalScope('superAgent', function(Builder $builder) {
                 $builder->whereHas('agent', function ($query){

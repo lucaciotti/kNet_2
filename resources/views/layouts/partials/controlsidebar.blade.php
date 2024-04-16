@@ -49,6 +49,17 @@
                         </div>
                     </a>
                 </li>
+                <hr>
+                {{-- <li>
+                    <a href="{{route('user::events')}}">
+                        <i class="menu-icon fa fa-calendar bg-info"></i>
+                        <div class="menu-info">
+                            <h4 class="control-sidebar-subheading">Ferie&Permessi</h4>
+                            <p>Registra Ferie e Permessi Utenti</p>
+                        </div>
+                    </a>
+                </li>
+                <hr> --}}
                 <li>
                     <a href="{{route('user::import')}}">
                         <i class="menu-icon fa fa-user-plus bg-yellow"></i>

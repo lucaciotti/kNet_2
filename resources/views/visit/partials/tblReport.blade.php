@@ -24,16 +24,29 @@
         @if($visit->client)
         <td><a href="{{ route('client::detail', $visit->codicecf ) }}">{{ $visit->client->descrizion }} [{{ $visit->codicecf }}]</a></td>
         @else
-        <td><a href="{{ route('rubri::detail', $visit->rubri_id ?? 0 ) }}">{{ $visit->rubri->descrizion ?? 'Error' }} [ Potenziale Cliente ]</a></td>
+          @if($visit->supplier)
+          <td><a href="{{ route('supplier::detail', $visit->codicecf ) }}">{{ $visit->supplier->descrizion }} [{{ $visit->codicecf
+              }}]</a></td>
+          @else
+          <td><a href="{{ route('rubri::detail', $visit->rubri_id ?? 0 ) }}">{{ $visit->rubri->descrizion ?? 'Error' }} [ Potenziale Cliente ]</a></td>
+          @endif
         @endif
         <td>{{ $visit->user->name }}</td>
         <td>{{ $visit->descrizione }}</td>
         <td width='150'>
-          <a href='{{ route('visit::edit', ['id'=>$visit->id]) }}' class="btn btn-primary btn-sm" target="_blank">Edit</a>
+          @if($visit->supplier)
+            <a href='{{ route('visit::editSupplier', ['id'=>$visit->id]) }}' class="btn btn-primary btn-sm" target="_blank">Edit</a>
+          @else
+            <a href='{{ route('visit::edit', ['id'=>$visit->id]) }}' class="btn btn-primary btn-sm" target="_blank">Edit</a>
+          @endif
           @if($visit->client)
           <a class="btn btn-sm btn-default" href="{{ route('visit::show', $visit->codicecf ) }}" target="_blank">
           @else
-          <a class="btn btn-sm btn-default" href="{{ route('visit::showRubri', $visit->rubri_id ?? 0 ) }}" target="_blank">
+            @if($visit->supplier)
+            <a class="btn btn-sm btn-default" href="{{ route('visit::showSupplier', $visit->codicecf ) }}" target="_blank">
+            @else
+              <a class="btn btn-sm btn-default" href="{{ route('visit::showRubri', $visit->rubri_id ?? 0 ) }}" target="_blank">
+            @endif
           @endif
             <i class="fa fa-external-link text-danger"></i>
           </a>

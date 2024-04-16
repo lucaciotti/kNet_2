@@ -22,6 +22,7 @@ use knet\ArcaModels\Client;
 use knet\ArcaModels\Agent;
 use knet\ArcaModels\RitAna;
 use knet\ArcaModels\RitMov;
+use knet\UserEvent;
 
 class UserController extends Controller
 {
@@ -37,7 +38,7 @@ class UserController extends Controller
                 ->orderBy('id')->get();
 
       $agents = User::with(['roles', 'agent'])
-                ->whereHas('roles', function($q){$q->whereIn('name',['agent', 'superAgent']);})
+                ->whereHas('roles', function($q){$q->whereIn('name',['agent', 'superAgent', 'quality']);})
                 ->where('ditta', RedisUser::get('location'))
                 ->orderBy('id')->get();
 
@@ -162,4 +163,72 @@ class UserController extends Controller
 
     public function enasarcoPDF(Request $req)
     { }
+
+    public function events(Request $req) {
+      if ($req->ajax()) {
+        $user_id = $req->session()->get('event.user_id', 0);
+
+        $data = UserEvent::whereDate('start', '>=', $req->start)
+          ->whereDate('end',   '<=', $req->end)
+          ->where('user_id', $user_id)
+          ->get(['id', 'title', 'start', 'end']);
+
+        return response()->json($data);
+      }
+      if(!in_array(RedisUser::get('role'), ['agent', 'superAgent'])) {
+        $users = User::whereHas('roles', function ($q) {
+          $q->whereIn('name', ['agent', 'superAgent']);
+        })->where('isActive',1)->where('ditta', Auth::user()->ditta)->orderBy('name')->get();
+      } else {
+        $users = User::where('id', Auth::user()->id)->get();
+      }
+
+      $selectedUser = isset($req->selectedUser) ? $req->selectedUser : $users->first()->id;
+      $req->session()->put('event.user_id', $selectedUser);
+
+      return view('user.humanresource', [
+        'users' => $users, 
+        'selectedUser' => $selectedUser]);
+    }
+
+  public function eventsAjax(Request $request)
+  {
+    if (!in_array(RedisUser::get('role'), ['agent', 'superAgent'])) {
+      $user_id = $request->session()->get('event.user_id', 0);
+      switch ($request->type) {
+        case 'add':
+          $event = UserEvent::create([
+            'title' => $request->title,
+            'start' => $request->start,
+            'end' => $request->end,
+            'user_id' => $user_id,
+          ]);
+
+          return response()->json($event);
+          break;
+
+        case 'update':
+          $event = UserEvent::find($request->id)->update([
+            'title' => $request->title,
+            'start' => $request->start,
+            'end' => $request->end,
+            'user_id' => $user_id,
+          ]);
+
+          return response()->json($event);
+          break;
+
+        case 'delete':
+          $event = UserEvent::find($request->id)->delete();
+
+          return response()->json($event);
+          break;
+
+        default:
+          # code...
+          break;
+      }
+    }
+  }
+
 }

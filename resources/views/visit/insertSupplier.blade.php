@@ -9,24 +9,27 @@
 @endsection
 
 @section('contentheader_breadcrumb')
-  {!! Breadcrumbs::render('visitIns') !!}
+  @if ($client instanceof Illuminate\Database\Eloquent\Collection)
+    {!! Breadcrumbs::render('visitIns') !!}
+  @else
+    {!! Breadcrumbs::render('visitInsCli', $client->codice) !!}
+  @endif
 @endsection
 
 @section('main-content')
   <div class="row">
       <div class="container">
       <div class="col-lg-12">
+      
       <div class="box box-default">
         <div class="box-header with-border">
-          <h3 class="box-title" data-widget="collapse">{{ trans('visit.insEventRubri') }}</h3>
-          <a type="button" class="box-tools btn btn-primary btn-sm pull-right" target="" href="{{ route('visit::insert') }}">
-            {{-- <strong> Inserisci visita CLIENTE</strong> --}}
-            @if (!in_array(RedisUser::get('role'), ['quality']))
-              <strong> {{ trans('visit.btnEventClient') }}</strong>                
-            @else
-              <strong> {{ trans('visit.btnEventSupplier') }}</strong>                               
-            @endif
+          <h3 class="box-title" data-widget="collapse">{{ trans('visit.insEventSupplier') }}</h3>
+          <a type="button" class="box-tools btn btn-primary btn-sm pull-right" target="" href="{{ route('visit::insertRubri') }}">
+            <strong> {{ trans('visit.btnEventRubri') }}</strong>
           </a>
+          {{-- <div class="box-tools pull-right">
+            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+          </div> --}}
         </div>
         <div class="box-body">
 
@@ -34,28 +37,26 @@
               {{ csrf_field() }}
 
             <div class="form-group">
-              @if ($contact)
-                <label>{{ trans('visit.rubricontact') }}</label>
-                <select id='rubri' name="rubri_id" class="form-control select2" style="width: 100%;">
-                  @if ($contact instanceof Illuminate\Database\Eloquent\Collection)
-                    @if ($contact->count()>1)
-                      <option value=""> </option>
+              @if ($client)
+                  <label>{{ trans('visit.supplier') }}</label>
+                  <select id='codcli' name="codcli" class="form-control select2" style="width: 100%;">
+                    @if ($client instanceof Illuminate\Database\Eloquent\Collection)
+                      @if ($client->count()>1)
+                        <option value=""> </option>
+                      @endif
+                      @foreach ($client as $cli)
+                        <option value="{{ $cli->codice }}">[{{$cli->codice}}] {{ $cli->descrizion }}</option>
+                      @endforeach
+                    @else
+                      <option value="{{ $client->codice }}">[{{$client->codice}}] {{ $client->descrizion }}</option>
                     @endif
-                    @foreach ($contact as $cli)
-                      <option value="{{ $cli->id }}">{{ $cli->descrizion }}</option>
-                    @endforeach
-                  @else
-                    <option value="{{ $contact->id }}">{{ $contact->descrizion }}</option>
-                  @endif
-                </select> 
-              @endif
+                  </select>
+              @endif              
             </div>
-            @if (empty($visit->id))
-              <a type="button" class="btn btn-success btn-block" target="" href="{{ route('rubri::insertOrEdit', [null, 'visit' => 1]) }}">
-                {{-- <strong> + Inserisci Nuovo Contatto</strong> --}}
-              <strong> {{ trans('visit.btnNewRubri') }}</strong>  
-              </a>    
-            @endif
+
+            {{-- <a type="button" class="btn btn-warning btn-block" target="" href="{{ route('visit::insertRubri') }}">
+              <strong> Oppure inserisci visita Contatto</strong>
+            </a> --}}
             <hr>
 
             <div class="form-group">
@@ -63,27 +64,28 @@
               <input id='pers' type="text" class="form-control" name="persona" value="{{ $visit->persona_contatto or '' }}"
                 placeholder="{{ trans('visit.pers_plchld') }}">
             </div>
-            
+
             <div class="form-group">
               <label>{{ trans('visit.eventRolePers') }}</label>
               <input id='rolePers' type="text" class="form-control" name="rolePersona" value="{{ $visit->funzione_contatto or '' }}"
                 placeholder="{{ trans('visit.rolePers_plchld') }}">
             </div>
-            
+
             <hr>
 
-            <div class="form-group">@php
-            $tipo = !empty($visit) ? $visit->tipo : '';
-            @endphp
-            <label>{{ trans('visit.eventType') }}</label>
-            <select id='tipo' name="tipo" class="form-control select2" style="width: 100%;">
-              <option value=""> </option>
-              <option value="Meet" @if ($tipo=='Meet' ) selected @endif>{{ trans('visit.eventMeeting') }}</option>
-              <option value="Mail" @if ($tipo=='Mail' ) selected @endif>{{ trans('visit.eventMail') }}</option>
-              <option value="Prod" @if ($tipo=='Prod' ) selected @endif>{{ trans('visit.eventProduct') }}</option>
-              <option value="Scad" @if ($tipo=='Scad' ) selected @endif>{{ trans('visit.eventDebt') }}</option>
-              <option value="RNC" @if ($tipo=='RNC' ) selected @endif>{{ trans('visit.eventRNC') }}</option>
-            </select>
+            <div class="form-group">
+              @php
+                $tipo = !empty($visit) ? $visit->tipo : '';
+              @endphp
+              <label>{{ trans('visit.eventType') }}</label>
+              <select id='tipo' name="tipo" class="form-control select2" style="width: 100%;">
+                <option value=""> </option>
+                <option value="Meet"@if ($tipo=='Meet') selected @endif>{{ trans('visit.eventMeeting') }}</option>
+                <option value="Mail"@if ($tipo=='Mail') selected @endif>{{ trans('visit.eventMail') }}</option>
+                <option value="Prod"@if ($tipo=='Prod') selected @endif>{{ trans('visit.eventProduct') }}</option>
+                <option value="Scad"@if ($tipo=='Scad') selected @endif>{{ trans('visit.eventDebt') }}</option>
+                <option value="RNC"@if ($tipo=='RNC') selected @endif>{{ trans('visit.eventRNC') }}</option>
+              </select>
             </div>
 
             <div class="form-group">
@@ -98,7 +100,7 @@
 
             <div class="form-group">
               <label>{{ trans('visit.eventDesc') }}</label>
-              <input id='desc' type="text" class="form-control" name="descrizione" value="{{ $visit->descrizione or '' }}"placeholder="{{ trans('visit.desc_plchld') }}">
+              <input id='desc' type="text" class="form-control" name="descrizione" value="{{ $visit->descrizione or '' }}" placeholder="{{ trans('visit.desc_plchld') }}">
             </div>
 
             <div class="form-group">
@@ -110,22 +112,18 @@
             </div>
 
             <hr>
-            
+
             <div class="form-group">
               <label>{{ trans('visit.eventConclusion') }}</label>
               {{-- <textarea class="form-control" rows="6" name="note" placeholder="Dettagli &hellip;"></textarea>
               style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"--}}
               <textarea id='conclusione' class="textarea" placeholder="{{ trans('visit.conclusion_plchld') }}" name="conclusione"
-                style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px; resize: vertical;"></textarea>
+                style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>
             </div>
-            
-            @if (!in_array(RedisUser::get('role'), ['quality']))
-              <div class="form-group">
-            @else
-              <div class="form-group" style="display: none;">
-            @endif
+
+            <div class="form-group" style="display: none;">
               @php
-              $optOrdine = !empty($visit) ? $visit->ordine : 0;
+                $optOrdine = !empty($visit) ? $visit->ordine : 0;
               @endphp
               <label>{{ trans('visit.eventOrd') }}</label>
               <div class="radio">
@@ -137,7 +135,7 @@
                 </label>
               </div>
             </div>
-            
+
             <hr>
             <div class="form-group">
               <label>{{ trans('visit.eventDateNext') }}</label>
@@ -159,14 +157,19 @@
                     $(function () {
                       //bootstrap WYSIHTML5 - text editor
                       $(".textarea").wysihtml5();
+                    // });
+                    // $(document).ready(function(){
                       @if (!empty($visit))
-                      $('#note').data("wysihtml5").editor.setValue('{!! $visit->note !!}');
-                      $('#conclusione').data("wysihtml5").editor.setValue('{!! $visit->conclusione !!}');
+                        $('#note').data("wysihtml5").editor.setValue('{!! $visit->note !!}');
+                        $('#conclusione').data("wysihtml5").editor.setValue('{!! $visit->conclusione !!}');
                       @endif
                     });
               </script>
             @endpush
-
+            
+            @if (!empty($visit))    
+              {!! Form::hidden('id', $visit->id) !!}
+            @endif
             <div>
               <button type="submit" class="btn btn-block btn-primary">{{ trans('modRicFat.submit') }}</button>
             </div>
@@ -185,54 +188,51 @@
   @include('layouts.partials.scripts.datePicker')
 
   <script>
-    $( document ).ready(function() {
-      $(".textarea").css("resize", "vertical");
-    });
     function checkForm(){
-          if($('#rubri').select2('data')[0].id=='') {
-            alert('Selezionare Contatto');
-            $('#rubri').focus();
-            return false;
-          }
-          if($('#tipo').select2('data')[0].id=='') {
-            alert('Selezionare Tipologia Incotro');
-            $('#tipo').focus();
-            return false;
-          }
-          if($('#date').val()=='') {
-            alert('Indicare la data');
+        if($('#codcli').select2('data')[0].id=='') {
+          alert('Selezionare Cliente');
+          $('#codcli').focus();
+          return false;
+        }
+        if($('#tipo').select2('data')[0].id=='') {
+          alert('Selezionare Tipologia Incotro');
+          $('#tipo').focus();
+          return false;
+        }
+        if($('#date').val()=='') {
+          alert('Indicare la data');
+          $('#date').focus();
+          return false;
+        } else {
+          var inputDate = new Date($('#date').val());
+          var todaysDate = new Date();
+          if(inputDate.setHours(0,0,0,0) > todaysDate.setHours(0,0,0,0)) {
+            alert('La data dell\'incotro non può essere maggiore di oggi');
             $('#date').focus();
             return false;
-          } else {
-            var inputDate = new Date($('#date').val());
-            var todaysDate = new Date();
-            if(inputDate.setHours(0,0,0,0) > todaysDate.setHours(0,0,0,0)) {
-              alert('La data dell\'incotro non può essere maggiore di oggi');
-              $('#date').focus();
-              return false;
-            }
           }
-          if($('#pers').val()=='') {
-          alert('Indicare Persona Contatta');
-          $('#pers').focus();
-          return false;
-          }
-          if($('#rolePers').val()=='') {
-          alert('Indicare Ruolo Persona Contatta');
-          $('#rolePers').focus();
-          return
-          }
-          if($('#desc').val()=='') {
-          alert('Indicare Motivo Incotro / Breve Descrizione');
-          $('#desc').focus();
-          return false;
-          }
-          if($('#conclusione').val()=='') {
-          alert('Indicare Conclusione Incotro');
-          $('#conclusione').focus();
-          return false;
-          }
-          // if($('#dateNext').val()=='') {
+        }
+        if($('#pers').val()=='') {
+        alert('Indicare Persona Contatta');
+        $('#pers').focus();
+        return false;
+        }
+        if($('#rolePers').val()=='') {
+        alert('Indicare Ruolo Persona Contatta');
+        $('#rolePers').focus();
+        return false;
+        }
+        if($('#desc').val()=='') {
+        alert('Indicare Motivo Incotro / Breve Descrizione');
+        $('#desc').focus();
+        return false;
+        }
+        if($('#conclusione').val()=='') {
+        alert('Indicare Conclusione Incotro');
+        $('#conclusione').focus();
+        return false;
+        }
+        // if($('#dateNext').val()=='') {
         //   alert('Indicare Data prox incontro');
         //   $('#dateNext').focus();
         //   return false;
@@ -251,10 +251,11 @@
             alert('La data dell\'incotro non può essere antecedente a oggi');
             $('#dateNext').focus();
             return false;
-        }
+          }
           
           return true;
-      }
-    };
+        }
+  };
   </script>
+
 @endsection

@@ -48,9 +48,12 @@
                             <li class="user-footer">
                                 <div class="pull-left">
                                     <a href="{{ route('user::users.show', Auth::user()->id ) }}" class="btn btn-default btn-flat">{{ trans('_message.profile') }}</a>
+                                    @if (in_array(RedisUser::get('role'), ['agent', 'superAgent']))
+                                        <a href="{{ route('user::events', Auth::user()->id ) }}" class="btn btn-default btn-flat">Ferie</a>
+                                    @endif
                                 </div>
                                 <div class="pull-right">
-                                    <a href="{{ url('/logout') }}" class="btn btn-default btn-flat" id="logout"
+                                    <a href="{{ url('/logout') }}" class="btn btn-danger btn-flat" id="logout"
                                        onclick="event.preventDefault();
                                                  document.getElementById('logout-form').submit();">
                                         {{ trans('_message.signout') }}
@@ -65,7 +68,7 @@
                         </ul>
                     </li>
                 @endif
-                @if (!in_array(RedisUser::get('role'), ['client', 'agent', 'superAgent', 'user', 'tecnical_sales']))
+                @if (!in_array(RedisUser::get('role'), ['client', 'agent', 'superAgent', 'user', 'tecnical_sales', 'quality']))
                   <!-- Control Sidebar Toggle Button -->
                   <li>
                       <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>

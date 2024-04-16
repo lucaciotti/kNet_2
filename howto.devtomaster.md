@@ -11,3 +11,6 @@ git merge master (there won't be any conflicts now)
 
 // DEPLOY
 php artisan deploy -v production
+
+add route with OpenVpn
+route add 213.152.198.83 MASK 255.255.255.255 172.29.248.1

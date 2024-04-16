@@ -80,6 +80,21 @@ Route::group(['as' => 'user::'], function () {
   ]);
 });
 
+Route::group(['as' => 'user::'], function () {
+  Route::get('events', [
+    'as' => 'events',
+    'uses' => 'UserController@events'
+  ]);
+  Route::post('events', [
+    'as' => 'events',
+    'uses' => 'UserController@events'
+  ]);
+  Route::post('eventsAjax', [
+    'as' => 'eventsAjax',
+    'uses' => 'UserController@eventsAjax'
+  ]);
+});
+
 Route::group(['as' => 'client::'], function () {
   Route::get('/clients', [
     'as' => 'list',
@@ -92,6 +107,21 @@ Route::group(['as' => 'client::'], function () {
   Route::post('/clients/filter', [
     'as' => 'fltList',
     'uses' => 'ClientController@fltIndex'
+  ]);
+});
+
+Route::group(['as' => 'supplier::'], function () {
+  Route::get('/suppliers', [
+    'as' => 'list',
+    'uses' => 'SupplierController@index'
+  ]);
+  Route::get('/supplier/{codice}', [
+    'as' => 'detail',
+    'uses' => 'SupplierController@detail'
+  ]);
+  Route::post('/supplier/filter', [
+    'as' => 'fltList',
+    'uses' => 'SupplierController@fltIndex'
   ]);
 });
 
@@ -232,6 +262,18 @@ Route::group(['as' => 'visit::'], function(){
     'as' => 'delete',
     'uses' => 'VisitController@delete'
   ]);
+  Route::get('/visitsupplier/insert/{codice?}', [
+    'as' => 'insertSupplier',
+    'uses' => 'VisitController@indexSupplier'
+  ]);
+  Route::get('/visitsupplier/edit/{id}', [
+    'as' => 'editSupplier',
+    'uses' => 'VisitController@editSupplier'
+  ]);
+  Route::post('/visitsupplier/delete/{id}', [
+    'as' => 'deleteSupplier',
+    'uses' => 'VisitController@deleteSupplier'
+  ]);
   Route::get('/visit/insertRubri/{rubri_id?}', [
     'as' => 'insertRubri',
     'uses' => 'VisitController@indexRubri'
@@ -239,6 +281,10 @@ Route::group(['as' => 'visit::'], function(){
   Route::get('/visit/{codice}', [
     'as' => 'show',
     'uses' => 'VisitController@show'
+  ]);
+  Route::get('/visitsupplier/{codice}', [
+    'as' => 'showSupplier',
+    'uses' => 'VisitController@showSupplier'
   ]);
   Route::get('/visitRubri/{rubri_id}', [
     'as' => 'showRubri',

@@ -19,7 +19,7 @@
 
 	<br><br><br>
 
-@if (!in_array(RedisUser::get('role'), ['user']))
+@if (!in_array(RedisUser::get('role'), ['user', 'quality']))
 
 	<div class="row">
 		<div class="container">
@@ -108,15 +108,55 @@
   </div>
   @endif
 @else
-  <div class="row">
-    <div class="col-lg-10 col-lg-offset-1">
-      <h3>{{ trans('home.newUserMessage') }}</h3>
-      <p>
-        {{ trans('home.pleaseWait') }}<br>
-        {{ trans('home.thanks') }}
-      </p>
+  @if (in_array(RedisUser::get('role'), ['quality']))
+      <div class="row">
+        <div class="container">
+          <div class="col-lg-6 col-xs-6">
+            <div class="small-box bg-green">
+              <div class="inner">
+                <a href="{{ route('visit::insertSupplier') }}" style="text-decoration: inherit; color: inherit;">
+                  <h3>{{ trans('visit.insEventSupplier') }}</h3>
+                </a> 
+                <a href="{{ route('visit::insertSupplier') }}" style="text-decoration: inherit;color: inherit;">
+                  <p>Accedi</p>
+                </a>
+              </div>
+              <div class="icon"><i class="fa fa-calendar"></i></div> 
+              <a href="{{ route('visit::insertSupplier') }}" class="small-box-footer">Più Info<i class="fa fa-arrow-circle-right"></i></a>
+            </div>
+          </div>
+          
+          
+          <div class="col-lg-6 col-xs-6">
+            <div class="small-box bg-yellow">
+              <div class="inner">
+                <a href="{{ route('visit::insertRubri') }}" style="text-decoration: inherit; color: inherit;">
+                  <h3>{{ trans('visit.insEventRubri') }}</h3>
+                </a> 
+                <a href="{{ route('visit::insertRubri') }}" style="text-decoration: inherit;color: inherit;">
+                  <p>Accedi</p>
+                </a>
+              </div>
+              <div class="icon"><i class="fa fa-calendar"></i></div> 
+              <a href="{{ route('visit::insertRubri') }}" class="small-box-footer">Più Info<i class="fa fa-arrow-circle-right"></i></a>
+            </div>
+          </div>
+        </div>
+      </div
+  
+  @else
+  
+    <div class="row">
+      <div class="col-lg-10 col-lg-offset-1">
+        <h3>{{ trans('home.newUserMessage') }}</h3>
+        <p>
+          {{ trans('home.pleaseWait') }}<br>
+          {{ trans('home.thanks') }}
+        </p>
+      </div>
     </div>
-  </div>
+      
+  @endif
 @endif
 
 @endsection

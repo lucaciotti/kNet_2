@@ -14,6 +14,8 @@ return [
     'home'                    => 'Home',
     'clients'                 => 'Clienti',
     'client'                  => 'Cliente',
+    'suppliers'                 => 'Fornitori',
+    'supplier'                  => 'Fornitore',
     'documents'               => 'Documenti',
     'scads'                   => 'Scadenze',
     'products'                => 'Prodotti',

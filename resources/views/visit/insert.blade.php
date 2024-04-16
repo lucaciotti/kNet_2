@@ -25,7 +25,7 @@
         <div class="box-header with-border">
           <h3 class="box-title" data-widget="collapse">{{ trans('visit.insEvent') }}</h3>
           <a type="button" class="box-tools btn btn-primary btn-sm pull-right" target="" href="{{ route('visit::insertRubri') }}">
-            <strong> Inserisci visita CONTATTO</strong>
+            <strong> {{ trans('visit.btnEventRubri') }}</strong>
           </a>
           {{-- <div class="box-tools pull-right">
             <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>

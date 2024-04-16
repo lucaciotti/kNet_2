@@ -9,11 +9,12 @@ return [
     |
     */
 
-    'headTitle_ins'           => 'Customer Visit',
+    'headTitle_ins'           => 'Visit',
     'contentTitle_ins'        => '',
     'contentDesc_ins'         => '',
 
     'insEvent'                => 'Customer Visit entry',
+    'insEventSupplier'        => 'Supplier Visit entry',
     'insEventRubri'           => 'Contact Visit entry',
 
     /*
@@ -24,6 +25,8 @@ return [
     */
 
     'client'                  => 'Customer',
+    'supplier'                  => 'Supplier',
+    'rubricontact'             => 'Rubri-Contact',
     'eventPers'               => 'Reference person',
     'eventRolePers'           => 'Corporate Roles',
     'eventType'               => 'Visit type',
@@ -49,5 +52,10 @@ return [
     'desc_plchld'             => 'Description',
     'note_plchld'             => 'Place some text here',
     'conclusion_plchld'       => 'Place conclusion here',
+
+    'btnEventRubri'          => 'Insert CONTACT Visit',
+    'btnEventClient'          => 'Insert CUSTOMER Visit',
+    'btnEventSupplier'        => 'Insert SUPPLIER Visit',
+    'btnNewRubri'             => '+ Insert New Rubri-Contact'
 
 ];

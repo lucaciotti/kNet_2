@@ -48,8 +48,13 @@
           Cliente:
             <a href="{{ route('client::detail', $visit->codicecf ) }}">{{ $visit->client->descrizion }} [{{ $visit->codicecf }}]</a>
           @else
-          Potenziale Cliente:
+            @if($visit->supplier)
+            Supplier:
+            <a href="{{ route('supplier::detail', $visit->codicecf ) }}">{{ $visit->supplier->descrizion }} [{{ $visit->codicecf }}]</a>
+            @else
+            Potenziale Cliente:
             <a href="{{ route('rubri::detail', $visit->rubri_id ?? 0 ) }}">{{ $visit->rubri->descrizion ?? 'Error' }}</a>
+            @endif
           @endif
         </span>
       </div>
