@@ -6,8 +6,13 @@
         <div class="row">
             <div class="contentTitle">Situatione Provvigioni</div>
 
-            @if($provv_TY)
+            @if($provv_TY && $ditta!='kNet_es')
               @include('_exports.pdf.schedaScad.tblProv', [
+                  'provv' => $provv_TY,
+              ])
+            @endif
+            @if($provv_TY && $ditta=='kNet_es')
+              @include('_exports.pdf.schedaScad.tblProvES', [
                   'provv' => $provv_TY,
               ])
             @endif

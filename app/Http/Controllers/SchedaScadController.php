@@ -69,6 +69,7 @@ class SchedaScadController extends Controller
           'descrAg' => $subTitle,
           'thisYear' => $thisYear,
           'provv_TY' => $provv_TY,
+          'ditta' => RedisUser::get('ditta_DB'),
           'provvPP_TY' => null
       ];
       $pdf = PdfReport::A4Landscape($view, $data, $title, $subTitle);
@@ -173,6 +174,7 @@ class SchedaScadController extends Controller
           'descrAg' => $subTitle,
           'thisYear' => $thisYear,
           'provvPP_TY' => $provv_TY,
+          'ditta' => RedisUser::get('ditta_DB'),
           'provv_TY' => null
         ];
       } else {
@@ -181,6 +183,7 @@ class SchedaScadController extends Controller
           'descrAg' => $subTitle,
           'thisYear' => $thisYear,
           'provvPP_TY' => null,
+          'ditta' => RedisUser::get('ditta_DB'),
           'provv_TY' => $provv_TY
         ];
       }
