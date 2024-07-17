@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
-if [ ! -z "$WWWUSER" ]; then
-    usermod -u $WWWUSER app
-fi
+# if [ ! -z "$WWWUSER" ]; then
+#     usermod -u $WWWUSER app
+# fi
 
 if [ ! -d /.composer ]; then
     mkdir /.composer
