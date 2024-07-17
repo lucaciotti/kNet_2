@@ -10,13 +10,15 @@ use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 class EnasarcoExport implements FromView, ShouldAutoSize
 {
     protected $ritana;
+    protected $ritena;
     protected $thisYear;
     protected $ritmov;
     protected $user;
 
-    public function __construct($ritana, $year, $ritmov, $user)
+    public function __construct($ritana, $ritena, $year, $ritmov, $user)
     {
         $this->ritana = $ritana;
+        $this->ritena = $ritena;
         $this->thisYear = $year;
         $this->ritmov = $ritmov;
         $this->user = $user;
@@ -34,6 +36,7 @@ class EnasarcoExport implements FromView, ShouldAutoSize
     {
         return view('_exports.xls.enasarco', [
             'ritana' => $this->ritana,
+            'ritena' => $this->ritena,
             'year' => $this->thisYear,
             'ritmov' => $this->ritmov,
             'user' => $this->user

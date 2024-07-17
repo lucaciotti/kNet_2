@@ -53,23 +53,23 @@
                 $sum_res = 0;
                 $sum_impenage = 0;
                 $sum_prog = 0;
-                $sum_res = $ritana->impmax;
+                $sum_res = $ritena->massimale;
                 @endphp
                 <dl class="dl-horizontal">
                     <dt>Tipo Agente</dt>
                     <dd>{{ $tipoAgente }}</dd>
 
                     <dt>Minimo Imponibile</dt>
-                    <dd>{{ currency($ritana->impmin) }}</dd>
+                    <dd>{{ currency($ritena->minimale) }}</dd>
 
                     <dt>Massimo Imponibile</dt>
-                    <dd>{{ currency($ritana->impmax) }}</dd>
+                    <dd>{{ currency($ritena->massimale) }}</dd>
 
                     <dt>% a Carico Ditta</dt>
-                    <dd>{{ $ritana->perendit }} %</dd>
+                    <dd>{{ $ritena->percditta }} %</dd>
 
                     <dt>% a Carico Agente</dt>
-                    <dd>{{ $ritana->perenage }} %</dd>
+                    <dd>{{ $ritena->percage }} %</dd>
 
                     <dt>Enasarco XLS</dt>
                     <dd><a type="button" class="btn btn-default btn-xs" target="_blank"

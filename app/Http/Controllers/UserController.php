@@ -21,6 +21,7 @@ use knet\Role;
 use knet\ArcaModels\Client;
 use knet\ArcaModels\Agent;
 use knet\ArcaModels\RitAna;
+use knet\ArcaModels\RitEnasarco;
 use knet\ArcaModels\RitMov;
 use knet\UserEvent;
 
@@ -86,10 +87,12 @@ class UserController extends Controller
       $user=User::with('client', 'agent')->findOrFail($id);
       $ritana=RitAna::first();
       $year = (string) Carbon::now()->year;
+      $ritena=RitEnasarco::where('anno', $year)->get();
       $ritmov=RitMov::where('ftdatadoc', '>', new Carbon('first day of January '.$year))->get();
       return view('user.profile', [
         'user' => $user,
         'ritana' => $ritana,
+        'ritena' => $ritena,
         'ritmov' => $ritmov,
       ]);
     }
@@ -157,8 +160,9 @@ class UserController extends Controller
       $user = User::with('client', 'agent')->findOrFail($id);
       $ritana = RitAna::first();
       $year = (string) Carbon::now()->year;
+      $ritena = RitEnasarco::where('anno', $year)->get();
       $ritmov = RitMov::where('ftdatadoc', '>', new Carbon('first day of January ' . $year))->get();
-      return Excel::download(new EnasarcoExport($ritana, $year, $ritmov, $user), 'Sit_Enasarco-'.$user->codag.'.xlsx');
+      return Excel::download(new EnasarcoExport($ritana, $ritena, $year, $ritmov, $user), 'Sit_Enasarco-'.$user->codag.'.xlsx');
     }
 
     public function enasarcoPDF(Request $req)

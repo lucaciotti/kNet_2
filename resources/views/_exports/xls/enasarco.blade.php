@@ -7,7 +7,7 @@ $sum_prog = 0;
 $sum_res = 0;
 $sum_impenage = 0;
 $sum_prog = 0;
-$sum_res = $ritana->impmax;
+$sum_res = $ritena->massimale;
 @endphp
 <table class="table table-hover table-striped" id="Enasarco" style="text-align: center;">
     <thead>
@@ -39,12 +39,12 @@ $sum_res = $ritana->impmax;
         </tr>
         <tr>
             <td>Minimo Imponibile</td>
-            <td>{{ currency($ritana->impmin) }}</td>
+            <td>{{ currency($ritena->minimale) }}</td>
             <td colspan="10"></td>
         </tr>
         <tr>
             <td>Massimo Imponibile</td>
-            <td>{{ currency($ritana->impmax) }}</td>
+            <td>{{ currency($ritena->massimale) }}</td>
             <td colspan="10"></td>
         </tr>
         @foreach ($ritmov as $mov)
