@@ -64,7 +64,7 @@ $sum_res = $ritena->massimale;
             <td>{{ $mov->ftnumdoc }} </td>
             <td>{{ currency($mov->totfattura) }}</td>
             <td>{{ currency($mov->compensi) }}</td>
-            @if($sum_compensi > $ritana->impmax)
+            @if($sum_compensi > $ritena->massimale)
             <td class="danger">{{ currency($sum_compensi) }}</td>
             @else
             <td>{{ currency($sum_compensi) }}</td>
