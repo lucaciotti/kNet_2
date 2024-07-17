@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use RedisUser;
 
-class RitAna extends Model
+class RitEnasarco extends Model
 {
     protected $table = 'rit_enasarco';
     public $timestamps = false;

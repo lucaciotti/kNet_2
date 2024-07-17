@@ -87,7 +87,8 @@ class UserController extends Controller
       $user=User::with('client', 'agent')->findOrFail($id);
       $ritana=RitAna::first();
       $year = (string) Carbon::now()->year;
-      $ritena=RitEnasarco::where('anno', $year)->get();
+      $ritena=RitEnasarco::where('anno', $year)->first();
+      // dd($ritena);
       $ritmov=RitMov::where('ftdatadoc', '>', new Carbon('first day of January '.$year))->get();
       return view('user.profile', [
         'user' => $user,
@@ -160,7 +161,7 @@ class UserController extends Controller
       $user = User::with('client', 'agent')->findOrFail($id);
       $ritana = RitAna::first();
       $year = (string) Carbon::now()->year;
-      $ritena = RitEnasarco::where('anno', $year)->get();
+      $ritena = RitEnasarco::where('anno', $year)->first();
       $ritmov = RitMov::where('ftdatadoc', '>', new Carbon('first day of January ' . $year))->get();
       return Excel::download(new EnasarcoExport($ritana, $ritena, $year, $ritmov, $user), 'Sit_Enasarco-'.$user->codag.'.xlsx');
     }
