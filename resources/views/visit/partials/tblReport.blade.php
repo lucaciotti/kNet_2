@@ -83,7 +83,7 @@
     </script>
 @endpush --}}
 
-@section('extra_script')
+@push('script-footer')
 <script>
   function deleteVisit(){
     var result = confirm("Eliminare visita selezionata?");
@@ -94,4 +94,4 @@
     }
   };
 </script>
-@endsection
+@endpush

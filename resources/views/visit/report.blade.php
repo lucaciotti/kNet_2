@@ -63,7 +63,7 @@
 @endsection
 
 @section('extra_script')
-  @include('layouts.partials.scripts.iCheck')
   @include('layouts.partials.scripts.select2')
   @include('layouts.partials.scripts.datePicker')
+  @include('layouts.partials.scripts.iCheck')
 @endsection
