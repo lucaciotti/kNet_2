@@ -33,7 +33,7 @@
         <tr>
           <td>{{ $list->gruppomag }}</td>
           @php
-              $descrizion = ($list->grpProd) ? $list->grpProd->descrizion : ($list->masterProd) ? $list->masterProd->descrizion : ''; 
+              $descrizion = ($list->grpProd) ? $list->grpProd->descrizion : (($list->masterProd) ? $list->masterProd->descrizion : ''); 
           @endphp
           <td>{{ $descrizion or '' }}</td>
           <th colspan="1">|</th>
