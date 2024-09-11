@@ -158,13 +158,13 @@
         <tr style="background-color: white;">
           <td colspan="6"></td>
           <td colspan="4" style="text-align:right;"><strong><i>de las cuales, comisiones:</i></strong></td>
-          <td style="text-align: right;"><i><strong>{{ currency($granTotMat*0.8) }}</strong><i></td>
+          <td style="text-align: right;"><i><strong>{{ currency($granTotMat*0.75) }}</strong><i></td>
           <td style="text-align: right;"></td>
         </tr>
         <tr style="background-color: white;">
           <td colspan="6"></td>
           <td colspan="4" style="text-align:right;"><strong><i>por acuerdo de no competencia:</i></strong></td>
-          <td style="text-align: right;"><i><strong>{{ currency($granTotMat*0.2) }}</strong><i></td>
+          <td style="text-align: right;"><i><strong>{{ currency($granTotMat*0.25) }}</strong><i></td>
           <td style="text-align: right;"></td>
         </tr>     
     </tfoot>
