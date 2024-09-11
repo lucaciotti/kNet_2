@@ -102,6 +102,7 @@
     <span class="timeline-item">
       @if($codcli)
         <a class="btn btn-sm btn-default" href="{{ route('visit::insert', $codcli) }}"> <i class="fa fa-plus"></i> <span>{{ trans('visit.insEvent') }}</span></a>
+        <a class="btn btn-sm btn-primary" href="{{ route('visit::show', $codcli) }}">  <span>{{ trans('client.seeTimeline') }}... </span></a>
       @else
         <a class="btn btn-sm btn-default" href="{{ route('visit::insertRubri', $rubri_id) }}"> <i class="fa fa-plus"></i> <span>{{ trans('visit.insEventRubri') }}</span></a>
       @endif
