@@ -10,6 +10,7 @@ use knet\ArcaModels\Agent;
 use knet\ArcaModels\Settore;
 use knet\ArcaModels\Zona;
 use knet\ArcaModels\SubGrpProd;
+use knet\ArcaModels\StatFattArt;
 use knet\Helpers\AgentFltUtils;
 
 class StFattArtController extends Controller
@@ -26,7 +27,18 @@ class StFattArtController extends Controller
         $fltAgents = (!empty($codAg)) ? $codAg : array_wrap((!empty(RedisUser::get('codag')) ? RedisUser::get('codag') : $agentList->first()->codice));
         $fltAgents = AgentFltUtils::checkSpecialRules($fltAgents);
         $thisYear = ($req->input('startYear')) ? $req->input('startYear') :(Carbon::now()->year);
-        $zoneList = $codAg && strpos($codAg[0], 'A')==0 ? Zona::whereRaw('LEFT(codice,1)=?', ['0'])->get() : Zona::whereRaw('LEFT(codice,1)!=?', ['0'])->get();
+        // $zoneList = $codAg && strpos($codAg[0], 'A')==0 ? Zona::whereRaw('LEFT(codice,1)=?', ['0'])->get() : Zona::whereRaw('LEFT(codice,1)!=?', ['0'])->get();
+
+        $clientsInStatFat=StatFattArt::select('codicecf');
+        $clientsInStatFat->whereHas('client', function($query) use ($fltAgents) {
+            $query->whereIn('agente', $fltAgents);
+        });
+        $clientsInStatFat=$clientsInStatFat->distinct()->get();
+        
+        $zoneList = Zona::whereHas('client', function($query) use ($clientsInStatFat) {
+            $query->whereIn('codice', $clientsInStatFat);
+        })->get();
+
         $grpPrdList = SubGrpProd::where('codice', 'NOT LIKE', '1%')
             ->where('codice', 'NOT LIKE', 'DIC%')
             ->where('codice', 'NOT LIKE', '0%')

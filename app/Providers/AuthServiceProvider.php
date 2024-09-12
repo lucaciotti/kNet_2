@@ -14,7 +14,7 @@ class AuthServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
-        'knet\Model' => 'knet\Policies\ModelPolicy',
+        // 'knet\Model' => 'knet\Policies\ModelPolicy',
     ];
 
     /**

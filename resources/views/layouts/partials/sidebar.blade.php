@@ -120,9 +120,9 @@
                             <li class="{{ Ekko::isActiveRoute('stFatt::idxAg') }}"><a href="{{ route('stFatt::idxAg') }}">{{ trans('_menu.agent') }}</a></li>
                           @endif
                             <li class="{{ Ekko::isActiveRoute('stFatt::idxCli') }}"><a href="{{ route('stFatt::idxCli') }}">{{ trans('_menu.client') }}</a></li>
-                          @if (!in_array(RedisUser::get('role'), ['marketing', 'tecnical_sales']))
+                          {{-- @if (!in_array(RedisUser::get('role'), ['marketing', 'tecnical_sales']))
                             <li class="{{ Ekko::isActiveRoute('stFatt::idxZone') }}"><a href="{{ route('stFatt::idxZone') }}">{{ trans('_menu.zone') }}</a></li>
-                          @endif
+                          @endif --}}
                           {{-- @if (!in_array(RedisUser::get('role'), ['agent']))
                               <li class="{{ Ekko::isActiveRoute('stFatt::idxManager') }}"><a href="{{ route('stFatt::idxManager') }}">{{ trans('_menu.superAgent') }}</a></li>
                           @endif --}}
