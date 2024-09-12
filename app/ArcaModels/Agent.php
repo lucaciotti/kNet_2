@@ -53,7 +53,7 @@ class Agent extends Model
  */
     // JOIN Tables
     public function client(){
-      return $this->hasMany('knet\ArcaModels\Client', 'codice', 'agente');
+      return $this->hasMany('knet\ArcaModels\Client', 'agente', 'codice');
     }
 
     public function manager(){
@@ -62,6 +62,14 @@ class Agent extends Model
 
     public function scadenza(){
       return $this->hasMany('knet\ArcaModels\Scadenza', 'codice', 'codag');
+    }
+
+    public function statFatt(){
+      return $this->hasMany('knet\ArcaModels\StatFatt', 'agente', 'codice');
+    }
+
+    public function statFattArt(){
+      return $this->hasMany('knet\ArcaModels\StatFattArt', 'agente_doc', 'codice');
     }
 
     //Funzioni Speciali

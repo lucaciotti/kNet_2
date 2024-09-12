@@ -60,7 +60,25 @@
 
     <div class="box box-default collapsed-box">
       <div class="box-header with-border">
-      <h3 class="box-title" data-widget="collapse">{{ trans('doc.filter') }}</h3>
+        <h3 class="box-title" data-widget="collapse">Filtro Zona</h3>
+        <div class="box-tools pull-right">
+          <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+          {{-- <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
+          --}}
+        </div>
+      </div>
+      <div class="box-body">
+        @include(
+        'stFatt.partials.filterCustomer',
+        [
+        'zone' => $zone,'zoneSelected' => $zoneSelected,
+        ])
+      </div>
+    </div>
+
+    <div class="box box-default collapsed-box">
+      <div class="box-header with-border">
+      <h3 class="box-title" data-widget="collapse">Filter Product</h3>
       <div class="box-tools pull-right">
         <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
         {{-- <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button> --}}

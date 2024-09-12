@@ -113,6 +113,10 @@ class Client extends Model
       return $this->hasOne('knet\ArcaModels\AnagNote', 'codicecf', 'codice');
     }
 
+    public function statFattArt(){
+      return $this->hasMany('knet\ArcaModels\StatFattArt', 'codicecf', 'codice');
+    }
+
     //Multator
     // public function getDescrizionAttribute($value)
     // {

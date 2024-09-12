@@ -16,6 +16,7 @@ use knet\ArcaModels\Agent;
 use knet\ArcaModels\SuperAgent;
 use knet\ArcaModels\Nazione;
 use knet\ArcaModels\GrpProd;
+use knet\ArcaModels\Zona;
 use knet\Helpers\AgentFltUtils;
 
 class StFattController extends Controller
@@ -26,13 +27,29 @@ class StFattController extends Controller
     }
 
     public function idxAg (Request $req, $codAg=null) {
-      $agentList = Agent::select('codice', 'descrizion')->whereNull('u_dataini')->orWhere('u_dataini', '>=', Carbon::now())->orderBy('codice')->get();
+      $thisYear = (string)(Carbon::now()->year);
+      $prevYear = (string)((Carbon::now()->year)-1);
+
+      $agentList = Agent::select('codice', 'descrizion')
+        ->whereHas('statFatt', function($query) use ($thisYear, $prevYear) {
+          $query->whereIn('esercizio', [$thisYear, $prevYear]);
+      })->orderBy('codice')->get();
       $codAg = ($req->input('codag')) ? $req->input('codag') : ($codAg ? array_wrap($codAg) : $codAg);
       $fltAgents = (!empty($codAg)) ? $codAg : array_wrap((!empty(RedisUser::get('codag')) ? RedisUser::get('codag') : $agentList->first()->codice));
       //$descrAg = (!empty($agents->whereStrict('codice', $agente)->first()) ? $agents->whereStrict('codice', $agente)->first()->descrizion : "");
-      $thisYear = (string)(Carbon::now()->year);
       $fltAgents = AgentFltUtils::checkSpecialRules($fltAgents);
       // dd($fltAgents);
+      
+      $clientsInStatFat=StatFatt::select('codicecf');
+      $clientsInStatFat->whereHas('client', function($query) use ($fltAgents) {
+          $query->whereIn('agente', $fltAgents);
+      });
+      $clientsInStatFat=$clientsInStatFat->distinct()->get();
+      
+      $zoneList = Zona::whereHas('client', function($query) use ($clientsInStatFat) {
+          $query->whereIn('codice', $clientsInStatFat);
+      })->get();
+      $zoneSelected = ($req->input('zoneSelected')) ? $req->input('zoneSelected') : null;
 
       // (Legenda PY -> Previous Year ; TY -> This Year)
       $fat_TY = StatFatt::select('agente', 'tipologia',
@@ -50,7 +67,7 @@ class StFattController extends Controller
                                   DB::raw('ROUND(SUM(valore12),2) as valore12'),
                                   DB::raw('ROUND(SUM(fattmese),2) as fattmese')
                                 )
-                          ->where('codicecf', 'CTOT')
+                          ->where('codicecf', '!=', 'CTOT')
                           ->whereIn('agente', $fltAgents)
                           ->where('esercizio', $thisYear)
                           ->where('tipologia', 'FATTURATO');
@@ -62,6 +79,11 @@ class StFattController extends Controller
       } else {
         $fat_TY = $fat_TY->whereIn('prodotto', ['KRONA', 'KOBLENZ', 'KUBIKA', 'PLANET']);
       }          
+      if ($zoneSelected != null) {
+        $fat_TY = $fat_TY->whereHas('client', function($query) use ($zoneSelected) {
+            $query->whereIn('zona', $zoneSelected);
+        });
+      }
       $fat_TY = $fat_TY->groupBy(['tipologia'])
                           ->get();
       // ->with([
@@ -71,7 +93,6 @@ class StFattController extends Controller
       //   ])
       // dd($fatTot);
       
-      $prevYear = (string)((Carbon::now()->year)-1);
       $fat_PY = StatFatt::select('agente', 'tipologia',
                                   DB::raw('ROUND(SUM(valore1),2) as valore1'),
                                   DB::raw('ROUND(SUM(valore2),2) as valore2'),
@@ -87,7 +108,7 @@ class StFattController extends Controller
                                   DB::raw('ROUND(SUM(valore12),2) as valore12'),
                                   DB::raw('ROUND(SUM(fattmese),2) as fattmese')
                                 )
-                          ->where('codicecf', 'CTOT')
+                          ->where('codicecf', '!=', 'CTOT')
                           ->whereIn('agente', $fltAgents)
                           ->where('esercizio', $prevYear)
                           ->where('tipologia', 'FATTURATO');
@@ -99,6 +120,11 @@ class StFattController extends Controller
       } else {
         $fat_PY = $fat_PY->whereIn('prodotto', ['KRONA', 'KOBLENZ', 'KUBIKA', 'PLANET']);
       }          
+      if ($zoneSelected != null) {
+        $fat_PY = $fat_PY->whereHas('client', function($query) use ($zoneSelected) {
+            $query->whereIn('zona', $zoneSelected);
+        });
+      }
       $fat_PY = $fat_PY->groupBy(['tipologia'])
                           ->get();
 
@@ -119,6 +145,8 @@ class StFattController extends Controller
       return view('stFatt.idxAg', [
         'agentList' => $agentList,
         'fltAgents' => $fltAgents,
+        'zone' => $zoneList,
+        'zoneSelected' => $zoneSelected,
         'fat_TY' => $fat_TY,
         //'fatDet' => $fatDet,
         'fat_PY' => $fat_PY,

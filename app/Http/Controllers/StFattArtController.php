@@ -22,11 +22,14 @@ class StFattArtController extends Controller
 
     public function idxAg(Request $req, $codAg = null)
     {
+        $thisYear = ($req->input('startYear')) ? $req->input('startYear') :(Carbon::now()->year);
+
         $agentList = Agent::select('codice', 'descrizion')->whereNull('u_dataini')->orWhere('u_dataini', '>=', Carbon::now())->orderBy('codice')->get();
+        // $agentList = Agent::select('codice', 'descrizion')->whereHas('client', function($query) use  { $query->select('codice')->whereHas('statFattArt', function($query) use ($thisYear) { $query->select('codicecf');}); })->orderBy('codice')->get();
+
         $codAg = ($req->input('codag')) ? $req->input('codag') : ($codAg ? array_wrap($codAg) : $codAg);
         $fltAgents = (!empty($codAg)) ? $codAg : array_wrap((!empty(RedisUser::get('codag')) ? RedisUser::get('codag') : $agentList->first()->codice));
         $fltAgents = AgentFltUtils::checkSpecialRules($fltAgents);
-        $thisYear = ($req->input('startYear')) ? $req->input('startYear') :(Carbon::now()->year);
         // $zoneList = $codAg && strpos($codAg[0], 'A')==0 ? Zona::whereRaw('LEFT(codice,1)=?', ['0'])->get() : Zona::whereRaw('LEFT(codice,1)!=?', ['0'])->get();
 
         $clientsInStatFat=StatFattArt::select('codicecf');
