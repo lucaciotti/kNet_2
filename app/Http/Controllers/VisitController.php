@@ -279,15 +279,15 @@ class VisitController extends Controller
         'ragSoc' => $req->input('ragsoc') ?? '',
         'ragsocOp' => $req->input('ragsocOp'),
         'tipomodulo' => $req->input('optTipoDoc') ?? '',
-        'startDate' => !$req->input('noDate') ? $startDate : "",
-        'endDate' => !$req->input('noDate') ? $endDate : "",
+        'startDate' => !$req->input('noDate') ? $req->input('startDate') : "",
+        'endDate' => !$req->input('noDate') ? $req->input('endDate') : "",
         'optTipo' => $req->input('optTipo'),
         'relat' => $req->input('relat'),
         'relatOp' => $req->input('relatOp'),
         'noDate' => $req->input('noDate'),
         'groupBy' => 'user_id'
       ];
-
+      // dd($dataForReport);
       return view('visit.report', [
         'visits' => $visits,
         'ragSoc' => $req->input('ragsoc') ?? '',
@@ -305,6 +305,7 @@ class VisitController extends Controller
     public function reportPDF(Request $req){
       //Let's Set the Date
       $visits = wVisit::select('*');
+      // dd($req);
 
       if($req->input('startDate') and !$req->input('noDate')){
         $startDate = Carbon::createFromFormat('d/m/Y',$req->input('startDate'));
