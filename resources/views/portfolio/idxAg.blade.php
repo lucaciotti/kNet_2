@@ -145,6 +145,17 @@ Agents Portfolio
                 <th colspan="1">|</th>
                 <td> {{ currency($FTPrevKrona) }} </td>
               </tr>
+              @if ($OCBonusKrona!=0 || $BOBonusKrona!=0 || $FTBonusKrona!=0 || $FTPrevBonusKrona!=0)
+                <tr>
+                  <th>&nbsp -> Bonus Krona</th>
+                  <td> {{ currency($OCBonusKrona) }} </td>
+                  <td> {{ currency($BOBonusKrona) }} </td>
+                  <td> {{ currency($FTBonusKrona) }} </td>
+                  <td> {{ currency($OCBonusKrona+$BOBonusKrona+$FTBonusKrona) }} </td>
+                  <th colspan="1">|</th>
+                  <td> {{ currency($FTPrevBonusKrona) }} </td>
+                </tr>                  
+              @endif
               <tr>
                 <th>Koblenz</th>
                 <td> {{ currency($OCKoblenz) }} </td>
@@ -172,6 +183,17 @@ Agents Portfolio
                 <th colspan="1">|</th>
                 <td> {{ currency($FTPrevAtomika) }} </td>
               </tr>
+              @if ($OCBonusKoblenz!=0 || $BOBonusKoblenz!=0 || $FTBonusKoblenz!=0 || $FTPrevBonusKoblenz!=0)
+                <tr>
+                  <th>&nbsp -> Bonus Koblenz</th>
+                  <td> {{ currency($OCBonusKoblenz) }} </td>
+                  <td> {{ currency($BOBonusKoblenz) }} </td>
+                  <td> {{ currency($FTBonusKoblenz) }} </td>
+                  <td> {{ currency($OCBonusKoblenz+$BOBonusKoblenz+$FTBonusKoblenz) }} </td>
+                  <th colspan="1">|</th>
+                  <td> {{ currency($FTPrevBonusKoblenz) }} </td>
+                </tr>                  
+              @endif
               @if(RedisUser::get('ditta_DB')=='kNet_es')
               <tr>
                 <th>Planet</th>
@@ -186,10 +208,10 @@ Agents Portfolio
             </tbody>
             <tfoot class="bg-gray">
               @php
-              $totOC = $OCKrona+$OCKoblenz+$OCKubica+$OCAtomika+$OCPlanet;
-              $totBO = $BOKrona+$BOKoblenz+$BOKubica+$BOAtomika+$BOPlanet;
-              $totFT = $FTKrona+$FTKoblenz+$FTKubica+$FTAtomika+$FTPlanet;
-              $totPrevFT = $FTPrevKrona+$FTPrevKoblenz+$FTPrevKubica+$FTPrevAtomika+$FTPrevPlanet;
+              $totOC = $OCKrona+$OCBonusKrona+$OCKoblenz+$OCBonusKoblenz+$OCKubica+$OCAtomika+$OCPlanet;
+              $totBO = $BOKrona+$BOKoblenz+$BOBonusKrona+$BOBonusKoblenz+$BOKubica+$BOAtomika+$BOPlanet;
+              $totFT = $FTKrona+$FTKoblenz+$FTBonusKrona+$FTBonusKoblenz+$FTKubica+$FTAtomika+$FTPlanet;
+              $totPrevFT = $FTPrevKrona+$FTPrevKoblenz+$FTPrevKubica+$FTPrevAtomika+$FTPrevPlanet+$FTPrevBonusKrona+$FTPrevBonusKoblenz;
               @endphp
               <tr>
                 <th>TOTALE PORTFOLIO PRODOTTO</th>
@@ -213,10 +235,10 @@ Agents Portfolio
             <col width='15%'>
             <tbody>
               <tr>
-                <th colspan="7"> <strong>--> Escluso da Calcolo Portfolio</strong> </th>
+                <th colspan="7"> <strong>&nbsp&nbsp -> Escluso da Calcolo Portfolio</strong> </th>
               </tr>
               <tr>
-                <th>Diciture (es. Acconti, Bonus Clienti)</th>
+                <th>Diciture (es. Acconti,..)</th>
                 <td> {{ currency($OCDIC) }} </td>
                 <td> {{ currency($BODIC) }} </td>
                 <td> {{ currency($FTDIC) }} </td>

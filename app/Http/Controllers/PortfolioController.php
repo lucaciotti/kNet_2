@@ -45,32 +45,41 @@ class PortfolioController extends Controller
 
 		$OCKrona = $this->getOrderToShip(['A'],$fltAgents, ['A99'])->sum('totRowPrice');
 		$OCKoblenz = $this->getOrderToShip(['B'],$fltAgents, ['B06', 'B99'])->sum('totRowPrice');
+		$OCBonusKrona = $this->getOrderToShip(['A99'],$fltAgents)->sum('totRowPrice');
+		$OCBonusKoblenz = $this->getOrderToShip(['B99'],$fltAgents)->sum('totRowPrice');
 		$OCKubica = $this->getOrderToShip(['B06'], $fltAgents, ['B0630'])->sum('totRowPrice');
 		$OCAtomika = $this->getOrderToShip(['B0630'], $fltAgents)->sum('totRowPrice');
 		$OCPlanet = (RedisUser::get('ditta_DB')=='kNet_es') ? $this->getOrderToShip(['D0'], $fltAgents)->sum('totRowPrice') : 0;
-		$OCDIC = $this->getOrderToShip(['DIC', 'B99', 'A99'], $fltAgents)->sum('totRowPrice');
+		$OCDIC = $this->getOrderToShip(['DIC'], $fltAgents)->sum('totRowPrice');
 
 		$BOKrona = $this->getDdtNotInvoiced(['A'],$fltAgents, ['A99'])->sum('totRowPrice');
 		$BOKoblenz = $this->getDdtNotInvoiced(['B'],$fltAgents, ['B06', 'B99'])->sum('totRowPrice');
+		$BOBonusKrona = $this->getDdtNotInvoiced(['A99'],$fltAgents)->sum('totRowPrice');
+		$BOBonusKoblenz = $this->getDdtNotInvoiced(['B99'],$fltAgents)->sum('totRowPrice');
 		$BOKubica = $this->getDdtNotInvoiced(['B06'], $fltAgents, ['B0630'])->sum('totRowPrice');
 		$BOAtomika = $this->getDdtNotInvoiced(['B0630'], $fltAgents)->sum('totRowPrice');
 		$BOPlanet = (RedisUser::get('ditta_DB')=='kNet_es') ? $this->getDdtNotInvoiced(['D0'], $fltAgents)->sum('totRowPrice') : 0;
-		$BODIC = $this->getDdtNotInvoiced(['DIC', 'B99', 'A99'], $fltAgents)->sum('totRowPrice');
+		$BODIC = $this->getDdtNotInvoiced(['DIC'], $fltAgents)->sum('totRowPrice');
 
 		$FTKrona = $this->getInvoice(['A'],$fltAgents, ['A99'])->sum('totRowPrice');
 		$FTKoblenz = $this->getInvoice(['B'],$fltAgents, ['B06', 'B99'])->sum('totRowPrice');
+		$FTBonusKrona = $this->getInvoice(['A99'],$fltAgents)->sum('totRowPrice');
+		$FTBonusKoblenz = $this->getInvoice(['B99'],$fltAgents)->sum('totRowPrice');
 		$FTKubica = $this->getInvoice(['B06'], $fltAgents, ['B0630'])->sum('totRowPrice');
 		$FTAtomika = $this->getInvoice(['B0630'], $fltAgents)->sum('totRowPrice');
 		$FTPlanet = (RedisUser::get('ditta_DB')=='kNet_es') ? $this->getInvoice(['D0'], $fltAgents)->sum('totRowPrice') : 0;
-		$FTDIC = $this->getInvoice(['DIC', 'B99', 'A99'], $fltAgents)->sum('totRowPrice');
+		$FTDIC = $this->getInvoice(['DIC'], $fltAgents)->sum('totRowPrice');
 
 		$FTPrevKrona = $this->getPrevInvoice(['A'], $fltAgents, ['A99'])->sum('totRowPrice');
 		$FTPrevKoblenz = $this->getPrevInvoice(['B'], $fltAgents, ['B06', 'B99'])->sum('totRowPrice');
+		$FTPrevBonusKrona = $this->getPrevInvoice(['A99'],$fltAgents)->sum('totRowPrice');
+		$FTPrevBonusKoblenz = $this->getPrevInvoice(['B99'],$fltAgents)->sum('totRowPrice');
 		$FTPrevKubica = $this->getPrevInvoice(['B06'], $fltAgents, ['B0630'])->sum('totRowPrice');
 		$FTPrevAtomika = $this->getPrevInvoice(['B0630'], $fltAgents)->sum('totRowPrice');
 		$FTPrevPlanet = (RedisUser::get('ditta_DB')=='kNet_es') ? $this->getPrevInvoice(['D0'], $fltAgents)->sum('totRowPrice') : 0;
-		$FTPrevDIC = $this->getPrevInvoice(['DIC', 'B99', 'A99'], $fltAgents)->sum('totRowPrice');
+		$FTPrevDIC = $this->getPrevInvoice(['DIC'], $fltAgents)->sum('totRowPrice');
 		// dd($FTPrevKubica+ $FTPrevAtomika);
+
 		return view('portfolio.idxAg', [
 			'agents' => $agents,
 			'mese' => $mese,
@@ -79,24 +88,32 @@ class PortfolioController extends Controller
 			'fltAgents' => $fltAgents,
 			'OCKrona' => $OCKrona,
 			'OCKoblenz' => $OCKoblenz,
+			'OCBonusKrona' => $OCBonusKrona,
+			'OCBonusKoblenz' => $OCBonusKoblenz,
 			'OCKubica' => $OCKubica,
 			'OCAtomika' => $OCAtomika,
 			'OCPlanet' => $OCPlanet,
 			'OCDIC' => $OCDIC,
 			'BOKrona' => $BOKrona,
 			'BOKoblenz' => $BOKoblenz,
+			'BOBonusKrona' => $BOBonusKrona,
+			'BOBonusKoblenz' => $BOBonusKoblenz,
 			'BOKubica' => $BOKubica,
 			'BOAtomika' => $BOAtomika,
 			'BOPlanet' => $BOPlanet,
 			'BODIC' => $BODIC,
 			'FTKrona' => $FTKrona,
 			'FTKoblenz' => $FTKoblenz,
+			'FTBonusKrona' => $FTBonusKrona,
+			'FTBonusKoblenz' => $FTBonusKoblenz,
 			'FTKubica' => $FTKubica,
 			'FTAtomika' => $FTAtomika,
 			'FTPlanet' => $FTPlanet,
 			'FTDIC' => $FTDIC,
 			'FTPrevKrona' => $FTPrevKrona,
 			'FTPrevKoblenz' => $FTPrevKoblenz,
+			'FTPrevBonusKrona' => $FTPrevBonusKrona,
+			'FTPrevBonusKoblenz' => $FTPrevBonusKoblenz,
 			'FTPrevKubica' => $FTPrevKubica,
 			'FTPrevAtomika' => $FTPrevAtomika,
 			'FTPrevPlanet' => $FTPrevPlanet,
@@ -180,8 +197,8 @@ class PortfolioController extends Controller
 			});
 		}
 		// 26/11 Richiesta di Mauro per fare Ordini solo del mese!
-		// $docRow->where('dataconseg', '<=', $this->dEndMonth);
-		$docRow->whereBetween('dataconseg', [$this->dStartMonth, $this->dEndMonth]);
+		$docRow->where('dataconseg', '<=', $this->dEndMonth);
+		// $docRow->whereBetween('dataconseg', [$this->dStartMonth, $this->dEndMonth]);
 		$docRow = $docRow->whereIn('id_testa', $this->arrayIDOC)->get();
 		
 		$docRow = $this->calcTotRowPrice($docRow);
@@ -255,7 +272,7 @@ class PortfolioController extends Controller
 		if(empty($this->arrayIDFT)){
 			$docTes = DocCli::select('id')							
 								->whereIn('esercizio', [(string)$this->thisYear])
-								->whereIn('tipodoc', ['FT', 'FE', 'NC', 'NE', 'EQ', 'EF', 'NB']);
+								->whereIn('tipodoc', ['FT', 'FE', 'NC', 'NE', 'EQ', 'EF', 'NB', 'NX']);
 			if(!$filiali && RedisUser::get('ditta_DB')=='knet_it'){					
 				$docTes->whereNotIn('codicecf',['C00973', 'C03000', 'C07000', 'C06000', 'C01253']);
 			}
@@ -312,7 +329,7 @@ class PortfolioController extends Controller
 		if(empty($this->arrayIDprevFT)){
 			$docTes = DocCli::select('id')							
 								->whereIn('esercizio', [(string)$this->prevYear])
-								->whereIn('tipodoc', ['FT', 'FE', 'NC', 'NE', 'EQ', 'EF', 'NB']);
+								->whereIn('tipodoc', ['FT', 'FE', 'NC', 'NE', 'EQ', 'EF', 'NB', 'NX']);
 			if(!$filiali && RedisUser::get('ditta_DB')=='knet_it'){					
 				$docTes->whereNotIn('codicecf',['C00973', 'C03000', 'C07000', 'C06000', 'C01253']);
 			}
