@@ -41,7 +41,10 @@ class HomeController extends Controller
         //dd(session('user.ditta_DB'));
         $dt = Carbon::now();
         $lastMonth = new Carbon('first day of last month');
-        $ordini = DocCli::where('tipomodulo', 'O')->where('numrighepr', '>', 0)->count();
+        // $ordini = DocCli::where('tipomodulo', 'O')->where('numrighepr', '>', 0)->count();
+        $ordini = DocCli::where('tipomodulo', 'O')->whereHas('docrow', function($query){
+                          $query->where('quantitare', '>', 0);
+                        })->count();
         $bolle = DocCli::where('tipomodulo', 'B')->where('datadoc', '>=', $lastMonth)->doesntHave('wDdtOk')->count();
         $scadenze = ScadCli::where('datascad', '<', $dt)
                       ->whereRaw("(`insoluto` = 1 OR `u_insoluto` = 1) AND `pagato` = 0")
