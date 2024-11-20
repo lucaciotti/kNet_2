@@ -9,6 +9,7 @@ use Illuminate\Support\Collection;
 
 use knet\Http\Requests;
 use knet\Helpers\RedisUser;
+use knet\Helpers\AgentFltUtils;
 
 use knet\ArcaModels\StatABC;
 use knet\ArcaModels\Client;
@@ -20,13 +21,15 @@ use knet\ArcaModels\SubGrpProd;
 use knet\ArcaModels\DocCli;
 use knet\ArcaModels\DocRow;
 use knet\ArcaModels\Zona;
+use knet\ArcaModels\Settore;
 
 class StAbcController extends Controller
 {
     public function __construct(){
       $this->middleware('auth');
     }
-
+    
+    // idxAg -> non più utilizzato 
     public function idxAg (Request $req, $codAg=null) {
       $agents = Agent::select('codice', 'descrizion')->whereNull('u_dataini')->orWhere('u_dataini', '>=', Carbon::now())->orderBy('codice')->get();
       $codAg = ($req->input('codag')) ? $req->input('codag') : (!empty(RedisUser::get('codag')) ? RedisUser::get('codag') : $codAg);
@@ -113,6 +116,7 @@ class StAbcController extends Controller
       ]);
     }
 
+    // idxCli -> non più utilizzato 
     public function idxCli (Request $req, $codCli=null) {
       $customers = StatAbc::select('codicecf')
                     ->whereHas('client')
@@ -206,6 +210,17 @@ class StAbcController extends Controller
 
     public function idxArt(Request $req, $codAg = null)
     {
+      // lista di tutti gli agenti attivi
+      $agentList = Agent::select('codice', 'descrizion')->whereNull('u_dataini')->orWhere('u_dataini', '>=', Carbon::now())->orderBy('codice')->get();
+
+      $codAg = ($req->input('codag')) ? $req->input('codag') : ($codAg ? array_wrap($codAg) : array_wrap($codAg));
+      // $fltAgents = (!empty($codAg)) ? $codAg : array_wrap((!empty(RedisUser::get('codag')) ? RedisUser::get('codag') : $codAg));
+      $fltAgents = AgentFltUtils::checkSpecialRules($codAg);
+      
+      $settoreSelected = ($req->input('settoreSelected')) ? $req->input('settoreSelected') : null;
+      $zoneSelected = ($req->input('zoneSelected')) ? $req->input('zoneSelected') : null;
+      $customerSelected = ($req->input('customerSelected')) ? $req->input('customerSelected') : null;
+        
       $thisYear =  Carbon::now()->year;
       $prevYear = $thisYear - 1;
       $thisMonth = Carbon::now()->month;
@@ -213,6 +228,7 @@ class StAbcController extends Controller
       $AbcProds = StatABC::select(
         'articolo',
         'codag',
+        'codicecf',
         DB::raw('MAX(prodotto) as prodotto'),
         DB::raw('MAX(gruppo) as gruppo'),
         DB::raw('SUM(IF(esercizio=' . $thisYear . ', qta, 0)) as qta_TY'),
@@ -249,16 +265,32 @@ class StAbcController extends Controller
       }
       if(RedisUser::get('ditta_DB')=='kNet_es' && RedisUser::get('codag')=='A6'){
         $AbcProds = $AbcProds->where('gruppo', 'like', 'A%');
+      } else {
+        if(count($fltAgents)>0) $AbcProds = $AbcProds->whereIn('codag', $fltAgents);
       }
-      if (!empty($req->input('optTipoDoc'))) {
-        $AbcProds = $AbcProds->where('prodotto', $req->input('optTipoDoc'));
+      if (!empty($req->input('optTipoProd'))) {
+        $AbcProds = $AbcProds->where('prodotto', $req->input('optTipoProd'));
       } else {
         $AbcProds = $AbcProds->whereIn('prodotto', ['KRONA', 'KOBLENZ', 'KUBICA', 'PLANET']);
+      }
+      if ($customerSelected){
+         $AbcProds = $AbcProds->whereIn('codicecf', $customerSelected);
+      }
+      if ($settoreSelected != null) {
+          $AbcProds->whereHas('client', function ($query) use ($settoreSelected){
+          $query->where('settore', $settoreSelected);
+        });
+      }
+      if ($zoneSelected != null) {
+          $AbcProds->whereHas('client', function ($query) use ($zoneSelected){
+          $query->where('zona', $zoneSelected);
+        });
       }
       $AbcProds->whereHas('product', function ($query) {
         $query->where('u_artlis', true);
       });
-      $AbcProds = $AbcProds->groupBy(['articolo'])
+
+      $AbcProdsList = $AbcProds->groupBy(['articolo'])
       ->with([
         'grpProd' => function ($query) {
           $query->select('codice', 'descrizion');
@@ -270,24 +302,45 @@ class StAbcController extends Controller
         ->orderBy('qta_TY', 'DESC')
         ->get();
 
+      $AbcCustomers = $AbcProds->whereHas('client')
+                    ->groupBy('codicecf')
+                    ->orderBy('codicecf')->get();
+
       $gruppi = SubGrpProd::where('codice', 'NOT LIKE', '1%')
       ->where('codice', 'NOT LIKE', 'DIC%')
         ->where('codice', 'NOT LIKE', '0%')
         ->where('codice', 'NOT LIKE', '2%')
         ->orderBy('codice')
         ->get();
+      
+      $customerList = Client::select('codice', 'descrizion', 'zona', 'settore')->whereIn('codice', $AbcCustomers->pluck('codicecf'))->get();
+      $zoneList = Zona::whereIn('codice', $customerList->pluck('zona')->all())->get();
+      $settoriList = Settore::whereIn('codice', $customerList->pluck('settore')->all())->get();
 
       return view('stAbc.idxArt', [
-        'AbcProds' => $AbcProds,
+        'AbcProds' => $AbcProdsList,
         'thisYear' => $thisYear,
         'prevYear' => $prevYear,
         'thisMonth' => $thisMonth,
         'gruppi' => $gruppi,
+        'gruppo' => $req->input('gruppo'),
+        'optTipoProd' => $req->input('optTipoProd'),
+        'agentList' => $agentList,
+        'fltAgents' => $fltAgents,
+        'customerList' => $customerList,
+        'customerSelected' => $customerSelected,
+        'zoneList' => $zoneList,
+        'settoriList' => $settoriList,
+        'zoneSelected' => $zoneSelected,
+        'settoreSelected' => $settoreSelected,
       ]);
     }
 
     public function detailArt (Request $req, $codArt, $codAg = null, $codZona = null) {
       $isDetAg = !empty($req->input('codag')) || !empty($codAg);
+      $settoreSelected = ($req->input('settoreSelected')) ? $req->input('settoreSelected') : null;
+      $zoneSelected = ($req->input('zoneSelected')) ? $req->input('zoneSelected') : null;
+      $customerSelected = ($req->input('customerSelected')) ? $req->input('customerSelected') : null;
       if($isDetAg){
         $agents = Agent::select('codice', 'descrizion')->whereNull('u_dataini')->orWhere('u_dataini', '>=', Carbon::now())->orderBy('codice')->get();
         $codAg = ($req->input('codag')) ? $req->input('codag') : $codAg;
@@ -339,7 +392,21 @@ class StAbcController extends Controller
                   ->whereIn('esercizio', ['' . $thisYear . '', '' . $prevYear . '']);
       if($isDetAg){
         $AbcProds->where('codag', $agente);
-      }                    
+      }       
+      
+      if ($customerSelected){
+         $AbcProds = $AbcProds->whereIn('codicecf', $customerSelected);
+      }
+      if ($settoreSelected != null) {
+          $AbcProds->whereHas('client', function ($query) use ($settoreSelected){
+            $query->where('settore', $settoreSelected);
+          });
+      }
+      if ($zoneSelected != null) {
+          $AbcProds->whereHas('client', function ($query) use ($zoneSelected){
+            $query->where('zona', $zoneSelected);
+          });
+      }
                     
       if($isZona){
       $AbcProds->whereHas('client', function ($query) use ($codZona) {

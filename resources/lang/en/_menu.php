@@ -31,7 +31,7 @@ return [
     'insVisits'               => 'Visit Input',
     'insVisitsSupp'               => 'Visit Supplier Input',
     'reportVisits'            => 'Visit Reports',
-    'statsFatt'               => 'Turnover Statistics',
+    'statsFatt'               => 'Turnover Stat.',
     'statsFattArt'            => 'Turnover Comparison Years',
     'agent'                   => 'Agent',
     'client'                  => 'Customer',

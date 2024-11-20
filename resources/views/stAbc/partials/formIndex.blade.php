@@ -1,48 +1,77 @@
+
 <form action="{{ route($route) }}" method="post">
   <input type="hidden" name="_token" value="{{ csrf_token() }}">
-  <div class="form-group">
-    <label>{{ trans('prod.groupProd') }}</label>
-    <select name="gruppo[]" class="form-control select2" multiple="multiple" data-placeholder="{{ trans('prod.group_plchld') }}" style="width: 100%;">
-      @foreach ($gruppi as $gruppo)
-        <option value="{{ $gruppo->codice }}"
-          @if(isset($grpSelected) && in_array($gruppo->codice, $grpSelected))
-              selected
-          @endif
-          >[{{ $gruppo->codice }}] {{ $gruppo->descrizion }}</option>
-      @endforeach
-    </select>
-  </div>
-  
-  
-  <div class="form-group">
-    <label>{{ trans('prod.masterGroup') }}</label>
-    <div class="radio">
-      <label>
-        <input type="radio" name="optTipoDoc" id="opt1" value="" checked> {{ trans('doc.allDocs') }}
-      </label>
-      <label>
-        <input type="radio" name="optTipoDoc" id="opt2" value="KRONA"> Krona
-      </label>
-      <label>
-        <input type="radio" name="optTipoDoc" id="opt3" value="KOBLENZ"> Koblenz
-      </label>
-      <label>
-        <input type="radio" name="optTipoDoc" id="opt4" value="KUBICA"> Kubica
-      </label>
-      @if(RedisUser::get('ditta')=='knet_es')
-        <label>
-          <input type="radio" name="optTipoDoc" id="opt5" value="PLANET"> Planet
+
+  <div class="box box-default">
+    <div class="box-header with-border">
+      <h3 class="box-title" data-widget="collapse">{{ trans('stFatt.agent') }}</h3>
+      <div class="box-tools pull-right">
+        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+      </div>
+    </div>
+    <div class="box-body">
+      <div class="form-group">
+        <label>{{ trans('stFatt.selAgent') }}</label>
+        <select name="codag[]" class="form-control select2 selectAll" multiple="multiple"
+          data-placeholder="Select Agents" style="width: 100%;">
+          @foreach ($agentList as $agent)
+          <option value="{{ $agent->codice }}" {{-- @if($agent->codice==$agente &&
+            strlen($agent->codice)==strlen($agente)) --}}
+            @if(isset($fltAgents) && in_array($agent->codice, $fltAgents, true))
+            selected
+            @endif
+            >{{ $agent->descrizion or "Error $agent->codice - No Description" }}</option>
+          @endforeach
+        </select>
+      </div>
+      <div class="form-group">
+        <label>&nbsp;
+          <input type="checkbox" id="checkbox" class="selectAll"> &nbsp; Select All
         </label>
-      @endif
+      </div>
     </div>
   </div>
-  <div>
-    @if($agente)
-      <input type="hidden" name="codag" value="{{ $agente }}">
-    @endif
-    @if($customer)
-      <input type="hidden" name="codcli" value="{{ $customer }}">
-    @endif
-    <button type="submit" class="btn btn-primary">{{ trans('_message.submit') }}</button>
+
+  <div class="box box-default collapsed-box">
+    <div class="box-header with-border">
+      <h3 class="box-title" data-widget="collapse">Filtro Cliente</h3>
+      <div class="box-tools pull-right">
+        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+      </div>
+    </div>
+    <div class="box-body">
+      @include(
+      'stAbc.partials.filterCustomer',
+      [
+      'customerList' => $customerList,'customerSelected' => $customerSelected,
+      'zoneList' => $zoneList,'zoneSelected' => $zoneSelected,
+      'settoriList' => $settoriList,'settoreSelected' => $settoreSelected,
+      ])
+    </div>
   </div>
+
+  <div class="box box-default collapsed-box">
+    <div class="box-header with-border">
+      <h3 class="box-title" data-widget="collapse">{{ trans('prod.groupProd') }}</h3>
+      <div class="box-tools pull-right">
+        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+      </div>
+    </div>
+    <div class="box-body">
+      @include(
+      'stAbc.partials.filterPrdInd',
+      [
+      'grpPrdList' => $grpPrdList,
+      'grpPrdSelected' => $grpPrdSelected,
+      'optTipoProd' => $optTipoProd,
+      ])
+    </div>
+  </div>
+
+  <div class="box box-default">
+    <div class="box-body">
+      <button type="submit" class="btn btn-primary btn-block">{{ trans('_message.submit') }}</button>
+    </div>
+  </div>
+
 </form>

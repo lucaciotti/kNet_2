@@ -340,14 +340,14 @@ Route::group(['as' => 'stFatt::'], function(){
     'as' => 'idxCli',
     'uses' => 'StFattController@idxCli'
   ]);
-  // Route::get('/stFattZone', [
-  //   'as' => 'idxZone',
-  //   'uses' => 'StFattController@idxZone'
-  // ]);
-  // Route::post('/stFattZone', [
-  //   'as' => 'idxZone',
-  //   'uses' => 'StFattController@idxZone'
-  // ]);
+  Route::get('/stFattZone', [
+    'as' => 'idxZone',
+    'uses' => 'StFattController@idxZone'
+  ]);
+  Route::post('/stFattZone', [
+    'as' => 'idxZone',
+    'uses' => 'StFattController@idxZone'
+  ]);
   Route::get('/stFattManager', [
     'as' => 'idxManager',
     'uses' => 'StFattController@idxManager'

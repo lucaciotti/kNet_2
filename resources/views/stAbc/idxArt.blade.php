@@ -18,30 +18,17 @@
 @section('main-content')
 <div class="row">
   <div class="col-lg-3">
-        <div class="box box-default">
-      <div class="box-header with-border">
-        <h3 class="box-title" data-widget="collapse">{{ trans('doc.filter') }}</h3>
-        <div class="box-tools pull-right">
-          <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
-          {{-- <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button> --}}
-        </div>
-      </div>
-      <div class="box-body">
-        @include('stAbc.partials.formIndex', ['gruppi' => $gruppi, 'agente' => '', 'customer' => '', 'route' => 'stAbc::idxArt'])
-      </div>
-    </div>
-    
-    {{-- <div class="box box-default collapsed-box">
-      <div class="box-header with-border">
-        <h3 class="box-title" data-widget="collapse"><i class='fa fa-cloud-download'> </i> Download</h3>
-        <div class="box-tools pull-right">
-          <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i></button>
-        </div>
-      </div>
-      <div class="box-body">
-        <a type="button" class="btn btn-default btn-block" target="_blank" href="{{ route('schedaAbc::PDF', $agente) }}">Scheda Abc PDF</a>
-      </div>
-    </div> --}}
+        @include('stAbc.partials.formIndex', 
+        [
+          'grpPrdList' => $gruppi, 
+          'grpPrdSelected' => $gruppo, 
+          'optTipoProd' => $optTipoProd,
+          'agentList' => $agentList, 
+          'fltAgents' => $fltAgents, 
+          'customerList' => $customerList,'customerSelected' => $customerSelected,
+          'zoneList' => $zoneList,'zoneSelected' => $zoneSelected,
+          'settoriList' => $settoriList,'settoreSelected' => $settoreSelected,
+          'route' => 'stAbc::idxArt'])
 
   </div>
 
@@ -58,6 +45,10 @@
           'thisYear' => $thisYear,
           'prevYear' => $prevYear,
           'thisMonth' => $thisMonth,
+          'fltAgents' => $fltAgents, 
+          'customerSelected' => $customerSelected,
+          'zoneSelected' => $zoneSelected,
+          'settoreSelected' => $settoreSelected,
         ])
         </div>
       </div>
