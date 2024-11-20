@@ -1,11 +1,11 @@
 @extends('layouts.app')
 
 @section('htmlheader_title')
-    - {{ trans('stFatt.headTitle_agt') }}
+    - {{ trans('_menu.AbcArt') }}
 @endsection
 
 @section('contentheader_title')
-    {{ trans('stFatt.contentTitle_agt') }}
+    {{ trans('_menu.AbcArt') }}
 @endsection
 
 @section('contentheader_breadcrumb')
