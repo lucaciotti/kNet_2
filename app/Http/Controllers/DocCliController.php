@@ -279,7 +279,10 @@ class DocCliController extends Controller
   public function showOrderToDeliver(Request $req){
     $docs = DocCli::select('id', 'tipodoc', 'numerodoc', 'datadoc', 'codicecf', 'numerodocf', 'numrighepr', 'totdoc');
     $docs = $docs->where('tipomodulo', 'O');
-    $docs = $docs->where('numrighepr', '>', 0);
+    // $docs = $docs->where('numrighepr', '>', 0);
+    $docs = $docs->whereHas('docrow', function($query){
+                          $query->where('quantitare', '>', 0);
+                        });
     $docs = $docs->with(['client' => function($query) {
       $query
       ->withoutGlobalScope('agent')
@@ -446,8 +449,8 @@ class DocCliController extends Controller
 							->where('ommerce', 0)
               ->where('codicearti', '!=', '');
 		// 26/11 Richiesta di Mauro per fare Ordini solo del mese!
-    $docRow->whereBetween('dataconseg', [$dStartMonth, $dEndMonth]);
-		// $docRow->where('dataconseg', '<=', $dEndMonth);
+    // $docRow->whereBetween('dataconseg', [$dStartMonth, $dEndMonth]);
+		$docRow->where('dataconseg', '<=', $dEndMonth);
 		$docRow = $docRow->whereIn('id_testa', $arrayIDOC)->get();
 		
 		return $docRow->toArray();
