@@ -59,7 +59,18 @@ class ClientController extends Controller
 
     public function fltIndex (Request $req){
       // dd($req);
-      $clients = Client::where('statocf', 'LIKE', ($req->input('optStatocf')=='' ? '%' : $req->input('optStatocf')));
+      // $clients = Client::where('statocf', 'LIKE', ($req->input('optStatocf')=='' ? '%' : $req->input('optStatocf')));
+      $clients = Client::where('agente', '!=', '');
+      if($req->input('optStatocf')==''){
+        $clients = $clients->where('statocf', 'LIKE', '%');
+      } else {
+        if($req->input('optStatocf')=='T'){
+          $clients = $clients->whereIn('statocf', ['T', 'A']);
+        } else {
+          $clients = $clients->where('statocf', 'LIKE', $req->input('optStatocf'));
+        }
+      }
+
       if($req->input('ragsoc')) {
         $clients = $clients->where('codice', $req->input('ragsoc'));
       }
