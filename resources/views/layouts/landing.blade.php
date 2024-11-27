@@ -12,12 +12,12 @@ Landing page based on Pratt: http://blacktie.co/demo/pratt/
     <meta property="og:title" content="kNet 2.0 " />
     <meta property="og:type" content="website" />
     <meta property="og:description" content="kNet 2.0 " />
-    <meta property="og:url" content="http://intranet.krona.it/" />
+    <meta property="og:url" content="https://knet.kronakoblenz.it/" />
     {{-- <meta property="og:image" content="http://demo.adminlte.acacha.org/img/AcachaAdminLTE.png" />
     <meta property="og:image" content="http://demo.adminlte.acacha.org/img/AcachaAdminLTE600x600.png" />
     <meta property="og:image" content="http://demo.adminlte.acacha.org/img/AcachaAdminLTE600x314.png" /> --}}
-    <meta property="og:sitename" content="intranet.krona.it/" />
-    <meta property="og:url" content="http://intranet.krona.it/" />
+    <meta property="og:sitename" content="knet.kronakoblenz.it/" />
+    <meta property="og:url" content="https://knet.kronakoblenz.it/" />
 
     {{-- <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:site" content="@acachawiki" />
@@ -31,8 +31,8 @@ Landing page based on Pratt: http://blacktie.co/demo/pratt/
     <!-- Custom styles for this template -->
     {{-- <link href="{{ asset('/css/main.css') }}" rel="stylesheet"> --}}
 
-    <link href='http://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic' rel='stylesheet' type='text/css'>
-    <link href='http://fonts.googleapis.com/css?family=Raleway:400,300,700' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Raleway:400,300,700' rel='stylesheet' type='text/css'>
 
     {{-- <script src="{{ asset('/plugins/jQuery/jQuery-2.1.4.min.js') }}"></script> --}}
     <script src="{{ asset('/js/app-landing.js') }}"></script>
