@@ -117,7 +117,7 @@ class StAbcController extends Controller
     }
 
     // idxCli -> non più utilizzato 
-    public function idxCli (Request $req, $codCli=null) {
+    public function idxCli (Request $req, $codCli=null) {          
       $customers = StatAbc::select('codicecf')
                     ->whereHas('client')
                     ->with(['client'=>function($q){
@@ -165,14 +165,14 @@ class StAbcController extends Controller
                     ->where('codicecf', $customer)
                     ->where('isomaggio', false)
                     ->whereIn('esercizio', [''.$thisYear.'', ''.$prevYear.'']);
-      if($req->input('gruppo')) {
-        $AbcProds = $AbcProds->whereIn('gruppo', $req->input('gruppo'));
+      if($req->input('grpPrdSelected')) {
+        $AbcProds = $AbcProds->whereIn('gruppo', $req->input('grpPrdSelected'));
       }
       if(RedisUser::get('ditta_DB')=='kNet_es' && RedisUser::get('codag')=='A6'){
             $AbcProds = $AbcProds->where('gruppo', 'like', 'A%');
         }
-      if(!empty($req->input('optTipoDoc'))) {
-        $AbcProds = $AbcProds->where('prodotto', $req->input('optTipoDoc'));
+      if (!empty($req->input('optTipoProd'))) {
+        $AbcProds = $AbcProds->where('prodotto', $req->input('optTipoProd'));
       } else {
         $AbcProds = $AbcProds->whereIn('prodotto', ['KRONA', 'KOBLENZ', 'KUBICA', 'PLANET']);
       }
@@ -205,6 +205,8 @@ class StAbcController extends Controller
         'prevYear' => $prevYear,
         'thisMonth' => $thisMonth,
         'gruppi' => $gruppi,
+        'gruppo' => $req->input('grpPrdSelected'),
+        'optTipoProd' => $req->input('optTipoProd'),
       ]);
     }
 
@@ -260,8 +262,8 @@ class StAbcController extends Controller
       )
         ->where('isomaggio', false)
         ->whereIn('esercizio', ['' . $thisYear . '', '' . $prevYear . '']);
-      if ($req->input('gruppo')) {
-        $AbcProds = $AbcProds->whereIn('gruppo', $req->input('gruppo'));
+      if ($req->input('grpPrdSelected')) {
+        $AbcProds = $AbcProds->whereIn('gruppo', $req->input('grpPrdSelected'));
       }
       if(RedisUser::get('ditta_DB')=='kNet_es' && RedisUser::get('codag')=='A6'){
         $AbcProds = $AbcProds->where('gruppo', 'like', 'A%');
@@ -323,7 +325,7 @@ class StAbcController extends Controller
         'prevYear' => $prevYear,
         'thisMonth' => $thisMonth,
         'gruppi' => $gruppi,
-        'gruppo' => $req->input('gruppo'),
+        'gruppo' => $req->input('grpPrdSelected'),
         'optTipoProd' => $req->input('optTipoProd'),
         'agentList' => $agentList,
         'fltAgents' => $fltAgents,

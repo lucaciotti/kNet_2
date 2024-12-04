@@ -25,6 +25,7 @@
           'optTipoProd' => $optTipoProd,
           'agentList' => $agentList, 
           'fltAgents' => $fltAgents, 
+          'customer' => null,
           'customerList' => $customerList,'customerSelected' => $customerSelected,
           'zoneList' => $zoneList,'zoneSelected' => $zoneSelected,
           'settoriList' => $settoriList,'settoreSelected' => $settoreSelected,

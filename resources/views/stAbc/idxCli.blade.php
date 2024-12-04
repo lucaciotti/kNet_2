@@ -20,6 +20,7 @@
 @section('main-content')
 <div class="row">
   <div class="col-lg-3">
+
     <div class="box box-default">
       <div class="box-header with-border">
         <h3 class="box-title" data-widget="collapse">{{ trans('stFatt.client') }}</h3>
@@ -51,18 +52,18 @@
       </div>
     </div>
 
-    <div class="box box-default">
-      <div class="box-header with-border">
-        <h3 class="box-title" data-widget="collapse">{{ trans('doc.filter') }}</h3>
-        <div class="box-tools pull-right">
-          <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
-          {{-- <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button> --}}
-        </div>
-      </div>
-      <div class="box-body">
-        @include('stAbc.partials.formIndex', ['gruppi' => $gruppi, 'agente' => null, 'route' => 'stAbc::idxCli', 'customer' => $customer])
-      </div>
-    </div>
+    @include('stAbc.partials.formIndex',
+    [
+    'grpPrdList' => $gruppi,
+    'grpPrdSelected' => $gruppo,
+    'optTipoProd' => $optTipoProd,
+    'agentList' => null,
+    'fltAgents' => null,
+    'customer' => $customer,
+    'customerList' => null,'customerSelected' => null,
+    'zoneList' => null,'zoneSelected' => null,
+    'settoriList' => null,'settoreSelected' => null,
+    'route' => 'stAbc::idxCli'])
   </div>
 
   <div class="col-lg-9">
