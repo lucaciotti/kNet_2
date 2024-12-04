@@ -93,6 +93,8 @@ class StFattArtController extends Controller
         }
         if (!empty($req->input('optTipoProd'))) {
             $fatList->where('u_statfatt_art.prodotto', $req->input('optTipoProd'));
+        } else {
+            $fatList->where('u_statfatt_art.prodotto', ['KRONA', 'KOBLENZ', 'KUBIKA', 'PLANET']);
         }
         $fatList->groupBy('codicecf');
         $fatList->havingRaw('fatN >= ?', [$limitVal]);
