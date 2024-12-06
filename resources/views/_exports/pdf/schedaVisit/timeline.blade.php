@@ -84,7 +84,7 @@
           <p> --> <b>Persona Contattata</b> {{ $visit->persona_contatto }} [{{ $visit->funzione_contatto }}]</p>
           @if($visit->note)
           <p> --> <b>Note</b></p>
-          {!! $visit->note !!}
+          {!! preg_replace("/<img[^>]+\>/i", "[image not visible] ", $visit->note) !!}
           @endif
           <p> --> <b>Conclusioni</b>:</p>
           {!! $visit->conclusione !!}
