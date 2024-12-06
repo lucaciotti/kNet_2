@@ -151,6 +151,10 @@
               <link rel="stylesheet" href="../../plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
             @endpush
 
+            @php
+                $editNote = preg_replace("/<img[^>]+\>/i", "(image) ", trim(preg_replace('/\s+/', ' ', $visit->note)));
+                $editConclusion = preg_replace("/<img[^>]+\>/i", "(image) ", trim(preg_replace('/\s+/', ' ', $visit->conclusione)));
+            @endphp
             @push('script-footer')
               <script src="{{ asset('/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.js') }}" type="text/javascript"></script>
               <script type="text/javascript">
@@ -160,8 +164,8 @@
                     // });
                     // $(document).ready(function(){
                       @if (!empty($visit))
-                        $('#note').data("wysihtml5").editor.setValue('{!! $visit->note !!}');
-                        $('#conclusione').data("wysihtml5").editor.setValue('{!! $visit->conclusione !!}');
+                        $('#note').data("wysihtml5").editor.setValue('{!! $editNote !!}');
+                        $('#conclusione').data("wysihtml5").editor.setValue('{!! $editConclusion !!}');
                       @endif
                     });
               </script>

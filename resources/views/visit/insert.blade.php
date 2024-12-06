@@ -107,7 +107,7 @@
               <label>{{ trans('visit.eventNote') }}</label>
               {{-- <textarea class="form-control" rows="6" name="note" placeholder="Dettagli &hellip;"></textarea>
               style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"--}}
-              <textarea id='note' class="textarea" placeholder="{{ trans('visit.note_plchld') }}" name="note"
+              <textarea id='note' class="textarea" placeholder="{{ trans('visit.note_plchld') }}" name="note" 
                 style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>
             </div>
 
@@ -150,7 +150,10 @@
             @push('css-head')
               <link rel="stylesheet" href="../../plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
             @endpush
-
+            @php
+                $editNote = preg_replace("/<img[^>]+\>/i", "(image) ", trim(preg_replace('/\s+/', ' ', $visit->note)));
+                $editConclusion = preg_replace("/<img[^>]+\>/i", "(image) ", trim(preg_replace('/\s+/', ' ', $visit->conclusione)));
+            @endphp
             @push('script-footer')
               <script src="{{ asset('/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.js') }}" type="text/javascript"></script>
               <script type="text/javascript">
@@ -160,8 +163,8 @@
                     // });
                     // $(document).ready(function(){
                       @if (!empty($visit))
-                        $('#note').data("wysihtml5").editor.setValue('{!! $visit->note !!}');
-                        $('#conclusione').data("wysihtml5").editor.setValue('{!! $visit->conclusione !!}');
+                        $('#note').data("wysihtml5").editor.setValue('{!! $editNote !!}');
+                        $('#conclusione').data("wysihtml5").editor.setValue('{!! $editConclusion !!}');
                       @endif
                     });
               </script>
