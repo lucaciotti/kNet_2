@@ -99,4 +99,8 @@ class wRubrica extends Model
     public function client(){
       return $this->hasOne('knet\ArcaModels\Client', 'codice', 'codicecf');
     }
+
+    public function detZona(){
+        return $this->hasOne('knet\ArcaModels\Nazione', 'codice', 'codnazione');
+    }
 }

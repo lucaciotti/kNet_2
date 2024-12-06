@@ -29,18 +29,21 @@
             dt { font-size: 8pt; font-style: italic; }
             a { text-decoration: none; }
             a.black { color: #000; }
-            table { width: 100%; font-size: 9pt; }
+            table { width: 100%; font-size: 9pt;padding-bottom: 10px; }
             table tr { page-break-inside: avoid; }
             table .fontsmall { font-size:  8pt; }
             table .centered { text-align: center; }
+            table thead { display: table-header-group; }
+            table thead th { background-color: lightgrey; }
+            table tbody { display: table-header-group; } 
+            table tbody th.grey { background-color: lightgrey; }
             table tr:nth-child(even) { background-color: #f2f2f2; }
             table tr.danger { background-color: red; }
             table tr.warning { background-color: orange; }
             table tbody td.green { background-color: #cef2bc; }
             table tbody td.orange { background-color: #f0d45e; }
             table tbody td.red { background-color: #ffb3b3; }
-            table thead { display: table-header-group; }
-            table tfoot { background-color: darkgrey; display: table-header-group; }
+            table tfoot { background-color: lightgrey; display: table-header-group; }
             table tfoot th.orange { background-color: #f0d45e; }
             div.contentTitle { 
                 font-size: 11pt; 
@@ -48,16 +51,27 @@
                 font-style: oblique; 
                 margin-left: 20px; 
                 font-weight: bold; 
-                text-decoration: underline; 
-                padding-top: 15px;
+                /* text-decoration: underline;  */
+                /* padding-top: 15px; */
                 padding-bottom: 15px;
             }
             span.contentSubTitle {
                 font-size: 10pt;
                 font-weight: bold;
                 font-stretch: expanded;
-                font-style: oblique;
+                /* font-style: oblique; */
                 text-decoration: underline;
+            }
+            div.contentSubTitle {
+                font-size: 10pt;
+                font-weight: bold;
+                font-stretch: expanded;
+                /* font-style: oblique; */
+                text-decoration: underline;
+                padding-bottom: 10px;
+            }
+            div.centered {
+                text-align: center;
             }
             
             /* Style the container with a rounded border, grey background and some padding and margin */

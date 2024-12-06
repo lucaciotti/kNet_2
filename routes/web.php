@@ -307,6 +307,10 @@ Route::group(['as' => 'visit::'], function(){
     'as' => 'reportPDF',
     'uses' => 'VisitController@reportPDF'
   ]);
+  Route::get('/visit_countPDF', [
+    'as' => 'countPDF',
+    'uses' => 'VisitController@countPDF'
+  ]);
   
 
   Route::get('/visit_importXls', [

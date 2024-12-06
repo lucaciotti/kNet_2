@@ -41,6 +41,10 @@
         <a type="button" class="btn btn-default btn-block" target="_blank"
           href="{{ route('visit::reportPDF', $dataForReport) }}">Report PDF (Relatore)</a>
       </div>
+      <div class="box-body">
+        <a type="button" class="btn btn-default btn-block" target="_blank"
+          href="{{ route('visit::countPDF', $dataForReport) }}">Conteggio Visite PDF (Relatore)</a>
+      </div>
     </div>
 
   </div>

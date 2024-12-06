@@ -278,7 +278,6 @@ class VisitController extends Controller
       $dataForReport = [
         'ragSoc' => $req->input('ragsoc') ?? '',
         'ragsocOp' => $req->input('ragsocOp'),
-        'tipomodulo' => $req->input('optTipoDoc') ?? '',
         'startDate' => !$req->input('noDate') ? $req->input('startDate') : "",
         'endDate' => !$req->input('noDate') ? $req->input('endDate') : "",
         'optTipo' => $req->input('optTipo'),
@@ -292,7 +291,6 @@ class VisitController extends Controller
         'visits' => $visits,
         'ragSoc' => $req->input('ragsoc') ?? '',
         'ragsocOp' => $req->input('ragsocOp'),
-        'tipomodulo' => $req->input('optTipoDoc') ?? '',
         'startDate' => !$req->input('noDate') ? $startDate : "",
         'endDate' => !$req->input('noDate') ? $endDate : "",
         'optTipo' => $req->input('optTipo'),
@@ -382,6 +380,110 @@ class VisitController extends Controller
           'visits' => $visits,
       ];
       $pdf = PdfReport::A4Portrait($view, $data, $title, $subTitle);
+
+      return $pdf->stream($title.'-'.$subTitle.'.pdf');
+    }
+
+    
+
+    public function countPDF(Request $req){
+      //Let's Set the Date
+      $visits = wVisit::select('user_id', 'codicecf', 'rubri_id')
+                      ->selectRaw('MAX(IF(ISNULL(codicecf), "Potenziali Clienti", IF(LEFT(codicecf, 1)="C", "Clienti", "Fornitori"))) as tipologia')
+                      ->selectRaw('SUM(IF(MONTH(data) = ?, 1, 0)) as month_01', [1])
+                      ->selectRaw('SUM(IF(MONTH(data) = ?, 1, 0)) as month_02', [2])
+                      ->selectRaw('SUM(IF(MONTH(data) = ?, 1, 0)) as month_03', [3])
+                      ->selectRaw('SUM(IF(MONTH(data) = ?, 1, 0)) as month_04', [4])
+                      ->selectRaw('SUM(IF(MONTH(data) = ?, 1, 0)) as month_05', [5])
+                      ->selectRaw('SUM(IF(MONTH(data) = ?, 1, 0)) as month_06', [6])
+                      ->selectRaw('SUM(IF(MONTH(data) = ?, 1, 0)) as month_07', [7])
+                      ->selectRaw('SUM(IF(MONTH(data) = ?, 1, 0)) as month_08', [8])
+                      ->selectRaw('SUM(IF(MONTH(data) = ?, 1, 0)) as month_09', [9])
+                      ->selectRaw('SUM(IF(MONTH(data) = ?, 1, 0)) as month_10', [10])
+                      ->selectRaw('SUM(IF(MONTH(data) = ?, 1, 0)) as month_11', [11])
+                      ->selectRaw('SUM(IF(MONTH(data) = ?, 1, 0)) as month_12', [12])
+                      ->selectRaw('SUM(1) as tot');
+      // dd($req);
+
+      if($req->input('startDate') and !$req->input('noDate')){
+        $startDate = Carbon::createFromFormat('d/m/Y',$req->input('startDate'));
+        $endDate = Carbon::createFromFormat('d/m/Y',$req->input('endDate'));
+      } else {
+        $startDate = Carbon::now()->subYear();
+        $endDate = Carbon::now();
+      }
+      if(!$req->input('noDate')){
+        $visits = $visits->whereBetween('data', [$startDate, $endDate]);
+      }
+
+      if ($req->input('ragsoc')) {
+        $ragsoc = strtoupper($req->input('ragsoc'));
+        if ($req->input('ragsocOp') == 'eql') {
+          $visits = $visits->whereHas('client', function ($query) use ($ragsoc) {
+            $query->where('descrizion', $ragsoc);
+          })->orWhereHas('rubri', function ($query) use ($ragsoc) {
+            $query->where('descrizion', $ragsoc);
+          })->orWhereHas('supplier', function ($query) use ($ragsoc) {
+            $query->where('descrizion', $ragsoc);
+          });
+        }
+        if ($req->input('ragsocOp') == 'stw') {
+          $visits = $visits->whereHas('client', function ($query) use ($ragsoc) {
+            $query->where('descrizion', 'like', $ragsoc . '%');
+          })->orWhereHas('rubri', function ($query) use ($ragsoc) {
+            $query->where('descrizion', 'like', $ragsoc . '%');
+          })->orWhereHas('supplier', function ($query) use ($ragsoc) {
+            $query->where('descrizion', 'like', $ragsoc . '%');
+          });
+        }
+        if ($req->input('ragsocOp') == 'cnt') {
+          $visits = $visits->whereHas('client', function ($query) use ($ragsoc) {
+            $query->where('descrizion', 'like', '%' . $ragsoc . '%');
+          })->orWhereHas('rubri', function ($query) use ($ragsoc) {
+            $query->where('descrizion', 'like', '%' . $ragsoc . '%');
+          })->orWhereHas('supplier', function ($query) use ($ragsoc) {
+            $query->where('descrizion', 'like', '%' . $ragsoc . '%');
+          });
+        }
+      }
+
+      if($req->input('optTipo')){
+        $visits->where('tipo', $req->input('optTipo'));
+      }
+
+      if($req->input('relat')) {
+        $relat = strtoupper($req->input('relat'));
+        if($req->input('relatOp')=='eql'){
+          $user_ids = User::where('name', $relat)->pluck('id')->toArray();
+        }
+        if($req->input('relatOp')=='stw'){
+          $user_ids = User::where('name', 'like', $relat.'%')->pluck('id')->toArray();
+        }
+        if($req->input('relatOp')=='cnt'){
+          $user_ids = User::where('name', 'like', '%'.$relat.'%')->pluck('id')->toArray();
+        }
+        $visits->whereIn('user_id', $user_ids);
+      }
+
+      $visits = $visits->with(['client', 'client.detSect', 'client.detZona', 'supplier', 'supplier.detSect', 'supplier.detZona', 'rubri', 'rubri.detZona', 'user']);
+
+      $visits = $visits->groupBy(['user_id', 'codicecf', 'rubri_id']);
+
+      $visits = $visits->orderBy('tot', 'desc')->orderBy('codicecf', 'asc')->orderBy('rubri_id', 'asc');
+
+      $visits = $visits->get();
+      
+      $visits = $visits->groupBy(['user_id', 'tipologia']);
+
+      // dd($visits->first());
+
+      $title = "Scheda Conteggio Visite ";
+      $subTitle = $startDate->format('Y-m-d').' - '. $endDate->format('Y-m-d');
+      $view = '_exports.pdf.schedaCountVisitPdf';
+      $data = [
+          'visits' => $visits,
+      ];
+      $pdf = PdfReport::A4Landscape($view, $data, $title, $subTitle);
 
       return $pdf->stream($title.'-'.$subTitle.'.pdf');
     }
