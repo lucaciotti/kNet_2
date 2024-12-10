@@ -151,8 +151,13 @@
               <link rel="stylesheet" href="../../plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
             @endpush
             @php
+              if (isset($visit)) {
                 $editNote = preg_replace("/<img[^>]+\>/i", "(image) ", trim(preg_replace('/\s+/', ' ', $visit->note)));
                 $editConclusion = preg_replace("/<img[^>]+\>/i", "(image) ", trim(preg_replace('/\s+/', ' ', $visit->conclusione)));
+              } else {
+                $editNote = '';
+                $editConclusion = '';
+              }
             @endphp
             @push('script-footer')
               <script src="{{ asset('/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.js') }}" type="text/javascript"></script>
