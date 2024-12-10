@@ -215,7 +215,9 @@ class VisitController extends Controller
         $startDate = Carbon::createFromFormat('d/m/Y',$req->input('startDate'));
         $endDate = Carbon::createFromFormat('d/m/Y',$req->input('endDate'));
       } else {
-        $startDate = Carbon::now()->subYear();
+        // $startDate = Carbon::now()->subYear();
+        $thisYear = Carbon::now()->year;
+        $startDate = Carbon::createFromDate($thisYear, 1, 1);
         $endDate = Carbon::now();
       }
       if(!$req->input('noDate')){
@@ -361,7 +363,9 @@ class VisitController extends Controller
         $startDate = Carbon::createFromFormat('d/m/Y',$req->input('startDate'));
         $endDate = Carbon::createFromFormat('d/m/Y',$req->input('endDate'));
       } else {
-        $startDate = Carbon::now()->subYear();
+        // $startDate = Carbon::now()->subYear();
+        $thisYear = Carbon::now()->year;
+        $startDate = Carbon::createFromDate($thisYear, 1, 1);
         $endDate = Carbon::now();
       }
       if(!$req->input('noDate')){
@@ -491,7 +495,9 @@ class VisitController extends Controller
         $startDate = Carbon::createFromFormat('d/m/Y',$req->input('startDate'));
         $endDate = Carbon::createFromFormat('d/m/Y',$req->input('endDate'));
       } else {
-        $startDate = Carbon::now()->subYear();
+        // $startDate = Carbon::now()->subYear();
+        $thisYear = Carbon::now()->year;
+        $startDate = Carbon::createFromDate($thisYear, 1, 1);
         $endDate = Carbon::now();
       }
       if(!$req->input('noDate')){
