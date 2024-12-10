@@ -253,10 +253,52 @@ class VisitController extends Controller
         }
       }
 
-      if($req->input('optTipo')){
-        $visits->where('tipo', $req->input('optTipo'));
-      }
+      // VECCHIA GESTIONE TIPOLOGIA
+      // if($req->input('optTipo')){
+      //   $visits->where('tipo', $req->input('optTipo'));
+      // }
 
+      // dd(array_filter(array_map(function($key) use ($req) {
+      //   if($req->filled($key)){
+      //     if(Str::startsWith($key, 'type')){
+      //       return $key;
+      //     }
+      //   }
+      // }, array_keys($req->all()))));
+      $allType=false;      
+      $typeInputs = array_filter(
+                        array_map(
+                          function ($key) use ($req) {
+                            if($req->filled($key)){
+                              if(Str::startsWith($key, 'type')){
+                                return $key;
+                              }
+                            }
+                          }, 
+                          array_keys(
+                            array_filter(
+                              $req->all(), 
+                              function ($v, $k) {
+                                return $v !== false && !is_null($v) && ($v != '' || $v == '0') && $v!=0;
+                              },
+                              ARRAY_FILTER_USE_BOTH
+                            )
+                          )
+                        )
+                      );
+      if (count($typeInputs)>0){
+        $visits->where(
+          function ($query)  use ($typeInputs) {
+            foreach ($typeInputs as $type) {
+              $query->orWhere('tipo', str_replace('type', '', $type));
+            }
+            return $query;
+          }
+        );
+      } else {
+        $allType=true;
+      }
+      
       if($req->input('relat')) {
         $relat = strtoupper($req->input('relat'));
         if($req->input('relatOp')=='eql'){
@@ -280,7 +322,12 @@ class VisitController extends Controller
         'ragsocOp' => $req->input('ragsocOp'),
         'startDate' => !$req->input('noDate') ? $req->input('startDate') : "",
         'endDate' => !$req->input('noDate') ? $req->input('endDate') : "",
-        'optTipo' => $req->input('optTipo'),
+        // 'optTipo' => $req->input('optTipo'),
+        'typeMeet' => $req->input('typeMeet')==1 or $allType,
+        'typeMail' => $req->input('typeMail')==1 or $allType,
+        'typeProd' => $req->input('typeProd')== 1 or $allType,
+        'typeScad' => $req->input('typeScad')==1 or $allType,
+        'typeRNC' => $req->input('typeRNC')==1 or $allType,
         'relat' => $req->input('relat'),
         'relatOp' => $req->input('relatOp'),
         'noDate' => $req->input('noDate'),
@@ -293,7 +340,12 @@ class VisitController extends Controller
         'ragsocOp' => $req->input('ragsocOp'),
         'startDate' => !$req->input('noDate') ? $startDate : "",
         'endDate' => !$req->input('noDate') ? $endDate : "",
-        'optTipo' => $req->input('optTipo'),
+        // 'optTipo' => $req->input('optTipo'),
+        'typeMeet' => $req->input('typeMeet')==1 or $allType,
+        'typeMail' => $req->input('typeMail')==1 or $allType,
+        'typeProd' => $req->input('typeProd')==1 or $allType,
+        'typeScad' => $req->input('typeScad')==1 or $allType,
+        'typeRNC' => $req->input('typeRNC')==1 or $allType,
         'relat' => $req->input('relat'),
         'relatOp' => $req->input('relatOp'),
         'dataForReport' => $dataForReport
@@ -347,8 +399,38 @@ class VisitController extends Controller
         }
       }
 
-      if($req->input('optTipo')){
-        $visits->where('tipo', $req->input('optTipo'));
+      $allType=false;
+      $typeInputs = array_filter(
+                        array_map(
+                          function ($key) use ($req) {
+                            if($req->filled($key)){
+                              if(Str::startsWith($key, 'type')){
+                                return $key;
+                              }
+                            }
+                          }, 
+                          array_keys(
+                            array_filter(
+                              $req->all(), 
+                              function ($v, $k) {
+                                return $v !== false && !is_null($v) && ($v != '' || $v == '0') && $v!=0;
+                              },
+                              ARRAY_FILTER_USE_BOTH
+                            )
+                          )
+                        )
+                      );
+      if (count($typeInputs)>0){
+        $visits->where(
+          function ($query)  use ($typeInputs) {
+            foreach ($typeInputs as $type) {
+              $query->orWhere('tipo', str_replace('type', '', $type));
+            }
+            return $query;
+          }
+        );
+      } else {
+        $allType=true;
       }
 
       if($req->input('relat')) {
@@ -447,8 +529,39 @@ class VisitController extends Controller
         }
       }
 
-      if($req->input('optTipo')){
-        $visits->where('tipo', $req->input('optTipo'));
+      $allType=false;
+      
+      $typeInputs = array_filter(
+                        array_map(
+                          function ($key) use ($req) {
+                            if($req->filled($key)){
+                              if(Str::startsWith($key, 'type')){
+                                return $key;
+                              }
+                            }
+                          }, 
+                          array_keys(
+                            array_filter(
+                              $req->all(), 
+                              function ($v, $k) {
+                                return $v !== false && !is_null($v) && ($v != '' || $v == '0') && $v!=0;
+                              },
+                              ARRAY_FILTER_USE_BOTH
+                            )
+                          )
+                        )
+                      );
+      if (count($typeInputs)>0){
+        $visits->where(
+          function ($query)  use ($typeInputs) {
+            foreach ($typeInputs as $type) {
+              $query->orWhere('tipo', str_replace('type', '', $type));
+            }
+            return $query;
+          }
+        );
+      } else {
+        $allType=true;
       }
 
       if($req->input('relat')) {

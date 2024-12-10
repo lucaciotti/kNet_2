@@ -29,7 +29,9 @@
       <input type="checkbox" name="noDate" id="noDate" value="C" @if($startDate=="") checked @endif> {{ trans('doc.anyDate') }}
     </label>
   </div>
-  <div class="form-group">
+
+  {{-- VECCHIA GESTIONE TIPOLOGIA --}}
+  {{-- <div class="form-group">
     <label>Tipo:</label>
     <div class="radio">
       <label>
@@ -50,6 +52,30 @@
       <label>
         <input type="radio" name="optTipo" id="opt6" value="RNC"@if($optTipo=="RNC") checked @endif> {{ trans('visit.eventRNC') }}
       </label>
+    </div>
+  </div> --}}
+
+  <div class="form-group">
+    <label>Tipo:</label>
+    <div class="checkbox">
+    <label>
+      <input type="checkbox" name="typeMeet" id="typeMeet" value="1" @if($typeMeet) checked @endif> {{trans('visit.eventMeeting') }}
+    </label>
+    <br>
+    <label>
+      <input type="checkbox" name="typeMail" id="typeMail" value="1" @if($typeMail) checked @endif> {{trans('visit.eventMail') }}
+    </label>
+    <br>
+    <label>
+      <input type="checkbox" name="typeProd" id="typeProd" value="1" @if($typeProd) checked @endif> {{trans('visit.eventProduct') }}
+    </label>
+    <br>
+    <label>
+      <input type="checkbox" name="typeScad" id="typeScad" value="1" @if($typeScad) checked @endif> {{trans('visit.eventDebt') }}
+    </label>
+    <br>
+    <label>
+      <input type="checkbox" name="typeRNC" id="typeRNC" value="1" @if($typeRNC) checked @endif> {{trans('visit.eventRNC') }}
     </div>
   </div>
 
