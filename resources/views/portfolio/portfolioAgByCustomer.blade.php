@@ -5,7 +5,7 @@
 @endsection
 
 @section('contentheader_title')
-Agents Portfolio - Gruppo Prodotti
+Agents Portfolio - Dettaglio Clienti
 @endsection
 
 {{-- @section('contentheader_breadcrumb')
@@ -15,7 +15,7 @@ Agents Portfolio - Gruppo Prodotti
 @section('main-content')
 <div class="row">
   <div class="col-lg-3">
-    <form action="{{ route('Portfolio::idxAg') }}" method="post">
+    <form action="{{ route('Portfolio::portfolioAgByCustomer') }}" method="post">
       <input type="hidden" name="_token" value="{{ csrf_token() }}">
 
       <div class="box box-default">
@@ -103,8 +103,8 @@ Agents Portfolio - Gruppo Prodotti
 
     <div class="box box-default {{-- collapsed-box --}}">
       <div class="box-body">
-        {{-- <a type="button" class="btn btn-default btn-block" target="_blank" href="{{ route('Portfolio::idxAg') }}">Agents Portfolio - Gruppo Prodotti</a> --}}
-        <a type="button" class="btn btn-default btn-block" target="_blank" href="{{ route('Portfolio::portfolioAgByCustomer') }}">Agents Portfolio - Dettaglio Clienti</a>
+        <a type="button" class="btn btn-default btn-block" target="_blank" href="{{ route('Portfolio::idxAg') }}">Agents Portfolio - Gruppo Prodotti</a>
+        {{-- <a type="button" class="btn btn-default btn-block" target="_blank" href="{{ route('Portfolio::portfolioAgByCustomer') }}">Agents Portfolio - Clienti</a> --}}
       </div>
     </div>
   </div>
@@ -120,125 +120,69 @@ Agents Portfolio - Gruppo Prodotti
       </ul>
       <div class="tab-content">
         <div class="tab-pane active" id="portfolioStats">
-          <table class="table table-hover table-striped" id="portfolioTbl" style="text-align: center;">
+          <table class="table table-hover table-striped dtTbls_light" id="portfolioTbl" style="text-align: center;">
             <col width='22%'>
-            <col width='15%'>
-            <col width='15%'>
-            <col width='15%'>
-            <col width='15%'>
-            <col width='3%'>
-            <col width='15%'>
+            <col width='12%'>
+            <col width='12%'>
+            <col width='10%'>
+            <col width='10%'>
+            <col width='10%'>
+            <col width='10%'>
             <thead>
               <tr>
-                <th colspan="1">&nbsp;</th>
+                <th colspan="3">&nbsp;</th>
                 <th colspan="4" style="text-align: center;">
+                  @if($cumulativo) {{ \Carbon\Carbon::createFromDate(null, 1, null)->format('F')}} - @endif
                   {{ \Carbon\Carbon::createFromDate(null, $mese, null)->format('F')}} {{ $thisYear }}</th>
-                <th colspan="1">&nbsp;</th>
-                <th colspan="1" style="text-align: center;">
-                  {{ \Carbon\Carbon::createFromDate(null, $mese, null)->format('F')}} {{ $prevYear }}</th>
               </tr>
               <tr>
-                <th colspan="1">&nbsp;</th>
-                <th style="text-align: center;"> <a href="{{$urlOrders}}" target="_blank">Orders Porfolio</a></th>
+                <th colspan="3">&nbsp;</th>
+                <th style="text-align: center;">Orders Porfolio</th>
                 {{-- {{ link_to_action()} --}}
-                <th style="text-align: center;"><a href="{{$urlDdts}}" target="_blank">Ddt</a></th>
-                <th style="text-align: center;"><a href="{{$urlInvoices}}" target="_blank">Invoice</a></th>
+                <th style="text-align: center;">Ddt</th>
+                <th style="text-align: center;">Invoice</th>
                 <th style="text-align: center;">Tot.</th>
-                <th colspan="1">|</th>
-                <th style="text-align: center;"><a href="{{$urlInvoicesPrec}}" target="_blank">Tot. Invoice</a></th>
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <th>Krona</th>
-                <td> {{ currency($OCKrona) }} </td>
-                <td> {{ currency($BOKrona) }} </td>
-                <td> {{ currency($FTKrona) }} </td>
-                <td> {{ currency($OCKrona+$BOKrona+$FTKrona) }} </td>
-                <th colspan="1">|</th>
-                <td> {{ currency($FTPrevKrona) }} </td>
-              </tr>
-              @if ($OCBonusKrona!=0 || $BOBonusKrona!=0 || $FTBonusKrona!=0 || $FTPrevBonusKrona!=0)
-                <tr>
-                  <th>&nbsp -> Bonus Krona</th>
-                  <td> {{ currency($OCBonusKrona) }} </td>
-                  <td> {{ currency($BOBonusKrona) }} </td>
-                  <td> {{ currency($FTBonusKrona) }} </td>
-                  <td> {{ currency($OCBonusKrona+$BOBonusKrona+$FTBonusKrona) }} </td>
-                  <th colspan="1">|</th>
-                  <td> {{ currency($FTPrevBonusKrona) }} </td>
-                </tr>                  
-              @endif
-              <tr>
-                <th>Koblenz</th>
-                <td> {{ currency($OCKoblenz) }} </td>
-                <td> {{ currency($BOKoblenz) }} </td>
-                <td> {{ currency($FTKoblenz) }} </td>
-                <td> {{ currency($OCKoblenz+$BOKoblenz+$FTKoblenz) }} </td>
-                <th colspan="1">|</th>
-                <td> {{ currency($FTPrevKoblenz) }} </td>
-              </tr>
-              <tr>
-                <th>Kubica</th>
-                <td> {{ currency($OCKubica) }} </td>
-                <td> {{ currency($BOKubica) }} </td>
-                <td> {{ currency($FTKubica) }} </td>
-                <td> {{ currency($OCKubica+$BOKubica+$FTKubica) }} </td>
-                <th colspan="1">|</th>
-                <td> {{ currency($FTPrevKubica) }} </td>
-              </tr>
-              <tr>
-                <th>Atomika</th>
-                <td> {{ currency($OCAtomika) }} </td>
-                <td> {{ currency($BOAtomika) }} </td>
-                <td> {{ currency($FTAtomika) }} </td>
-                <td> {{ currency($OCAtomika+$BOAtomika+$FTAtomika) }} </td>
-                <th colspan="1">|</th>
-                <td> {{ currency($FTPrevAtomika) }} </td>
-              </tr>
-              @if ($OCBonusKoblenz!=0 || $BOBonusKoblenz!=0 || $FTBonusKoblenz!=0 || $FTPrevBonusKoblenz!=0)
-                <tr>
-                  <th>&nbsp -> Bonus Koblenz</th>
-                  <td> {{ currency($OCBonusKoblenz) }} </td>
-                  <td> {{ currency($BOBonusKoblenz) }} </td>
-                  <td> {{ currency($FTBonusKoblenz) }} </td>
-                  <td> {{ currency($OCBonusKoblenz+$BOBonusKoblenz+$FTBonusKoblenz) }} </td>
-                  <th colspan="1">|</th>
-                  <td> {{ currency($FTPrevBonusKoblenz) }} </td>
-                </tr>                  
-              @endif
-              @if(RedisUser::get('ditta_DB')=='kNet_es')
-              <tr>
-                <th>Planet</th>
-                <td> {{ currency($OCPlanet) }} </td>
-                <td> {{ currency($BOPlanet) }} </td>
-                <td> {{ currency($FTPlanet) }} </td>
-                <td> {{ currency($OCPlanet+$BOPlanet+$FTPlanet) }} </td>
-                <th colspan="1">|</th>
-                <td> {{ currency($FTPrevPlanet) }} </td>
-              </tr>
-              @endif
-            </tbody>
-            <tfoot class="bg-gray">
               @php
-              $totOC = $OCKrona+$OCBonusKrona+$OCKoblenz+$OCBonusKoblenz+$OCKubica+$OCAtomika+$OCPlanet;
-              $totBO = $BOKrona+$BOKoblenz+$BOBonusKrona+$BOBonusKoblenz+$BOKubica+$BOAtomika+$BOPlanet;
-              $totFT = $FTKrona+$FTKoblenz+$FTBonusKrona+$FTBonusKoblenz+$FTKubica+$FTAtomika+$FTPlanet;
-              $totPrevFT = $FTPrevKrona+$FTPrevKoblenz+$FTPrevKubica+$FTPrevAtomika+$FTPrevPlanet+$FTPrevBonusKrona+$FTPrevBonusKoblenz;
+              $fat_TotCustomer_N = 0;
+              $OrdAg_N = 0;
+              $DdtAg_N = 0;
+              $fatAg_N = 0;
+              $TotAg_N = 0;
+              @endphp
+              @foreach ($portfolio as $key => $group)
+              @php
+              $fat_TotCustomer_N = (isset($group['totOrd']) ? $group['totOrd'] : 0) + (isset($group['totDdt']) ? $group['totDdt'] : 0) + (isset($group['totFat']) ? $group['totFat'] : 0);
+              $OrdAg_N += (isset($group['totOrd']) ? $group['totOrd'] : 0);
+              $DdtAg_N += (isset($group['totDdt']) ? $group['totDdt'] : 0);
+              $fatAg_N += (isset($group['totFat']) ? $group['totFat'] : 0);
+              $TotAg_N += $fat_TotCustomer_N;
               @endphp
               <tr>
-                <th>TOTALE PORTFOLIO PRODOTTO</th>
-                <td> {{ currency($totOC) }} </td>
-                <td> {{ currency($totBO) }} </td>
-                <td> {{ currency($totFT) }} </td>
-                <td> {{ currency($totOC+$totBO+$totFT) }} </td>
-                <th colspan="1">|</th>
-                <td> {{ currency($totPrevFT) }} </td>
-              </tr>
+                <th><b>{{ $group['client']->descrizion }}</b> [<a href="{{ route('client::detail', $key ) }}" target="_blank">{{ $key }}</a>]</th>
+                <td>{{ $group['client']->detZona->descrizion }}</td>
+                <td>{{ $group['client']->detSect->descrizion }}</td>
+                <td> {{ currency($group['totOrd'] ?? 0) }} </td>
+                <td> {{ currency($group['totDdt'] ?? 0) }} </td>
+                <td> {{ currency($group['totFat'] ?? 0) }} </td>
+                <td> {{ currency($fat_TotCustomer_N) }} </td>
+              </tr>                  
+              @endforeach
+            </tbody>
+            <tfoot class="bg-gray">
+              <tr>
+                <th colspan="3">{{ strtoupper(trans('stFatt.granTot')) }}</th>
+                <td> {{ currency($OrdAg_N ?? 0) }} </td>
+                <td> {{ currency($DdtAg_N ?? 0) }} </td>
+                <td> {{ currency($fatAg_N ?? 0) }} </td>
+                <td> {{ currency($TotAg_N) }} </td>
+              </tr>     
             </tfoot>
           </table>
           <hr>
-          <table class="table table-hover table-striped" id="portfolioTbl" style="text-align: center;">
+          {{-- <table class="table table-hover table-striped" id="portfolioTbl" style="text-align: center;">
             <col width='22%'>
             <col width='15%'>
             <col width='15%'>
@@ -280,7 +224,7 @@ Agents Portfolio - Gruppo Prodotti
                 <td> {{ currency($totPrevFT) }} </td>
               </tr>
             </tfoot>
-          </table>
+          </table> --}}
         </div>
       </div>
     </div>

@@ -37,6 +37,9 @@ class PortfolioController extends Controller
 			$this->dStartMonth = new Carbon('first day of '.Carbon::createFromDate(null, $mese, null)->format('F').' '.((string)$this->thisYear)); 
 			$this->dEndMonth = new Carbon('last day of '.Carbon::createFromDate(null, $mese, null)->format('F').' '.((string)$this->thisYear));
 		}
+		if($req->input('cumulativo')){
+			$this->dStartMonth = new Carbon('first day of january ' . ((string)$this->thisYear));
+		}
 
 		$agents = Agent::select('codice', 'descrizion')->whereNull('u_dataini')->orWhere('u_dataini', '>=', Carbon::now())->orderBy('codice')->get();
 		$codAg = ($req->input('codag')) ? $req->input('codag') : $codAg;
@@ -50,7 +53,7 @@ class PortfolioController extends Controller
 		$OCKubica = $this->getOrderToShip(['B06'], $fltAgents, ['B0630'])->sum('totRowPrice');
 		$OCAtomika = $this->getOrderToShip(['B0630'], $fltAgents)->sum('totRowPrice');
 		$OCPlanet = (RedisUser::get('ditta_DB')=='kNet_es') ? $this->getOrderToShip(['D0'], $fltAgents)->sum('totRowPrice') : 0;
-		$OCDIC = $this->getOrderToShip(['DIC'], $fltAgents)->sum('totRowPrice');
+		$OCDIC = $this->getOrderToShip(['Z'], $fltAgents)->sum('totRowPrice');
 
 		$BOKrona = $this->getDdtNotInvoiced(['A'],$fltAgents, ['A99'])->sum('totRowPrice');
 		$BOKoblenz = $this->getDdtNotInvoiced(['B'],$fltAgents, ['B06', 'B99'])->sum('totRowPrice');
@@ -59,7 +62,7 @@ class PortfolioController extends Controller
 		$BOKubica = $this->getDdtNotInvoiced(['B06'], $fltAgents, ['B0630'])->sum('totRowPrice');
 		$BOAtomika = $this->getDdtNotInvoiced(['B0630'], $fltAgents)->sum('totRowPrice');
 		$BOPlanet = (RedisUser::get('ditta_DB')=='kNet_es') ? $this->getDdtNotInvoiced(['D0'], $fltAgents)->sum('totRowPrice') : 0;
-		$BODIC = $this->getDdtNotInvoiced(['DIC'], $fltAgents)->sum('totRowPrice');
+		$BODIC = $this->getDdtNotInvoiced(['Z'], $fltAgents)->sum('totRowPrice');
 
 		$FTKrona = $this->getInvoice(['A'],$fltAgents, ['A99'])->sum('totRowPrice');
 		$FTKoblenz = $this->getInvoice(['B'],$fltAgents, ['B06', 'B99'])->sum('totRowPrice');
@@ -68,7 +71,7 @@ class PortfolioController extends Controller
 		$FTKubica = $this->getInvoice(['B06'], $fltAgents, ['B0630'])->sum('totRowPrice');
 		$FTAtomika = $this->getInvoice(['B0630'], $fltAgents)->sum('totRowPrice');
 		$FTPlanet = (RedisUser::get('ditta_DB')=='kNet_es') ? $this->getInvoice(['D0'], $fltAgents)->sum('totRowPrice') : 0;
-		$FTDIC = $this->getInvoice(['DIC'], $fltAgents)->sum('totRowPrice');
+		$FTDIC = $this->getInvoice(['Z'], $fltAgents)->sum('totRowPrice');
 
 		$FTPrevKrona = $this->getPrevInvoice(['A'], $fltAgents, ['A99'])->sum('totRowPrice');
 		$FTPrevKoblenz = $this->getPrevInvoice(['B'], $fltAgents, ['B06', 'B99'])->sum('totRowPrice');
@@ -77,12 +80,13 @@ class PortfolioController extends Controller
 		$FTPrevKubica = $this->getPrevInvoice(['B06'], $fltAgents, ['B0630'])->sum('totRowPrice');
 		$FTPrevAtomika = $this->getPrevInvoice(['B0630'], $fltAgents)->sum('totRowPrice');
 		$FTPrevPlanet = (RedisUser::get('ditta_DB')=='kNet_es') ? $this->getPrevInvoice(['D0'], $fltAgents)->sum('totRowPrice') : 0;
-		$FTPrevDIC = $this->getPrevInvoice(['DIC'], $fltAgents)->sum('totRowPrice');
+		$FTPrevDIC = $this->getPrevInvoice(['Z'], $fltAgents)->sum('totRowPrice');
 		// dd($FTPrevKubica+ $FTPrevAtomika);
 
 		return view('portfolio.idxAg', [
 			'agents' => $agents,
 			'mese' => $mese,
+			'cumulativo' => $req->input('cumulativo'),
 			'thisYear' => $this->thisYear,
 			'prevYear' => $this->prevYear,
 			'fltAgents' => $fltAgents,
@@ -122,6 +126,90 @@ class PortfolioController extends Controller
 			'urlDdts' => action('DocCliController@showDdtToInvoice', ['fltAgents'=>$fltAgents]),
 			'urlInvoices' => action('DocCliController@showInvoiceMonth', ['fltAgents'=>$fltAgents, 'mese'=>$mese, 'year' => $this->thisYear]),
 			'urlInvoicesPrec' => action('DocCliController@showInvoiceMonth', ['fltAgents' => $fltAgents, 'mese' => $mese, 'year' => $this->prevYear]),
+		]);
+	}
+
+
+	public function portfolioAgByCustomer(Request $req, $codAg = null)
+	{
+		// Costruisco i filtri
+		$this->thisYear = (!$req->input('year') ? Carbon::now()->year : $req->input('year'));
+		$this->prevYear = $this->thisYear - 1;
+		$this->dStartMonth = new Carbon('first day of ' . Carbon::now()->format('F') . ' ' . ((string)$this->thisYear));
+		$this->dEndMonth = new Carbon('last day of ' . Carbon::now()->format('F') . ' ' . ((string)$this->thisYear));
+		$mese = (!$req->input('mese') ? Carbon::now()->month : $req->input('mese'));
+		if ($mese) {
+			$this->dStartMonth = new Carbon('first day of ' . Carbon::createFromDate(null, $mese, null)->format('F') . ' ' . ((string)$this->thisYear));
+			$this->dEndMonth = new Carbon('last day of ' . Carbon::createFromDate(null, $mese, null)->format('F') . ' ' . ((string)$this->thisYear));
+		}
+		if ($req->input('cumulativo')) {
+			$this->dStartMonth = new Carbon('first day of january ' . ((string)$this->thisYear));
+		}
+
+		$agents = Agent::select('codice', 'descrizion')->whereNull('u_dataini')->orWhere('u_dataini', '>=', Carbon::now())->orderBy('codice')->get();
+		$codAg = ($req->input('codag')) ? $req->input('codag') : $codAg;
+		$fltAgents = (!empty($codAg)) ? $codAg : array_wrap((!empty(RedisUser::get('codag')) ? RedisUser::get('codag') : $agents->first()->codice)); //$agents->pluck('codice')->toArray();
+		$fltAgents = AgentFltUtils::checkSpecialRules($fltAgents);
+		
+
+		$ord = $this->getOrderToShip(['A', 'B', 'D0'], $fltAgents, ['Z'])->sortBy('doccli.codicecf')->groupBy('doccli.codicecf')->mapWithKeys(function ($group, $key) {
+			return collect([
+				$key =>
+				collect([
+					'codicecf' => $key,
+					'client' => $group->first()->doccli->client,
+					'totOrd' => $group->sum('totRowPrice'),
+					'n_docOrd' => $group->groupBy('doccli.id')->count()
+				])
+			]);
+		});
+
+		$ddt = $this->getDdtNotInvoiced(['A', 'B', 'D0'], $fltAgents, ['Z'])->sortBy('doccli.codicecf')->groupBy('doccli.codicecf')->mapWithKeys(function ($group, $key) {
+			return collect([
+				$key =>
+				collect([
+					'codicecf' => $key,
+					'client' => $group->first()->doccli->client,
+					'totDdt' => $group->sum('totRowPrice'),
+					'n_docDdt' => $group->groupBy('doccli.id')->count()
+				])
+			]);
+		});
+
+		$fatt = $this->getInvoice(['A', 'B', 'D0'], $fltAgents, ['Z'])->sortBy('doccli.codicecf')->groupBy('doccli.codicecf')->mapWithKeys(function ($group, $key) {
+			return collect([
+				$key =>
+				collect([
+					'codicecf' => $key,
+					'client' => $group->first()->doccli->client,
+					'totFat' => $group->sum('totRowPrice'),
+					'n_docFat' => $group->groupBy('doccli.id')->count()
+				])
+			]);
+		});
+
+		$portfolio= $ord->union($fatt)->union($ddt)->map(function ($c, $key) use ($fatt, $ddt) {
+			if ($fatt->has($key)) {
+				return $c->union($fatt[$key]);
+			} else {
+				return $c->put('totFat', 0);
+			}
+			if ($ddt->has($key)) {
+				return $c->union($ddt[$key]);
+			}
+			return $c;
+		})->sortBy('codicecf');
+		// ->sortByDesc('totFat');
+		// dd($portfolio);
+
+		return view('portfolio.portfolioAgByCustomer', [
+			'agents' => $agents,
+			'mese' => $mese,
+			'cumulativo' => $req->input('cumulativo'),
+			'thisYear' => $this->thisYear,
+			'prevYear' => $this->prevYear,
+			'fltAgents' => $fltAgents,
+			'portfolio' => $portfolio
 		]);
 	}
 
@@ -168,11 +256,14 @@ class PortfolioController extends Controller
 		}	
 		
 		//Costruisco infine le righe con i dati che mi servono
-		$docRow = DocRow::select('id_testa', 'codicearti', 'descrizion', 'gruppo', 'prezzoun', 'sconti', 'quantitare', 'unmisura', 'quantita', 'u_dtpronto', 'dataconseg')
+		$docRow = DocRow::select('id_testa', 'codicearti', 'descrizion', 'gruppo', 'prezzoun', 'prezzotot', 'sconti', 'quantitare', 'unmisura', 'quantita', 'u_dtpronto', 'dataconseg')
 							->addSelect(DB::raw('prezzoun*0 as totRowPrice'))
 							->with(['doccli' => function($q){
-								$q->select('id', 'tipomodulo', 'sconti', 'scontocass', 'numerodoc', 'tipodoc', 'datadoc', 'codicecf');
+								$q->select('id', 'tipomodulo', 'codicecf', 'sconti', 'scontocass', 'numerodoc')->with('client');
 							}])
+							->whereHas('product', function($q) {
+								$q->orWhere('u_artlis',1)->orWhere('u_perscli',1);
+							})
 							->where('quantitare', '>', 0)
 							->where('ommerce', 0)
 							->where('codicearti', '!=', '');
@@ -201,7 +292,7 @@ class PortfolioController extends Controller
 		// $docRow->whereBetween('dataconseg', [$this->dStartMonth, $this->dEndMonth]);
 		$docRow = $docRow->whereIn('id_testa', $this->arrayIDOC)->get();
 		
-		$docRow = $this->calcTotRowPrice($docRow);
+		$docRow = $this->calcTotRowPrice($docRow, true);
 		return $docRow;
 	}
 
@@ -228,11 +319,14 @@ class PortfolioController extends Controller
 		}
 		
 		//Costruisco infine le righe con i dati che mi servono
-		$docRow = DocRow::select('id_testa', 'codicearti', 'prezzoun', 'sconti', 'quantitare')
+		$docRow = DocRow::select('id_testa', 'codicearti', 'prezzoun', 'prezzotot', 'sconti', 'quantitare')
 							->addSelect(DB::raw('prezzoun*0 as totRowPrice'))
 							->with(['doccli' => function($q){
-								$q->select('id', 'tipomodulo', 'sconti', 'scontocass', 'numerodoc');
+								$q->select('id', 'tipomodulo', 'codicecf', 'sconti', 'scontocass', 'numerodoc')->with('client');
 							}])
+							->whereHas('product', function($q) {
+								$q->orWhere('u_artlis',1)->orWhere('u_perscli',1);
+							})
 							->where('quantitare', '>', 0)
 							->where('ommerce', 0)
 							->where('codicearti', '!=', '');
@@ -285,11 +379,15 @@ class PortfolioController extends Controller
 		}
 		
 		//Costruisco infine le righe con i dati che mi servono
-		$docRow = DocRow::select('id_testa', 'codicearti', 'prezzoun', 'sconti', 'quantitare')
+		$docRow = DocRow::select('id_testa', 'codicearti', 'prezzoun', 'prezzotot', 'sconti', 'quantitare', 'quantita')
 							->addSelect(DB::raw('prezzoun*0 as totRowPrice'))
 							->with(['doccli' => function($q){
-								$q->select('id', 'tipomodulo', 'sconti', 'scontocass', 'numerodoc');
+								$q->select('id', 'tipomodulo', 'codicecf', 'sconti', 'scontocass', 'numerodoc')->with('client');
 							}])
+							->whereHas('product', function($q) {
+								$q->orWhere('u_artlis',1)->orWhere('u_perscli',1);
+							})
+							->whereRaw('(LEFT(codicearti,4) != ? AND LEFT(codicearti,4) != ?)', ['CAMP', 'NOTA'])
 							->where('quantitare', '>', 0)
 							->where('ommerce', 0)
 							->where('codicearti', '!=', '');
@@ -341,11 +439,14 @@ class PortfolioController extends Controller
 			$this->arrayIDprevFT = $docTes->toArray();
 		}
 		//Costruisco infine le righe con i dati che mi servono
-		$docRow = DocRow::select('id_testa', 'codicearti', 'prezzoun', 'sconti', 'quantitare')
+		$docRow = DocRow::select('id_testa', 'codicearti', 'prezzoun', 'prezzotot',  'sconti', 'quantitare')
 							->addSelect(DB::raw('prezzoun*0 as totRowPrice'))
 							->with(['doccli' => function($q){
 								$q->select('id', 'tipomodulo', 'sconti', 'scontocass', 'numerodoc');
 							}])
+							->whereHas('product', function($q) {
+								$q->orWhere('u_artlis',1)->orWhere('u_perscli',1);
+							})
 							->where('quantitare', '>', 0)
 							->where('ommerce', 0)
 							->where('codicearti', '!=', '');
@@ -380,11 +481,16 @@ class PortfolioController extends Controller
 		Calcola il Prezzo totale di ogni riga applicando tutti gli sconti del documento
 		inclusi Extra Sconti Cassa o Merce
 	 */
-	public function calcTotRowPrice($collect){
+	public function calcTotRowPrice($collect, $usePrezzoUn = false){
 		foreach ($collect as $row){
 			$fattoreMolt = ($row->doccli->tipomodulo == 'N' ? -1 : 1);
-			$unitRowPrice = Utils::scontaDel(Utils::scontaDel(Utils::scontaDel($row->prezzoun, $row->sconti, 2), $row->doccli->sconti, 2), $row->doccli->scontocass, 2);
-			$row->totRowPrice = $unitRowPrice*$row->quantitare*$fattoreMolt;
+			if($usePrezzoUn){
+				$unitRowPrice = Utils::scontaDel(Utils::scontaDel(Utils::scontaDel($row->prezzoun, $row->sconti, 4), $row->doccli->sconti, 3), $row->doccli->scontocass, 3);
+				$row->totRowPrice = (float)round(($unitRowPrice*$row->quantitare*$fattoreMolt),2);
+			} else {
+				$totRowPrice = Utils::scontaDel(Utils::scontaDel($row->prezzotot, $row->doccli->sconti, 3), $row->doccli->scontocass, 3);
+				$row->totRowPrice = (float)round($totRowPrice*$fattoreMolt, 2);
+			}
 		}
 		return $collect;
 	}

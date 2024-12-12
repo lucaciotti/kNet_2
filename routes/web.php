@@ -511,6 +511,16 @@ Route::group(['as' => 'Portfolio::'], function () {
     'uses' => 'PortfolioController@idxAg'
   ]);
 
+
+  Route::get('/portfolioAgByCustomer/{codice?}', [
+    'as' => 'portfolioAgByCustomer',
+    'uses' => 'PortfolioController@portfolioAgByCustomer'
+  ]);
+  Route::post('/portfolioAgByCustomer', [
+    'as' => 'portfolioAgByCustomer',
+    'uses' => 'PortfolioController@portfolioAgByCustomer'
+  ]);
+
   Route::get('/orders_toDispach', [
     'as' => 'ordersDispach',
     'uses' => 'DocCliController@showOrderDispachMonth'
