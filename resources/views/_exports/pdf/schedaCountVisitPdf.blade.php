@@ -74,12 +74,12 @@
                                 <td>{{ $visit->client->detSect->descrizion }}</td>
                                 @endif
                                 @if ($visit->rubri)
-                                <td><b>{{ strtoupper($visit->rubri->descrizion) }}</b> [<i>Potenziale Cliente</i>]</td>
-                                <td>@if ($visit->rubri->codnazione == 'I' || $visit->rubri->codnazione == 'IT'){{ strtoupper($visit->rubri->localita ?? '') }}@else{{ strtoupper($visit->rubri->detZona->descrizion ?? '') }}@endif</td>
+                                <td><b>{{ strtoupper($visit->rubri->descrizion) }}</b> [<a href="{{ route('rubri::detail', $visit->rubri_id ) }}">Potenziale Cliente</a>]</td>
+                                <td>{{ strtoupper($visit->rubri->localita ?? '') }} - {{ strtoupper($visit->rubri->detZona->descrizion ?? '') }}</td>
                                 <td>{{ $visit->rubri->settore }}</td>                                
                                 @endif
                                 @if($visit->supplier)
-                                <td><b>{{ $visit->supplier->descrizion }}</b> [<i>Potenziale Cliente</i>]</td>
+                                <td><b>{{ $visit->supplier->descrizion }}</b> [<a href="{{ route('supplier::detail', $visit->codicecf ) }}">{{ $visit->codicecf }}</a>]</td>
                                 <td>{{ $visit->supplier->detZona->descrizion }}</td>
                                 <td>{{ $visit->supplier->detSect->descrizion }}</td>
                                 @endif
