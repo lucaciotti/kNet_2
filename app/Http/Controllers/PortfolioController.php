@@ -198,8 +198,9 @@ class PortfolioController extends Controller
 				return $c->union($ddt[$key]);
 			}
 			return $c;
-		})->sortBy('codicecf');
-		// ->sortByDesc('totFat');
+		})
+		// ->sortBy('codicecf');
+		->sortByDesc('totFat');
 		// dd($portfolio);
 
 		return view('portfolio.portfolioAgByCustomer', [
