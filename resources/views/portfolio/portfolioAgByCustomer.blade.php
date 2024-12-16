@@ -112,9 +112,15 @@ Portfolio - Dettaglio Clienti
         <a type="button" class="btn btn-default btn-block" target="_blank" href="{{ route('Portfolio::portfolioAgByCustomerPDF', [
                                             'codag' => $fltAgents,
                                             'year' => $thisYear,
-                                            'cumulativo' => isset($cumulativo),
+                                            'cumulativo' => $cumulativo,
                                             'mese' => $mese,
                                             ]) }}">PDF Portafoglio Clienti</a>
+        <a type="button" class="btn btn-default btn-block" target="_blank" href="{{ route('Portfolio::portfolioListOCandXC', [
+                                            'codag' => $fltAgents,
+                                            'year' => $thisYear,
+                                            'cumulativo' => $cumulativo,
+                                            'mese' => $mese,
+                                            ]) }}">PDF Portafoglio Doc (da Evadere)</a>
       </div>
     </div>
 
@@ -123,7 +129,7 @@ Portfolio - Dettaglio Clienti
         <a type="button" class="btn btn-default btn-block" href="{{ route('Portfolio::idxAg', [
                                             'codag' => $fltAgents,
                                             'year' => $thisYear,
-                                            'cumulativo' => isset($cumulativo),
+                                            'cumulativo' => $cumulativo,
                                             'mese' => $mese,
                                             ]) }}">Portfolio - Gruppo Prodotti</a>
         {{-- <a type="button" class="btn btn-default btn-block" target="_blank" href="{{ route('Portfolio::portfolioAgByCustomer') }}">Portfolio - Clienti</a> --}}

@@ -305,21 +305,45 @@ class PortfolioController extends Controller
 		return $pdf->stream($title . '-' . $subTitle . '.pdf');
 	}
 
-	public function portfolioPDF(Request $req, $codAg, $mese, $year){
-		$this->thisYear = Carbon::now()->year;
-		$this->prevYear = $this->thisYear-1;	
-		$this->dStartMonth = new Carbon('first day of '.Carbon::now()->format('F').' '.((string)$this->thisYear)); 	
-		$this->dEndMonth = new Carbon('last day of '.Carbon::now()->format('F').' '.((string)$this->thisYear));
+	public function portfolioListOCandXC(Request $req, $codAg = null) {
+		// Costruisco i filtri
+		$this->thisYear = (!$req->input('year') ? Carbon::now()->year : $req->input('year'));
+		$this->prevYear = $this->thisYear - 1;
+		$this->dStartMonth = new Carbon('first day of ' . Carbon::now()->format('F') . ' ' . ((string)$this->thisYear));
+		$this->dEndMonth = new Carbon('last day of ' . Carbon::now()->format('F') . ' ' . ((string)$this->thisYear));
 		$mese = (!$req->input('mese') ? Carbon::now()->month : $req->input('mese'));
-		if($mese){
-			$this->dStartMonth = new Carbon('first day of '.Carbon::createFromDate(null, $mese, null)->format('F').' '.((string)$this->thisYear)); 
-			$this->dEndMonth = new Carbon('last day of '.Carbon::createFromDate(null, $mese, null)->format('F').' '.((string)$this->thisYear));
+		if ($mese) {
+			$this->dStartMonth = new Carbon('first day of ' . Carbon::createFromDate(null, $mese, null)->format('F') . ' ' . ((string)$this->thisYear));
+			$this->dEndMonth = new Carbon('last day of ' . Carbon::createFromDate(null, $mese, null)->format('F') . ' ' . ((string)$this->thisYear));
+		}
+		if ($req->input('cumulativo')) {
+			$this->dStartMonth = new Carbon('first day of january ' . ((string)$this->thisYear));
 		}
 
-        $codAg = ($req->input('codag')) ? $req->input('codag') : ((!empty(RedisUser::get('codag')) ? RedisUser::get('codag') : $codAg));
+		$agents = Agent::select('codice', 'descrizion')->whereNull('u_dataini')->orWhere('u_dataini', '>=', Carbon::now())->orderBy('codice')->get();
+		$codAg = ($req->input('codag')) ? $req->input('codag') : $codAg;
+		$fltAgents = (!empty($codAg)) ? $codAg : array_wrap((!empty(RedisUser::get('codag')) ? RedisUser::get('codag') : $agents->first()->codice)); //$agents->pluck('codice')->toArray();
+		$fltAgents = AgentFltUtils::checkSpecialRules($fltAgents);
+
+		$listOC = $this->getListDoc(['OC'], $fltAgents)->groupBy('agente');
+		$listXC = $this->getListDoc(['XC'], $fltAgents)->groupBy('agente');
 		
-		$OCKrona = $this->getOrderToShip(['A', 'B', 'D0'], array_wrap($codAg));
-		dd($OCKrona);
+		$title = "Portafoglio";
+		$subTitle = "Dettaglio Documenti";
+		$view = '_exports.pdf.portfolioDocPdf';
+		$data = [
+			'agents' => $agents,
+			'mese' => $mese,
+			'cumulativo' => $req->input('cumulativo'),
+			'thisYear' => $this->thisYear,
+			'prevYear' => $this->prevYear,
+			'fltAgents' => $fltAgents,
+			'listOC' => $listOC,
+			'listXC' => $listXC,
+		];
+		$pdf = PdfReport::A4Landscape($view, $data, $title, $subTitle);
+
+		return $pdf->stream($title . '-' . $subTitle . '.pdf');
 	}
 
 
@@ -587,4 +611,24 @@ class PortfolioController extends Controller
 		return $collect;
 	}
 
+	// LISTA DEI DOCUMENTI
+	public function getListDoc($tipodocs, $agents = [], $evasi=false, $filiali = false)
+	{
+		$docTes = DocCli::whereBetween('datadoc', [$this->dStartMonth, $this->dEndMonth])
+			->whereIn('tipodoc', $tipodocs);
+		if(!$evasi){
+			$docTes->whereHas('docrow', function ($query) {
+				$query->where('quantitare', '>', 0);
+			});
+		}
+		if (!$filiali && RedisUser::get('ditta_DB') == 'knet_it') {
+			$docTes->whereNotIn('codicecf', ['C00973', 'C03000', 'C07000', 'C06000', 'C01253']);
+		}
+		if (!empty($agents)) {
+			$docTes->whereIn('agente', $agents);
+		}
+		$docTes = $docTes->with(['client', 'agent'])->orderBy('codicecf')->orderBy('datadoc', 'desc')->get();
+
+		return $docTes;
+	}
 }

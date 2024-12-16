@@ -102,12 +102,29 @@ Portfolio - Gruppo Prodotti
     </form>
 
     <div class="box box-default {{-- collapsed-box --}}">
+      <div class="box-header with-border">
+        <h3 class="box-title" data-widget="collapse"><i class='fa fa-cloud-download'> </i> Download</h3>
+        <div class="box-tools pull-right">
+          <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i></button>
+        </div>
+      </div>
+      <div class="box-body">
+        <a type="button" class="btn btn-default btn-block" target="_blank" href="{{ route('Portfolio::portfolioListOCandXC', [
+                                            'codag' => $fltAgents,
+                                            'year' => $thisYear,
+                                            'cumulativo' => $cumulativo,
+                                            'mese' => $mese,
+                                            ]) }}">PDF Portafoglio Doc (da Evadere)</a>
+      </div>
+    </div>
+
+    <div class="box box-default {{-- collapsed-box --}}">
       <div class="box-body">
         {{-- <a type="button" class="btn btn-default btn-block" target="_blank" href="{{ route('Portfolio::idxAg') }}">Portfolio - Gruppo Prodotti</a> --}}
         <a type="button" class="btn btn-default btn-block" href="{{ route('Portfolio::portfolioAgByCustomer', [
                                             'codag' => $fltAgents,
                                             'year' => $thisYear,
-                                            'cumulativo' => isset($cumulativo),
+                                            'cumulativo' => $cumulativo,
                                             'mese' => $mese,
                                             ]) }}">Portfolio - Dettaglio Clienti</a>
       </div>
