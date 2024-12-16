@@ -5,7 +5,7 @@
 @endsection
 
 @section('contentheader_title')
-Agents Portfolio - Dettaglio Clienti
+Portfolio - Dettaglio Clienti
 @endsection
 
 {{-- @section('contentheader_breadcrumb')
@@ -125,8 +125,8 @@ Agents Portfolio - Dettaglio Clienti
                                             'year' => $thisYear,
                                             'cumulativo' => isset($cumulativo),
                                             'mese' => $mese,
-                                            ]) }}">Agents Portfolio - Gruppo Prodotti</a>
-        {{-- <a type="button" class="btn btn-default btn-block" target="_blank" href="{{ route('Portfolio::portfolioAgByCustomer') }}">Agents Portfolio - Clienti</a> --}}
+                                            ]) }}">Portfolio - Gruppo Prodotti</a>
+        {{-- <a type="button" class="btn btn-default btn-block" target="_blank" href="{{ route('Portfolio::portfolioAgByCustomer') }}">Portfolio - Clienti</a> --}}
       </div>
     </div>
   </div>

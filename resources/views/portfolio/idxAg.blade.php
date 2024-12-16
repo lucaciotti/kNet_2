@@ -5,7 +5,7 @@
 @endsection
 
 @section('contentheader_title')
-Agents Portfolio - Gruppo Prodotti
+Portfolio - Gruppo Prodotti
 @endsection
 
 {{-- @section('contentheader_breadcrumb')
@@ -103,8 +103,8 @@ Agents Portfolio - Gruppo Prodotti
 
     <div class="box box-default {{-- collapsed-box --}}">
       <div class="box-body">
-        {{-- <a type="button" class="btn btn-default btn-block" target="_blank" href="{{ route('Portfolio::idxAg') }}">Agents Portfolio - Gruppo Prodotti</a> --}}
-        <a type="button" class="btn btn-default btn-block" target="_blank" href="{{ route('Portfolio::portfolioAgByCustomer') }}">Agents Portfolio - Dettaglio Clienti</a>
+        {{-- <a type="button" class="btn btn-default btn-block" target="_blank" href="{{ route('Portfolio::idxAg') }}">Portfolio - Gruppo Prodotti</a> --}}
+        <a type="button" class="btn btn-default btn-block" target="_blank" href="{{ route('Portfolio::portfolioAgByCustomer') }}">Portfolio - Dettaglio Clienti</a>
       </div>
     </div>
   </div>
