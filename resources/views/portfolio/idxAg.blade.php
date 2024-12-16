@@ -104,7 +104,12 @@ Portfolio - Gruppo Prodotti
     <div class="box box-default {{-- collapsed-box --}}">
       <div class="box-body">
         {{-- <a type="button" class="btn btn-default btn-block" target="_blank" href="{{ route('Portfolio::idxAg') }}">Portfolio - Gruppo Prodotti</a> --}}
-        <a type="button" class="btn btn-default btn-block" target="_blank" href="{{ route('Portfolio::portfolioAgByCustomer') }}">Portfolio - Dettaglio Clienti</a>
+        <a type="button" class="btn btn-default btn-block" href="{{ route('Portfolio::portfolioAgByCustomer', [
+                                            'codag' => $fltAgents,
+                                            'year' => $thisYear,
+                                            'cumulativo' => isset($cumulativo),
+                                            'mese' => $mese,
+                                            ]) }}">Portfolio - Dettaglio Clienti</a>
       </div>
     </div>
   </div>

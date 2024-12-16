@@ -120,7 +120,7 @@ Portfolio - Dettaglio Clienti
 
     <div class="box box-default {{-- collapsed-box --}}">
       <div class="box-body">
-        <a type="button" class="btn btn-default btn-block" target="_blank" href="{{ route('Portfolio::idxAg', [
+        <a type="button" class="btn btn-default btn-block" href="{{ route('Portfolio::idxAg', [
                                             'codag' => $fltAgents,
                                             'year' => $thisYear,
                                             'cumulativo' => isset($cumulativo),
