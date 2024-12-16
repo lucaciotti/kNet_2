@@ -120,7 +120,7 @@ Agents Portfolio - Dettaglio Clienti
       </ul>
       <div class="tab-content">
         <div class="tab-pane active" id="portfolioStats">
-          <table class="table table-hover table-striped dtTbls_light" id="portfolioTbl" style="text-align: center;">
+          <table class="table table-hover table-striped dtTbls_portfolio" id="portfolioTbl" style="text-align: center;">
             <col width='22%'>
             <col width='12%'>
             <col width='12%'>
@@ -161,7 +161,7 @@ Agents Portfolio - Dettaglio Clienti
               $TotAg_N += $fat_TotCustomer_N;
               @endphp
               <tr>
-                <th><b>{{ $group['client']->descrizion }}</b> [<a href="{{ route('client::detail', $key ) }}" target="_blank">{{ $key }}</a>]</th>
+                <td><b>{{ $group['client']->descrizion }}</b> [<a href="{{ route('client::detail', $key ) }}" target="_blank">{{ $key }}</a>]</td>
                 <td>{{ $group['client']->detZona->descrizion }}</td>
                 <td>{{ $group['client']->detSect->descrizion }}</td>
                 <td> {{ currency($group['totOrd'] ?? 0) }} </td>

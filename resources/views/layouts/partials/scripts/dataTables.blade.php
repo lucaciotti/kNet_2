@@ -191,6 +191,23 @@
     // "aaSorting": [[0, "desc"]],
     // "bStateSave": false
     });
+    $('.dtTbls_portfolio').DataTable({
+    "iDisplayLength": 10,
+    "paging": true,
+    "lengthChange": true,
+    "searching": false,
+    "ordering": true,
+    "info": true,
+    "autoWidth": false,
+    "aoColumnDefs": [
+    {"sType": "my-currency", "aTargets": [3]},
+    {"sType": "my-currency", "aTargets": [4]},
+    {"sType": "my-currency", "aTargets": [5]},
+    {"sType": "my-currency", "aTargets": [6]}
+    ]
+    // "aaSorting": [[0, "desc"]],
+    // "bStateSave": false
+    });
   });
 </script>
 
