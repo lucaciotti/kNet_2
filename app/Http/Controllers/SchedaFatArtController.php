@@ -312,6 +312,121 @@ class SchedaFatArtController extends Controller
         return $pdf->stream($title . '-' . $subTitle . '.pdf');
     }
 
+    public function downloadPDFTotByCustomer(Request $req, $codAg = null)
+    {
+        $agentList = Agent::select('codice', 'descrizion')->whereNull('u_dataini')->orderBy('codice')->get();
+        $codAg = ($req->input('codag')) ? $req->input('codag') : $codAg;
+        $fltAgents = (!empty($codAg)) ? $codAg : array_wrap((!empty(RedisUser::get('codag')) ? RedisUser::get('codag') : $agentList->first()->codice));
+        $fltAgents = AgentFltUtils::checkSpecialRules($fltAgents);
+        $thisYear = ($req->input('startYear')) ? $req->input('startYear') : (Carbon::now()->year);
+        $settoreSelected = ($req->input('settoreSelected')) ? $req->input('settoreSelected') : null;
+        $zoneSelected = ($req->input('zoneSelected')) ? $req->input('zoneSelected') : null;
+        $yearBack = ($req->input('yearBack')) ? $req->input('yearBack') : 3; // 2->3AnniView; 3->4AnniView; 4->5AnniView
+        $limitVal = ($req->input('limitVal') || $req->input('limitVal') == '0') ? $req->input('limitVal') : null;
+        $meseSelected = $req->input('mese');
+        $onlyMese = $req->input('onlyMese') ? $req->input('onlyMese') : false;
+        $isPariPeriodo = $onlyMese ? $onlyMese : ($req->input('pariperiodo') ? $req->input('pariperiodo') : false);
+
+        $querySelect_qta = $meseSelected ? $this->buildQueryPeriodo('u_statfatt_art.qta_', intval($meseSelected), $onlyMese) : 'u_statfatt_art.qta_tot';
+        $querySelect_qtaN = ($isPariPeriodo ? $querySelect_qta : 'u_statfatt_art.qta_tot');
+        $querySelect_fat = $meseSelected ? $this->buildQueryPeriodo('u_statfatt_art.val_', intval($meseSelected), $onlyMese) : 'u_statfatt_art.val_tot';
+        $querySelect_fatN = ($isPariPeriodo ? $querySelect_fat : 'u_statfatt_art.val_tot');
+
+        // Qui costruisco solo la tabella con il fatturato dei clienti
+        $fatList = DB::connection(RedisUser::get('ditta_DB'))->table('u_statfatt_art')
+        ->join('anagrafe', 'anagrafe.codice', '=', 'u_statfatt_art.codicecf')
+        ->leftJoin('settori', 'settori.codice', '=', 'anagrafe.settore')
+        ->leftjoin('magart', 'magart.codice', '=', 'u_statfatt_art.codicearti')
+        ->leftJoin('maggrp', 'maggrp.codice', '=', 'u_statfatt_art.gruppo')
+        ->leftjoin('maggrp as macrogrp', function ($join) {
+            $join->on('macrogrp.codice', '=', 'u_statfatt_art.macrogrp')
+            ->whereRaw('LENGTH(macrogrp.codice) = ?', [3]);
+        })
+            ->select('u_statfatt_art.codicearti', 'u_statfatt_art.codicecf')
+            ->selectRaw('MAX(magart.descrizion) as descrArt')
+            ->selectRaw('MAX(u_statfatt_art.macrogrp) as macrogrp')
+            ->selectRaw('MAX(macrogrp.descrizion) as descrMacrogrp')
+            ->selectRaw('MAX(u_statfatt_art.gruppo) as codGruppo')
+            ->selectRaw('MAX(maggrp.descrizion) as descrGruppo')
+            ->selectRaw('MAX(u_statfatt_art.prodotto) as tipoProd')
+            ->selectRaw('MIN(u_statfatt_art.mese_parz) as meseRif')
+            ->selectRaw('SUM(IF(u_statfatt_art.esercizio = ?,' . $querySelect_qta . ', 0)) as qtaN', [$thisYear])
+            ->selectRaw('MAX(IFNULL(IF(u_statfatt_art.esercizio = ?,(' . $querySelect_fat . ')/(' . $querySelect_qta . '), 0), 0)) as pmN', [$thisYear])
+            ->selectRaw('SUM(IF(u_statfatt_art.esercizio = ?,' . $querySelect_fat . ', 0)) as fatN', [$thisYear])
+            ->selectRaw('SUM(IF(u_statfatt_art.esercizio = ?,' . $querySelect_qtaN . ', 0)) as qtaN1', [$thisYear - 1])
+            ->selectRaw('MAX(IFNULL(IF(u_statfatt_art.esercizio = ?,(' . $querySelect_fatN . ')/(' . $querySelect_qtaN . '), 0), 0)) as pmN1', [$thisYear - 1])
+            ->selectRaw('SUM(IF(u_statfatt_art.esercizio = ?,' . $querySelect_fatN . ', 0)) as fatN1', [$thisYear - 1]);
+
+        switch ($yearBack) {
+            case 2:
+                $fatList->selectRaw('SUM(IF(u_statfatt_art.esercizio = ?,' . $querySelect_qtaN . ', 0)) as qtaN2', [$thisYear - 2]);
+                $fatList->selectRaw('MAX(IFNULL(IF(u_statfatt_art.esercizio = ?,(' . $querySelect_fatN . ')/(' . $querySelect_qtaN . '), 0), 0)) as pmN2', [$thisYear - 2]);
+                $fatList->selectRaw('SUM(IF(u_statfatt_art.esercizio = ?,' . $querySelect_fatN . ', 0)) as fatN2', [$thisYear - 2]);
+            case 3:
+                $fatList->selectRaw('SUM(IF(u_statfatt_art.esercizio = ?,' . $querySelect_qtaN . ', 0)) as qtaN2', [$thisYear - 2]);
+                $fatList->selectRaw('MAX(IFNULL(IF(u_statfatt_art.esercizio = ?,(' . $querySelect_fatN . ')/(' . $querySelect_qtaN . '), 0), 0)) as pmN2', [$thisYear - 2]);
+                $fatList->selectRaw('SUM(IF(u_statfatt_art.esercizio = ?,' . $querySelect_fatN . ', 0)) as fatN2', [$thisYear - 2]);
+                $fatList->selectRaw('SUM(IF(u_statfatt_art.esercizio = ?,' . $querySelect_qtaN . ', 0)) as qtaN3', [$thisYear - 3]);
+                $fatList->selectRaw('MAX(IFNULL(IF(u_statfatt_art.esercizio = ?,(' . $querySelect_fatN . ')/(' . $querySelect_qtaN . '), 0),0)) as pmN3', [$thisYear - 3]);
+                $fatList->selectRaw('SUM(IF(u_statfatt_art.esercizio = ?,' . $querySelect_fatN . ', 0)) as fatN3', [$thisYear - 3]);
+                break;
+            case 4:
+                $fatList->selectRaw('SUM(IF(u_statfatt_art.esercizio = ?,' . $querySelect_qtaN . ', 0)) as qtaN2', [$thisYear - 2]);
+                $fatList->selectRaw('MAX(IFNULL(IF(u_statfatt_art.esercizio = ?,(' . $querySelect_fatN . ')/(' . $querySelect_qtaN . '), 0), 0)) as pmN2', [$thisYear - 2]);
+                $fatList->selectRaw('SUM(IF(u_statfatt_art.esercizio = ?,' . $querySelect_fatN . ', 0)) as fatN2', [$thisYear - 2]);
+                $fatList->selectRaw('SUM(IF(u_statfatt_art.esercizio = ?,' . $querySelect_qtaN . ', 0)) as qtaN3', [$thisYear - 3]);
+                $fatList->selectRaw('MAX(IFNULL(IF(u_statfatt_art.esercizio = ?,(' . $querySelect_fatN . ')/(' . $querySelect_qtaN . '), 0),0)) as pmN3', [$thisYear - 3]);
+                $fatList->selectRaw('SUM(IF(u_statfatt_art.esercizio = ?,' . $querySelect_fatN . ', 0)) as fatN3', [$thisYear - 3]);
+                $fatList->selectRaw('SUM(IF(u_statfatt_art.esercizio = ?,' . $querySelect_qtaN . ', 0)) as qtaN4', [$thisYear - 4]);
+                $fatList->selectRaw('MAX(IFNULL(IF(u_statfatt_art.esercizio = ?,(' . $querySelect_fatN . ')/(' . $querySelect_qtaN . '), 0),0)) as pmN4', [$thisYear - 4]);
+                $fatList->selectRaw('SUM(IF(u_statfatt_art.esercizio = ?,' . $querySelect_fatN . ', 0)) as fatN4', [$thisYear - 4]);
+                break;
+        }
+        $fatList->whereRaw('u_statfatt_art.esercizio >= ?', [$thisYear - $yearBack]);
+        $fatList->whereIn('anagrafe.agente', $fltAgents);
+        $fatList->whereRaw('(LEFT(u_statfatt_art.codicearti,4) != ? AND LEFT(u_statfatt_art.codicearti,4) != ?)', ['CAMP', 'NOTA']);
+        $fatList->whereRaw('(LEFT(u_statfatt_art.gruppo,1) != ? AND LEFT(u_statfatt_art.gruppo,1) != ? AND LEFT(u_statfatt_art.gruppo,3) != ?)', ['C', '2', 'DIC']);
+        if ($settoreSelected != null) $fatList->whereIn('anagrafe.settore', $settoreSelected);
+        if ($zoneSelected != null) $fatList->whereIn('anagrafe.zona', $zoneSelected);
+        if ($req->input('grpPrdSelected')) {
+            $fatList->whereIn('u_statfatt_art.gruppo', $req->input('grpPrdSelected'));
+        }
+        if (!empty($req->input('optTipoProd'))) {
+            $fatList->where('u_statfatt_art.prodotto', $req->input('optTipoProd'));
+        }
+        $fatList->groupBy(['codicearti', 'codicecf']);
+        if ($limitVal != null) {
+            $fatList->havingRaw('fatN >= ?', [$limitVal]);
+        }
+        $fatList->orderBy('codGruppo')->orderBy('codicearti');
+        $fatList = $fatList->get();
+        
+        $listCodicecf = $fatList->pluck('codicecf')->unique()->toArray();
+
+        $fatList = $fatList->groupBy('codicecf');
+
+        $customers = Client::whereIn('codice', $listCodicecf)->orderBy('codice')->get();
+        // dd($listCodicecf);
+
+        $meseRif = $meseSelected ? $meseSelected : ($fatList->first() ? $fatList->first()->meseRif : Carbon::now()->month);
+
+        $title = "Scheda Confronto Anni";
+        $subTitle = "NONE";
+        $view = '_exports.pdf.schedaFatArtPdfByCustomer';
+        $data = [
+            'customers' => $customers,
+            'fatListByCustomer' => $fatList,
+            'thisYear' => $thisYear,
+            'yearback' => $yearBack,
+            'mese' => $meseRif,
+            'onlyMese' => $onlyMese,
+            'pariperiodo' => $isPariPeriodo
+        ];
+        $pdf = PdfReport::A4Landscape($view, $data, $title, $subTitle);
+
+        return $pdf->stream($title . '-' . $subTitle . '.pdf');
+    }
+
     public function downloadXLSTot(Request $req, $codAg = null)
     {
         $agentList = Agent::select('codice', 'descrizion')->whereNull('u_dataini')->orderBy('codice')->get();

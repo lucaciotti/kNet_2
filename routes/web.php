@@ -444,7 +444,7 @@ Route::group(['as' => 'schedaFatArt::'], function () {
   ]);
   Route::get('/schedaFatArtPDF', [
     'as' => 'PDFTot',
-    'uses' => 'SchedaFatArtController@downloadPDFTot'
+    'uses' => 'SchedaFatArtController@downloadPDFTotByCustomer'
   ]);
   Route::get('/schedaFatArtPDFCli', [
     'as' => 'PDFListaCli',
