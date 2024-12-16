@@ -520,6 +520,11 @@ Route::group(['as' => 'Portfolio::'], function () {
     'as' => 'portfolioAgByCustomer',
     'uses' => 'PortfolioController@portfolioAgByCustomer'
   ]);
+  Route::get('/portfolioAgByCustomerPDF', [
+    'as' => 'portfolioAgByCustomerPDF',
+    'uses' => 'PortfolioController@portfolioAgByCustomerPDF'
+  ]);
+
 
   Route::get('/orders_toDispach', [
     'as' => 'ordersDispach',

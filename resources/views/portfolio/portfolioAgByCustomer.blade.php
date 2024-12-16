@@ -102,8 +102,30 @@ Agents Portfolio - Dettaglio Clienti
     </form>
 
     <div class="box box-default {{-- collapsed-box --}}">
+      <div class="box-header with-border">
+        <h3 class="box-title" data-widget="collapse"><i class='fa fa-cloud-download'> </i> Download</h3>
+        <div class="box-tools pull-right">
+          <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i></button>
+        </div>
+      </div>
       <div class="box-body">
-        <a type="button" class="btn btn-default btn-block" target="_blank" href="{{ route('Portfolio::idxAg') }}">Agents Portfolio - Gruppo Prodotti</a>
+        <a type="button" class="btn btn-default btn-block" target="_blank" href="{{ route('Portfolio::portfolioAgByCustomerPDF', [
+                                            'codag' => $fltAgents,
+                                            'year' => $thisYear,
+                                            'cumulativo' => isset($cumulativo),
+                                            'mese' => $mese,
+                                            ]) }}">PDF Portafoglio Clienti</a>
+      </div>
+    </div>
+
+    <div class="box box-default {{-- collapsed-box --}}">
+      <div class="box-body">
+        <a type="button" class="btn btn-default btn-block" target="_blank" href="{{ route('Portfolio::idxAg', [
+                                            'codag' => $fltAgents,
+                                            'year' => $thisYear,
+                                            'cumulativo' => isset($cumulativo),
+                                            'mese' => $mese,
+                                            ]) }}">Agents Portfolio - Gruppo Prodotti</a>
         {{-- <a type="button" class="btn btn-default btn-block" target="_blank" href="{{ route('Portfolio::portfolioAgByCustomer') }}">Agents Portfolio - Clienti</a> --}}
       </div>
     </div>
@@ -161,7 +183,7 @@ Agents Portfolio - Dettaglio Clienti
               $TotAg_N += $fat_TotCustomer_N;
               @endphp
               <tr>
-                <td><b>{{ $group['client']->descrizion }}</b> [<a href="{{ route('client::detail', $key ) }}" target="_blank">{{ $key }}</a>]</td>
+                <td style="text-align: left;"><b>{{ $group['client']->descrizion }}</b> [<a href="{{ route('client::detail', $key ) }}" target="_blank">{{ $key }}</a>]</td>
                 <td>{{ $group['client']->detZona->descrizion }}</td>
                 <td>{{ $group['client']->detSect->descrizion }}</td>
                 <td> {{ currency($group['totOrd'] ?? 0) }} </td>

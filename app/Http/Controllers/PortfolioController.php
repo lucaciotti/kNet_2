@@ -8,6 +8,7 @@ use knet\ArcaModels\Agent;
 use knet\ArcaModels\DocCli;
 use knet\ArcaModels\DocRow;
 use knet\Helpers\AgentFltUtils;
+use knet\Helpers\PdfReport;
 use knet\Helpers\Utils;
 use knet\Helpers\RedisUser;
 
@@ -212,6 +213,96 @@ class PortfolioController extends Controller
 			'fltAgents' => $fltAgents,
 			'portfolio' => $portfolio
 		]);
+	}
+
+	public function portfolioAgByCustomerPDF(Request $req, $codAg = null)
+	{
+		// Costruisco i filtri
+		$this->thisYear = (!$req->input('year') ? Carbon::now()->year : $req->input('year'));
+		$this->prevYear = $this->thisYear - 1;
+		$this->dStartMonth = new Carbon('first day of ' . Carbon::now()->format('F') . ' ' . ((string)$this->thisYear));
+		$this->dEndMonth = new Carbon('last day of ' . Carbon::now()->format('F') . ' ' . ((string)$this->thisYear));
+		$mese = (!$req->input('mese') ? Carbon::now()->month : $req->input('mese'));
+		if ($mese) {
+			$this->dStartMonth = new Carbon('first day of ' . Carbon::createFromDate(null, $mese, null)->format('F') . ' ' . ((string)$this->thisYear));
+			$this->dEndMonth = new Carbon('last day of ' . Carbon::createFromDate(null, $mese, null)->format('F') . ' ' . ((string)$this->thisYear));
+		}
+		if ($req->input('cumulativo')) {
+			$this->dStartMonth = new Carbon('first day of january ' . ((string)$this->thisYear));
+		}
+
+		$agents = Agent::select('codice', 'descrizion')->whereNull('u_dataini')->orWhere('u_dataini', '>=', Carbon::now())->orderBy('codice')->get();
+		$codAg = ($req->input('codag')) ? $req->input('codag') : $codAg;
+		$fltAgents = (!empty($codAg)) ? $codAg : array_wrap((!empty(RedisUser::get('codag')) ? RedisUser::get('codag') : $agents->first()->codice)); //$agents->pluck('codice')->toArray();
+		$fltAgents = AgentFltUtils::checkSpecialRules($fltAgents);
+		
+
+		$ord = $this->getOrderToShip(['A', 'B', 'D0'], $fltAgents, ['Z'])->sortBy('doccli.codicecf')->groupBy('doccli.codicecf')->mapWithKeys(function ($group, $key) {
+			return collect([
+				$key =>
+				collect([
+					'codicecf' => $key,
+					'client' => $group->first()->doccli->client,
+					'totOrd' => $group->sum('totRowPrice'),
+					'n_docOrd' => $group->groupBy('doccli.id')->count()
+				])
+			]);
+		});
+
+		$ddt = $this->getDdtNotInvoiced(['A', 'B', 'D0'], $fltAgents, ['Z'])->sortBy('doccli.codicecf')->groupBy('doccli.codicecf')->mapWithKeys(function ($group, $key) {
+			return collect([
+				$key =>
+				collect([
+					'codicecf' => $key,
+					'client' => $group->first()->doccli->client,
+					'totDdt' => $group->sum('totRowPrice'),
+					'n_docDdt' => $group->groupBy('doccli.id')->count()
+				])
+			]);
+		});
+
+		$fatt = $this->getInvoice(['A', 'B', 'D0'], $fltAgents, ['Z'])->sortBy('doccli.codicecf')->groupBy('doccli.codicecf')->mapWithKeys(function ($group, $key) {
+			return collect([
+				$key =>
+				collect([
+					'codicecf' => $key,
+					'client' => $group->first()->doccli->client,
+					'totFat' => $group->sum('totRowPrice'),
+					'n_docFat' => $group->groupBy('doccli.id')->count()
+				])
+			]);
+		});
+
+		$portfolio= $ord->union($fatt)->union($ddt)->map(function ($c, $key) use ($fatt, $ddt) {
+			if ($fatt->has($key)) {
+				return $c->union($fatt[$key]);
+			} else {
+				return $c->put('totFat', 0);
+			}
+			if ($ddt->has($key)) {
+				return $c->union($ddt[$key]);
+			}
+			return $c;
+		})
+		// ->sortBy('codicecf');
+		->sortByDesc('totFat');
+		// dd($portfolio);
+
+		$title = "Portafoglio Clienti";
+		$subTitle = "";
+		$view = '_exports.pdf.portfolioCliPdf';
+		$data = [
+			'agents' => $agents,
+			'mese' => $mese,
+			'cumulativo' => $req->input('cumulativo'),
+			'thisYear' => $this->thisYear,
+			'prevYear' => $this->prevYear,
+			'fltAgents' => $fltAgents,
+			'portfolio' => $portfolio
+		];
+		$pdf = PdfReport::A4Landscape($view, $data, $title, $subTitle);
+
+		return $pdf->stream($title . '-' . $subTitle . '.pdf');
 	}
 
 	public function portfolioPDF(Request $req, $codAg, $mese, $year){
