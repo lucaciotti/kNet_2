@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Route;
+use knet\Jobs\FetchReportToSend;
 
 /*
 |--------------------------------------------------------------------------
