@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -643,6 +645,36 @@ Route::group(['as' => 'manuale::'], function () {
     'uses' => function (Request $request) {
       $fileName = public_path('manuali/ManualeAgente-kNet.pdf');
       return response()->download($fileName);
+    }
+  ]);
+});
+
+Route::group(['as' => 'jobs::'], function () {
+  Route::get('jobReportWeekly', [
+    'as' => 'reportWeekly',
+    'uses' => function (Request $req) {
+      $job = (new FetchReportToSend('weekly'))->onQueue('jobs');
+      $key = Bus::dispatch($job);
+      Log::info('Dispached FetchReportToSend weekly '. $key);
+      return Redirect::back()->withErrors(['msg' => 'Job Created']);
+    }
+  ]);
+  Route::get('jobReportMonthly', [
+    'as' => 'reportMonthly',
+    'uses' => function (Request $req) {
+      $job = (new FetchReportToSend('monthly'))->onQueue('jobs');
+      $key = Bus::dispatch($job);
+      Log::info('Dispached FetchReportToSend monthly '. $key);
+      return Redirect::back()->withErrors(['msg' => 'Job Created']);
+    }
+  ]);
+  Route::get('jobReportQuarterly', [
+    'as' => 'reportQuarterly',
+    'uses' => function (Request $req) {
+      $job = (new FetchReportToSend('quarterly'))->onQueue('jobs');
+      $key = Bus::dispatch($job);
+      Log::info('Dispached FetchReportToSend quarterly '. $key);
+      return Redirect::back()->withErrors(['msg' => 'Job Created']);
     }
   ]);
 });

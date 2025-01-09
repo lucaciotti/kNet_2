@@ -614,12 +614,24 @@ class PortfolioController extends Controller
 	// LISTA DEI DOCUMENTI
 	public function getListDoc($tipodocs, $agents = [], $evasi=false, $filiali = false)
 	{
-		$docTes = DocCli::whereBetween('datadoc', [$this->dStartMonth, $this->dEndMonth])
-			->whereIn('tipodoc', $tipodocs);
+		$docTes = DocCli::whereIn('tipodoc', $tipodocs);
 		if(!$evasi){
 			$docTes->whereHas('docrow', function ($query) {
-				$query->where('quantitare', '>', 0);
+				$query->where('quantitare', '>', 0)
+					->where('ommerce', 0)
+					->where('codicearti', '!=', '')
+					->whereHas('product', function ($q) {
+						$q->orWhere('u_artlis', 1)->orWhere('u_perscli', 1);
+					});
 			});
+		}
+		if(in_array("OC", $tipodocs)|| in_array("XC", $tipodocs)) {
+			$docTes->whereHas('docrow', function ($query) {
+						$query->where('dataconseg', '<=', $this->dEndMonth);;
+					})
+			->whereIn('esercizio', [(string)$this->thisYear, (string)$this->prevYear]);
+		} else {
+			$docTes->whereBetween('datadoc', [$this->dStartMonth, $this->dEndMonth]);
 		}
 		if (!$filiali && RedisUser::get('ditta_DB') == 'knet_it') {
 			$docTes->whereNotIn('codicecf', ['C00973', 'C03000', 'C07000', 'C06000', 'C01253']);
