@@ -28,7 +28,7 @@ class Kernel extends ConsoleKernel
         // $schedule->command('inspire')
         //          ->hourly();
         // $schedule->job(new FetchReportToSend('weekly'), 'jobs')->hourlyAt(17);
-        $schedule->job(new FetchReportToSend('weekly'), 'jobs')->weeklyOn(5, '19:00');
+        $schedule->job(new FetchReportToSend('weekly'), 'jobs')->weeklyOn(6, '8:00');
         $schedule->job(new FetchReportToSend('monthly'), 'jobs')->monthly();
         $schedule->job(new FetchReportToSend('quarterly'), 'jobs')->quarterly();
     }
