@@ -46,8 +46,9 @@ class PortfolioController extends Controller
 		$codAg = ($req->input('codag')) ? $req->input('codag') : $codAg;
 		$fltAgents = (!empty($codAg)) ? $codAg : array_wrap((!empty(RedisUser::get('codag')) ? RedisUser::get('codag') : $agents->first()->codice)); //$agents->pluck('codice')->toArray();
 		$fltAgents = AgentFltUtils::checkSpecialRules($fltAgents);
-
-		$OCKrona = $this->getOrderToShip(['A'],$fltAgents, ['A99'])->sum('totRowPrice');
+		
+		$OCKrona = $this->getOrderToShip(['A'],$fltAgents, ['A99', 'A14'])->sum('totRowPrice');
+		$OCSpinOff = $this->getOrderToShip(['A14'],$fltAgents)->sum('totRowPrice');
 		$OCKoblenz = $this->getOrderToShip(['B'],$fltAgents, ['B06', 'B99'])->sum('totRowPrice');
 		$OCBonusKrona = $this->getOrderToShip(['A99'],$fltAgents)->sum('totRowPrice');
 		$OCBonusKoblenz = $this->getOrderToShip(['B99'],$fltAgents)->sum('totRowPrice');
@@ -56,7 +57,8 @@ class PortfolioController extends Controller
 		$OCPlanet = (RedisUser::get('ditta_DB')=='kNet_es') ? $this->getOrderToShip(['D0'], $fltAgents)->sum('totRowPrice') : 0;
 		$OCDIC = $this->getOrderToShip(['Z'], $fltAgents)->sum('totRowPrice');
 
-		$BOKrona = $this->getDdtNotInvoiced(['A'],$fltAgents, ['A99'])->sum('totRowPrice');
+		$BOKrona = $this->getDdtNotInvoiced(['A'],$fltAgents, ['A99', 'A14'])->sum('totRowPrice');
+		$BOSpinOff = $this->getDdtNotInvoiced(['A14'], $fltAgents)->sum('totRowPrice');
 		$BOKoblenz = $this->getDdtNotInvoiced(['B'],$fltAgents, ['B06', 'B99'])->sum('totRowPrice');
 		$BOBonusKrona = $this->getDdtNotInvoiced(['A99'],$fltAgents)->sum('totRowPrice');
 		$BOBonusKoblenz = $this->getDdtNotInvoiced(['B99'],$fltAgents)->sum('totRowPrice');
@@ -65,7 +67,8 @@ class PortfolioController extends Controller
 		$BOPlanet = (RedisUser::get('ditta_DB')=='kNet_es') ? $this->getDdtNotInvoiced(['D0'], $fltAgents)->sum('totRowPrice') : 0;
 		$BODIC = $this->getDdtNotInvoiced(['Z'], $fltAgents)->sum('totRowPrice');
 
-		$FTKrona = $this->getInvoice(['A'],$fltAgents, ['A99'])->sum('totRowPrice');
+		$FTKrona = $this->getInvoice(['A'],$fltAgents, ['A99', 'A14'])->sum('totRowPrice');
+		$FTSpinOff = $this->getInvoice(['A14'],$fltAgents)->sum('totRowPrice');
 		$FTKoblenz = $this->getInvoice(['B'],$fltAgents, ['B06', 'B99'])->sum('totRowPrice');
 		$FTBonusKrona = $this->getInvoice(['A99'],$fltAgents)->sum('totRowPrice');
 		$FTBonusKoblenz = $this->getInvoice(['B99'],$fltAgents)->sum('totRowPrice');
@@ -74,7 +77,8 @@ class PortfolioController extends Controller
 		$FTPlanet = (RedisUser::get('ditta_DB')=='kNet_es') ? $this->getInvoice(['D0'], $fltAgents)->sum('totRowPrice') : 0;
 		$FTDIC = $this->getInvoice(['Z'], $fltAgents)->sum('totRowPrice');
 
-		$FTPrevKrona = $this->getPrevInvoice(['A'], $fltAgents, ['A99'])->sum('totRowPrice');
+		$FTPrevKrona = $this->getPrevInvoice(['A'], $fltAgents, ['A99', 'A14'])->sum('totRowPrice');
+		$FTPrevSpinOff = $this->getPrevInvoice(['A14'], $fltAgents)->sum('totRowPrice');
 		$FTPrevKoblenz = $this->getPrevInvoice(['B'], $fltAgents, ['B06', 'B99'])->sum('totRowPrice');
 		$FTPrevBonusKrona = $this->getPrevInvoice(['A99'],$fltAgents)->sum('totRowPrice');
 		$FTPrevBonusKoblenz = $this->getPrevInvoice(['B99'],$fltAgents)->sum('totRowPrice');
@@ -92,6 +96,7 @@ class PortfolioController extends Controller
 			'prevYear' => $this->prevYear,
 			'fltAgents' => $fltAgents,
 			'OCKrona' => $OCKrona,
+			'OCSpinOff' => $OCSpinOff,
 			'OCKoblenz' => $OCKoblenz,
 			'OCBonusKrona' => $OCBonusKrona,
 			'OCBonusKoblenz' => $OCBonusKoblenz,
@@ -100,6 +105,7 @@ class PortfolioController extends Controller
 			'OCPlanet' => $OCPlanet,
 			'OCDIC' => $OCDIC,
 			'BOKrona' => $BOKrona,
+			'BOSpinOff' => $BOSpinOff,
 			'BOKoblenz' => $BOKoblenz,
 			'BOBonusKrona' => $BOBonusKrona,
 			'BOBonusKoblenz' => $BOBonusKoblenz,
@@ -108,6 +114,7 @@ class PortfolioController extends Controller
 			'BOPlanet' => $BOPlanet,
 			'BODIC' => $BODIC,
 			'FTKrona' => $FTKrona,
+			'FTSpinOff' => $FTSpinOff,
 			'FTKoblenz' => $FTKoblenz,
 			'FTBonusKrona' => $FTBonusKrona,
 			'FTBonusKoblenz' => $FTBonusKoblenz,
@@ -116,6 +123,7 @@ class PortfolioController extends Controller
 			'FTPlanet' => $FTPlanet,
 			'FTDIC' => $FTDIC,
 			'FTPrevKrona' => $FTPrevKrona,
+			'FTPrevSpinOff' => $FTPrevSpinOff,
 			'FTPrevKoblenz' => $FTPrevKoblenz,
 			'FTPrevBonusKrona' => $FTPrevBonusKrona,
 			'FTPrevBonusKoblenz' => $FTPrevBonusKoblenz,

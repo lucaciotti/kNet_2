@@ -273,6 +273,15 @@ Portfolio - Gruppo Prodotti
                 <th colspan="7"> <strong>&nbsp&nbsp -> Escluso da Calcolo Portfolio</strong> </th>
               </tr>
               <tr>
+                <th>Spinoff</th>
+                <td> {{ currency($OCSpinOff) }} </td>
+                <td> {{ currency($BOSpinOff) }} </td>
+                <td> {{ currency($FTSpinOff) }} </td>
+                <td> {{ currency($OCSpinOff+$BOSpinOff+$FTSpinOff) }} </td>
+                <th colspan="1">|</th>
+                <td> {{ currency($FTPrevSpinOff) }} </td>
+              </tr>
+              <tr>
                 <th>Diciture (es. Acconti,..)</th>
                 <td> {{ currency($OCDIC) }} </td>
                 <td> {{ currency($BODIC) }} </td>
@@ -287,10 +296,10 @@ Portfolio - Gruppo Prodotti
             </tbody>
             <tfoot class="bg-gray">
               @php
-              $totOC = $totOC+$OCDIC;
-              $totBO = $totBO+$BODIC;
-              $totFT = $totFT+$FTDIC;
-              $totPrevFT = $totPrevFT+$FTPrevDIC;
+              $totOC = $totOC+$OCDIC+$OCSpinOff;
+              $totBO = $totBO+$BODIC+$BOSpinOff;
+              $totFT = $totFT+$FTDIC+$FTSpinOff;
+              $totPrevFT = $totPrevFT+$FTPrevDIC+$FTPrevSpinOff;
               @endphp
               <tr>
                 <th>TOTALE GENERALE</th>
