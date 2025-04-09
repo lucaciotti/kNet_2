@@ -1,4 +1,6 @@
-1. Start an authenticated session --> auth()->loginUsingId(2)
+1. Start an authenticated session:
+    auth()->loginUsingId(2)
+    RedisUser::store()
 
 2. Ok, now let's add an event listener:
     ```php
