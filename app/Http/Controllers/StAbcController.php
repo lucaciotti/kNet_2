@@ -31,12 +31,13 @@ class StAbcController extends Controller
     
     // idxAg -> non più utilizzato 
     public function idxAg (Request $req, $codAg=null) {
-      $agents = Agent::select('codice', 'descrizion')->whereNull('u_dataini')->orWhere('u_dataini', '>=', Carbon::now())->orderBy('codice')->get();
-      $codAg = ($req->input('codag')) ? $req->input('codag') : (!empty(RedisUser::get('codag')) ? RedisUser::get('codag') : $codAg);
-      $agente = (!empty($codAg)) ? $codAg : $agents->first()->codice;
       $thisYear =  Carbon::now()->year;
       $prevYear = $thisYear-1;
       $thisMonth = Carbon::now()->month;
+      $dataFineAgente = Carbon::createFromDate( $prevYear, 1, 1);
+      $agents = Agent::select('codice', 'descrizion', 'u_dataini')->whereNull('u_dataini')->orWhere('u_dataini', '>=', $dataFineAgente)->orderBy('codice')->get();
+      $codAg = ($req->input('codag')) ? $req->input('codag') : (!empty(RedisUser::get('codag')) ? RedisUser::get('codag') : $codAg);
+      $agente = (!empty($codAg)) ? $codAg : $agents->first()->codice;
       // (Legenda PY -> Previous Year ; TY -> This Year)
       $AbcProds = StatABC::select('articolo', 'codag',
                     DB::raw('MAX(prodotto) as prodotto'),
@@ -212,8 +213,13 @@ class StAbcController extends Controller
 
     public function idxArt(Request $req, $codAg = null)
     {
-      // lista di tutti gli agenti attivi
-      $agentList = Agent::select('codice', 'descrizion')->whereNull('u_dataini')->orWhere('u_dataini', '>=', Carbon::now())->orderBy('codice')->get();
+    // lista di tutti gli agenti attivi
+      $thisYear =  Carbon::now()->year;
+      $prevYear = $thisYear - 1;
+      $thisMonth = Carbon::now()->month;
+      $dataFineAgente = Carbon::createFromDate( $prevYear, 1, 1);
+      $agentList = Agent::select('codice', 'descrizion', 'u_dataini')->whereNull('u_dataini')->orWhere('u_dataini', '>=', $dataFineAgente)->orderBy('codice')->get();
+      // $agentList = Agent::select('codice', 'descrizion', 'u_dataini')->whereNull('u_dataini')->orWhere('u_dataini', '>=', Carbon::now())->orderBy('codice')->get();
 
       $codAg = ($req->input('codag')) ? $req->input('codag') : ($codAg ? array_wrap($codAg) : array_wrap($codAg));
       // $fltAgents = (!empty($codAg)) ? $codAg : array_wrap((!empty(RedisUser::get('codag')) ? RedisUser::get('codag') : $codAg));
@@ -223,9 +229,6 @@ class StAbcController extends Controller
       $zoneSelected = ($req->input('zoneSelected')) ? $req->input('zoneSelected') : null;
       $customerSelected = ($req->input('customerSelected')) ? $req->input('customerSelected') : null;
         
-      $thisYear =  Carbon::now()->year;
-      $prevYear = $thisYear - 1;
-      $thisMonth = Carbon::now()->month;
       // (Legenda PY -> Previous Year ; TY -> This Year)
       $AbcProds = StatABC::select(
         'articolo',
@@ -339,12 +342,18 @@ class StAbcController extends Controller
     }
 
     public function detailArt (Request $req, $codArt, $codAg = null, $codZona = null) {
+      $thisYear =  Carbon::now()->year;
+      $prevYear = $thisYear-1;
+      $thisMonth = Carbon::now()->month;
+
       $isDetAg = !empty($req->input('codag')) || !empty($codAg);
       $settoreSelected = ($req->input('settoreSelected')) ? $req->input('settoreSelected') : null;
       $zoneSelected = ($req->input('zoneSelected')) ? $req->input('zoneSelected') : null;
       $customerSelected = ($req->input('customerSelected')) ? $req->input('customerSelected') : null;
       if($isDetAg){
-        $agents = Agent::select('codice', 'descrizion')->whereNull('u_dataini')->orWhere('u_dataini', '>=', Carbon::now())->orderBy('codice')->get();
+        $dataFineAgente = Carbon::createFromDate( $prevYear, 1, 1);
+        $agents = Agent::select('codice', 'descrizion', 'u_dataini')->whereNull('u_dataini')->orWhere('u_dataini', '>=', $dataFineAgente)->orderBy('codice')->get();
+        // $agents = Agent::select('codice', 'descrizion', 'u_dataini')->whereNull('u_dataini')->orWhere('u_dataini', '>=', Carbon::now())->orderBy('codice')->get();
         $codAg = ($req->input('codag')) ? $req->input('codag') : $codAg;
         $agente = (!empty($codAg)) ? $codAg : $agents->first()->codice;
         $descrAg = (!empty($agents->whereStrict('codice', $agente)->first()) ? $agents->whereStrict('codice', $agente)->first()->descrizion : "");
@@ -355,9 +364,6 @@ class StAbcController extends Controller
       }
       // dd($agente);
       $codArt = !empty($codArt) ? $codArt : $req->input('codart');
-      $thisYear =  Carbon::now()->year;
-      $prevYear = $thisYear-1;
-      $thisMonth = Carbon::now()->month;
       // (Legenda PY -> Previous Year ; TY -> This Year)
       $AbcProds = StatABC::select('articolo', 'codag', 'codicecf',
                     DB::raw('MAX(prodotto) as prodotto'),

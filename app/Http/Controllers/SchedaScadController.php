@@ -30,7 +30,7 @@ class SchedaScadController extends Controller
       }
       $endDateScad = new Carbon('last day of last month');
 
-      $agente = Agent::select('codice', 'descrizion')->where('codice', $codAg)->where(DB::raw('LENGTH(codice)'), strlen($codAg))->orderBy('codice')->first();
+      $agente = Agent::select('codice', 'descrizion', 'u_dataini')->where('codice', $codAg)->where(DB::raw('LENGTH(codice)'), strlen($codAg))->orderBy('codice')->first();
 
       $provv_TY = ScadCli::select('id', 'id_doc', 'numfatt', 
                 'datafatt', 'datascad', 'codcf', 'tipomod', 
@@ -89,7 +89,7 @@ class SchedaScadController extends Controller
       }
       $endDateScad = new Carbon('last day of last month');
 
-      $agente = Agent::select('codice', 'descrizion')->where('codice', $codAg)->where(DB::raw('LENGTH(codice)'), strlen($codAg))->orderBy('codice')->first();
+      $agente = Agent::select('codice', 'descrizion', 'u_dataini')->where('codice', $codAg)->where(DB::raw('LENGTH(codice)'), strlen($codAg))->orderBy('codice')->first();
 
       if($year<2021){
         $provv_TY = DB::connection(RedisUser::get('ditta_DB'))->table('doctes')
@@ -195,7 +195,7 @@ class SchedaScadController extends Controller
     public function downloadScadPDF(Request $req, $codAg=null){
       $thisYear = Carbon::now()->year;
       if($codAg){
-        $agente = Agent::select('codice', 'descrizion')->where('codice', $codAg)->where(DB::raw('LENGTH(codice)'), strlen($codAg))->orderBy('codice')->first();
+        $agente = Agent::select('codice', 'descrizion', 'u_dataini')->where('codice', $codAg)->where(DB::raw('LENGTH(codice)'), strlen($codAg))->orderBy('codice')->first();
       }
 
       $startDate = Carbon::createFromDate($thisYear, 1, 1);

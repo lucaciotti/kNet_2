@@ -2,6 +2,7 @@
 
 namespace knet\ArcaModels;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 // use RedisUser;
@@ -46,11 +47,22 @@ class Agent extends Model
             break;
         }
     }
-/* 
+  /* 
     public function getCodiceAttribute($value){
       return (string)$value;
     }
  */
+
+  // GETTER
+    public function getDescrizionAttribute($value)
+    {
+      if(!empty($this->u_dataini) and $this->u_dataini < Carbon::now())
+      // dd($this);
+        return $value . ' [CHIUSO su Arca]';
+      return $value;
+    }
+
+
     // JOIN Tables
     public function client(){
       return $this->hasMany('knet\ArcaModels\Client', 'agente', 'codice');

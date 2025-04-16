@@ -73,7 +73,7 @@ class UserController extends Controller
                   ->withoutGlobalScope('agent')
                   ->withoutGlobalScope('superAgent')
                   ->withoutGlobalScope('client')->get();
-      $agents = Agent::select('codice', 'descrizion')->get();
+      $agents = Agent::select('codice', 'descrizion', 'u_dataini')->get();
       // dd($user->roles->contains(33));
       return view('user.edit', [
         'user' => $user,

@@ -19,10 +19,10 @@ class SchedaFattController extends Controller
     }
 
     public function downloadPDF(Request $req, $codAg=null){
-        // $agente = Agent::select('codice', 'descrizion')->where('codice', $codAg)->where(DB::raw('LENGTH(codice)'), strlen($codAg))->orderBy('codice')->first();
+        // $agente = Agent::select('codice', 'descrizion', 'u_dataini')->where('codice', $codAg)->where(DB::raw('LENGTH(codice)'), strlen($codAg))->orderBy('codice')->first();
         $codAg = ($req->input('fltAgents')) ? $req->input('fltAgents') : ($codAg ? array_wrap($codAg) : $codAg);
         $codAg = AgentFltUtils::checkSpecialRules($codAg);
-        $agentList = Agent::select('codice', 'descrizion')->whereIn('codice', $codAg)->orderBy('codice')->get();
+        $agentList = Agent::select('codice', 'descrizion', 'u_dataini')->whereIn('codice', $codAg)->orderBy('codice')->get();
         $thisYear = (string)(Carbon::now()->year);
         $prevYear = (string)((Carbon::now()->year)-1);
         // (Legenda PY -> Previous Year ; TY -> This Year)
@@ -176,10 +176,10 @@ class SchedaFattController extends Controller
     }
 
     public function downloadZonePDF(Request $req, $codAg=null){
-        // $agente = Agent::select('codice', 'descrizion')->where('codice', $codAg)->where(DB::raw('LENGTH(codice)'), strlen($codAg))->orderBy('codice')->first();
+        // $agente = Agent::select('codice', 'descrizion', 'u_dataini')->where('codice', $codAg)->where(DB::raw('LENGTH(codice)'), strlen($codAg))->orderBy('codice')->first();
         $codAg = ($req->input('fltAgents')) ? $req->input('fltAgents') : ($codAg ? array_wrap($codAg) : $codAg);
         $codAg = AgentFltUtils::checkSpecialRules($codAg);
-        $agentList = Agent::select('codice', 'descrizion')->whereIn('codice', $codAg)->orderBy('codice')->get();
+        $agentList = Agent::select('codice', 'descrizion', 'u_dataini')->whereIn('codice', $codAg)->orderBy('codice')->get();
         $thisYear = (string)(Carbon::now()->year);
         $prevYear = (string)((Carbon::now()->year)-1);
 

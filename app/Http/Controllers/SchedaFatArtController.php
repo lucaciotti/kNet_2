@@ -205,7 +205,12 @@ class SchedaFatArtController extends Controller
 
     public function downloadPDFTot(Request $req, $codAg = null)
     {
-        $agentList = Agent::select('codice', 'descrizion')->whereNull('u_dataini')->orderBy('codice')->get();
+
+        $thisYear = Carbon::now()->year;
+        $prevYear = $thisYear - 1;
+        $dataFineAgente = Carbon::createFromDate( $prevYear, 1, 1);
+        $agentList = Agent::select('codice', 'descrizion', 'u_dataini')->whereNull('u_dataini')->orWhere('u_dataini', '>=', $dataFineAgente)->orderBy('codice')->get();
+        // $agentList = Agent::select('codice', 'descrizion', 'u_dataini')->whereNull('u_dataini')->orderBy('codice')->get();
         $codAg = ($req->input('codag')) ? $req->input('codag') : $codAg;
         $fltAgents = (!empty($codAg)) ? $codAg : array_wrap((!empty(RedisUser::get('codag')) ? RedisUser::get('codag') : $agentList->first()->codice));
         $fltAgents = AgentFltUtils::checkSpecialRules($fltAgents);
@@ -314,7 +319,11 @@ class SchedaFatArtController extends Controller
 
     public function downloadPDFTotByCustomer(Request $req, $codAg = null)
     {
-        $agentList = Agent::select('codice', 'descrizion')->whereNull('u_dataini')->orderBy('codice')->get();
+        $thisYear = Carbon::now()->year;
+        $prevYear = $thisYear - 1;
+        $dataFineAgente = Carbon::createFromDate( $prevYear, 1, 1);
+        $agentList = Agent::select('codice', 'descrizion', 'u_dataini')->whereNull('u_dataini')->orWhere('u_dataini', '>=', $dataFineAgente)->orderBy('codice')->get();
+        // $agentList = Agent::select('codice', 'descrizion', 'u_dataini')->whereNull('u_dataini')->orderBy('codice')->get();
         $codAg = ($req->input('codag')) ? $req->input('codag') : $codAg;
         $fltAgents = (!empty($codAg)) ? $codAg : array_wrap((!empty(RedisUser::get('codag')) ? RedisUser::get('codag') : $agentList->first()->codice));
         $fltAgents = AgentFltUtils::checkSpecialRules($fltAgents);
@@ -429,7 +438,11 @@ class SchedaFatArtController extends Controller
 
     public function downloadXLSTot(Request $req, $codAg = null)
     {
-        $agentList = Agent::select('codice', 'descrizion')->whereNull('u_dataini')->orderBy('codice')->get();
+        $thisYear = Carbon::now()->year;
+        $prevYear = $thisYear - 1;
+        $dataFineAgente = Carbon::createFromDate( $prevYear, 1, 1);
+        $agentList = Agent::select('codice', 'descrizion', 'u_dataini')->whereNull('u_dataini')->orWhere('u_dataini', '>=', $dataFineAgente)->orderBy('codice')->get();
+        // $agentList = Agent::select('codice', 'descrizion', 'u_dataini')->whereNull('u_dataini')->orderBy('codice')->get();
         $codAg = ($req->input('codag')) ? $req->input('codag') : $codAg;
         $fltAgents = (!empty($codAg)) ? $codAg : array_wrap((!empty(RedisUser::get('codag')) ? RedisUser::get('codag') : $agentList->first()->codice));
         $fltAgents = AgentFltUtils::checkSpecialRules($fltAgents);
@@ -524,7 +537,11 @@ class SchedaFatArtController extends Controller
 
     public function downloadPDFListaCli(Request $req, $codAg = null)
     {
-        $agentList = Agent::select('codice', 'descrizion')->whereNull('u_dataini')->orderBy('codice')->get();
+        $thisYear = Carbon::now()->year;
+        $prevYear = $thisYear - 1;
+        $dataFineAgente = Carbon::createFromDate( $prevYear, 1, 1);
+        $agentList = Agent::select('codice', 'descrizion', 'u_dataini')->whereNull('u_dataini')->orWhere('u_dataini', '>=', $dataFineAgente)->orderBy('codice')->get();
+        // $agentList = Agent::select('codice', 'descrizion', 'u_dataini')->whereNull('u_dataini')->orderBy('codice')->get();
         $codAg = ($req->input('codag')) ? $req->input('codag') : $codAg;
         $fltAgents = (!empty($codAg)) ? $codAg : array_wrap((!empty(RedisUser::get('codag')) ? RedisUser::get('codag') : $agentList->first()->codice));
         $fltAgents = AgentFltUtils::checkSpecialRules($fltAgents);
@@ -604,7 +621,11 @@ class SchedaFatArtController extends Controller
 
     public function downloadXLSListaCli(Request $req, $codAg = null)
     {
-        $agentList = Agent::select('codice', 'descrizion')->whereNull('u_dataini')->orderBy('codice')->get();
+        $thisYear = Carbon::now()->year;
+        $prevYear = $thisYear - 1;
+        $dataFineAgente = Carbon::createFromDate( $prevYear, 1, 1);
+        $agentList = Agent::select('codice', 'descrizion', 'u_dataini')->whereNull('u_dataini')->orWhere('u_dataini', '>=', $dataFineAgente)->orderBy('codice')->get();
+        // $agentList = Agent::select('codice', 'descrizion', 'u_dataini')->whereNull('u_dataini')->orderBy('codice')->get();
         $codAg = ($req->input('codag')) ? $req->input('codag') : $codAg;
         $fltAgents = (!empty($codAg)) ? $codAg : array_wrap((!empty(RedisUser::get('codag')) ? RedisUser::get('codag') : $agentList->first()->codice));
         $fltAgents = AgentFltUtils::checkSpecialRules($fltAgents);

@@ -42,7 +42,8 @@ class PortfolioController extends Controller
 			$this->dStartMonth = new Carbon('first day of january ' . ((string)$this->thisYear));
 		}
 
-		$agents = Agent::select('codice', 'descrizion')->whereNull('u_dataini')->orWhere('u_dataini', '>=', Carbon::now())->orderBy('codice')->get();
+		$dataFineAgente = Carbon::createFromDate(1, 1, $this->prevYear);
+		$agents = Agent::select('codice', 'descrizion', 'u_dataini')->whereNull('u_dataini')->orWhere('u_dataini', '>=', $dataFineAgente)->orderBy('codice')->get();
 		$codAg = ($req->input('codag')) ? $req->input('codag') : $codAg;
 		$fltAgents = (!empty($codAg)) ? $codAg : array_wrap((!empty(RedisUser::get('codag')) ? RedisUser::get('codag') : $agents->first()->codice)); //$agents->pluck('codice')->toArray();
 		$fltAgents = AgentFltUtils::checkSpecialRules($fltAgents);
@@ -155,7 +156,8 @@ class PortfolioController extends Controller
 			$this->dStartMonth = new Carbon('first day of january ' . ((string)$this->thisYear));
 		}
 
-		$agents = Agent::select('codice', 'descrizion')->whereNull('u_dataini')->orWhere('u_dataini', '>=', Carbon::now())->orderBy('codice')->get();
+		$dataFineAgente = Carbon::createFromDate(1, 1, $this->prevYear);
+		$agents = Agent::select('codice', 'descrizion', 'u_dataini')->whereNull('u_dataini')->orWhere('u_dataini', '>=', $dataFineAgente)->orderBy('codice')->get();
 		$codAg = ($req->input('codag')) ? $req->input('codag') : $codAg;
 		$fltAgents = (!empty($codAg)) ? $codAg : array_wrap((!empty(RedisUser::get('codag')) ? RedisUser::get('codag') : $agents->first()->codice)); //$agents->pluck('codice')->toArray();
 		$fltAgents = AgentFltUtils::checkSpecialRules($fltAgents);
@@ -239,7 +241,8 @@ class PortfolioController extends Controller
 			$this->dStartMonth = new Carbon('first day of january ' . ((string)$this->thisYear));
 		}
 
-		$agents = Agent::select('codice', 'descrizion')->whereNull('u_dataini')->orWhere('u_dataini', '>=', Carbon::now())->orderBy('codice')->get();
+		$dataFineAgente = Carbon::createFromDate(1, 1, $this->prevYear);
+		$agents = Agent::select('codice', 'descrizion', 'u_dataini')->whereNull('u_dataini')->orWhere('u_dataini', '>=', $dataFineAgente)->orderBy('codice')->get();
 		$codAg = ($req->input('codag')) ? $req->input('codag') : $codAg;
 		$fltAgents = (!empty($codAg)) ? $codAg : array_wrap((!empty(RedisUser::get('codag')) ? RedisUser::get('codag') : $agents->first()->codice)); //$agents->pluck('codice')->toArray();
 		$fltAgents = AgentFltUtils::checkSpecialRules($fltAgents);
@@ -328,7 +331,8 @@ class PortfolioController extends Controller
 			$this->dStartMonth = new Carbon('first day of january ' . ((string)$this->thisYear));
 		}
 
-		$agents = Agent::select('codice', 'descrizion')->whereNull('u_dataini')->orWhere('u_dataini', '>=', Carbon::now())->orderBy('codice')->get();
+		$dataFineAgente = Carbon::createFromDate(1, 1, $this->prevYear);
+		$agents = Agent::select('codice', 'descrizion', 'u_dataini')->whereNull('u_dataini')->orWhere('u_dataini', '>=', $dataFineAgente)->orderBy('codice')->get();
 		$codAg = ($req->input('codag')) ? $req->input('codag') : $codAg;
 		$fltAgents = (!empty($codAg)) ? $codAg : array_wrap((!empty(RedisUser::get('codag')) ? RedisUser::get('codag') : $agents->first()->codice)); //$agents->pluck('codice')->toArray();
 		$fltAgents = AgentFltUtils::checkSpecialRules($fltAgents);

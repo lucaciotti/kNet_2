@@ -24,8 +24,8 @@ class StFattArtController extends Controller
     {
         $thisYear = ($req->input('startYear')) ? $req->input('startYear') :(Carbon::now()->year);
 
-        $agentList = Agent::select('codice', 'descrizion')->whereNull('u_dataini')->orWhere('u_dataini', '>=', Carbon::now())->orderBy('codice')->get();
-        // $agentList = Agent::select('codice', 'descrizion')->whereHas('client', function($query) use  { $query->select('codice')->whereHas('statFattArt', function($query) use ($thisYear) { $query->select('codicecf');}); })->orderBy('codice')->get();
+        $agentList = Agent::select('codice', 'descrizion', 'u_dataini')->whereNull('u_dataini')->orWhere('u_dataini', '>=', Carbon::now())->orderBy('codice')->get();
+        // $agentList = Agent::select('codice', 'descrizion', 'u_dataini')->whereHas('client', function($query) use  { $query->select('codice')->whereHas('statFattArt', function($query) use ($thisYear) { $query->select('codicecf');}); })->orderBy('codice')->get();
 
         $codAg = ($req->input('codag')) ? $req->input('codag') : ($codAg ? array_wrap($codAg) : $codAg);
         $fltAgents = (!empty($codAg)) ? $codAg : array_wrap((!empty(RedisUser::get('codag')) ? RedisUser::get('codag') : $agentList->first()->codice));

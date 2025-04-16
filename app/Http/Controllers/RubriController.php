@@ -110,7 +110,10 @@ class RubriController extends Controller
       
       $nazioni = Nazione::all();
       $settori = Settore::all();
-      $agenti = $agentList = Agent::select('codice', 'descrizion')->whereNull('u_dataini')->orWhere('u_dataini', '>=', Carbon::now())->orderBy('codice')->get();;
+      $thisYear =  Carbon::now()->year;
+      $prevYear = $thisYear - 1;
+      $dataFineAgente = Carbon::createFromDate( $prevYear, 1, 1);
+      $agenti = Agent::select('codice', 'descrizion', 'u_dataini')->whereNull('u_dataini')->orWhere('u_dataini', '>=', $dataFineAgente)->orderBy('codice')->get();
 
       $returnToVisit = ($req->input('visit')) ? True : False;
 

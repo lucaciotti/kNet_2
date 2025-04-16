@@ -99,7 +99,7 @@ class MakePortfolioAgCustomerToSend implements ShouldQueue
             $this->dStartMonth = new Carbon('first day of january ' . ((string)$this->thisYear));
         }
 
-        $agents = Agent::select('codice', 'descrizion')->whereNull('u_dataini')->orWhere('u_dataini', '>=', Carbon::now())->orderBy('codice')->get();
+        $agents = Agent::select('codice', 'descrizion', 'u_dataini')->whereNull('u_dataini')->orWhere('u_dataini', '>=', Carbon::now())->orderBy('codice')->get();
         $fltAgents = $agents->pluck('codice')->toArray(); //$agents->pluck('codice')->toArray();
         $fltAgents = AgentFltUtils::checkSpecialRules($fltAgents);
 

@@ -92,7 +92,7 @@ class MakeStatFatByCustomerToSend implements ShouldQueue
         $this->dStartMonth = new Carbon('first day of ' . Carbon::now()->format('F') . ' ' . ((string)$this->thisYear));
         $this->dEndMonth = new Carbon('last day of ' . Carbon::now()->format('F') . ' ' . ((string)$this->thisYear));
 
-        $agents = Agent::select('codice', 'descrizion')->whereNull('u_dataini')->orWhere('u_dataini', '>=', Carbon::now())->orderBy('codice')->get();
+        $agents = Agent::select('codice', 'descrizion', 'u_dataini')->whereNull('u_dataini')->orWhere('u_dataini', '>=', Carbon::now())->orderBy('codice')->get();
         $fltAgents = $agents->pluck('codice')->toArray(); //$agents->pluck('codice')->toArray();
         $fltAgents = AgentFltUtils::checkSpecialRules($fltAgents);
 

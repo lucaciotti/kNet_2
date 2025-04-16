@@ -19,7 +19,7 @@ class SchedaAbcController extends Controller
     }
 
     public function downloadPDF(Request $req, $codAg){
-        $agente = Agent::select('codice', 'descrizion')->where('codice', $codAg)->where(DB::raw('LENGTH(codice)'), strlen($codAg))->orderBy('codice')->first();
+        $agente = Agent::select('codice', 'descrizion', 'u_dataini')->where('codice', $codAg)->where(DB::raw('LENGTH(codice)'), strlen($codAg))->orderBy('codice')->first();
         
         $thisYear =  Carbon::now()->year;
         $prevYear = $thisYear-1;

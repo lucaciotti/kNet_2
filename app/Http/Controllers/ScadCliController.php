@@ -23,7 +23,10 @@ class ScadCliController extends Controller
     $thisYear = Carbon::now()->year;
     $startDate = Carbon::createFromDate($thisYear-1, 1, 1);
     $endDate = Carbon::now();
-    $agentList = Agent::select('codice', 'descrizion')->whereNull('u_dataini')->orWhere('u_dataini', '>=', Carbon::now())->orderBy('codice')->get();
+    $prevYear = $thisYear - 1;
+    $dataFineAgente = Carbon::createFromDate( $prevYear, 1, 1);
+    $agentList = Agent::select('codice', 'descrizion', 'u_dataini')->whereNull('u_dataini')->orWhere('u_dataini', '>=', $dataFineAgente)->orderBy('codice')->get();
+    // $agentList = Agent::select('codice', 'descrizion', 'u_dataini')->whereNull('u_dataini')->orWhere('u_dataini', '>=', Carbon::now())->orderBy('codice')->get();
 
     $scads = ScadCli::select('id', 'id_doc', 'numfatt', 
               'datafatt', 'datascad', 'codcf', 'tipomod', 
@@ -60,7 +63,11 @@ class ScadCliController extends Controller
 
   public function fltIndex (Request $req){
     // dd($req);
-    $agentList = Agent::select('codice', 'descrizion')->whereNull('u_dataini')->orWhere('u_dataini', '>=', Carbon::now())->orderBy('codice')->get();
+    $thisYear = Carbon::now()->year;
+    $prevYear = $thisYear - 1;
+    $dataFineAgente = Carbon::createFromDate( $prevYear, 1, 1);
+    $agentList = Agent::select('codice', 'descrizion', 'u_dataini')->whereNull('u_dataini')->orWhere('u_dataini', '>=', $dataFineAgente)->orderBy('codice')->get();
+    // $agentList = Agent::select('codice', 'descrizion', 'u_dataini')->whereNull('u_dataini')->orWhere('u_dataini', '>=', Carbon::now())->orderBy('codice')->get();
     $scads = ScadCli::select('id', 'id_doc', 'numfatt', 
               'datafatt', 'datascad', 'codcf', 'tipomod', 
               'tipo', 'insoluto', 'u_insoluto', 'pagato', 
