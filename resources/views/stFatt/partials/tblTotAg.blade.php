@@ -32,8 +32,10 @@
       $tgtProg = $tgtMese;
       // $deltaMese = $tgtMese==0 ? 0 : round((($tgtMese-$fatMese) / $tgtMese) * 100,2);
       // $deltaProg = $tgtProg==0 ? 0 : round((($tgtProg-$fatProg) / $tgtProg) * 100,2);
-      $deltaMese = $tgtMese==0 ? 0 : round((($fatMese-$tgtMese) / $tgtMese) * 100,2);
-      $deltaProg = $tgtProg==0 ? 0 : round((($fatProg-$tgtProg) / $tgtProg) * 100,2);
+      $deltaMese = $tgtMese==0 ? 0 : (round(($fatMese / $tgtMese) * 100,2)-100);
+      $segnoDeltaMese = $deltaMese<=0 ? '' : '+';
+      $deltaProg = $tgtProg==0 ? 0 : (round(($fatProg / $tgtProg) * 100,2)-100);
+      $segnoDeltaProg = $deltaProg<=0 ? '' : '+';
     @endphp
     <tr>
       <th>{{ trans('stFatt.january') }}
@@ -43,10 +45,10 @@
       </th>
       <td><strong>{{ currency($fatMese) }}</strong></td>
       <td>{{ currency($tgtMese) }}</td>
-      <td><strong>{{ $deltaMese }} %</strong></td>
+      <td><strong>{{$segnoDeltaMese}}{{ $deltaMese }} %</strong></td>
       <td><strong>{{ currency($fatProg) }}</strong></td>
       <td>{{ currency($tgtProg) }}</td>
-      <td><strong>{{ $deltaProg }} %</strong></td>
+      <td><strong>{{$segnoDeltaProg}}{{ $deltaProg}} %</strong></td>
     </tr>
     @php
       $fatMese = empty($fat) ? 0 : $fat->valore2;
@@ -55,8 +57,10 @@
       $tgtProg += $tgtMese;
       // $deltaMese = $tgtMese==0 ? 0 : round((($tgtMese-$fatMese) / $tgtMese) * 100,2);
       // $deltaProg = $tgtProg==0 ? 0 : round((($tgtProg-$fatProg) / $tgtProg) * 100,2);
-      $deltaMese = $tgtMese==0 ? 0 : round((($fatMese-$tgtMese) / $tgtMese) * 100,2);
-      $deltaProg = $tgtProg==0 ? 0 : round((($fatProg-$tgtProg) / $tgtProg) * 100,2);
+      $deltaMese = $tgtMese==0 ? 0 : (round(($fatMese / $tgtMese) * 100,2)-100);
+      $segnoDeltaMese = $deltaMese<=0 ? '' : '+';
+      $deltaProg = $tgtProg==0 ? 0 : (round(($fatProg / $tgtProg) * 100,2)-100);
+      $segnoDeltaProg = $deltaProg<=0 ? '' : '+';
     @endphp
     <tr>
       <th>{{ trans('stFatt.february') }}
@@ -66,10 +70,10 @@
       </th>
       <td><strong>{{ currency($fatMese) }}</strong></td>
       <td>{{ currency($tgtMese) }}</td>
-      <td><strong>{{ $deltaMese }} %</strong></td>
+      <td><strong>{{$segnoDeltaMese}}{{ $deltaMese }} %</strong></td>
       <td><strong>{{ currency($fatProg) }}</strong></td>
       <td>{{ currency($tgtProg) }}</td>
-      <td><strong>{{ $deltaProg }} %</strong></td>
+      <td><strong>{{$segnoDeltaProg}}{{ $deltaProg}} %</strong></td>
     </tr>
     @php
       $fatMese = empty($fat) ? 0 : $fat->valore3;
@@ -78,8 +82,10 @@
       $tgtProg += $tgtMese;
       // $deltaMese = $tgtMese==0 ? 0 : round((($tgtMese-$fatMese) / $tgtMese) * 100,2);
       // $deltaProg = $tgtProg==0 ? 0 : round((($tgtProg-$fatProg) / $tgtProg) * 100,2);
-      $deltaMese = $tgtMese==0 ? 0 : round((($fatMese-$tgtMese) / $tgtMese) * 100,2);
-      $deltaProg = $tgtProg==0 ? 0 : round((($fatProg-$tgtProg) / $tgtProg) * 100,2);
+      $deltaMese = $tgtMese==0 ? 0 : (round(($fatMese / $tgtMese) * 100,2)-100);
+      $segnoDeltaMese = $deltaMese<=0 ? '' : '+';
+      $deltaProg = $tgtProg==0 ? 0 : (round(($fatProg / $tgtProg) * 100,2)-100);
+      $segnoDeltaProg = $deltaProg<=0 ? '' : '+';
     @endphp
     <tr>
       <th>{{ trans('stFatt.march') }}
@@ -89,10 +95,10 @@
       </th>
       <td><strong>{{ currency($fatMese) }}</strong></td>
       <td>{{ currency($tgtMese) }}</td>
-      <td><strong>{{ $deltaMese }} %</strong></td>
+      <td><strong>{{$segnoDeltaMese}}{{ $deltaMese }} %</strong></td>
       <td><strong>{{ currency($fatProg) }}</strong></td>
       <td>{{ currency($tgtProg) }}</td>
-      <td><strong>{{ $deltaProg }} %</strong></td>
+      <td><strong>{{$segnoDeltaProg}}{{ $deltaProg}} %</strong></td>
     </tr>
     @php
       $fatMese = empty($fat) ? 0 : $fat->valore4;
@@ -101,8 +107,10 @@
       $tgtProg += $tgtMese;
       // $deltaMese = $tgtMese==0 ? 0 : round((($tgtMese-$fatMese) / $tgtMese) * 100,2);
       // $deltaProg = $tgtProg==0 ? 0 : round((($tgtProg-$fatProg) / $tgtProg) * 100,2);
-      $deltaMese = $tgtMese==0 ? 0 : round((($fatMese-$tgtMese) / $tgtMese) * 100,2);
-      $deltaProg = $tgtProg==0 ? 0 : round((($fatProg-$tgtProg) / $tgtProg) * 100,2);
+      $deltaMese = $tgtMese==0 ? 0 : (round(($fatMese / $tgtMese) * 100,2)-100);
+      $segnoDeltaMese = $deltaMese<=0 ? '' : '+';
+      $deltaProg = $tgtProg==0 ? 0 : (round(($fatProg / $tgtProg) * 100,2)-100);
+      $segnoDeltaProg = $deltaProg<=0 ? '' : '+';
     @endphp
     <tr>
       <th>{{ trans('stFatt.april') }}
@@ -112,10 +120,10 @@
       </th>
       <td><strong>{{ currency($fatMese) }}</strong></td>
       <td>{{ currency($tgtMese) }}</td>
-      <td><strong>{{ $deltaMese }} %</strong></td>
+      <td><strong>{{$segnoDeltaMese}}{{ $deltaMese }} %</strong></td>
       <td><strong>{{ currency($fatProg) }}</strong></td>
       <td>{{ currency($tgtProg) }}</td>
-      <td><strong>{{ $deltaProg }} %</strong></td>
+      <td><strong>{{$segnoDeltaProg}}{{ $deltaProg}} %</strong></td>
     </tr>
     @php
       $fatMese = empty($fat) ? 0 : $fat->valore5;
@@ -124,8 +132,10 @@
       $tgtProg += $tgtMese;
       // $deltaMese = $tgtMese==0 ? 0 : round((($tgtMese-$fatMese) / $tgtMese) * 100,2);
       // $deltaProg = $tgtProg==0 ? 0 : round((($tgtProg-$fatProg) / $tgtProg) * 100,2);
-      $deltaMese = $tgtMese==0 ? 0 : round((($fatMese-$tgtMese) / $tgtMese) * 100,2);
-      $deltaProg = $tgtProg==0 ? 0 : round((($fatProg-$tgtProg) / $tgtProg) * 100,2);
+      $deltaMese = $tgtMese==0 ? 0 : (round(($fatMese / $tgtMese) * 100,2)-100);
+      $segnoDeltaMese = $deltaMese<=0 ? '' : '+';
+      $deltaProg = $tgtProg==0 ? 0 : (round(($fatProg / $tgtProg) * 100,2)-100);
+      $segnoDeltaProg = $deltaProg<=0 ? '' : '+';
     @endphp
     <tr>
       <th>{{ trans('stFatt.may') }}
@@ -135,10 +145,10 @@
       </th>
       <td><strong>{{ currency($fatMese) }}</strong></td>
       <td>{{ currency($tgtMese) }}</td>
-      <td><strong>{{ $deltaMese }} %</strong></td>
+      <td><strong>{{$segnoDeltaMese}}{{ $deltaMese }} %</strong></td>
       <td><strong>{{ currency($fatProg) }}</strong></td>
       <td>{{ currency($tgtProg) }}</td>
-      <td><strong>{{ $deltaProg }} %</strong></td>
+      <td><strong>{{$segnoDeltaProg}}{{ $deltaProg}} %</strong></td>
     </tr>
     @php
       $fatMese = empty($fat) ? 0 : $fat->valore6;
@@ -147,8 +157,10 @@
       $tgtProg += $tgtMese;
       // $deltaMese = $tgtMese==0 ? 0 : round((($tgtMese-$fatMese) / $tgtMese) * 100,2);
       // $deltaProg = $tgtProg==0 ? 0 : round((($tgtProg-$fatProg) / $tgtProg) * 100,2);
-      $deltaMese = $tgtMese==0 ? 0 : round((($fatMese-$tgtMese) / $tgtMese) * 100,2);
-      $deltaProg = $tgtProg==0 ? 0 : round((($fatProg-$tgtProg) / $tgtProg) * 100,2);
+      $deltaMese = $tgtMese==0 ? 0 : (round(($fatMese / $tgtMese) * 100,2)-100);
+      $segnoDeltaMese = $deltaMese<=0 ? '' : '+';
+      $deltaProg = $tgtProg==0 ? 0 : (round(($fatProg / $tgtProg) * 100,2)-100);
+      $segnoDeltaProg = $deltaProg<=0 ? '' : '+';
     @endphp
     <tr>
       <th>{{ trans('stFatt.june') }}
@@ -158,10 +170,10 @@
       </th>
       <td><strong>{{ currency($fatMese) }}</strong></td>
       <td>{{ currency($tgtMese) }}</td>
-      <td><strong>{{ $deltaMese }} %</strong></td>
+      <td><strong>{{$segnoDeltaMese}}{{ $deltaMese }} %</strong></td>
       <td><strong>{{ currency($fatProg) }}</strong></td>
       <td>{{ currency($tgtProg) }}</td>
-      <td><strong>{{ $deltaProg }} %</strong></td>
+      <td><strong>{{$segnoDeltaProg}}{{ $deltaProg}} %</strong></td>
     </tr>
     @php
       $fatMese = empty($fat) ? 0 : $fat->valore7;
@@ -170,8 +182,10 @@
       $tgtProg += $tgtMese;
       // $deltaMese = $tgtMese==0 ? 0 : round((($tgtMese-$fatMese) / $tgtMese) * 100,2);
       // $deltaProg = $tgtProg==0 ? 0 : round((($tgtProg-$fatProg) / $tgtProg) * 100,2);
-      $deltaMese = $tgtMese==0 ? 0 : round((($fatMese-$tgtMese) / $tgtMese) * 100,2);
-      $deltaProg = $tgtProg==0 ? 0 : round((($fatProg-$tgtProg) / $tgtProg) * 100,2);
+      $deltaMese = $tgtMese==0 ? 0 : (round(($fatMese / $tgtMese) * 100,2)-100);
+      $segnoDeltaMese = $deltaMese<=0 ? '' : '+';
+      $deltaProg = $tgtProg==0 ? 0 : (round(($fatProg / $tgtProg) * 100,2)-100);
+      $segnoDeltaProg = $deltaProg<=0 ? '' : '+';
     @endphp
     <tr>
       <th>{{ trans('stFatt.july') }}
@@ -181,10 +195,10 @@
       </th>
       <td><strong>{{ currency($fatMese) }}</strong></td>
       <td>{{ currency($tgtMese) }}</td>
-      <td><strong>{{ $deltaMese }} %</strong></td>
+      <td><strong>{{$segnoDeltaMese}}{{ $deltaMese }} %</strong></td>
       <td><strong>{{ currency($fatProg) }}</strong></td>
       <td>{{ currency($tgtProg) }}</td>
-      <td><strong>{{ $deltaProg }} %</strong></td>
+      <td><strong>{{$segnoDeltaProg}}{{ $deltaProg}} %</strong></td>
     </tr>
     @php
       $fatMese = empty($fat) ? 0 : $fat->valore8;
@@ -193,8 +207,10 @@
       $tgtProg += $tgtMese;
       // $deltaMese = $tgtMese==0 ? 0 : round((($tgtMese-$fatMese) / $tgtMese) * 100,2);
       // $deltaProg = $tgtProg==0 ? 0 : round((($tgtProg-$fatProg) / $tgtProg) * 100,2);
-      $deltaMese = $tgtMese==0 ? 0 : round((($fatMese-$tgtMese) / $tgtMese) * 100,2);
-      $deltaProg = $tgtProg==0 ? 0 : round((($fatProg-$tgtProg) / $tgtProg) * 100,2);
+      $deltaMese = $tgtMese==0 ? 0 : (round(($fatMese / $tgtMese) * 100,2)-100);
+      $segnoDeltaMese = $deltaMese<=0 ? '' : '+';
+      $deltaProg = $tgtProg==0 ? 0 : (round(($fatProg / $tgtProg) * 100,2)-100);
+      $segnoDeltaProg = $deltaProg<=0 ? '' : '+';
     @endphp
     <tr>
       <th>{{ trans('stFatt.august') }}
@@ -204,10 +220,10 @@
       </th>
       <td><strong>{{ currency($fatMese) }}</strong></td>
       <td>{{ currency($tgtMese) }}</td>
-      <td><strong>{{ $deltaMese }} %</strong></td>
+      <td><strong>{{$segnoDeltaMese}}{{ $deltaMese }} %</strong></td>
       <td><strong>{{ currency($fatProg) }}</strong></td>
       <td>{{ currency($tgtProg) }}</td>
-      <td><strong>{{ $deltaProg }} %</strong></td>
+      <td><strong>{{$segnoDeltaProg}}{{ $deltaProg}} %</strong></td>
     </tr>
     @php
       $fatMese = empty($fat) ? 0 : $fat->valore9;
@@ -216,8 +232,10 @@
       $tgtProg += $tgtMese;
       // $deltaMese = $tgtMese==0 ? 0 : round((($tgtMese-$fatMese) / $tgtMese) * 100,2);
       // $deltaProg = $tgtProg==0 ? 0 : round((($tgtProg-$fatProg) / $tgtProg) * 100,2);
-      $deltaMese = $tgtMese==0 ? 0 : round((($fatMese-$tgtMese) / $tgtMese) * 100,2);
-      $deltaProg = $tgtProg==0 ? 0 : round((($fatProg-$tgtProg) / $tgtProg) * 100,2);
+      $deltaMese = $tgtMese==0 ? 0 : (round(($fatMese / $tgtMese) * 100,2)-100);
+      $segnoDeltaMese = $deltaMese<=0 ? '' : '+';
+      $deltaProg = $tgtProg==0 ? 0 : (round(($fatProg / $tgtProg) * 100,2)-100);
+      $segnoDeltaProg = $deltaProg<=0 ? '' : '+';
     @endphp
     <tr>
       <th>{{ trans('stFatt.september') }}
@@ -227,10 +245,10 @@
       </th>
       <td><strong>{{ currency($fatMese) }}</strong></td>
       <td>{{ currency($tgtMese) }}</td>
-      <td><strong>{{ $deltaMese }} %</strong></td>
+      <td><strong>{{$segnoDeltaMese}}{{ $deltaMese }} %</strong></td>
       <td><strong>{{ currency($fatProg) }}</strong></td>
       <td>{{ currency($tgtProg) }}</td>
-      <td><strong>{{ $deltaProg }} %</strong></td>
+      <td><strong>{{$segnoDeltaProg}}{{ $deltaProg}} %</strong></td>
     </tr>
     @php
       $fatMese = empty($fat) ? 0 : $fat->valore10;
@@ -239,8 +257,10 @@
       $tgtProg += $tgtMese;
       // $deltaMese = $tgtMese==0 ? 0 : round((($tgtMese-$fatMese) / $tgtMese) * 100,2);
       // $deltaProg = $tgtProg==0 ? 0 : round((($tgtProg-$fatProg) / $tgtProg) * 100,2);
-      $deltaMese = $tgtMese==0 ? 0 : round((($fatMese-$tgtMese) / $tgtMese) * 100,2);
-      $deltaProg = $tgtProg==0 ? 0 : round((($fatProg-$tgtProg) / $tgtProg) * 100,2);
+      $deltaMese = $tgtMese==0 ? 0 : (round(($fatMese / $tgtMese) * 100,2)-100);
+      $segnoDeltaMese = $deltaMese<=0 ? '' : '+';
+      $deltaProg = $tgtProg==0 ? 0 : (round(($fatProg / $tgtProg) * 100,2)-100);
+      $segnoDeltaProg = $deltaProg<=0 ? '' : '+';
     @endphp
     <tr>
       <th>{{ trans('stFatt.october') }}
@@ -250,10 +270,10 @@
       </th>
       <td><strong>{{ currency($fatMese) }}</strong></td>
       <td>{{ currency($tgtMese) }}</td>
-      <td><strong>{{ $deltaMese }} %</strong></td>
+      <td><strong>{{$segnoDeltaMese}}{{ $deltaMese }} %</strong></td>
       <td><strong>{{ currency($fatProg) }}</strong></td>
       <td>{{ currency($tgtProg) }}</td>
-      <td><strong>{{ $deltaProg }} %</strong></td>
+      <td><strong>{{$segnoDeltaProg}}{{ $deltaProg}} %</strong></td>
     </tr>
     @php
       $fatMese = empty($fat) ? 0 : $fat->valore11;
@@ -262,8 +282,10 @@
       $tgtProg += $tgtMese;
       // $deltaMese = $tgtMese==0 ? 0 : round((($tgtMese-$fatMese) / $tgtMese) * 100,2);
       // $deltaProg = $tgtProg==0 ? 0 : round((($tgtProg-$fatProg) / $tgtProg) * 100,2);
-      $deltaMese = $tgtMese==0 ? 0 : round((($fatMese-$tgtMese) / $tgtMese) * 100,2);
-      $deltaProg = $tgtProg==0 ? 0 : round((($fatProg-$tgtProg) / $tgtProg) * 100,2);
+      $deltaMese = $tgtMese==0 ? 0 : (round(($fatMese / $tgtMese) * 100,2)-100);
+      $segnoDeltaMese = $deltaMese<=0 ? '' : '+';
+      $deltaProg = $tgtProg==0 ? 0 : (round(($fatProg / $tgtProg) * 100,2)-100);
+      $segnoDeltaProg = $deltaProg<=0 ? '' : '+';
     @endphp
     <tr>
       <th>{{ trans('stFatt.november') }}
@@ -273,10 +295,10 @@
         </th>
       <td><strong>{{ currency($fatMese) }}</strong></td>
       <td>{{ currency($tgtMese) }}</td>
-      <td><strong>{{ $deltaMese }} %</strong></td>
+      <td><strong>{{$segnoDeltaMese}}{{ $deltaMese }} %</strong></td>
       <td><strong>{{ currency($fatProg) }}</strong></td>
       <td>{{ currency($tgtProg) }}</td>
-      <td><strong>{{ $deltaProg }} %</strong></td>
+      <td><strong>{{$segnoDeltaProg}}{{ $deltaProg}} %</strong></td>
     </tr>
     @php
       $fatMese = empty($fat) ? 0 : $fat->valore12;
@@ -285,8 +307,10 @@
       $tgtProg += $tgtMese;
       // $deltaMese = $tgtMese==0 ? 0 : round((($tgtMese-$fatMese) / $tgtMese) * 100,2);
       // $deltaProg = $tgtProg==0 ? 0 : round((($tgtProg-$fatProg) / $tgtProg) * 100,2);
-      $deltaMese = $tgtMese==0 ? 0 : round((($fatMese-$tgtMese) / $tgtMese) * 100,2);
-      $deltaProg = $tgtProg==0 ? 0 : round((($fatProg-$tgtProg) / $tgtProg) * 100,2);
+      $deltaMese = $tgtMese==0 ? 0 : (round(($fatMese / $tgtMese) * 100,2)-100);
+      $segnoDeltaMese = $deltaMese<=0 ? '' : '+';
+      $deltaProg = $tgtProg==0 ? 0 : (round(($fatProg / $tgtProg) * 100,2)-100);
+      $segnoDeltaProg = $deltaProg<=0 ? '' : '+';
     @endphp
     <tr>
       <th>{{ trans('stFatt.december') }}
@@ -296,10 +320,10 @@
         </th>
       <td><strong>{{ currency($fatMese) }}</strong></td>
       <td>{{ currency($tgtMese) }}</td>
-      <td><strong>{{ $deltaMese }} %</strong></td>
+      <td><strong>{{$segnoDeltaMese}}{{ $deltaMese }} %</strong></td>
       <td><strong>{{ currency($fatProg) }}</strong></td>
       <td>{{ currency($tgtProg) }}</td>
-      <td><strong>{{ $deltaProg }} %</strong></td>
+      <td><strong>{{$segnoDeltaProg}}{{ $deltaProg}} %</strong></td>
     </tr>
   </tbody>
   <tfoot class="bg-gray">
@@ -310,7 +334,7 @@
       <td>&nbsp;</td>
       <td><strong>{{ currency($fatProg) }}</strong></td>
       <td><strong>{{ currency($tgtProg) }}</strong></td>
-      <td><strong>{{ $deltaProg }} %</strong></td>
+      <td><strong>{{$segnoDeltaProg}}{{ $deltaProg}} %</strong></td>
     </tr>
   </tfoot>
 </table>

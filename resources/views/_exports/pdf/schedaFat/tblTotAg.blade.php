@@ -32,8 +32,10 @@
       $tgtProg = $tgtMese;
       // $deltaMese = $tgtMese==0 ? 0 : round((($tgtMese-$fatMese) / $tgtMese) * 100,2);
       // $deltaProg = $tgtProg==0 ? 0 : round((($tgtProg-$fatProg) / $tgtProg) * 100,2);
-      $deltaMese = $tgtMese==0 ? 0 : round((($fatMese-$tgtMese) / $tgtMese) * 100,2);
-      $deltaProg = $tgtProg==0 ? 0 : round((($fatProg-$tgtProg) / $tgtProg) * 100,2);
+      $deltaMese = $tgtMese==0 ? 0 : (round(($fatMese / $tgtMese) * 100,2)-100);
+      $segnoDeltaMese = $deltaMese<=0 ? '' : '+';
+      $deltaProg = $tgtProg==0 ? 0 : (round(($fatProg / $tgtProg) * 100,2)-100);
+      $segnoDeltaProg = $deltaProg<=0 ? '' : '+';
     @endphp
     <tr>
       <th>{{ trans('stFatt.january') }}
@@ -43,10 +45,10 @@
       </th>
       <td><strong>{{ currency($fatMese) }}</strong></td>
       <td>{{ currency($tgtMese) }}</td>
-      <td><strong>{{ $deltaMese }} %</strong></td>
+      <td><strong>{{$segnoDeltaMese}}{{ $deltaMese }} %</strong></td>
       <td><strong>{{ currency($fatProg) }}</strong></td>
       <td>{{ currency($tgtProg) }}</td>
-      <td><strong>{{ $deltaProg }} %</strong></td>
+      <td><strong>{{$segnoDeltaProg}}{{ $deltaProg}} %</strong></td>
     </tr>
     @php
       $fatMese = empty($fat) ? 0 : $fat->valore2;
@@ -55,8 +57,10 @@
       $tgtProg += $tgtMese;
       // $deltaMese = $tgtMese==0 ? 0 : round((($tgtMese-$fatMese) / $tgtMese) * 100,2);
       // $deltaProg = $tgtProg==0 ? 0 : round((($tgtProg-$fatProg) / $tgtProg) * 100,2);
-      $deltaMese = $tgtMese==0 ? 0 : round((($fatMese-$tgtMese) / $tgtMese) * 100,2);
-      $deltaProg = $tgtProg==0 ? 0 : round((($fatProg-$tgtProg) / $tgtProg) * 100,2);
+      $deltaMese = $tgtMese==0 ? 0 : (round(($fatMese / $tgtMese) * 100,2)-100);
+      $segnoDeltaMese = $deltaMese<=0 ? '' : '+';
+      $deltaProg = $tgtProg==0 ? 0 : (round(($fatProg / $tgtProg) * 100,2)-100);
+      $segnoDeltaProg = $deltaProg<=0 ? '' : '+';
     @endphp
     <tr>
       <th>{{ trans('stFatt.february') }}
@@ -66,10 +70,10 @@
       </th>
       <td><strong>{{ currency($fatMese) }}</strong></td>
       <td>{{ currency($tgtMese) }}</td>
-      <td><strong>{{ $deltaMese }} %</strong></td>
+      <td><strong>{{$segnoDeltaMese}}{{ $deltaMese }} %</strong></td>
       <td><strong>{{ currency($fatProg) }}</strong></td>
       <td>{{ currency($tgtProg) }}</td>
-      <td><strong>{{ $deltaProg }} %</strong></td>
+      <td><strong>{{$segnoDeltaProg}}{{ $deltaProg}} %</strong></td>
     </tr>
     @php
       $fatMese = empty($fat) ? 0 : $fat->valore3;
@@ -87,10 +91,10 @@
       </th>
       <td><strong>{{ currency($fatMese) }}</strong></td>
       <td>{{ currency($tgtMese) }}</td>
-      <td><strong>{{ $deltaMese }} %</strong></td>
+      <td><strong>{{$segnoDeltaMese}}{{ $deltaMese }} %</strong></td>
       <td><strong>{{ currency($fatProg) }}</strong></td>
       <td>{{ currency($tgtProg) }}</td>
-      <td><strong>{{ $deltaProg }} %</strong></td>
+      <td><strong>{{$segnoDeltaProg}}{{ $deltaProg}} %</strong></td>
     </tr>
     @php
       $fatMese = empty($fat) ? 0 : $fat->valore4;
@@ -108,10 +112,10 @@
       </th>
       <td><strong>{{ currency($fatMese) }}</strong></td>
       <td>{{ currency($tgtMese) }}</td>
-      <td><strong>{{ $deltaMese }} %</strong></td>
+      <td><strong>{{$segnoDeltaMese}}{{ $deltaMese }} %</strong></td>
       <td><strong>{{ currency($fatProg) }}</strong></td>
       <td>{{ currency($tgtProg) }}</td>
-      <td><strong>{{ $deltaProg }} %</strong></td>
+      <td><strong>{{$segnoDeltaProg}}{{ $deltaProg}} %</strong></td>
     </tr>
     @php
       $fatMese = empty($fat) ? 0 : $fat->valore5;
@@ -129,10 +133,10 @@
       </th>
       <td><strong>{{ currency($fatMese) }}</strong></td>
       <td>{{ currency($tgtMese) }}</td>
-      <td><strong>{{ $deltaMese }} %</strong></td>
+      <td><strong>{{$segnoDeltaMese}}{{ $deltaMese }} %</strong></td>
       <td><strong>{{ currency($fatProg) }}</strong></td>
       <td>{{ currency($tgtProg) }}</td>
-      <td><strong>{{ $deltaProg }} %</strong></td>
+      <td><strong>{{$segnoDeltaProg}}{{ $deltaProg}} %</strong></td>
     </tr>
     @php
       $fatMese = empty($fat) ? 0 : $fat->valore6;
@@ -150,10 +154,10 @@
       </th>
       <td><strong>{{ currency($fatMese) }}</strong></td>
       <td>{{ currency($tgtMese) }}</td>
-      <td><strong>{{ $deltaMese }} %</strong></td>
+      <td><strong>{{$segnoDeltaMese}}{{ $deltaMese }} %</strong></td>
       <td><strong>{{ currency($fatProg) }}</strong></td>
       <td>{{ currency($tgtProg) }}</td>
-      <td><strong>{{ $deltaProg }} %</strong></td>
+      <td><strong>{{$segnoDeltaProg}}{{ $deltaProg}} %</strong></td>
     </tr>
     @php
       $fatMese = empty($fat) ? 0 : $fat->valore7;
@@ -171,10 +175,10 @@
       </th>
       <td><strong>{{ currency($fatMese) }}</strong></td>
       <td>{{ currency($tgtMese) }}</td>
-      <td><strong>{{ $deltaMese }} %</strong></td>
+      <td><strong>{{$segnoDeltaMese}}{{ $deltaMese }} %</strong></td>
       <td><strong>{{ currency($fatProg) }}</strong></td>
       <td>{{ currency($tgtProg) }}</td>
-      <td><strong>{{ $deltaProg }} %</strong></td>
+      <td><strong>{{$segnoDeltaProg}}{{ $deltaProg}} %</strong></td>
     </tr>
     @php
       $fatMese = empty($fat) ? 0 : $fat->valore8;
@@ -192,10 +196,10 @@
       </th>
       <td><strong>{{ currency($fatMese) }}</strong></td>
       <td>{{ currency($tgtMese) }}</td>
-      <td><strong>{{ $deltaMese }} %</strong></td>
+      <td><strong>{{$segnoDeltaMese}}{{ $deltaMese }} %</strong></td>
       <td><strong>{{ currency($fatProg) }}</strong></td>
       <td>{{ currency($tgtProg) }}</td>
-      <td><strong>{{ $deltaProg }} %</strong></td>
+      <td><strong>{{$segnoDeltaProg}}{{ $deltaProg}} %</strong></td>
     </tr>
     @php
       $fatMese = empty($fat) ? 0 : $fat->valore9;
@@ -213,10 +217,10 @@
       </th>
       <td><strong>{{ currency($fatMese) }}</strong></td>
       <td>{{ currency($tgtMese) }}</td>
-      <td><strong>{{ $deltaMese }} %</strong></td>
+      <td><strong>{{$segnoDeltaMese}}{{ $deltaMese }} %</strong></td>
       <td><strong>{{ currency($fatProg) }}</strong></td>
       <td>{{ currency($tgtProg) }}</td>
-      <td><strong>{{ $deltaProg }} %</strong></td>
+      <td><strong>{{$segnoDeltaProg}}{{ $deltaProg}} %</strong></td>
     </tr>
     @php
       $fatMese = empty($fat) ? 0 : $fat->valore10;
@@ -234,10 +238,10 @@
       </th>
       <td><strong>{{ currency($fatMese) }}</strong></td>
       <td>{{ currency($tgtMese) }}</td>
-      <td><strong>{{ $deltaMese }} %</strong></td>
+      <td><strong>{{$segnoDeltaMese}}{{ $deltaMese }} %</strong></td>
       <td><strong>{{ currency($fatProg) }}</strong></td>
       <td>{{ currency($tgtProg) }}</td>
-      <td><strong>{{ $deltaProg }} %</strong></td>
+      <td><strong>{{$segnoDeltaProg}}{{ $deltaProg}} %</strong></td>
     </tr>
     @php
       $fatMese = empty($fat) ? 0 : $fat->valore11;
@@ -255,10 +259,10 @@
         </th>
       <td><strong>{{ currency($fatMese) }}</strong></td>
       <td>{{ currency($tgtMese) }}</td>
-      <td><strong>{{ $deltaMese }} %</strong></td>
+      <td><strong>{{$segnoDeltaMese}}{{ $deltaMese }} %</strong></td>
       <td><strong>{{ currency($fatProg) }}</strong></td>
       <td>{{ currency($tgtProg) }}</td>
-      <td><strong>{{ $deltaProg }} %</strong></td>
+      <td><strong>{{$segnoDeltaProg}}{{ $deltaProg}} %</strong></td>
     </tr>
     @php
       $fatMese = empty($fat) ? 0 : $fat->valore12;
@@ -276,10 +280,10 @@
         </th>
       <td><strong>{{ currency($fatMese) }}</strong></td>
       <td>{{ currency($tgtMese) }}</td>
-      <td><strong>{{ $deltaMese }} %</strong></td>
+      <td><strong>{{$segnoDeltaMese}}{{ $deltaMese }} %</strong></td>
       <td><strong>{{ currency($fatProg) }}</strong></td>
       <td>{{ currency($tgtProg) }}</td>
-      <td><strong>{{ $deltaProg }} %</strong></td>
+      <td><strong>{{$segnoDeltaProg}}{{ $deltaProg}} %</strong></td>
     </tr>
   </tbody>
   <tfoot class="bg-gray">
@@ -290,7 +294,7 @@
       <td>&nbsp;</td>
       <td><strong>{{ currency($fatProg) }}</strong></td>
       <td><strong>{{ currency($tgtProg) }}</strong></td>
-      <td><strong>{{ $deltaProg }} %</strong></td>
+      <td><strong>{{$segnoDeltaProg}}{{ $deltaProg}} %</strong></td>
     </tr>
   </tfoot>
 </table>

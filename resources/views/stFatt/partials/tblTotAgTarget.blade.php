@@ -38,16 +38,21 @@
       $fatPyProg = $fatPyMese;
       // $deltaMese = $fatPyMese==0 ? 0 : round((($fatPyMese-$fatMese) / $fatPyMese) * 100,2);
       // $deltaProg = $fatPyProg==0 ? 0 : round((($fatPyProg-$fatProg) / $fatPyProg) * 100,2);
-      $deltaMese = $fatPyMese==0 ? 0 : round((($fatMese-$fatPyMese) / $fatPyMese) * 100,2);
-      $deltaProg = $fatPyProg==0 ? 0 : round((($fatProg-$fatPyProg) / $fatPyProg) * 100,2);
+      $deltaMese = $fatPyMese==0 ? 0 : (round(($fatMese / $fatPyMese) * 100,2)-100);
+      $segnoDeltaMese = $deltaMese<=0 ? '' : '+';
+      $deltaProg = $fatPyProg==0 ? 0 : (round(($fatProg / $fatPyProg) * 100,2)-100);
+      $segnoDeltaProg = $deltaProg<=0 ? '' : '+';
+      
       // MOLTO BRUTTO MA AGGIUNGO CODICE TARGET QUA SOTTO
       $perc = $perc_mese ? $perc_mese->where('mese',1)->first()->perc : 0;
       $targetMese = empty($target) ? 0 : round($target*($perc/100),2);
       $targetProg += $targetMese;
       // sovrascrivo deltaProd
       if ($targetProg>0){
-        $deltaMese = $targetProg==0 ? 0 : round((($fatMese-$targetProg) / $targetProg) * 100,0);
-        $deltaProg = $targetProg==0 ? 0 : round((($fatProg-$targetProg) / $targetProg) * 100,0);
+        $deltaMese = $targetMese==0 ? 0 : (round(($fatMese / $targetMese) * 100,2)-100);
+        $segnoDeltaMese = $deltaMese<=0 ? '' : '+';
+        $deltaProg = $targetProg==0 ? 0 : (round(($fatProg / $targetProg) * 100,2)-100);
+        $segnoDeltaProg = $deltaProg<=0 ? '' : '+';
       }
     @endphp
     <tr>
@@ -59,11 +64,11 @@
       <td><strong>{{ currency($fatMese) }}</strong></td>
       <td>{{ currency($fatPyMese) }}</td>
       <td>{{ currency($targetMese) }}</td>
-      <td><strong>{{ $deltaMese }} %</strong></td>
+      <td><strong>{{$segnoDeltaMese}}{{ $deltaMese }} %</strong></td>
       <td><strong>{{ currency($fatProg) }}</strong></td>
       <td>{{ currency($fatPyProg) }}</td>
       <td>{{ currency($targetProg) }}</td>
-      <td><strong>{{ $deltaProg }} %</strong></td>
+      <td><strong>{{$segnoDeltaProg}}{{ $deltaProg}} %</strong></td>
     </tr>
     @php
       $fatMese = empty($fat) ? 0 : $fat->valore2;
@@ -72,16 +77,20 @@
       $fatPyProg += $fatPyMese;
       // $deltaMese = $fatPyMese==0 ? 0 : round((($fatPyMese-$fatMese) / $fatPyMese) * 100,2);
       // $deltaProg = $fatPyProg==0 ? 0 : round((($fatPyProg-$fatProg) / $fatPyProg) * 100,2);
-      $deltaMese = $fatPyMese==0 ? 0 : round((($fatMese-$fatPyMese) / $fatPyMese) * 100,2);
-      $deltaProg = $fatPyProg==0 ? 0 : round((($fatProg-$fatPyProg) / $fatPyProg) * 100,2);
+      $deltaMese = $fatPyMese==0 ? 0 : (round(($fatMese / $fatPyMese) * 100,2)-100);
+      $segnoDeltaMese = $deltaMese<=0 ? '' : '+';
+      $deltaProg = $fatPyProg==0 ? 0 : (round(($fatProg / $fatPyProg) * 100,2)-100);
+      $segnoDeltaProg = $deltaProg<=0 ? '' : '+';
       // MOLTO BRUTTO MA AGGIUNGO CODICE TARGET QUA SOTTO
       $perc = $perc_mese ? $perc_mese->where('mese',2)->first()->perc : 0;
       $targetMese = empty($target) ? 0 : round($target*($perc/100),2);
       $targetProg += $targetMese;
       // sovrascrivo deltaProd
       if ($targetProg>0){
-        $deltaMese = $targetProg==0 ? 0 : round((($fatMese-$targetProg) / $targetProg) * 100,2);
-        $deltaProg = $targetProg==0 ? 0 : round((($fatProg-$targetProg) / $targetProg) * 100,2);
+        $deltaMese = $targetMese==0 ? 0 : (round(($fatMese / $targetMese) * 100,2)-100);
+        $segnoDeltaMese = $deltaMese<=0 ? '' : '+';
+        $deltaProg = $targetProg==0 ? 0 : (round(($fatProg / $targetProg) * 100,2)-100);
+        $segnoDeltaProg = $deltaProg<=0 ? '' : '+';
       }
     @endphp
     <tr>
@@ -92,11 +101,11 @@
       </th><td><strong>{{ currency($fatMese) }}</strong></td>
       <td>{{ currency($fatPyMese) }}</td>
       <td>{{ currency($targetMese) }}</td>
-      <td><strong>{{ $deltaMese }} %</strong></td>
+      <td><strong>{{$segnoDeltaMese}}{{ $deltaMese }} %</strong></td>
       <td><strong>{{ currency($fatProg) }}</strong></td>
       <td>{{ currency($fatPyProg) }}</td>
       <td>{{ currency($targetProg) }}</td>
-      <td><strong>{{ $deltaProg }} %</strong></td>
+      <td><strong>{{$segnoDeltaProg}}{{ $deltaProg}} %</strong></td>
     </tr>
     @php
       $fatMese = empty($fat) ? 0 : $fat->valore3;
@@ -105,16 +114,20 @@
       $fatPyProg += $fatPyMese;
       // $deltaMese = $fatPyMese==0 ? 0 : round((($fatPyMese-$fatMese) / $fatPyMese) * 100,2);
       // $deltaProg = $fatPyProg==0 ? 0 : round((($fatPyProg-$fatProg) / $fatPyProg) * 100,2);
-      $deltaMese = $fatPyMese==0 ? 0 : round((($fatMese-$fatPyMese) / $fatPyMese) * 100,2);
-      $deltaProg = $fatPyProg==0 ? 0 : round((($fatProg-$fatPyProg) / $fatPyProg) * 100,2);
+      $deltaMese = $fatPyMese==0 ? 0 : (round(($fatMese / $fatPyMese) * 100,2)-100);
+      $segnoDeltaMese = $deltaMese<=0 ? '' : '+';
+      $deltaProg = $fatPyProg==0 ? 0 : (round(($fatProg / $fatPyProg) * 100,2)-100);
+      $segnoDeltaProg = $deltaProg<=0 ? '' : '+';
       // MOLTO BRUTTO MA AGGIUNGO CODICE TARGET QUA SOTTO
       $perc = $perc_mese ? $perc_mese->where('mese',3)->first()->perc : 0;
       $targetMese = empty($target) ? 0 : round($target*($perc/100),2);
       $targetProg += $targetMese;
       // sovrascrivo deltaProd
       if ($targetProg>0){
-        $deltaMese = $targetProg==0 ? 0 : round((($fatMese-$targetProg) / $targetProg) * 100,2);
-        $deltaProg = $targetProg==0 ? 0 : round((($fatProg-$targetProg) / $targetProg) * 100,2);
+        $deltaMese = $targetMese==0 ? 0 : (round(($fatMese / $targetMese) * 100,2)-100);
+        $segnoDeltaMese = $deltaMese<=0 ? '' : '+';
+        $deltaProg = $targetProg==0 ? 0 : (round(($fatProg / $targetProg) * 100,2)-100);
+        $segnoDeltaProg = $deltaProg<=0 ? '' : '+';
       }
     @endphp
     <tr>
@@ -126,11 +139,11 @@
       <td><strong>{{ currency($fatMese) }}</strong></td>
       <td>{{ currency($fatPyMese) }}</td>
       <td>{{ currency($targetMese) }}</td>
-      <td><strong>{{ $deltaMese }} %</strong></td>
+      <td><strong>{{$segnoDeltaMese}}{{ $deltaMese }} %</strong></td>
       <td><strong>{{ currency($fatProg) }}</strong></td>
       <td>{{ currency($fatPyProg) }}</td>
       <td>{{ currency($targetProg) }}</td>
-      <td><strong>{{ $deltaProg }} %</strong></td>
+      <td><strong>{{$segnoDeltaProg}}{{ $deltaProg}} %</strong></td>
     </tr>
     @php
       $fatMese = empty($fat) ? 0 : $fat->valore4;
@@ -139,16 +152,20 @@
       $fatPyProg += $fatPyMese;
       // $deltaMese = $fatPyMese==0 ? 0 : round((($fatPyMese-$fatMese) / $fatPyMese) * 100,2);
       // $deltaProg = $fatPyProg==0 ? 0 : round((($fatPyProg-$fatProg) / $fatPyProg) * 100,2);
-      $deltaMese = $fatPyMese==0 ? 0 : round((($fatMese-$fatPyMese) / $fatPyMese) * 100,2);
-      $deltaProg = $fatPyProg==0 ? 0 : round((($fatProg-$fatPyProg) / $fatPyProg) * 100,2);
+      $deltaMese = $fatPyMese==0 ? 0 : (round(($fatMese / $fatPyMese) * 100,2)-100);
+      $segnoDeltaMese = $deltaMese<=0 ? '' : '+';
+      $deltaProg = $fatPyProg==0 ? 0 : (round(($fatProg / $fatPyProg) * 100,2)-100);
+      $segnoDeltaProg = $deltaProg<=0 ? '' : '+';
       // MOLTO BRUTTO MA AGGIUNGO CODICE TARGET QUA SOTTO
       $perc = $perc_mese ? $perc_mese->where('mese',4)->first()->perc : 0;
       $targetMese = empty($target) ? 0 : round($target*($perc/100),2);
       $targetProg += $targetMese;
       // sovrascrivo deltaProd
       if ($targetProg>0){
-        $deltaMese = $targetProg==0 ? 0 : round((($fatMese-$targetProg) / $targetProg) * 100,2);
-        $deltaProg = $targetProg==0 ? 0 : round((($fatProg-$targetProg) / $targetProg) * 100,2);
+        $deltaMese = $targetMese==0 ? 0 : (round(($fatMese / $targetMese) * 100,2)-100);
+        $segnoDeltaMese = $deltaMese<=0 ? '' : '+';
+        $deltaProg = $targetProg==0 ? 0 : (round(($fatProg / $targetProg) * 100,2)-100);
+        $segnoDeltaProg = $deltaProg<=0 ? '' : '+';
       }
     @endphp
     <tr>
@@ -160,11 +177,11 @@
       <td><strong>{{ currency($fatMese) }}</strong></td>
       <td>{{ currency($fatPyMese) }}</td>
       <td>{{ currency($targetMese) }}</td>
-      <td><strong>{{ $deltaMese }} %</strong></td>
+      <td><strong>{{$segnoDeltaMese}}{{ $deltaMese }} %</strong></td>
       <td><strong>{{ currency($fatProg) }}</strong></td>
       <td>{{ currency($fatPyProg) }}</td>
       <td>{{ currency($targetProg) }}</td>
-      <td><strong>{{ $deltaProg }} %</strong></td>
+      <td><strong>{{$segnoDeltaProg}}{{ $deltaProg}} %</strong></td>
     </tr>
     @php
       $fatMese = empty($fat) ? 0 : $fat->valore5;
@@ -173,16 +190,20 @@
       $fatPyProg += $fatPyMese;
       // $deltaMese = $fatPyMese==0 ? 0 : round((($fatPyMese-$fatMese) / $fatPyMese) * 100,2);
       // $deltaProg = $fatPyProg==0 ? 0 : round((($fatPyProg-$fatProg) / $fatPyProg) * 100,2);
-      $deltaMese = $fatPyMese==0 ? 0 : round((($fatMese-$fatPyMese) / $fatPyMese) * 100,2);
-      $deltaProg = $fatPyProg==0 ? 0 : round((($fatProg-$fatPyProg) / $fatPyProg) * 100,2);
+      $deltaMese = $fatPyMese==0 ? 0 : (round(($fatMese / $fatPyMese) * 100,2)-100);
+      $segnoDeltaMese = $deltaMese<=0 ? '' : '+';
+      $deltaProg = $fatPyProg==0 ? 0 : (round(($fatProg / $fatPyProg) * 100,2)-100);
+      $segnoDeltaProg = $deltaProg<=0 ? '' : '+';
       // MOLTO BRUTTO MA AGGIUNGO CODICE TARGET QUA SOTTO
       $perc = $perc_mese ? $perc_mese->where('mese',5)->first()->perc : 0;
       $targetMese = empty($target) ? 0 : round($target*($perc/100),2);
       $targetProg += $targetMese;
       // sovrascrivo deltaProd
       if ($targetProg>0){
-        $deltaMese = $targetProg==0 ? 0 : round((($fatMese-$targetProg) / $targetProg) * 100,2);
-        $deltaProg = $targetProg==0 ? 0 : round((($fatProg-$targetProg) / $targetProg) * 100,2);
+        $deltaMese = $targetMese==0 ? 0 : (round(($fatMese / $targetMese) * 100,2)-100);
+        $segnoDeltaMese = $deltaMese<=0 ? '' : '+';
+        $deltaProg = $targetProg==0 ? 0 : (round(($fatProg / $targetProg) * 100,2)-100);
+        $segnoDeltaProg = $deltaProg<=0 ? '' : '+';
       }
     @endphp
     <tr>
@@ -194,11 +215,11 @@
       <td><strong>{{ currency($fatMese) }}</strong></td>
       <td>{{ currency($fatPyMese) }}</td>
       <td>{{ currency($targetMese) }}</td>
-      <td><strong>{{ $deltaMese }} %</strong></td>
+      <td><strong>{{$segnoDeltaMese}}{{ $deltaMese }} %</strong></td>
       <td><strong>{{ currency($fatProg) }}</strong></td>
       <td>{{ currency($fatPyProg) }}</td>
       <td>{{ currency($targetProg) }}</td>
-      <td><strong>{{ $deltaProg }} %</strong></td>
+      <td><strong>{{$segnoDeltaProg}}{{ $deltaProg}} %</strong></td>
     </tr>
     @php
       $fatMese = empty($fat) ? 0 : $fat->valore6;
@@ -207,16 +228,20 @@
       $fatPyProg += $fatPyMese;
       // $deltaMese = $fatPyMese==0 ? 0 : round((($fatPyMese-$fatMese) / $fatPyMese) * 100,2);
       // $deltaProg = $fatPyProg==0 ? 0 : round((($fatPyProg-$fatProg) / $fatPyProg) * 100,2);
-      $deltaMese = $fatPyMese==0 ? 0 : round((($fatMese-$fatPyMese) / $fatPyMese) * 100,2);
-      $deltaProg = $fatPyProg==0 ? 0 : round((($fatProg-$fatPyProg) / $fatPyProg) * 100,2);
+      $deltaMese = $fatPyMese==0 ? 0 : (round(($fatMese / $fatPyMese) * 100,2)-100);
+      $segnoDeltaMese = $deltaMese<=0 ? '' : '+';
+      $deltaProg = $fatPyProg==0 ? 0 : (round(($fatProg / $fatPyProg) * 100,2)-100);
+      $segnoDeltaProg = $deltaProg<=0 ? '' : '+';
       // MOLTO BRUTTO MA AGGIUNGO CODICE TARGET QUA SOTTO
       $perc = $perc_mese ? $perc_mese->where('mese',6)->first()->perc : 0;
       $targetMese = empty($target) ? 0 : round($target*($perc/100),2);
       $targetProg += $targetMese;
       // sovrascrivo deltaProd
       if ($targetProg>0){
-        $deltaMese = $targetProg==0 ? 0 : round((($fatMese-$targetProg) / $targetProg) * 100,2);
-        $deltaProg = $targetProg==0 ? 0 : round((($fatProg-$targetProg) / $targetProg) * 100,2);
+        $deltaMese = $targetMese==0 ? 0 : (round(($fatMese / $targetMese) * 100,2)-100);
+        $segnoDeltaMese = $deltaMese<=0 ? '' : '+';
+        $deltaProg = $targetProg==0 ? 0 : (round(($fatProg / $targetProg) * 100,2)-100);
+        $segnoDeltaProg = $deltaProg<=0 ? '' : '+';
       }
     @endphp
     <tr>
@@ -228,11 +253,11 @@
       <td><strong>{{ currency($fatMese) }}</strong></td>
       <td>{{ currency($fatPyMese) }}</td>
       <td>{{ currency($targetMese) }}</td>
-      <td><strong>{{ $deltaMese }} %</strong></td>
+      <td><strong>{{$segnoDeltaMese}}{{ $deltaMese }} %</strong></td>
       <td><strong>{{ currency($fatProg) }}</strong></td>
       <td>{{ currency($fatPyProg) }}</td>
       <td>{{ currency($targetProg) }}</td>
-      <td><strong>{{ $deltaProg }} %</strong></td>
+      <td><strong>{{$segnoDeltaProg}}{{ $deltaProg}} %</strong></td>
     </tr>
     @php
       $fatMese = empty($fat) ? 0 : $fat->valore7;
@@ -241,16 +266,20 @@
       $fatPyProg += $fatPyMese;
       // $deltaMese = $fatPyMese==0 ? 0 : round((($fatPyMese-$fatMese) / $fatPyMese) * 100,2);
       // $deltaProg = $fatPyProg==0 ? 0 : round((($fatPyProg-$fatProg) / $fatPyProg) * 100,2);
-      $deltaMese = $fatPyMese==0 ? 0 : round((($fatMese-$fatPyMese) / $fatPyMese) * 100,2);
-      $deltaProg = $fatPyProg==0 ? 0 : round((($fatProg-$fatPyProg) / $fatPyProg) * 100,2);
+      $deltaMese = $fatPyMese==0 ? 0 : (round(($fatMese / $fatPyMese) * 100,2)-100);
+      $segnoDeltaMese = $deltaMese<=0 ? '' : '+';
+      $deltaProg = $fatPyProg==0 ? 0 : (round(($fatProg / $fatPyProg) * 100,2)-100);
+      $segnoDeltaProg = $deltaProg<=0 ? '' : '+';
       // MOLTO BRUTTO MA AGGIUNGO CODICE TARGET QUA SOTTO
       $perc = $perc_mese ? $perc_mese->where('mese',7)->first()->perc : 0;
       $targetMese = empty($target) ? 0 : round($target*($perc/100),2);
       $targetProg += $targetMese;
       // sovrascrivo deltaProd
       if ($targetProg>0){
-        $deltaMese = $targetProg==0 ? 0 : round((($fatMese-$targetProg) / $targetProg) * 100,2);
-        $deltaProg = $targetProg==0 ? 0 : round((($fatProg-$targetProg) / $targetProg) * 100,2);
+        $deltaMese = $targetMese==0 ? 0 : (round(($fatMese / $targetMese) * 100,2)-100);
+        $segnoDeltaMese = $deltaMese<=0 ? '' : '+';
+        $deltaProg = $targetProg==0 ? 0 : (round(($fatProg / $targetProg) * 100,2)-100);
+        $segnoDeltaProg = $deltaProg<=0 ? '' : '+';
       }
     @endphp
     <tr>
@@ -262,11 +291,11 @@
       <td><strong>{{ currency($fatMese) }}</strong></td>
       <td>{{ currency($fatPyMese) }}</td>
       <td>{{ currency($targetMese) }}</td>
-      <td><strong>{{ $deltaMese }} %</strong></td>
+      <td><strong>{{$segnoDeltaMese}}{{ $deltaMese }} %</strong></td>
       <td><strong>{{ currency($fatProg) }}</strong></td>
       <td>{{ currency($fatPyProg) }}</td>
       <td>{{ currency($targetProg) }}</td>
-      <td><strong>{{ $deltaProg }} %</strong></td>
+      <td><strong>{{$segnoDeltaProg}}{{ $deltaProg}} %</strong></td>
     </tr>
     @php
       $fatMese = empty($fat) ? 0 : $fat->valore8;
@@ -275,16 +304,20 @@
       $fatPyProg += $fatPyMese;
       // $deltaMese = $fatPyMese==0 ? 0 : round((($fatPyMese-$fatMese) / $fatPyMese) * 100,2);
       // $deltaProg = $fatPyProg==0 ? 0 : round((($fatPyProg-$fatProg) / $fatPyProg) * 100,2);
-      $deltaMese = $fatPyMese==0 ? 0 : round((($fatMese-$fatPyMese) / $fatPyMese) * 100,2);
-      $deltaProg = $fatPyProg==0 ? 0 : round((($fatProg-$fatPyProg) / $fatPyProg) * 100,2);
+      $deltaMese = $fatPyMese==0 ? 0 : (round(($fatMese / $fatPyMese) * 100,2)-100);
+      $segnoDeltaMese = $deltaMese<=0 ? '' : '+';
+      $deltaProg = $fatPyProg==0 ? 0 : (round(($fatProg / $fatPyProg) * 100,2)-100);
+      $segnoDeltaProg = $deltaProg<=0 ? '' : '+';
       // MOLTO BRUTTO MA AGGIUNGO CODICE TARGET QUA SOTTO
       $perc = $perc_mese ? $perc_mese->where('mese',8)->first()->perc : 0;
       $targetMese = empty($target) ? 0 : round($target*($perc/100),2);
       $targetProg += $targetMese;
       // sovrascrivo deltaProd
       if ($targetProg>0){
-        $deltaMese = $targetProg==0 ? 0 : round((($fatMese-$targetProg) / $targetProg) * 100,2);
-        $deltaProg = $targetProg==0 ? 0 : round((($fatProg-$targetProg) / $targetProg) * 100,2);
+        $deltaMese = $targetMese==0 ? 0 : (round(($fatMese / $targetMese) * 100,2)-100);
+        $segnoDeltaMese = $deltaMese<=0 ? '' : '+';
+        $deltaProg = $targetProg==0 ? 0 : (round(($fatProg / $targetProg) * 100,2)-100);
+        $segnoDeltaProg = $deltaProg<=0 ? '' : '+';
       }
     @endphp
     <tr>
@@ -296,11 +329,11 @@
       <td><strong>{{ currency($fatMese) }}</strong></td>
       <td>{{ currency($fatPyMese) }}</td>
       <td>{{ currency($targetMese) }}</td>
-      <td><strong>{{ $deltaMese }} %</strong></td>
+      <td><strong>{{$segnoDeltaMese}}{{ $deltaMese }} %</strong></td>
       <td><strong>{{ currency($fatProg) }}</strong></td>
       <td>{{ currency($fatPyProg) }}</td>
       <td>{{ currency($targetProg) }}</td>
-      <td><strong>{{ $deltaProg }} %</strong></td>
+      <td><strong>{{$segnoDeltaProg}}{{ $deltaProg}} %</strong></td>
     </tr>
     @php
       $fatMese = empty($fat) ? 0 : $fat->valore9;
@@ -309,16 +342,20 @@
       $fatPyProg += $fatPyMese;
       // $deltaMese = $fatPyMese==0 ? 0 : round((($fatPyMese-$fatMese) / $fatPyMese) * 100,2);
       // $deltaProg = $fatPyProg==0 ? 0 : round((($fatPyProg-$fatProg) / $fatPyProg) * 100,2);
-      $deltaMese = $fatPyMese==0 ? 0 : round((($fatMese-$fatPyMese) / $fatPyMese) * 100,2);
-      $deltaProg = $fatPyProg==0 ? 0 : round((($fatProg-$fatPyProg) / $fatPyProg) * 100,2);
+      $deltaMese = $fatPyMese==0 ? 0 : (round(($fatMese / $fatPyMese) * 100,2)-100);
+      $segnoDeltaMese = $deltaMese<=0 ? '' : '+';
+      $deltaProg = $fatPyProg==0 ? 0 : (round(($fatProg / $fatPyProg) * 100,2)-100);
+      $segnoDeltaProg = $deltaProg<=0 ? '' : '+';
       // MOLTO BRUTTO MA AGGIUNGO CODICE TARGET QUA SOTTO
       $perc = $perc_mese ? $perc_mese->where('mese',9)->first()->perc : 0;
       $targetMese = empty($target) ? 0 : round($target*($perc/100),2);
       $targetProg += $targetMese;
       // sovrascrivo deltaProd
       if ($targetProg>0){
-        $deltaMese = $targetProg==0 ? 0 : round((($fatMese-$targetProg) / $targetProg) * 100,2);
-        $deltaProg = $targetProg==0 ? 0 : round((($fatProg-$targetProg) / $targetProg) * 100,2);
+        $deltaMese = $targetMese==0 ? 0 : (round(($fatMese / $targetMese) * 100,2)-100);
+        $segnoDeltaMese = $deltaMese<=0 ? '' : '+';
+        $deltaProg = $targetProg==0 ? 0 : (round(($fatProg / $targetProg) * 100,2)-100);
+        $segnoDeltaProg = $deltaProg<=0 ? '' : '+';
       }
     @endphp
     <tr>
@@ -330,11 +367,11 @@
       <td><strong>{{ currency($fatMese) }}</strong></td>
       <td>{{ currency($fatPyMese) }}</td>
       <td>{{ currency($targetMese) }}</td>
-      <td><strong>{{ $deltaMese }} %</strong></td>
+      <td><strong>{{$segnoDeltaMese}}{{ $deltaMese }} %</strong></td>
       <td><strong>{{ currency($fatProg) }}</strong></td>
       <td>{{ currency($fatPyProg) }}</td>
       <td>{{ currency($targetProg) }}</td>
-      <td><strong>{{ $deltaProg }} %</strong></td>
+      <td><strong>{{$segnoDeltaProg}}{{ $deltaProg}} %</strong></td>
     </tr>
     @php
       $fatMese = empty($fat) ? 0 : $fat->valore10;
@@ -343,16 +380,20 @@
       $fatPyProg += $fatPyMese;
       // $deltaMese = $fatPyMese==0 ? 0 : round((($fatPyMese-$fatMese) / $fatPyMese) * 100,2);
       // $deltaProg = $fatPyProg==0 ? 0 : round((($fatPyProg-$fatProg) / $fatPyProg) * 100,2);
-      $deltaMese = $fatPyMese==0 ? 0 : round((($fatMese-$fatPyMese) / $fatPyMese) * 100,2);
-      $deltaProg = $fatPyProg==0 ? 0 : round((($fatProg-$fatPyProg) / $fatPyProg) * 100,2);
+      $deltaMese = $fatPyMese==0 ? 0 : (round(($fatMese / $fatPyMese) * 100,2)-100);
+      $segnoDeltaMese = $deltaMese<=0 ? '' : '+';
+      $deltaProg = $fatPyProg==0 ? 0 : (round(($fatProg / $fatPyProg) * 100,2)-100);
+      $segnoDeltaProg = $deltaProg<=0 ? '' : '+';
       // MOLTO BRUTTO MA AGGIUNGO CODICE TARGET QUA SOTTO
       $perc = $perc_mese ? $perc_mese->where('mese',10)->first()->perc : 0;
       $targetMese = empty($target) ? 0 : round($target*($perc/100),2);
       $targetProg += $targetMese;
       // sovrascrivo deltaProd
       if ($targetProg>0){
-        $deltaMese = $targetProg==0 ? 0 : round((($fatMese-$targetProg) / $targetProg) * 100,2);
-        $deltaProg = $targetProg==0 ? 0 : round((($fatProg-$targetProg) / $targetProg) * 100,2);
+        $deltaMese = $targetMese==0 ? 0 : (round(($fatMese / $targetMese) * 100,2)-100);
+        $segnoDeltaMese = $deltaMese<=0 ? '' : '+';
+        $deltaProg = $targetProg==0 ? 0 : (round(($fatProg / $targetProg) * 100,2)-100);
+        $segnoDeltaProg = $deltaProg<=0 ? '' : '+';
       }
     @endphp
     <tr>
@@ -364,11 +405,11 @@
       <td><strong>{{ currency($fatMese) }}</strong></td>
       <td>{{ currency($fatPyMese) }}</td>
       <td>{{ currency($targetMese) }}</td>
-      <td><strong>{{ $deltaMese }} %</strong></td>
+      <td><strong>{{$segnoDeltaMese}}{{ $deltaMese }} %</strong></td>
       <td><strong>{{ currency($fatProg) }}</strong></td>
       <td>{{ currency($fatPyProg) }}</td>
       <td>{{ currency($targetProg) }}</td>
-      <td><strong>{{ $deltaProg }} %</strong></td>
+      <td><strong>{{$segnoDeltaProg}}{{ $deltaProg}} %</strong></td>
     </tr>
     @php
       $fatMese = empty($fat) ? 0 : $fat->valore11;
@@ -377,16 +418,20 @@
       $fatPyProg += $fatPyMese;
       // $deltaMese = $fatPyMese==0 ? 0 : round((($fatPyMese-$fatMese) / $fatPyMese) * 100,2);
       // $deltaProg = $fatPyProg==0 ? 0 : round((($fatPyProg-$fatProg) / $fatPyProg) * 100,2);
-      $deltaMese = $fatPyMese==0 ? 0 : round((($fatMese-$fatPyMese) / $fatPyMese) * 100,2);
-      $deltaProg = $fatPyProg==0 ? 0 : round((($fatProg-$fatPyProg) / $fatPyProg) * 100,2);
+      $deltaMese = $fatPyMese==0 ? 0 : (round(($fatMese / $fatPyMese) * 100,2)-100);
+      $segnoDeltaMese = $deltaMese<=0 ? '' : '+';
+      $deltaProg = $fatPyProg==0 ? 0 : (round(($fatProg / $fatPyProg) * 100,2)-100);
+      $segnoDeltaProg = $deltaProg<=0 ? '' : '+';
       // MOLTO BRUTTO MA AGGIUNGO CODICE TARGET QUA SOTTO
       $perc = $perc_mese ? $perc_mese->where('mese',11)->first()->perc : 0;
       $targetMese = empty($target) ? 0 : round($target*($perc/100),2);
       $targetProg += $targetMese;
       // sovrascrivo deltaProd
       if ($targetProg>0){
-        $deltaMese = $targetProg==0 ? 0 : round((($fatMese-$targetProg) / $targetProg) * 100,2);
-        $deltaProg = $targetProg==0 ? 0 : round((($fatProg-$targetProg) / $targetProg) * 100,2);
+        $deltaMese = $targetMese==0 ? 0 : (round(($fatMese / $targetMese) * 100,2)-100);
+        $segnoDeltaMese = $deltaMese<=0 ? '' : '+';
+        $deltaProg = $targetProg==0 ? 0 : (round(($fatProg / $targetProg) * 100,2)-100);
+        $segnoDeltaProg = $deltaProg<=0 ? '' : '+';
       }
     @endphp
     <tr>
@@ -398,11 +443,11 @@
       <td><strong>{{ currency($fatMese) }}</strong></td>
       <td>{{ currency($fatPyMese) }}</td>
       <td>{{ currency($targetMese) }}</td>
-      <td><strong>{{ $deltaMese }} %</strong></td>
+      <td><strong>{{$segnoDeltaMese}}{{ $deltaMese }} %</strong></td>
       <td><strong>{{ currency($fatProg) }}</strong></td>
       <td>{{ currency($fatPyProg) }}</td>
       <td>{{ currency($targetProg) }}</td>
-      <td><strong>{{ $deltaProg }} %</strong></td>
+      <td><strong>{{$segnoDeltaProg}}{{ $deltaProg}} %</strong></td>
     </tr>
     @php
       $fatMese = empty($fat) ? 0 : $fat->valore12;
@@ -411,16 +456,20 @@
       $fatPyProg += $fatPyMese;
       // $deltaMese = $fatPyMese==0 ? 0 : round((($fatPyMese-$fatMese) / $fatPyMese) * 100,2);
       // $deltaProg = $fatPyProg==0 ? 0 : round((($fatPyProg-$fatProg) / $fatPyProg) * 100,2);
-      $deltaMese = $fatPyMese==0 ? 0 : round((($fatMese-$fatPyMese) / $fatPyMese) * 100,2);
-      $deltaProg = $fatPyProg==0 ? 0 : round((($fatProg-$fatPyProg) / $fatPyProg) * 100,2);
+      $deltaMese = $fatPyMese==0 ? 0 : (round(($fatMese / $fatPyMese) * 100,2)-100);
+      $segnoDeltaMese = $deltaMese<=0 ? '' : '+';
+      $deltaProg = $fatPyProg==0 ? 0 : (round(($fatProg / $fatPyProg) * 100,2)-100);
+      $segnoDeltaProg = $deltaProg<=0 ? '' : '+';
       // MOLTO BRUTTO MA AGGIUNGO CODICE TARGET QUA SOTTO
       $perc = $perc_mese ? $perc_mese->where('mese',12)->first()->perc : 0;
       $targetMese = empty($target) ? 0 : round($target*($perc/100),2);
       $targetProg += $targetMese;
       // sovrascrivo deltaProd
       if ($targetProg>0){
-        $deltaMese = $targetProg==0 ? 0 : round((($fatMese-$targetProg) / $targetProg) * 100,2);
-        $deltaProg = $targetProg==0 ? 0 : round((($fatProg-$targetProg) / $targetProg) * 100,2);
+        $deltaMese = $targetMese==0 ? 0 : (round(($fatMese / $targetMese) * 100,2)-100);
+        $segnoDeltaMese = $deltaMese<=0 ? '' : '+';
+        $deltaProg = $targetProg==0 ? 0 : (round(($fatProg / $targetProg) * 100,2)-100);
+        $segnoDeltaProg = $deltaProg<=0 ? '' : '+';
       }
     @endphp
     <tr>
@@ -432,11 +481,11 @@
       <td><strong>{{ currency($fatMese) }}</strong></td>
       <td>{{ currency($fatPyMese) }}</td>
       <td>{{ currency($targetMese) }}</td>
-      <td><strong>{{ $deltaMese }} %</strong></td>
+      <td><strong>{{$segnoDeltaMese}}{{ $deltaMese }} %</strong></td>
       <td><strong>{{ currency($fatProg) }}</strong></td>
       <td>{{ currency($fatPyProg) }}</td>
       <td>{{ currency($targetProg) }}</td>
-      <td><strong>{{ $deltaProg }} %</strong></td>
+      <td><strong>{{$segnoDeltaProg}}{{ $deltaProg}} %</strong></td>
     </tr>
   </tbody>
   <tfoot class="bg-gray">
@@ -449,7 +498,7 @@
       <td><strong>{{ currency($fatProg) }}</strong></td>
       <td><strong>{{ currency($fatPyProg) }}</strong></td>
       <td><strong>{{ currency($targetProg) }}</strong></td>
-      <td><strong>{{ $deltaProg }} %</strong></td>
+      <td><strong>{{$segnoDeltaProg}}{{ $deltaProg}} %</strong></td>
     </tr>
   </tfoot>
 </table>
