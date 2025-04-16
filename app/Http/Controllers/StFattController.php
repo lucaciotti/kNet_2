@@ -16,6 +16,8 @@ use knet\ArcaModels\Agent;
 use knet\ArcaModels\SuperAgent;
 use knet\ArcaModels\Nazione;
 use knet\ArcaModels\GrpProd;
+use knet\ArcaModels\TargetAg;
+use knet\ArcaModels\BudgetPerc;
 use knet\ArcaModels\Zona;
 use knet\Helpers\AgentFltUtils;
 
@@ -30,15 +32,29 @@ class StFattController extends Controller
       $thisYear = (string)(Carbon::now()->year);
       $prevYear = (string)((Carbon::now()->year)-1);
 
-      $agentList = Agent::select('codice', 'descrizion')
+      $dataFineAgente = Carbon::createFromDate($prevYear, 1, 1);
+      $agentList = Agent::select('codice', 'descrizion', 'u_dataini')->whereNull('u_dataini')->orWhere('u_dataini', '>=', $dataFineAgente)->orderBy('codice')->get();
+      $agentListWithFact = Agent::select('codice', 'descrizion', 'u_dataini')
         ->whereHas('statFatt', function($query) use ($thisYear, $prevYear) {
           $query->whereIn('esercizio', [$thisYear, $prevYear]);
       })->orderBy('codice')->get();
+      $agentList = $agentList->merge($agentListWithFact)->unique();
+      // dd($agentList);
       $codAg = ($req->input('codag')) ? $req->input('codag') : ($codAg ? array_wrap($codAg) : $codAg);
       $fltAgents = (!empty($codAg)) ? $codAg : array_wrap((!empty(RedisUser::get('codag')) ? RedisUser::get('codag') : $agentList->first()->codice));
       //$descrAg = (!empty($agents->whereStrict('codice', $agente)->first()) ? $agents->whereStrict('codice', $agente)->first()->descrizion : "");
       $fltAgents = AgentFltUtils::checkSpecialRules($fltAgents);
       // dd($fltAgents);
+
+      // GESTIONE TARGET!
+      $showTarget = false;
+      $agentHasTarget = TargetAg::where('codage', RedisUser::get('codag'))->exists();
+      if ($agentHasTarget) {
+        if(count($fltAgents)>=count($agentList)) {
+          $showTarget = true;
+        }
+      }
+
       
       $clientsInStatFat=StatFatt::select('codicecf');
       $clientsInStatFat->whereHas('client', function($query) use ($fltAgents) {
@@ -127,6 +143,11 @@ class StFattController extends Controller
       }
       $fat_PY = $fat_PY->groupBy(['tipologia'])
                           ->get();
+      if ($showTarget) {
+        $target = TargetAg::where('esercizio', $thisYear)->where('codage', RedisUser::get('codag'))->get();
+        $perc_mese = BudgetPerc::where('anno', string($thisYear))->get();
+      }
+      // dd($target->sum('targetko'));
 
       $gruppi = GrpProd::where('codice', 'NOT LIKE', '1%')
                 ->where('codice', 'NOT LIKE', 'DIC%')
@@ -140,24 +161,47 @@ class StFattController extends Controller
       if(!empty($fat_TY->first())){
         $prevMonth = ($fat_TY->first()->$valMese == 0) ? $prevMonth-1 : $prevMonth;
       }
-      $stats = $this->makeFatTgtJson($fat_TY, $fat_PY, $prevMonth);
       // dd($stats);
-      return view('stFatt.idxAg', [
-        'agentList' => $agentList,
-        'fltAgents' => $fltAgents,
-        'zone' => $zoneList,
-        'zoneSelected' => $zoneSelected,
-        'fat_TY' => $fat_TY,
-        //'fatDet' => $fatDet,
-        'fat_PY' => $fat_PY,
-        'stats' => $stats,
-        'prevMonth' => $prevMonth,
-        'gruppi' => $gruppi,
-        'grpSelected' => $req->input('gruppo'),
-        'descrAg' => '',
-        'thisYear' => $thisYear,
-        'prevYear' => $prevYear
-      ]);
+      if ($showTarget) {
+        $stats = $this->makeFatTgtJson($fat_TY, $fat_PY, $target, $perc_mese, $prevMonth);
+        // dd($stats);
+        return view('stFatt.idxAgTarget', [
+          'agentList' => $agentList,
+          'fltAgents' => $fltAgents,
+          'zone' => $zoneList,
+          'zoneSelected' => $zoneSelected,
+          'fat_TY' => $fat_TY,
+          //'fatDet' => $fatDet,
+          'fat_PY' => $fat_PY,
+          'target' => $target,
+          'perc_mese' => $perc_mese,
+          'stats' => $stats,
+          'prevMonth' => $prevMonth,
+          'gruppi' => $gruppi,
+          'grpSelected' => $req->input('gruppo'),
+          'descrAg' => '',
+          'thisYear' => $thisYear,
+          'prevYear' => $prevYear
+        ]);
+      } else {
+        $stats = $this->makeFatTgtJson($fat_TY, $fat_PY, collect(), collect(), $prevMonth);
+        return view('stFatt.idxAg', [
+          'agentList' => $agentList,
+          'fltAgents' => $fltAgents,
+          'zone' => $zoneList,
+          'zoneSelected' => $zoneSelected,
+          'fat_TY' => $fat_TY,
+          //'fatDet' => $fatDet,
+          'fat_PY' => $fat_PY,
+          'stats' => $stats,
+          'prevMonth' => $prevMonth,
+          'gruppi' => $gruppi,
+          'grpSelected' => $req->input('gruppo'),
+          'descrAg' => '',
+          'thisYear' => $thisYear,
+          'prevYear' => $prevYear
+        ]);
+      }
     }
 
     public function idxCli (Request $req, $codCli=null) {
@@ -266,7 +310,7 @@ class StFattController extends Controller
       $prevMonth = (Carbon::now()->month);
       $valMese = 'valore' . $prevMonth;
       $prevMonth = $fat_TY->isEmpty() ? $prevMonth : (($fat_TY->first()->$valMese == 0) ? $prevMonth-1 : $prevMonth);
-      $stats = $this->makeFatTgtJson($fat_TY, $fat_PY, $prevMonth);
+      $stats = $this->makeFatTgtJson($fat_TY, $fat_PY, null, null, $prevMonth);
       // dd($stats);
       // dd($clients->first());
       return view('stFatt.idxCli', [
@@ -371,7 +415,8 @@ class StFattController extends Controller
       $prevMonth = (Carbon::now()->month);
       $valMese = 'valore' . $prevMonth;
       $prevMonth = $fatTot->isEmpty() ? $prevMonth : (($fatTot->first()->$valMese == 0) ? $prevMonth-1 : $prevMonth);
-      $stats = $this->makeFatTgtJson($fatTot, $target, $prevMonth);
+      // $stats = $this->makeFatTgtJson($fatTot, $target, $prevMonth);
+      $stats = $this->makeFatTgtJson($fatTot, $target, null, null, $prevMonth);
       // dd($stats);
       // dd($clients->first());
       return view('stFatt.idxManager', [
@@ -386,7 +431,7 @@ class StFattController extends Controller
     }
 
     public function idxZone (Request $req, $codAg=null) {
-      $agents = Agent::select('codice', 'descrizion')->whereNull('u_dataini')->orWhere('u_dataini', '>=', Carbon::now())->orderBy('codice')->get();
+      $agents = Agent::select('codice', 'descrizion', 'u_dataini')->whereNull('u_dataini')->orWhere('u_dataini', '>=', Carbon::now())->orderBy('codice')->get();
       $codAg = ($req->input('codag')) ? $req->input('codag') : $codAg;
       $agente = (string)(!empty($codAg)) ? $codAg : (!empty(RedisUser::get('codag')) ? RedisUser::get('codag') : $agents->first()->codice);
       $descrAg = (!empty($agents->whereStrict('agente', $agente)->first()->agent) ? $agents->whereStrict('agente', $agente)->first()->agent->descrizion : "");
@@ -507,20 +552,23 @@ class StFattController extends Controller
 
 
     //Costruisce Collection JSON per Grafico.
-    protected function makeFatTgtJson($fat, $tgt, $mese){
+    protected function makeFatTgtJson($fat, $fatPY, $target, $perc_mese, $FTmese){
       $mese=12;
       $collect = collect([]);
       $fatM = 0;
+      $fatPY_M = 0;
       $tgtM = 0;
       for($i=1; $i<=$mese; $i++){
         $valMese = 'valore' . $i;
         $fatM += round($fat->isEmpty() ? 0 : $fat->first()->$valMese, 0);
-        $tgtM += round($tgt->isEmpty() ? 0 : $tgt->first()->$valMese, 0);
+        $fatPY_M += round($fatPY->isEmpty() ? 0 : $fatPY->first()->$valMese, 0);
+        $tgtM += round($target->isEmpty() ? 0 : $target->sum('targetko')*($perc_mese->where('mese',$i)->first()->perc/100), 0);
         $dt = Carbon::createFromDate(null, $i, 1);
         $data = [
           'm' => $dt->year.'-'.$dt->month,
-          'a' => $fatM,
-          'b' => $tgtM
+          'a' => ($FTmese>=$i) ? $fatM : 0 ,
+          'b' => $fatPY_M,
+          'c' => $tgtM,
         ];
         $collect->push($data);
       }

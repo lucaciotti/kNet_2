@@ -29,14 +29,15 @@
     var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
     var data = {!! $stats !!};
     var revenueLabel = "{!! trans('stFatt.revenue') !!}";
-    var targetLabel = revenueLabel + " PrevYear";
+    var revenuePYLabel = revenueLabel + " PrevYear";
+    var targetLabel = "{!! trans('stFatt.target') !!}";
     var config = {
       resize: true,
       data: data,
       xkey: 'm',
-      ykeys: ['a', 'b'],
-      labels: [revenueLabel, targetLabel],
-      lineColors: ['#227a03', '#cd6402'],
+      ykeys: ['a', 'b', 'c'],
+      labels: [revenueLabel, revenuePYLabel, targetLabel],
+      lineColors: ['#227a03', '#cd6402', '#a64333'],
       hideHover: 'auto',
       xLabels: 'month',
       xLabelFormat: function(x) { // <--- x.getMonth() returns valid index
