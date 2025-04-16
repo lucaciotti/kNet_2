@@ -1,5 +1,5 @@
 <table >
-  <col width="50">
+  <col width="10">
   <col width="80">
   <col width="50">
   <col width="50">
@@ -8,10 +8,11 @@
   <col width="100">
   <col width="80">
   <col width="80">
+  {{-- <col width="100"> --}}
   <thead>
     <tr style="text-align: center;">
-      <th>Periodo</th>
-      <th>{{ trans('scad.datePay_condensed') }}</th>
+      {{-- <th></th> --}}
+      <th colspan="2">{{ trans('scad.datePay_condensed') }}</th>
       <th>{{ trans('scad.statusPayment') }}</th>
       <th>{{ trans('scad.numInvoice') }}</th>
       <th>{{ trans('scad.dateInvoice') }}</th>
@@ -19,6 +20,7 @@
       <th>{{ trans('scad.typePayment') }}</th>
       <th>{{ trans('scad.valueToPay') }}</th>
       <th>{{ trans('scad.valuePayed') }}</th>
+      {{-- <th>Note</th> --}}
     </tr>
   </thead>
   <tbody>
@@ -67,6 +69,15 @@
             <td style="text-align: right;">{{ currency($scad->impeffval) }}</td>
             <td style="text-align: right;">{{ currency($scad->importopag) }}</td>
           </tr>
+          @if (count($scad->storia)>0)
+            @foreach ($scad->storia as $storia)
+              <tr class='danger'>
+                <td colspan="4" style="text-align: right;"><p style="padding: 10px;">
+                --> NOTE<br>del {{ $storia->datareg->format('d-m-Y') }}: </p></td>
+                <td colspan="5"><strong><p style="padding: 10px;">{!! $storia->note !!}</p></strong></td>
+              </tr>
+            @endforeach              
+          @endif
         @endforeach   
         </tbody>
       @endforeach

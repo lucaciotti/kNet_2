@@ -218,7 +218,7 @@ class SchedaScadController extends Controller
                 ->withoutGlobalScope('agent')
                 ->withoutGlobalScope('superAgent')
                 ->withoutGlobalScope('client');
-              }))
+              }, 'storia'))
               ->orderBy('datascad', 'asc')->orderBy('id', 'desc')
               ->get();
       $scads_TY = $scads_TY->groupBy('Mese');

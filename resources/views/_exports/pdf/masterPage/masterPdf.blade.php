@@ -38,7 +38,7 @@
             table tbody { display: table-header-group; } 
             table tbody th.grey { background-color: lightgrey; }
             table tr:nth-child(even) { background-color: #f2f2f2; }
-            table tr.danger { background-color: red; }
+            table tr.danger { background-color: rgb(201, 89, 89); }
             table tr.warning { background-color: orange; }
             table tbody td.green { background-color: #cef2bc; }
             table tbody td.orange { background-color: #f0d45e; }
