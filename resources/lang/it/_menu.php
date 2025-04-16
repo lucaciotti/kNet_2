@@ -26,6 +26,7 @@ return [
     'ddt'                     => 'Bolle',
     'invoice'                 => 'Fatture',
     'notecredito'             => 'Note di Credito',
+    'rnc'                     => 'Non Conformità',
     'payment'                 => 'Scadenze',
     'products'                => 'Prodotti',
     'insVisits'               => 'Inserimento Visite',

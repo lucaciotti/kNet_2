@@ -16,6 +16,7 @@ return [
     'client'                  => 'Client',
     'documents'               => 'Documents',
     'scads'                   => 'Echéances',
+    'rncs'                   => 'Non Conformità',
     'products'                => 'Produits',
     'stFatt'                  => 'Statistiques',
     'stFattAgent'             => 'Statistiques Agent',

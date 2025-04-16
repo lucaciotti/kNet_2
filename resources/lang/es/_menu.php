@@ -24,6 +24,7 @@ return [
     'ddt'                     => 'Albaranes',
     'invoice'                 => 'Facturas',
     'notecredito'             => 'Abonos',
+    'rnc'                     => 'Non Conformità',
     'payment'                 => 'Vencimientos',
     'products'                => 'Productos',
     'insVisits'               => 'Insertar visitas',

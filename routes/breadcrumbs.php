@@ -117,6 +117,13 @@ Breadcrumbs::register('scads', function($breadcrumbs)
     $breadcrumbs->push(trans('_breadcrumbs.scads'), route('scad::list'));
 });
 
+// Home > Rncs
+Breadcrumbs::register('rncs', function($breadcrumbs)
+{
+    $breadcrumbs->parent('home');
+    $breadcrumbs->push(trans('_breadcrumbs.rncs'), route('rnc::list'));
+});
+
 // Home > Prods
 Breadcrumbs::register('prods', function($breadcrumbs)
 {

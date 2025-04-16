@@ -24,6 +24,7 @@ return [
     'ddt'                     => 'Lieferscheine',
     'invoice'                 => 'Rechnungen',
     'notecredito'             => 'Gutschriften',
+    'rnc'                     => 'Non Conformità',
     'payment'                 => 'Fristen',
     'products'                => 'Produkte',
     'insVisits'               => 'Besuch Eingabe',

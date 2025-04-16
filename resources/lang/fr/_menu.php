@@ -24,6 +24,7 @@ return [
     'ddt'                     => 'Bons de livraison',
     'invoice'                 => 'Factures',
     'notecredito'             => 'Note de Crédit',
+    'rnc'                     => 'Non Conformità',
     'payment'                 => 'Echéances',
     'products'                => 'Produits',
     'insVisits'               => 'Saisies Visites',

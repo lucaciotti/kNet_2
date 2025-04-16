@@ -22,4 +22,11 @@ class RncCause extends Model
         //Imposto la Connessione al Database
         $this->setConnection(RedisUser::get('ditta_DB'));
     }
+
+
+
+    public function rnc()
+    {
+        return $this->hasMany('knet\ArcaModels\RncIso', 'causa', 'codice');
+    }
 }

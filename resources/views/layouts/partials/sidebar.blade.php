@@ -78,6 +78,10 @@
                 @if (!in_array(RedisUser::get('role'), ['marketing', 'tecnical_sales']))
                 <li class="{{ Ekko::isActiveRoute('scad::*') }}"><a href="{{ route('scad::list') }}"><i class='fa fa-money'></i> <span>{{ trans('_menu.payment') }}</span></a></li>
                 @endif
+                
+                @if (!in_array(RedisUser::get('role'), ['client']))
+                <li class="{{ Ekko::isActiveRoute('rnc::*') }}"><a href="{{ route('rnc::list') }}"><i class='fa fa-wrench'></i> <span>{{ trans('_menu.rnc') }}</span></a></li>
+                @endif
               @endif
               {{-- <li class="{{ Ekko::isActiveRoute('prod::*') }}"><a href="{{ route('prod::list') }}"><i class='fa fa-shopping-bag'></i> <span>{{ trans('_menu.products') }}</span></a></li> --}}
               <li><i class='fa fa-empty'></i></li>

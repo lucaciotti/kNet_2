@@ -40,7 +40,7 @@ class RncIso extends Model
                 static::addGlobalScope('agent', function (Builder $builder) {
                     $builder->whereHas('client', function ($query) {
                         $query->where('agente', RedisUser::get('codag'));
-                    });
+                    })->where('u_pub', true);
                 });
                 break;
             case 'superAgent':
@@ -49,13 +49,13 @@ class RncIso extends Model
                         $query->whereHas('agent', function ($q) {
                             $q->where('u_capoa', RedisUser::get('codag'));
                         });
-                    });
+                    })->where('u_pub', true);
                     
                 });
                 break;
             case 'client':
                 static::addGlobalScope('client', function (Builder $builder) {
-                    $builder->where('codfor', RedisUser::get('codcli'));
+                    $builder->where('codfor', RedisUser::get('codcli'))->where('u_pub', true);
                 });
                 break;
 
@@ -64,6 +64,51 @@ class RncIso extends Model
         }
     }
 
+    // GETTER And SETTER
+    public function getSeverityAttribute(){
+        switch ($this->difett) {
+            case 1:
+                return '1 - Basso';
+                break;
+
+            case 2:
+                return '2 - Medio';
+                break;
+
+            case 3:
+                return '3 - Alto';
+                break;
+            
+            default:
+                return '-NC-';
+                break;
+        }
+    }
+
+    public function getTrasportoAttribute()
+    {
+        switch ($this->u_tc) {
+            case 'C':
+                return 'del Cliente';
+                break;
+
+            case 'F':
+                return 'del Fornitore';
+                break;
+
+            case 'K':
+                return 'di KronaKoblenz';
+                break;
+
+            case 'V':
+                return 'del Vettore';
+                break;
+
+            default:
+                return '-NC-';
+                break;
+        }
+    }
 
     // JOIN Tables
     public function client()
@@ -109,5 +154,10 @@ class RncIso extends Model
     public function dipChiusura()
     {
         return $this->hasOne('knet\ArcaModels\Dipendenti', 'codice', 'u_dipc');
+    }
+
+    public function vettore()
+    {
+        return $this->hasOne('knet\ArcaModels\Vettore', 'codice', 'u_vettore');
     }
 }

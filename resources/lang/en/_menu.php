@@ -26,6 +26,7 @@ return [
     'ddt'                     => 'Delivery Notes',
     'invoice'                 => 'Invoices',
     'notecredito'             => 'Credit Notes',
+    'rnc'                     => 'Non Conformità',
     'payment'                 => 'Due Dates',
     'products'                => 'Products',
     'insVisits'               => 'Visit Input',

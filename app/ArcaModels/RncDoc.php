@@ -15,6 +15,7 @@ class RncDoc extends Model
     public $timestamps = false;
     // protected $primaryKey = 'codice';
     // public $incrementing = false;
+    protected $dates = ['datadoc'];
 
     public function __construct($attributes = array())
     {

@@ -17,6 +17,7 @@ return [
     'suppliers'                 => 'Fornitori',
     'supplier'                  => 'Fornitore',
     'documents'               => 'Documenti',
+    'rncs'                   => 'Non Conformità',
     'scads'                   => 'Scadenze',
     'products'                => 'Prodotti',
     'stFatt'                  => 'St.Fatt.',

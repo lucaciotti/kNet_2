@@ -209,6 +209,25 @@ Route::group(['as' => 'scad::'], function () {
   ]);
 });
 
+Route::group(['as' => 'rnc::'], function () {
+  Route::get('/rncs', [
+    'as' => 'list',
+    'uses' => 'RNCController@list'
+  ]);
+  Route::post('/rncs/filter', [
+    'as' => 'fltList',
+    'uses' => 'RNCController@fltList'
+  ]);
+  Route::get('/client/{codice}/rncs', [
+    'as' => 'client',
+    'uses' => 'RNCController@rncCli'
+  ]);
+  Route::get('/rnc/{id_rnc}', [
+    'as' => 'detail',
+    'uses' => 'RNCController@showDetail'
+  ]);
+});
+
 Route::group(['as' => 'listini::'], function () {
   Route::get('/listCli/{codicecf?}', [
     'as' => 'idxCli',
