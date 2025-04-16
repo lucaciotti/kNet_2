@@ -100,6 +100,11 @@ class StFattController extends Controller
             $query->whereIn('zona', $zoneSelected);
         });
       }
+      // 2024-2025 ESCLUSO GRUPPO SPINOFF
+      if ($thisYear="2025") {
+        $fat_TY = $fat_TY->whereNotIn('gruppo', ['A14']);
+      }
+
       $fat_TY = $fat_TY->groupBy(['tipologia'])
                           ->get();
       // ->with([
@@ -141,6 +146,12 @@ class StFattController extends Controller
             $query->whereIn('zona', $zoneSelected);
         });
       }
+
+      // 2024-2025 ESCLUSO GRUPPO SPINOFF
+      if ($prevYear = "2025") {
+        $fat_PY = $fat_PY->whereNotIn('gruppo', ['A14']);
+      }
+
       $fat_PY = $fat_PY->groupBy(['tipologia'])
                           ->get();
       if ($showTarget) {

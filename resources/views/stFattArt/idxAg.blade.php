@@ -169,6 +169,9 @@ Fatturato Confronto Anni
             </ul>
             <div class="tab-content">
                 <div class="tab-pane active" id="StatTot">
+                    @if ($thisYear=='2025' or $thisYear=='2024')
+                    <small><i class="text-danger">Attenzione! SpinOff incluso nel calcolo dei fatturati clienti!</i></small>
+                    @endif
                     @include('stFattArt.partials.tblTotAg', [
                     'fatList' => $fatList,
                     'thisYear' => $thisYear,

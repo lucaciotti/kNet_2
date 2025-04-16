@@ -146,6 +146,9 @@
       </ul>
       <div class="tab-content">
         <div class="tab-pane active" id="StatTot">
+        @if ($thisYear=='2025')      
+          <small><i class="text-danger">Escluso SpinOff da calcolo Fatturato</i></small>
+        @endif
         @include('stFatt.partials.tblTotAgTarget', [
           'fat_TY' => $fat_TY,
           'fat_PY' => $fat_PY,
