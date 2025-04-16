@@ -40,7 +40,8 @@ class RncIso extends Model
                 static::addGlobalScope('agent', function (Builder $builder) {
                     $builder->whereHas('client', function ($query) {
                         $query->where('agente', RedisUser::get('codag'));
-                    })->where('u_pub', true);
+                    });
+                    // ->where('u_pub', true);
                 });
                 break;
             case 'superAgent':
@@ -49,7 +50,8 @@ class RncIso extends Model
                         $query->whereHas('agent', function ($q) {
                             $q->where('u_capoa', RedisUser::get('codag'));
                         });
-                    })->where('u_pub', true);
+                    });
+                    // ->where('u_pub', true);
                     
                 });
                 break;
