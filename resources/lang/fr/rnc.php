@@ -10,10 +10,10 @@ return [
     */
 
     'headTitle_idx'           => 'Non Conformità',
-    'contentTitle_idx'        => 'Lista RNC',
+    'contentTitle_idx'        => 'Non Conformità',
     'contentDesc_idx'         => '',
 
-    'listRncs'               => 'Lista RNC',
+    'listrncs'               => 'Lista RNC',
     'filter'                  => 'Filtro',
 
     //Table
@@ -30,7 +30,10 @@ return [
     //Filter
     'descClient'              => 'Ragione Sociale',
     'anyDate'                 => 'Qualsiasi Data',
-    'datePay'                 => 'Data Scadenza',
+    'dateReg'                 => 'Data Registrazione',
+    'ctiporapp'                    => 'Tipologia',
+    'causa'                   => 'Causa',
+    'severity'                   => 'Gravità',
 
     'dirRem'                  => 'Rimessa Diretta',
     'bnkRpt'                  => 'Ricevuta Bancaria',
