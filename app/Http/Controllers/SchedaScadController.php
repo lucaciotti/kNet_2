@@ -211,7 +211,7 @@ class SchedaScadController extends Controller
       if($codAg){
         $scads_TY->where('codag', $codAg)->where(DB::raw('LENGTH(codag)'), strlen($codAg));
       }
-      $scads_TY = $scads_TY->whereIn('tipoacc', ['M', ''])
+      $scads_TY = $scads_TY->whereIn('tipoacc', ['F', ''])
               ->whereRaw("`pagato` = 0")
               ->with(array('client' => function($query) {
                 $query->select('codice', 'descrizion')
@@ -238,7 +238,7 @@ class SchedaScadController extends Controller
       if($codAg){
         $scads_PY->where('codag', $codAg)->where(DB::raw('LENGTH(codag)'), strlen($codAg));
       }
-      $scads_PY = $scads_PY->whereIn('tipoacc', ['M', ''])
+      $scads_PY = $scads_PY->whereIn('tipoacc', ['F', ''])
               ->whereRaw("`pagato` = 0")
               ->with(array('client' => function($query) {
                 $query->select('codice', 'descrizion')
