@@ -28,6 +28,19 @@
           <td>{{ $scad->impeffval }}</td>
           <td>{{ $scad->importopag }}</td>
         </tr>
+        @if (count($scad->storia)>0)
+          @foreach ($scad->storia as $storia)
+          <tr class='danger'>
+            <td colspan="1" style="text-align: right;">
+              <p style="padding: 10px;">
+                --> NOTE<br>del {{ $storia->datareg->format('d-m-Y') }}: </p>
+            </td>
+            <td colspan="5"><strong>
+                <p style="padding: 10px;">{!! $storia->note !!}</p>
+              </strong></td>
+          </tr>
+          @endforeach
+        @endif
       @endforeach
     @endif
   </tbody>

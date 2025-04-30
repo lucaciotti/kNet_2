@@ -27,7 +27,7 @@ class SchedaCliController extends Controller
 
     public function downloadPDF(Request $req, $codice){
         $client = Client::with(['agent', 'detNation', 'detZona', 'detSect', 'clasCli', 'detPag', 'detStato', 'anagNote'])->findOrFail($codice);
-        $scadToPay = ScadCli::where('codcf', $codice)->where('pagato',0)->whereIn('tipoacc', ['F', ''])->orderBy('datascad','desc')->get();
+        $scadToPay = ScadCli::where('codcf', $codice)->where('pagato',0)->whereIn('tipoacc', ['F', ''])->orderBy('datascad','desc')->with(['storia'])->get();
         $visits = wVisit::where('codicecf', $codice)->with('user')->take(3)->orderBy('data', 'desc')->orderBy('id')->get();
         $thisYear = (string)(Carbon::now()->year);
         $prevYear = (string)((Carbon::now()->year)-1);
