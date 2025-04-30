@@ -47,11 +47,11 @@
     <tr>
       <td><a href="{{ route('client::detail', $fatCustomer->codicecf ) }}">{{$fatCustomer->codicecf}}</a></td>
       <td>{{$fatCustomer->ragionesociale}}</td>
-      @if($yearBack==4) <td>{{ currency($fatCustomer->fatN4) }}</td>@endif
-      @if($yearBack>=3) <td>{{ currency($fatCustomer->fatN3) }}</td>@endif
-      @if($yearBack>=2) <td>{{ currency($fatCustomer->fatN2) }}</td>@endif
-      <td>{{ currency($fatCustomer->fatN1) }}</td>
-      <td>{{ currency($fatCustomer->fatN) }}</td>
+      @if($yearBack==4) <td>{{ $fatCustomer->fatN4 }}</td>@endif
+      @if($yearBack>=3) <td>{{ $fatCustomer->fatN3 }}</td>@endif
+      @if($yearBack>=2) <td>{{ $fatCustomer->fatN2 }}</td>@endif
+      <td>{{ $fatCustomer->fatN1 }}</td>
+      <td>{{ $fatCustomer->fatN }}</td>
     </tr>
     @php
     $fat_TotN4 += ($yearBack==4) ? $fatCustomer->fatN4 : 0;
@@ -65,11 +65,11 @@
   <tfoot class="bg-gray">
     <tr>
       <th colspan="2">{{ strtoupper(trans('stFatt.granTot')) }}</th>
-      @if($yearBack==4) <td><strong>{{ currency($fat_TotN4) }}</strong></td>@endif
-      @if($yearBack>=3) <td><strong>{{ currency($fat_TotN3) }}</strong></td>@endif
-      @if($yearBack>=2) <td><strong>{{ currency($fat_TotN2) }}</strong></td>@endif
-      <td><strong>{{ currency($fat_TotN1) }}</strong></td>
-      <td><strong>{{ currency($fat_TotN) }}</strong></td>
+      @if($yearBack==4) <td><strong>{{ $fat_TotN4 }}</strong></td>@endif
+      @if($yearBack>=3) <td><strong>{{ $fat_TotN3 }}</strong></td>@endif
+      @if($yearBack>=2) <td><strong>{{ $fat_TotN2 }}</strong></td>@endif
+      <td><strong>{{ $fat_TotN1 }}</strong></td>
+      <td><strong>{{ $fat_TotN }}</strong></td>
     </tr>
   </tfoot>
 </table>
