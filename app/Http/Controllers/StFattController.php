@@ -31,7 +31,7 @@ class StFattController extends Controller
     public function idxAg (Request $req, $codAg=null) {
       $thisYear = (string)(Carbon::now()->year);
       $prevYear = (string)((Carbon::now()->year)-1);
-
+      
       $dataFineAgente = Carbon::createFromDate($prevYear, 1, 1);
       $agentList = Agent::select('codice', 'descrizion', 'u_dataini')->whereNull('u_dataini')->orWhere('u_dataini', '>=', $dataFineAgente)->orderBy('codice')->get();
       $agentListWithFact = Agent::select('codice', 'descrizion', 'u_dataini')
@@ -101,7 +101,7 @@ class StFattController extends Controller
         });
       }
       // 2024-2025 ESCLUSO GRUPPO SPINOFF
-      if ($thisYear="2025") {
+      if ($thisYear=="2025") {
         $fat_TY = $fat_TY->whereNotIn('gruppo', ['A14']);
       }
 
@@ -148,7 +148,7 @@ class StFattController extends Controller
       }
 
       // 2024-2025 ESCLUSO GRUPPO SPINOFF
-      if ($prevYear = "2025") {
+      if ($prevYear == "2025") {
         $fat_PY = $fat_PY->whereNotIn('gruppo', ['A14']);
       }
 
@@ -172,7 +172,8 @@ class StFattController extends Controller
       if(!empty($fat_TY->first())){
         $prevMonth = ($fat_TY->first()->$valMese == 0) ? $prevMonth-1 : $prevMonth;
       }
-      // dd($stats);
+      // dd($stats);dd($prevYear);
+      
       if ($showTarget) {
         $stats = $this->makeFatTgtJson($fat_TY, $fat_PY, $target, $perc_mese, $prevMonth);
         // dd($stats);
