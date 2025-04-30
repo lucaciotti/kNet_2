@@ -322,7 +322,8 @@ class StFattController extends Controller
       $prevMonth = (Carbon::now()->month);
       $valMese = 'valore' . $prevMonth;
       $prevMonth = $fat_TY->isEmpty() ? $prevMonth : (($fat_TY->first()->$valMese == 0) ? $prevMonth-1 : $prevMonth);
-      $stats = $this->makeFatTgtJson($fat_TY, $fat_PY, null, null, $prevMonth);
+      // $stats = $this->makeFatTgtJson($fat_TY, $fat_PY, null, null, $prevMonth);
+      $stats = $this->makeFatTgtJson($fat_TY, $fat_PY, collect(), collect(), $prevMonth);
       // dd($stats);
       // dd($clients->first());
       return view('stFatt.idxCli', [
@@ -428,7 +429,8 @@ class StFattController extends Controller
       $valMese = 'valore' . $prevMonth;
       $prevMonth = $fatTot->isEmpty() ? $prevMonth : (($fatTot->first()->$valMese == 0) ? $prevMonth-1 : $prevMonth);
       // $stats = $this->makeFatTgtJson($fatTot, $target, $prevMonth);
-      $stats = $this->makeFatTgtJson($fatTot, $target, null, null, $prevMonth);
+      // $stats = $this->makeFatTgtJson($fatTot, $target, null, null, $prevMonth);
+      $stats = $this->makeFatTgtJson($fatTot, $target, collect(), collect(), $prevMonth);
       // dd($stats);
       // dd($clients->first());
       return view('stFatt.idxManager', [

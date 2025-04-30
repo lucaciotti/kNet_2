@@ -14,7 +14,7 @@
 
 @push('css-head')
   <!-- Morris charts -->
-  <link rel="stylesheet" href="{{ asset('/plugins/morris/morris.css') }}">
+  {{-- <link rel="stylesheet" href="{{ asset('/plugins/morris/morris.css') }}"> --}}
 @endpush
 
 @section('main-content')
@@ -84,6 +84,17 @@
           <div class="knob-label"><strong>{{ trans('stFatt.targetGraph') }}</strong></div>
         </div>
     </div>
+
+    
+    <div class="box box-default {{-- collapsed-box --}}">
+      <div class="box-body">
+        {{-- <a type="button" class="btn btn-default btn-block" target="_blank"
+          href="{{ route('Portfolio::idxAg') }}">Portfolio - Gruppo Prodotti</a> --}}
+        {{-- <a type="button" class="btn btn-default btn-block" href="{{ route('stFatt::idxCli') }}"><span>{{ trans('_menu.statsFatt')}} - {{trans('_menu.client') }}</span></a> --}}
+        <a type="button" class="btn btn-default btn-block" href="{{ route('stFatt::idxAg') }}"><span>{{ trans('_menu.statsFatt')}} - {{trans('_menu.agent') }}</span></a>
+      </div>
+    </div>
+
   </div>
 
   <div class="col-lg-9">
@@ -171,9 +182,10 @@
   @include('layouts.partials.scripts.iCheck')
   @include('layouts.partials.scripts.select2')
   @include('layouts.partials.scripts.datePicker')
+  @include('layouts.partials.scripts.knob')
 @endsection
 
-@push('script-footer')
+{{-- @push('script-footer')
   <script src="{{ asset('/plugins/knob/jquery.knob.js') }}"></script>
   <!-- Morris.js charts -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
@@ -222,4 +234,4 @@
     });
   });
 </script>
-@endpush
+@endpush --}}
