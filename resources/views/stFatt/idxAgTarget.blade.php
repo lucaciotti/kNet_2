@@ -135,6 +135,16 @@
           <div class="knob-label"><strong>{{ trans('stFatt.targetGraph') }}</strong></div>
       </div>
     </div>
+
+    <div class="box box-default {{-- collapsed-box --}}">
+      <div class="box-body">
+        {{-- <a type="button" class="btn btn-default btn-block" target="_blank"
+          href="{{ route('Portfolio::idxAg') }}">Portfolio - Gruppo Prodotti</a> --}}
+        <a type="button" class="btn btn-default btn-block" href="{{ route('stFatt::idxCli') }}"><span>{{ trans('_menu.statsFatt')}} - {{trans('_menu.client') }}</span></a>
+        {{-- <a type="button" class="btn btn-default btn-block" href="{{ route('stFatt::idxAg') }}"><span>{{ trans('_menu.statsFatt')}} - {{trans('_menu.client') }}</span></a> --}}
+      </div>
+    </div>
+
   </div>
 
   <div class="col-lg-9">
