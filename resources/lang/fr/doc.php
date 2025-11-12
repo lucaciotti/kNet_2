@@ -103,6 +103,8 @@ return [
     'typeDoc'                 => 'Type Documents',
     '#Doc'                    => '# Doc.',
     'dateDoc_condensed'       => 'Date Doc.',
+    'dateDispach_condensed'   => 'Date d\'expédition',
+    'dateDelivery_condensed'  => 'Date de livraison',
     'referenceDoc'            => 'Référence Doc.',
     'referenceDoc_condensed'  => 'Réf. Doc.',
 

@@ -11,6 +11,7 @@
     @elseif($head->tipomodulo=='O')
       <th>{{ trans('doc.quantity_condensed') }}</th>
       <th>{{ trans('doc.quantity_residual') }}</th>
+      <th>{{ trans('doc.dateDelivery_condensed') }}</th>
       <th>{{ trans('doc.dateDispach_condensed') }}</th>
       <th>&nbsp</th>
     @endif
@@ -56,7 +57,7 @@
               -
             @endif
           </td>
-          <td>
+          {{-- <td>
             @if (in_array(RedisUser::get('role'), ['client']))
               @if($row->u_dtpronto)
                 {{ $row->u_dtpronto->format('d-m-Y') }}
@@ -68,6 +69,12 @@
             @else
               @if($row->dataconseg) {{ $row->dataconseg->format('d-m-Y') }} @endif
             @endif
+          </td> --}}
+          <td style="text-align: center;">
+            @if($row->u_dtpronto) {{ $row->u_dtpronto->format('d-m-Y') }} @endif
+          </td>
+          <td style="text-align: center;">
+            @if($row->dataconseg) {{ $row->dataconseg->format('d-m-Y') }} @endif
           </td>
           <td>
             <a href="#" data-toggle="popover" title="{{ trans('doc.unitPrice') }} [{{ trans('doc.discount') }}]"
@@ -108,6 +115,7 @@
           @elseif($head->tipomodulo=='O')
           <th>{{ trans('doc.quantity_condensed') }}</th>
           <th>{{ trans('doc.quantity_residual') }}</th>
+          <th>{{ trans('doc.dateDelivery_condensed') }}</th>
           <th>{{ trans('doc.dateDispach_condensed') }}</th>
           <th>&nbsp</th>
           @endif
@@ -127,7 +135,7 @@
         -
         @endif
       </td>
-      <td>
+      {{-- <td>
         @if (in_array(RedisUser::get('role'), ['client']))
         @if($row->u_dtpronto)
         {{ $row->u_dtpronto->format('d-m-Y') }}
@@ -139,6 +147,12 @@
         @else
         @if($row->dataconseg) {{ $row->dataconseg->format('d-m-Y') }} @endif
         @endif
+      </td> --}}
+      <td style="text-align: center;">
+        @if($row->u_dtpronto) {{ $row->u_dtpronto->format('d-m-Y') }} @endif
+      </td>
+      <td style="text-align: center;">
+        @if($row->dataconseg) {{ $row->dataconseg->format('d-m-Y') }} @endif
       </td>
       <td>
         <a href="#" data-toggle="popover" title="{{ trans('doc.unitPrice') }} [{{ trans('doc.discount') }}]"

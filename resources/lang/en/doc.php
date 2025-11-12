@@ -106,6 +106,7 @@ return [
     'dateDoc'                 => 'Document Date',
     'dateDoc_condensed'       => 'Doc. Date',
     'dateDispach_condensed'   => 'Dispach Date',
+    'dateDelivery_condensed'  => 'Delivery Date',
     'referenceDoc'            => 'Document Reference',
     'referenceDoc_condensed'  => 'Doc. Reference',
 

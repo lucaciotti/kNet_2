@@ -29,7 +29,8 @@
         <th>{{ trans('doc.unitPrice') }}</th>
         <th>{{ trans('doc.discount') }}</th>
         @if($head->tipomodulo=='O')
-        <th>{{ trans('doc.dateDispach_condensed') }}</th>
+            <th>{{ trans('doc.dateDelivery_condensed') }}</th>
+            <th>{{ trans('doc.dateDispach_condensed') }}</th>
         @endif
         <th>{{ trans('doc.totPrice') }}</th>
         @if (!in_array(RedisUser::get('role'), ['client']) && ($head->tipomodulo == 'F' || $head->tipomodulo == 'N' || $head->tipodoc == 'PP'))
@@ -71,19 +72,12 @@
                     <td style="text-align: center;">{{ $row->sconti }}</td>
                 @endif
                 @if($head->tipomodulo=='O')
-                <td style="text-align: center;">
-                    @if (in_array(RedisUser::get('role'), ['client']))
-                        @if($row->u_dtpronto)
-                            {{ $row->u_dtpronto->format('d-m-Y') }}
-                        @else
-                            @if($row->dataconseg)
-                                {{ $row->dataconseg->format('d-m-Y') }}
-                            @endif
-                        @endif
-                    @else
+                    <td style="text-align: center;">
+                        @if($row->u_dtpronto) {{ $row->u_dtpronto->format('d-m-Y') }} @endif
+                    </td>
+                    <td style="text-align: center;">
                         @if($row->dataconseg) {{ $row->dataconseg->format('d-m-Y') }} @endif
-                    @endif
-                </td>
+                    </td>
                 @endif
                 <td style="text-align: right;">{{ currency($row->prezzotot) }}</td>
                 @php

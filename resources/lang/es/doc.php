@@ -103,6 +103,8 @@ return [
     'typeDoc'                 => 'Tipo documento',
     '#Doc'                    => 'Documento #',
     'dateDoc_condensed'        => 'Fecha documento',
+    'dateDispach_condensed'   => 'Fecha de Invio',
+    'dateDelivery_condensed'  => 'Fecha de Entrega',
     'referenceDoc_condensed'   => 'Referencia Documento',
 
     //filter
