@@ -11,6 +11,7 @@
     <col width="80">
     @if($head->tipomodulo=='O')
     <col width="100">
+    <col width="100">
     @endif
     <col width="80">
     @if (!in_array(RedisUser::get('role'), ['client']))
@@ -29,8 +30,8 @@
         <th>{{ trans('doc.unitPrice') }}</th>
         <th>{{ trans('doc.discount') }}</th>
         @if($head->tipomodulo=='O')
-            <th>{{ trans('doc.dateDelivery_condensed') }}</th>
-            <th>{{ trans('doc.dateDispach_condensed') }}</th>
+        <th>{{ trans('doc.datePronto_condensed') }}</th>
+        <th>{{ trans('doc.dateDispach_condensed') }}</th>
         @endif
         <th>{{ trans('doc.totPrice') }}</th>
         @if (!in_array(RedisUser::get('role'), ['client']) && ($head->tipomodulo == 'F' || $head->tipomodulo == 'N' || $head->tipodoc == 'PP'))
