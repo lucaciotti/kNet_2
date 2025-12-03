@@ -41,38 +41,34 @@ class BudgAna extends Model
             });
         });
 
-        switch (RedisUser::get('role')) {
-            case 'agent':
-                static::addGlobalScope('agent', function (Builder $builder) {
-                    $builder->whereHas('client', function ($query) {
-                        $query->where('agente', RedisUser::get('codag'));
-                    })->orWhereHas('grpCli', function ($queryGrp) {
-                        $queryGrp->whereHas('client', function ($query) {
-                            $query->where('agente', RedisUser::get('codag'));
-                        });
-                    });
-                });
-                break;
-            case 'client':
-                static::addGlobalScope('client', function (Builder $builder) {
-                    $builder->where('codice', RedisUser::get('codcli'));
-                });
-                break;
-            case 'superAgent':
-                static::addGlobalScope('superAgent', function (Builder $builder) {
-                    $builder->whereHas('client', function ($query) {
-                        // $query->withoutGlobalScope('agent')->withoutGlobalScope('client');
-                        $query->whereHas('agent', function ($q) {
-                            // $q->withoutGlobalScope('agent')->withoutGlobalScope('client');
-                            $q->where('u_capoa', RedisUser::get('codag'));
-                        });
-                    });
-                });
-                break;
+        // switch (RedisUser::get('role')) {
+        //     case 'agent':
+        //         static::addGlobalScope('agent', function (Builder $builder) {
+        //             $builder->whereHas('client', function ($query) {
+        //                 $query->where('agente', RedisUser::get('codag'));
+        //             });
+        //         });
+        //         break;
+        //     case 'client':
+        //         static::addGlobalScope('client', function (Builder $builder) {
+        //             $builder->where('codice', RedisUser::get('codcli'));
+        //         });
+        //         break;
+        //     case 'superAgent':
+        //         static::addGlobalScope('superAgent', function (Builder $builder) {
+        //             $builder->whereHas('client', function ($query) {
+        //                 // $query->withoutGlobalScope('agent')->withoutGlobalScope('client');
+        //                 $query->whereHas('agent', function ($q) {
+        //                     // $q->withoutGlobalScope('agent')->withoutGlobalScope('client');
+        //                     $q->where('u_capoa', RedisUser::get('codag'));
+        //                 });
+        //             });
+        //         });
+        //         break;
 
-            default:
-                break;
-        }
+        //     default:
+        //         break;
+        // }
     }
 
 
