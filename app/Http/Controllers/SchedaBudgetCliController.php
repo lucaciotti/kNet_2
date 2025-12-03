@@ -51,7 +51,7 @@ class SchedaBudgetCliController extends Controller
                         $query->whereIn('agente', $fltAgents);
                     });
 			// }
-		$allCliBudgets = $allCliBudgets->with(['client'])->get();
+		$allCliBudgets = $allCliBudgets->with(['client'])->orderBy('codice')->get();
 		
 		$allFattCli = $this->getInvoice($year, ['FT', 'FE', 'NC', 'NE', 'EQ', 'EF', 'NB'], ['A', 'B', 'D0'], $fltAgents, ['Z'])->sortBy('doccli.codicecf')->groupBy('doccli.codicecf')->mapWithKeys(function ($group, $key) {
 			return collect([
