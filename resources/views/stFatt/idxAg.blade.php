@@ -113,7 +113,7 @@
         <a type="button" class="btn btn-default btn-block" target="_blank" href="{{ route('schedaFat::ZonePDF', ['codAg'=> null, 'fltAgents[]' => $fltAgents]) }}">Scheda Fatturato Zone PDF</a>
         <hr>
         <a type="button" class="btn btn-default btn-block" target="_blank" href="{{ route('schedaBudgCli::BudgCliPDF', ['codAg'=> null, 'fltAgents[]' => $fltAgents, 'year' => Carbon\Carbon::now()->year]) }}">Situazione <b>Budget Clienti</b> PDF</a>
-          <a type="button" class="btn btn-default btn-block" target="_blank" href="{{ route('schedaBudgCli::BudgCliPDF', ['codAg'=> null, 'fltAgents[]' => $fltAgents, 'year' => (Carbon\Carbon::now()->year)-1]) }}">Situazione <b>Budget Clienti</b> PDF - <b>Anno Prec.</b></a>
+        <a type="button" class="btn btn-default btn-block" target="_blank" href="{{ route('schedaBudgCli::BudgCliPDF', ['codAg'=> null, 'fltAgents[]' => $fltAgents, 'year' => (Carbon\Carbon::now()->year)-1]) }}">Situazione <b>Budget Clienti</b> PDF - <b>Anno Prec.</b></a>
           
       </div>
     </div>
