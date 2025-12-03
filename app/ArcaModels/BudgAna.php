@@ -31,7 +31,14 @@ class BudgAna extends Model
         parent::boot();
 
         static::addGlobalScope('budgcli', function (Builder $builder) {
-            $builder->where('codice', 'LIKE', 'C%');
+            $builder->where('codice', 'LIKE', 'C%')->where(function ($query) {
+                $query->orWhere('u_budg1', '!=', 0);
+                $query->orWhere('u_budg2', '!=', 0);
+                $query->orWhere('u_budg3', '!=', 0);
+                $query->orWhere('u_kobudg1', '!=', 0);
+                $query->orWhere('u_kobudg2', '!=', 0);
+                $query->orWhere('u_kobudg3', '!=', 0);
+            });
         });
 
         switch (RedisUser::get('role')) {

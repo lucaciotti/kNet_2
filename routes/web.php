@@ -523,6 +523,13 @@ Route::group(['as' => 'schedaScad::'], function () {
   ]);
 });
 
+Route::group(['as' => 'schedaBudgCli::'], function () {
+  Route::get('/schedaBudgCliPDF/{year}/{codAg?}', [
+    'as' => 'BudgCliPDF',
+    'uses' => 'SchedaBudgetCliController@downloadBudgAnaPDF'
+  ]);
+});
+
 Route::group(['as' => 'Portfolio::'], function () {
   Route::get('/portfolioAg/{codice?}', [
     'as' => 'idxAg',
