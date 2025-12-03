@@ -7,15 +7,15 @@
             <div class="contentTitle">Situatione Budget Clienti - {{ $thisYear }}</div>
 
             <table>
-              <col width="250">
-              <col width="150">
+              <col width="300">
+              <col width="200">
               <col width="100">
               <col width="70">
               <col width="70">
               <col width="70">
               <col width="70">
               <col width="70">
-              <col width="70">
+              <col width="50">
               <col width="70">
               <thead>
                 <tr style="text-align: center;">
