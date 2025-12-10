@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Log;
 use knet\Jobs\emails\MakePortfolioAgCustomerToSend;
 use knet\Jobs\emails\MakePortfolioListDocToSend;
 use knet\Jobs\emails\MakeStatFatByCustomerToSend;
+use knet\Jobs\emails\MakeStatScadenzeToSend;
 use knet\ReportsList;
 use knet\UserAutoReports;
 
@@ -66,5 +67,11 @@ class FetchReportToSend implements ShouldQueue
     public function do_statFatByCustomer($user){
         Log::info('Creo Stat Fatturato ByCustomer per - ' . $user->name);
         MakeStatFatByCustomerToSend::dispatch($user)->onQueue('jobs');
+    }
+
+    public function do_statScadenze($user)
+    {
+        Log::info('Creo Stat Scadenze per - ' . $user->name);
+        MakeStatScadenzeToSend::dispatch($user)->onQueue('jobs');
     }
 }

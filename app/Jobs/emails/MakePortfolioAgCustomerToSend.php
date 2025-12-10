@@ -21,6 +21,7 @@ use knet\Helpers\AgentFltUtils;
 use knet\Helpers\PdfReport;
 use knet\Helpers\RedisUser;
 use knet\Mail\SendPortfolioListDoc;
+use knet\Mail\SendReport;
 
 class MakePortfolioAgCustomerToSend implements ShouldQueue
 {
@@ -69,7 +70,7 @@ class MakePortfolioAgCustomerToSend implements ShouldQueue
             // TODO
             // $isInvio = ((!$user->auto_email && $client->fat_email) || ($user->auto_email && $user->auto_email));
             $fileToAttach = $this->createReport();
-            $mail = (new SendPortfolioListDoc($this->user, $fileToAttach))->onQueue('emails');
+            $mail = (new SendReport($this->user, $fileToAttach, 'Portofolio Clienti'))->onQueue('emails');
             if (App::environment(['local', 'staging'])) {
                 $toEmail = 'luca.ciotti@gmail.com';
                 Mail::to($toEmail)->queue($mail);
