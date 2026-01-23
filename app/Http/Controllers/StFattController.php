@@ -174,7 +174,7 @@ class StFattController extends Controller
       }
       // dd($stats);dd($prevYear);
       
-      if ($showTarget) {
+      if ($showTarget && $target->count()>0) {
         $stats = $this->makeFatTgtJson($fat_TY, $fat_PY, $target, $perc_mese, $prevMonth);
         // dd($stats);
         return view('stFatt.idxAgTarget', [
