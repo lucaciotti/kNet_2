@@ -136,7 +136,7 @@ class MakeStatScadenzeToSend implements ShouldQueue
                     ->withoutGlobalScope('agent')
                     ->withoutGlobalScope('superAgent')
                     ->withoutGlobalScope('client');
-            }, 'storia'))
+            }, 'agent', 'storia'))
             ->orderBy('datascad', 'asc')->orderBy('id', 'desc')
             ->get();
         $scads_TY = $scads_TY->groupBy('Mese');
@@ -178,7 +178,7 @@ class MakeStatScadenzeToSend implements ShouldQueue
                     ->withoutGlobalScope('agent')
                     ->withoutGlobalScope('superAgent')
                     ->withoutGlobalScope('client');
-            }))
+            }, 'agent', 'storia'))
             ->orderBy('datascad', 'asc')->orderBy('id', 'desc')
             ->get();
         $scads_PY = $scads_PY->groupBy('Mese');

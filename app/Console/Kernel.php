@@ -29,7 +29,7 @@ class Kernel extends ConsoleKernel
         //          ->hourly();
         // $schedule->job(new FetchReportToSend('weekly'), 'jobs')->hourlyAt(17);
         $schedule->job(new FetchReportToSend('weekly'), 'jobs')->weeklyOn(6, '8:00');
-        $schedule->job(new FetchReportToSend('monthly'), 'jobs')->monthlyOn(1, '8:00');
+        $schedule->job(new FetchReportToSend('monthly'), 'jobs')->monthlyOn(6, '8:00');
         $schedule->job(new FetchReportToSend('quarterly'), 'jobs')->quarterly();
     }
 
