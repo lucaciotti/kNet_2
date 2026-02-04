@@ -17,9 +17,11 @@ use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Support\Facades\Auth;
 use knet\ArcaModels\Agent;
 use knet\ArcaModels\DocCli;
+use knet\ArcaModels\DocRow;
 use knet\Helpers\AgentFltUtils;
 use knet\Helpers\PdfReport;
 use knet\Helpers\RedisUser;
+use knet\Helpers\Utils;
 use knet\Mail\SendPortfolioListDoc;
 use knet\Mail\SendReport;
 
