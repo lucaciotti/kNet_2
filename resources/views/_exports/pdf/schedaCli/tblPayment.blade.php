@@ -37,9 +37,9 @@
             {{-- </td> --}}
             {{-- <td colspan="5"><strong> --}}
             <td colspan="6">
-              <p style="padding: 10px;">--> SOLLECITO del {{ $storia->datareg->format('d-m-Y') }}: </p>
+              <p style="padding: 10px; padding-bottom: 0px;">--> SOLLECITO del {{ $storia->datareg->format('d-m-Y') }}: </p>
               <strong>
-                <p style="padding: 10px; text-align: right;">{!! $storia->note !!}</p>
+                <p style="padding: 10px; padding-top: 0px; text-align: right;">{!! $storia->note !!}</p>
               </strong>
             </td>
           </tr>
