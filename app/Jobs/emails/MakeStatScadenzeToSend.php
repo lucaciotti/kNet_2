@@ -47,7 +47,7 @@ class MakeStatScadenzeToSend implements ShouldQueue
     {
         $this->user = $user;
         $this->cumulativo = $cumulativo;
-        Log::info('MakePortfolioAgCustomerToSend Job Created');
+        Log::info('MakeStatScadenzeToSend Job Created');
     }
 
     /**
@@ -57,7 +57,7 @@ class MakeStatScadenzeToSend implements ShouldQueue
      */
     public function handle()
     {
-        Log::info('MakePortfolioAgCustomerToSend Job Started');
+        Log::info('MakeStatScadenzeToSend Job Started');
 
         Auth::loginUsingId($this->user->id);
         RedisUser::store();
@@ -66,7 +66,7 @@ class MakeStatScadenzeToSend implements ShouldQueue
     
 
         try {
-            Log::info('Invio Report Portfolio AgCustomer - ' . $this->user->name);
+            Log::info('Invio Report StatScadenze AgCustomer - ' . $this->user->name);
             // TODO
             // $isInvio = ((!$user->auto_email && $client->fat_email) || ($user->auto_email && $user->auto_email));
             $fileToAttach = $this->createReport();
@@ -75,17 +75,17 @@ class MakeStatScadenzeToSend implements ShouldQueue
                 $toEmail = 'luca.ciotti@gmail.com';
                 Mail::to($toEmail)->queue($mail);
                 // Mail::to($toEmail)->cc(['emanuela.prioli@k-group.com'])->queue($mail);
-                Log::info('Invio Report Portfolio AgCustomer:' . $this->user->name . 'MailedJob to ' . $toEmail);
+                Log::info('Invio Report StatScadenze AgCustomer:' . $this->user->name . 'MailedJob to ' . $toEmail);
             } else {
                 $toEmail = $this->user->email;
                 Mail::to($toEmail)->cc(['emanuela.prioli@k-group.com'])->bcc(['luca.ciotti@gmail.com'])->queue($mail);
-                Log::info('Invio Report Portfolio AgCustomer:' . $this->user->name . 'MailedJob to ' . $toEmail);
+                Log::info('Invio Report StatScadenze AgCustomer:' . $this->user->name . 'MailedJob to ' . $toEmail);
             }
         } catch (\Exception $e) {
             Log::error($e->getMessage());
         }
 
-        Log::info('SendDocListByEmail Job Ended');
+        Log::info('SendStatScadenzeListByEmail Job Ended');
     }
     protected function createReport()
     {
