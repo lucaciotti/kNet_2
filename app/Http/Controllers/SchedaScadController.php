@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\DB;
 use knet\ArcaModels\Client;
 use knet\ArcaModels\Agent;
 use knet\ArcaModels\ScadCli;
-
+use knet\Helpers\AgentFltUtils;
 use knet\Helpers\PdfReport;
 
 class SchedaScadController extends Controller
