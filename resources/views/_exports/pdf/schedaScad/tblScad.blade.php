@@ -73,7 +73,7 @@
             @foreach ($scad->storia as $storia)
               <tr class='danger'>
                 <td colspan="4" style="text-align: right;"><p style="padding: 10px;">
-                --> NOTE<br>del {{ $storia->datareg->format('d-m-Y') }}: </p></td>
+                --> SOLLECITO<br>del {{ $storia->datareg->format('d-m-Y') }}: </p></td>
                 <td colspan="5"><strong><p style="padding: 10px;">{!! $storia->note !!}</p></strong></td>
               </tr>
             @endforeach              

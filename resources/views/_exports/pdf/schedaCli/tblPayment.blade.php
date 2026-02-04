@@ -31,13 +31,17 @@
         @if (count($scad->storia)>0)
           @foreach ($scad->storia as $storia)
           <tr class='danger'>
-            <td colspan="1" style="text-align: right;">
+            {{-- <td colspan="1" style="text-align: right;"> --}}
               <p style="padding: 10px;">
-                --> NOTE<br>del {{ $storia->datareg->format('d-m-Y') }}: </p>
-            </td>
-            <td colspan="5"><strong>
+                --> SOLLECITO<br>del {{ $storia->datareg->format('d-m-Y') }}: </p>
+            {{-- </td> --}}
+            {{-- <td colspan="5"><strong> --}}
+            <td colspan="6">
+              <p style="padding: 10px;">--> SOLLECITO<br>del {{ $storia->datareg->format('d-m-Y') }}: </p>
+              <strong>
                 <p style="padding: 10px;">{!! $storia->note !!}</p>
-              </strong></td>
+              </strong>
+            </td>
           </tr>
           @endforeach
         @endif
