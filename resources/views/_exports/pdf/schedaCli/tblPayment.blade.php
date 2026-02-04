@@ -32,14 +32,14 @@
           @foreach ($scad->storia as $storia)
           <tr class='danger'>
             {{-- <td colspan="1" style="text-align: right;"> --}}
-              <p style="padding: 10px;">
-                --> SOLLECITO<br>del {{ $storia->datareg->format('d-m-Y') }}: </p>
+              {{-- <p style="padding: 10px;">
+                --> SOLLECITO<br>del {{ $storia->datareg->format('d-m-Y') }}: </p> --}}
             {{-- </td> --}}
             {{-- <td colspan="5"><strong> --}}
             <td colspan="6">
-              <p style="padding: 10px;">--> SOLLECITO<br>del {{ $storia->datareg->format('d-m-Y') }}: </p>
+              <p style="padding: 10px;">--> SOLLECITO del {{ $storia->datareg->format('d-m-Y') }}: </p>
               <strong>
-                <p style="padding: 10px;">{!! $storia->note !!}</p>
+                <p style="padding: 10px; text-align: right;">{!! $storia->note !!}</p>
               </strong>
             </td>
           </tr>
