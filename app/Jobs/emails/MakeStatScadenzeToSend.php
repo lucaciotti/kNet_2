@@ -83,7 +83,7 @@ class MakeStatScadenzeToSend implements ShouldQueue
                 Log::info('Invio Report StatScadenze AgCustomer:' . $this->user->name . 'MailedJob to ' . $toEmail);
                 } else {
                 $toEmail = $this->user->email;
-                $toEmail = 'luca.ciotti@gmail.com';
+                // $toEmail = 'luca.ciotti@gmail.com';
                 Mail::to($toEmail)->cc(['emanuela.prioli@k-group.com'])->bcc(['luca.ciotti@gmail.com'])->queue($mail);
                 Log::info('Invio Report StatScadenze AgCustomer:' . $this->user->name . 'MailedJob to ' . $toEmail);
             }
