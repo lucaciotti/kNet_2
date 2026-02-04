@@ -18,7 +18,7 @@
       <th>{{ trans('scad.numInvoice') }}</th>
       <th>{{ trans('scad.dateInvoice') }}</th>
       <th>{{ trans('scad.client') }}</th>
-      <th>{{ trans('client.agent') }}</th>
+      {{-- <th>{{ trans('client.agent') }}</th> --}}
       <th>{{ trans('scad.typePayment') }}</th>
       <th>{{ trans('scad.valueToPay') }}</th>
       <th>{{ trans('scad.valuePayed') }}</th>
@@ -64,11 +64,11 @@
                   {{ $scad->client->descrizion }} [{{$scad->codcf}}]
               @endif
             </td>
-            <td>
+            {{-- <td>
               @if($scad->client && $scad->client->agent)
                   {{ $scad->client->agent->descrizion }}
               @endif
-            </td>
+            </td> --}}
             <td style="text-align: center;">
               {{ $scad->desc_pag }}
               {{-- {{ trans('scad.merged') }} --}}
