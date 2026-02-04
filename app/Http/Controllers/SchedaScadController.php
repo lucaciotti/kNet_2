@@ -197,6 +197,9 @@ class SchedaScadController extends Controller
       if($codAg){
         $agente = Agent::select('codice', 'descrizion', 'u_dataini')->where('codice', $codAg)->where(DB::raw('LENGTH(codice)'), strlen($codAg))->orderBy('codice')->first();
       }
+      $agents = Agent::select('codice', 'descrizion', 'u_dataini')->whereNull('u_dataini')->orWhere('u_dataini', '>=', Carbon::now())->orderBy('codice')->get();
+      $fltAgents = $agents->pluck('codice')->toArray(); //$agents->pluck('codice')->toArray();
+      $fltAgents = AgentFltUtils::checkSpecialRules($fltAgents);
 
       $startDate = Carbon::createFromDate($thisYear, 1, 1);
       $endDate = Carbon::now();
@@ -208,8 +211,11 @@ class SchedaScadController extends Controller
                 'impprovlit', 'impprovliq', 'liquidate', DB::raw('MONTH(datascad) as Mese')
               )
               ->whereBetween('datascad', array($startDate, $endDate));
-      if($codAg){
-        $scads_TY->where('codag', $codAg)->where(DB::raw('LENGTH(codag)'), strlen($codAg));
+    // if($codAg){
+    //   $scads_TY->where('codag', $codAg)->where(DB::raw('LENGTH(codag)'), strlen($codAg));
+    // }
+      if ($fltAgents) {
+        $scads_TY->whereIn('codag', $fltAgents);
       }
       $scads_TY = $scads_TY->whereIn('tipoacc', ['F', ''])
               ->whereRaw("`pagato` = 0")

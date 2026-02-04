@@ -59,6 +59,10 @@ class MakeStatFatByCustomerToSend implements ShouldQueue
 
         Auth::loginUsingId($this->user->id);
         RedisUser::store();
+        if (Auth::check() && RedisUser::exist()) {
+            $lang = RedisUser::get('lang') !== null && RedisUser::get('lang') != '' ? RedisUser::get('lang') : App::getLocale(); // $locationLang;
+        }
+        App::setLocale($lang);
 
         // $attachReport = $this->createReport();
     
