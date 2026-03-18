@@ -296,6 +296,15 @@ Portfolio - Gruppo Prodotti
                 <td> {{ currency($FTPrevSpinOff) }} </td>
               </tr>
               <tr>
+                <th>Codici CAMP</th>
+                <td> {{ currency($OCCAMP) }} </td>
+                <td> {{ currency($BOCAMP) }} </td>
+                <td> {{ currency($FTCAMP) }} </td>
+                <td> {{ currency($OCCAMP+$BOCAMP+$FTCAMP) }} </td>
+                <th colspan="1">|</th>
+                <td> {{ currency($FTPrevCAMP) }} </td>
+              </tr>
+              <tr>
                 <th>Diciture (es. Acconti,..)</th>
                 <td> {{ currency($OCDIC) }} </td>
                 <td> {{ currency($BODIC) }} </td>
@@ -310,10 +319,10 @@ Portfolio - Gruppo Prodotti
             </tbody>
             <tfoot class="bg-gray">
               @php
-              $totOC = $totOC+$OCDIC+$OCSpinOff;
-              $totBO = $totBO+$BODIC+$BOSpinOff;
-              $totFT = $totFT+$FTDIC+$FTSpinOff;
-              $totPrevFT = $totPrevFT+$FTPrevDIC+$FTPrevSpinOff;
+              $totOC = $totOC+$OCDIC+$OCCAMP+$OCSpinOff;
+              $totBO = $totBO+$BODIC+$BOCAMP+$BOSpinOff;
+              $totFT = $totFT+$FTDIC+$FTCAMP+$FTSpinOff;
+              $totPrevFT = $totPrevFT+$FTPrevDIC+$FTPrevCAMP+$FTPrevSpinOff;
               @endphp
               <tr>
                 <th>TOTALE GENERALE</th>

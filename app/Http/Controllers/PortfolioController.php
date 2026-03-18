@@ -61,15 +61,18 @@ class PortfolioController extends Controller
 		$defaultDocFilter->addBoolFilter('ommerce', 0);
 		$defaultDocFilter->addBoolFilter('filiali', 0);
 		$defaultDocFilter->addStringFilter('codicearti', 'notEql', '');
-
+		
 		$defaultDocFilterKrona = clone $defaultDocFilter;
 		$defaultDocFilterKrona->addArrayFilter('prGroupIncl', ['A']);
 		$defaultDocFilterKrona->addArrayFilter('prGroupExcl', ['A99', 'A14']);
+		$defaultDocFilterKrona->addStringFilter('codicearti', 'notStw', 'CAMP');
 		$defaultDocFilterSpinOff = clone $defaultDocFilter;
 		$defaultDocFilterSpinOff->addArrayFilter('prGroupIncl', ['A14']);
+		$defaultDocFilterSpinOff->addStringFilter('codicearti', 'notStw', 'CAMP');
 		$defaultDocFilterKoblenz = clone $defaultDocFilter;
 		$defaultDocFilterKoblenz->addArrayFilter('prGroupIncl', ['B']);
 		$defaultDocFilterKoblenz->addArrayFilter('prGroupExcl', ['B99', 'B06']);
+		$defaultDocFilterKoblenz->addStringFilter('codicearti', 'notStw', 'CAMP');
 		$defaultDocFilterBonusKrona = clone $defaultDocFilter;
 		$defaultDocFilterBonusKrona->addArrayFilter('prGroupIncl', ['A99']);
 		$defaultDocFilterBonusKoblenz = clone $defaultDocFilter;
@@ -77,12 +80,17 @@ class PortfolioController extends Controller
 		$defaultDocFilterKubica = clone $defaultDocFilter;
 		$defaultDocFilterKubica->addArrayFilter('prGroupIncl', ['B06']);
 		$defaultDocFilterKubica->addArrayFilter('prGroupExcl', ['B0630']);
+		$defaultDocFilterKrona->addStringFilter('codicearti', 'notStw', 'CAMP');
 		$defaultDocFilterAtomica = clone $defaultDocFilter;
 		$defaultDocFilterAtomica->addArrayFilter('prGroupIncl', ['B0630']);
+		$defaultDocFilterAtomica->addStringFilter('codicearti', 'notStw', 'CAMP');
 		$defaultDocFilterPlanet = clone $defaultDocFilter;
 		$defaultDocFilterPlanet->addArrayFilter('prGroupIncl', ['D0']);
+		$defaultDocFilterPlanet->addStringFilter('codicearti', 'notStw', 'CAMP');
 		$defaultDocFilterDIC = clone $defaultDocFilter;
 		$defaultDocFilterDIC->addArrayFilter('prGroupIncl', ['Z']);
+		$defaultDocFilterCAMP = clone $defaultDocFilter;
+		$defaultDocFilterCAMP->addStringFilter('codicearti', 'stw', 'CAMP');
 
 		// $OCKronaCls = (new DocUtils($defaultDocFilterKrona));
 		// $OCKrona = (new DocUtils($defaultDocFilterKrona))->getOrderToShip($this->dEndMonth)->sum('totValO');
@@ -97,6 +105,7 @@ class PortfolioController extends Controller
 		$OCAtomika = (new DocRowUtils($defaultDocFilterAtomica))->getOrderToShip($this->dEndMonth)->sum('totNetVal.O');
 		$OCPlanet = (RedisUser::get('ditta_DB') == 'kNet_es') ? (new DocRowUtils($defaultDocFilterPlanet))->getOrderToShip($this->dEndMonth)->sum('totNetVal.O') : 0;
 		$OCDIC = (new DocRowUtils($defaultDocFilterDIC))->getOrderToShip($this->dEndMonth)->sum('totNetVal.O');
+		$OCCAMP = (new DocRowUtils($defaultDocFilterCAMP))->getOrderToShip($this->dEndMonth)->sum('totNetVal.O');
 
 		$BOKrona = (new DocRowUtils($defaultDocFilterKrona))->getDdtNotInvoiced($this->thisYear, $this->dStartMonth, $this->dEndMonth)->sum('totNetVal.B');
 		$BOSpinOff = (new DocRowUtils($defaultDocFilterSpinOff))->getDdtNotInvoiced($this->thisYear, $this->dStartMonth, $this->dEndMonth)->sum('totNetVal.B');
@@ -107,6 +116,7 @@ class PortfolioController extends Controller
 		$BOAtomika = (new DocRowUtils($defaultDocFilterAtomica))->getDdtNotInvoiced($this->thisYear, $this->dStartMonth, $this->dEndMonth)->sum('totNetVal.B');
 		$BOPlanet = (RedisUser::get('ditta_DB') == 'kNet_es') ? (new DocRowUtils($defaultDocFilterPlanet))->getDdtNotInvoiced($this->thisYear, $this->dStartMonth, $this->dEndMonth)->sum('totNetVal.B') : 0;
 		$BODIC = (new DocRowUtils($defaultDocFilterDIC))->getDdtNotInvoiced($this->thisYear, $this->dStartMonth, $this->dEndMonth)->sum('totNetVal.B');
+		$BOCAMP = (new DocRowUtils($defaultDocFilterCAMP))->getDdtNotInvoiced($this->thisYear, $this->dStartMonth, $this->dEndMonth)->sum('totNetVal.B');
 
 		$FTKronaObj = (new DocRowUtils($defaultDocFilterKrona))->getInvoice($this->thisYear, $this->dStartMonth, $this->dEndMonth);
 		$FTSpinOffObj = (new DocRowUtils($defaultDocFilterSpinOff))->getInvoice($this->thisYear, $this->dStartMonth, $this->dEndMonth);
@@ -117,6 +127,7 @@ class PortfolioController extends Controller
 		$FTAtomikaObj = (new DocRowUtils($defaultDocFilterAtomica))->getInvoice($this->thisYear, $this->dStartMonth, $this->dEndMonth);
 		$FTPlanetObj = (RedisUser::get('ditta_DB') == 'kNet_es') ? (new DocRowUtils($defaultDocFilterPlanet))->getInvoice($this->thisYear, $this->dStartMonth, $this->dEndMonth) : 0;
 		$FTDICObj = (new DocRowUtils($defaultDocFilterDIC))->getInvoice($this->thisYear, $this->dStartMonth, $this->dEndMonth);
+		$FTCAMPObj = (new DocRowUtils($defaultDocFilterCAMP))->getInvoice($this->thisYear, $this->dStartMonth, $this->dEndMonth);
 		$FTKrona = $FTKronaObj->sum('totNetVal.F') + $FTKronaObj->sum('totNetVal.N');
 		$FTSpinOff = $FTSpinOffObj->sum('totNetVal.F') + $FTSpinOffObj->sum('totNetVal.N');
 		$FTKoblenz = $FTKoblenzObj->sum('totNetVal.F') + $FTKoblenzObj->sum('totNetVal.N');
@@ -126,6 +137,7 @@ class PortfolioController extends Controller
 		$FTAtomika = $FTAtomikaObj->sum('totNetVal.F') + $FTAtomikaObj->sum('totNetVal.N');
 		$FTPlanet = (RedisUser::get('ditta_DB') == 'kNet_es') ? $FTPlanetObj->sum('totNetVal.F') + $FTPlanetObj->sum('totNetVal.N') : 0;
 		$FTDIC = $FTDICObj->sum('totNetVal.F') + $FTDICObj->sum('totNetVal.N');
+		$FTCAMP = $FTCAMPObj->sum('totNetVal.F') + $FTCAMPObj->sum('totNetVal.N');
 
 		$dPrevStartMonth = (clone $this->dStartMonth)->subYear();
 		$dPrevEndMonth = (clone $this->dEndMonth)->subYear();
@@ -139,6 +151,7 @@ class PortfolioController extends Controller
 		$FTPrevAtomikaObj = (new DocRowUtils($defaultDocFilterAtomica))->getInvoice($this->prevYear, $dPrevStartMonth, $dPrevEndMonth);
 		$FTPrevPlanetObj = (RedisUser::get('ditta_DB') == 'kNet_es') ? (new DocRowUtils($defaultDocFilterPlanet))->getInvoice($this->prevYear, $dPrevStartMonth, $dPrevEndMonth) : 0;
 		$FTPrevDICObj = (new DocRowUtils($defaultDocFilterDIC))->getInvoice($this->prevYear, $dPrevStartMonth, $dPrevEndMonth);
+		$FTPrevCAMPObj = (new DocRowUtils($defaultDocFilterCAMP))->getInvoice($this->prevYear, $dPrevStartMonth, $dPrevEndMonth);
 		$FTPrevKrona = $FTPrevKronaObj->sum('totNetVal.F') + $FTPrevKronaObj->sum('totNetVal.N');
 		$FTPrevSpinOff = $FTPrevSpinOffObj->sum('totNetVal.F') + $FTPrevSpinOffObj->sum('totNetVal.N');
 		$FTPrevKoblenz = $FTPrevKoblenzObj->sum('totNetVal.F') + $FTPrevKoblenzObj->sum('totNetVal.N');
@@ -148,6 +161,7 @@ class PortfolioController extends Controller
 		$FTPrevAtomika = $FTPrevAtomikaObj->sum('totNetVal.F') + $FTPrevAtomikaObj->sum('totNetVal.N');
 		$FTPrevPlanet = (RedisUser::get('ditta_DB') == 'kNet_es') ? $FTPrevPlanetObj->sum('totNetVal.F') + $FTPrevPlanetObj->sum('totNetVal.N') : 0;
 		$FTPrevDIC = $FTPrevDICObj->sum('totNetVal.F') + $FTPrevDICObj->sum('totNetVal.N');
+		$FTPrevCAMP = $FTPrevCAMPObj->sum('totNetVal.F') + $FTPrevCAMPObj->sum('totNetVal.N');
 
 		return view('portfolio.idxAg', [
 			'agents' => $agents,
@@ -165,6 +179,7 @@ class PortfolioController extends Controller
 			'OCAtomika' => $OCAtomika,
 			'OCPlanet' => $OCPlanet,
 			'OCDIC' => $OCDIC,
+			'OCCAMP' => $OCCAMP,
 			'BOKrona' => $BOKrona,
 			'BOSpinOff' => $BOSpinOff,
 			'BOKoblenz' => $BOKoblenz,
@@ -174,6 +189,7 @@ class PortfolioController extends Controller
 			'BOAtomika' => $BOAtomika,
 			'BOPlanet' => $BOPlanet,
 			'BODIC' => $BODIC,
+			'BOCAMP' => $BOCAMP,
 			'FTKrona' => $FTKrona,
 			'FTSpinOff' => $FTSpinOff,
 			'FTKoblenz' => $FTKoblenz,
@@ -183,6 +199,7 @@ class PortfolioController extends Controller
 			'FTAtomika' => $FTAtomika,
 			'FTPlanet' => $FTPlanet,
 			'FTDIC' => $FTDIC,
+			'FTCAMP' => $FTCAMP,
 			'FTPrevKrona' => $FTPrevKrona,
 			'FTPrevSpinOff' => $FTPrevSpinOff,
 			'FTPrevKoblenz' => $FTPrevKoblenz,
@@ -192,6 +209,7 @@ class PortfolioController extends Controller
 			'FTPrevAtomika' => $FTPrevAtomika,
 			'FTPrevPlanet' => $FTPrevPlanet,
 			'FTPrevDIC' => $FTPrevDIC,
+			'FTPrevCAMP' => $FTPrevCAMP,
 			'urlOrders' => action('DocCliController@showOrderDispachMonth', ['fltAgents' => $fltAgents, 'mese' => $mese, 'year' => $this->thisYear]),
 			'urlDdts' => action('DocCliController@showDdtToInvoice', ['fltAgents' => $fltAgents]),
 			'urlInvoices' => action('DocCliController@showInvoiceMonth', ['fltAgents' => $fltAgents, 'mese' => $mese, 'year' => $this->thisYear]),

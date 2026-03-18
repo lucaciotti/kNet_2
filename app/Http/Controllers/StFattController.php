@@ -101,7 +101,7 @@ class StFattController extends Controller
         });
       }
       // 2024-2025 ESCLUSO GRUPPO SPINOFF
-      if ($thisYear=="2025") {
+      if ($thisYear>="2025") {
         $fat_TY = $fat_TY->whereNotIn('gruppo', ['A14']);
       }
 

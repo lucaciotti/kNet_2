@@ -66,7 +66,7 @@ class GoogleMapsController extends Controller
                     'country'               => 'US',
                 ]
             ])
-            ->getResponseByKey('results.geometry.location');
+            ->getResponseByKey('results.formatted_address');
 
 
         dd($d);

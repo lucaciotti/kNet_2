@@ -29,6 +29,9 @@ class StringFilter
                 case 'stw':
                     return 'LIKE';
                     break;
+                case 'notStw':
+                    return 'NOT LIKE';
+                    break;
                 case 'cnt':
                     return 'LIKE';
                     break;
@@ -51,6 +54,9 @@ class StringFilter
                     break;
                 case 'stw':
                     return $this->value.'%';
+                    break;
+                case 'notStw':
+                    return $this->value . '%';
                     break;
                 case 'cnt':
                     return '%'. $this->value . '%';;

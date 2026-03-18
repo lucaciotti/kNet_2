@@ -32,7 +32,7 @@
 
     <div class="box box-default">
       <div class="box-header with-border">
-        <h3 class="box-title" data-widget="collapse"><i class='fa fa-cloud-download'> </i> Download</h3>
+        <h3 class="box-title" data-widget="collapse"><i class='fa fa-cloud-download'> </i> Reports</h3>
         <div class="box-tools pull-right">
           <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i></button>
         </div>
@@ -40,6 +40,10 @@
       <div class="box-body">
         <a type="button" class="btn btn-default btn-block" target="_blank"
           href="{{ route('visit::reportPDF', $dataForReport) }}">Report PDF (Relatore)</a>
+      </div>
+      <div class="box-body">
+        <a type="button" class="btn btn-default btn-block" target="_blank"
+          href="{{ route('visit::reportDistancePDF', $dataForReport) }}">Report Km Percorsi PDF (Relatore)</a>
       </div>
       <div class="box-body">
         <a type="button" class="btn btn-default btn-block" target="_blank"
