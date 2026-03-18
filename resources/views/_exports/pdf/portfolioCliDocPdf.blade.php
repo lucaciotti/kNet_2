@@ -21,7 +21,7 @@
             </div>
 
             @foreach ($portfolio as $key => $group)
-                <h2><b>{{ $group['client']->descrizion }}</b> [<a href="{{ route('client::detail', $key ) }}" target="_blank">{{ $key}}</a>] <br></h2>
+                <h2><b>{{ $group['client']->descrizion ?? 'CLIENTE NON TROVATO!!!' }}</b> [<a href="{{ route('client::detail', $key ) }}" target="_blank">{{ $key}}</a>] <br></h2>
                 @php
                     $docsArray = $group['docs']->toArray();
                     $docs = $group['docs'];
