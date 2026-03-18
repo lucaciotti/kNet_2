@@ -80,7 +80,7 @@ class PortfolioController extends Controller
 		$defaultDocFilterKubica = clone $defaultDocFilter;
 		$defaultDocFilterKubica->addArrayFilter('prGroupIncl', ['B06']);
 		$defaultDocFilterKubica->addArrayFilter('prGroupExcl', ['B0630']);
-		$defaultDocFilterKrona->addStringFilter('codicearti', 'notStw', 'CAMP');
+		$defaultDocFilterKubica->addStringFilter('codicearti', 'notStw', 'CAMP');
 		$defaultDocFilterAtomica = clone $defaultDocFilter;
 		$defaultDocFilterAtomica->addArrayFilter('prGroupIncl', ['B0630']);
 		$defaultDocFilterAtomica->addStringFilter('codicearti', 'notStw', 'CAMP');
