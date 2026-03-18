@@ -182,19 +182,20 @@ Portfolio - Dettaglio Clienti
               @endphp
               @foreach ($portfolio as $key => $group)
               @php
-              $fat_TotCustomer_N = (isset($group['totOrd']) ? $group['totOrd'] : 0) + (isset($group['totDdt']) ? $group['totDdt'] : 0) + (isset($group['totFat']) ? $group['totFat'] : 0);
-              $OrdAg_N += (isset($group['totOrd']) ? $group['totOrd'] : 0);
-              $DdtAg_N += (isset($group['totDdt']) ? $group['totDdt'] : 0);
-              $fatAg_N += (isset($group['totFat']) ? $group['totFat'] : 0);
+              $totNetVal = isset($group['totNetVal']) ? $group['totNetVal'] : [];
+              $fat_TotCustomer_N = (isset($totNetVal['O']) ? $totNetVal['O'] : 0) + (isset($totNetVal['B']) ? $totNetVal['B'] : 0) + (isset($totNetVal['F']) ? $totNetVal['F'] : 0)+ (isset($totNetVal['N']) ? $totNetVal['N'] : 0);
+              $OrdAg_N += (isset($totNetVal['O']) ? $totNetVal['O'] : 0);
+              $DdtAg_N += (isset($totNetVal['B']) ? $totNetVal['B'] : 0);
+              $fatAg_N += (isset($totNetVal['F']) ? $totNetVal['F'] : 0)+ (isset($totNetVal['N']) ? $totNetVal['N'] : 0);
               $TotAg_N += $fat_TotCustomer_N;
               @endphp
               <tr>
                 <td style="text-align: left;"><b>{{ $group['client']->descrizion }}</b> [<a href="{{ route('client::detail', $key ) }}" target="_blank">{{ $key }}</a>]</td>
                 <td>{{ $group['client']->detZona->descrizion }}</td>
                 <td>{{ $group['client']->detSect->descrizion }}</td>
-                <td> {{ currency($group['totOrd'] ?? 0) }} </td>
-                <td> {{ currency($group['totDdt'] ?? 0) }} </td>
-                <td> {{ currency($group['totFat'] ?? 0) }} </td>
+                <td> {{ currency((isset($totNetVal['O']) ? $totNetVal['O'] : 0)) }} </td>
+                <td> {{ currency((isset($totNetVal['B']) ? $totNetVal['B'] : 0)) }} </td>
+                <td> {{ currency((isset($totNetVal['F']) ? $totNetVal['F'] : 0)+ (isset($totNetVal['N']) ? $totNetVal['N'] : 0)) }} </td>
                 <td> {{ currency($fat_TotCustomer_N) }} </td>
               </tr>                  
               @endforeach

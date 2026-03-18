@@ -1,5 +1,4 @@
 <?php
-
 namespace knet\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -9,28 +8,27 @@ use knet\ArcaModels\Agent;
 use knet\ArcaModels\DocCli;
 use knet\ArcaModels\DocRow;
 use knet\Helpers\AgentFltUtils;
+use knet\Helpers\DocFilters;
+use knet\Helpers\DocUtils;
 use knet\Helpers\PdfReport;
 use knet\Helpers\Utils;
 use knet\Helpers\RedisUser;
-use knet\Helpers\DocFilters;
-use knet\Helpers\DocRowUtils;
-use knet\Helpers\DocTesUtils as DocUtils;
 
 class PortfolioController extends Controller
 {
-	protected $thisYear;
-	protected $prevYear;
-	protected $dStartMonth;
-	protected $dEndMonth;
-	protected $arrayIDOC;
-	protected $arrayIDBO;
-	protected $arrayIDFT;
-	protected $arrayIDprevFT;
+		protected $thisYear;
+		protected $prevYear;	
+		protected $dStartMonth; 	
+		protected $dEndMonth;
+		protected $arrayIDOC;
+		protected $arrayIDBO;
+		protected $arrayIDFT;
+		protected $arrayIDprevFT;
 
-	public function __construct()
-	{
-		$this->middleware('auth');
-	}
+    public function __construct(){
+      $this->middleware('auth');
+    }
+
 
 	public function idxAg(Request $req, $codAg = null)
 	{
@@ -73,7 +71,8 @@ class PortfolioController extends Controller
 		$defaultDocFilterBonusKrona = clone $defaultDocFilter;
 		$defaultDocFilterBonusKrona->addArrayFilter('prGroupIncl', ['A99']);
 		$defaultDocFilterBonusKoblenz = clone $defaultDocFilter;
-		$defaultDocFilterBonusKoblenz->addArrayFilter('prGroupIncl', ['B99']);;
+		$defaultDocFilterBonusKoblenz->addArrayFilter('prGroupIncl', ['B99']);
+		$defaultDocFilterBonusKoblenz = clone $defaultDocFilter;
 		$defaultDocFilterKubica = clone $defaultDocFilter;
 		$defaultDocFilterKubica->addArrayFilter('prGroupIncl', ['B06']);
 		$defaultDocFilterKubica->addArrayFilter('prGroupExcl', ['B0630']);
@@ -199,6 +198,7 @@ class PortfolioController extends Controller
 		]);
 	}
 
+
 	public function portfolioAgByCustomer(Request $req, $codAg = null)
 	{
 		// Costruisco i filtri
@@ -265,7 +265,7 @@ class PortfolioController extends Controller
 		if ($req->input('cumulativo')) {
 			$this->dStartMonth = new Carbon('first day of january ' . ((string)$this->thisYear));
 		}
-
+		
 		$dataFineAgente = Carbon::createFromDate($this->prevYear, 1, 1);
 		$agents = Agent::select('codice', 'descrizion', 'u_dataini')->whereNull('u_dataini')->orWhere('u_dataini', '>=', $dataFineAgente)->orderBy('codice')->get();
 		$codAg = ($req->input('codag')) ? $req->input('codag') : $codAg;
@@ -288,7 +288,7 @@ class PortfolioController extends Controller
 		$fattUtils = (new DocRowUtils($defaultDocFilter));
 		$fatt = $fattUtils->getInvoice($this->thisYear, $this->dStartMonth, $this->dEndMonth);
 
-		$portfolio = (DocRowUtils::buildDocsPortfolio($ord, $ddt, $fatt))->sortByDesc('totNetVal.F');
+		$portfolio = DocRowUtils::buildDocsPortfolio($ord, $ddt, $fatt);
 		// dd($portfolio['C05900']);
 
 		$title = "Portafoglio Clienti";
@@ -310,6 +310,7 @@ class PortfolioController extends Controller
 
 		return $pdf->stream($title . '-' . $subTitle . '.pdf');
 	}
+
 
 	public function portfolioCliDocPDF(Request $req, $codAg = null)
 	{
@@ -342,14 +343,14 @@ class PortfolioController extends Controller
 		$defaultDocFilter->addBoolFilter('filiali', 0);
 		$defaultDocFilter->addStringFilter('codicearti', 'notEql', '');
 
-		$ordUtils = (new DocRowUtils($defaultDocFilter));
+		$ordUtils = (new DocUtils($defaultDocFilter));
 		$ord = $ordUtils->getOrderToShip($this->dEndMonth);
-		$ddtUtils = (new DocRowUtils($defaultDocFilter));
+		$ddtUtils = (new DocUtils($defaultDocFilter));
 		$ddt = $ddtUtils->getDdtNotInvoiced($this->thisYear, $this->dStartMonth, $this->dEndMonth);
-		$fattUtils = (new DocRowUtils($defaultDocFilter));
+		$fattUtils = (new DocUtils($defaultDocFilter));
 		$fatt = $fattUtils->getInvoice($this->thisYear, $this->dStartMonth, $this->dEndMonth);
 
-		$portfolio = DocRowUtils::buildDocsPortfolio($ord, $ddt, $fatt);
+		$portfolio = DocUtils::buildDocsPortfolio($ord, $ddt, $fatt);
 		// dd($portfolio['C05900']);
 
 		$title = "Portafoglio Lista Documenti Clienti";
@@ -372,8 +373,7 @@ class PortfolioController extends Controller
 		return $pdf->stream($title . '-' . $subTitle . '.pdf');
 	}
 
-	public function portfolioListOCandXC(Request $req, $codAg = null)
-	{
+	public function portfolioListOCandXC(Request $req, $codAg = null) {
 		// Costruisco i filtri
 		$this->thisYear = (!$req->input('year') ? Carbon::now()->year : $req->input('year'));
 		$this->prevYear = $this->thisYear - 1;
@@ -394,33 +394,9 @@ class PortfolioController extends Controller
 		$fltAgents = (!empty($codAg)) ? $codAg : array_wrap((!empty(RedisUser::get('codag')) ? RedisUser::get('codag') : $agents->first()->codice)); //$agents->pluck('codice')->toArray();
 		$fltAgents = AgentFltUtils::checkSpecialRules($fltAgents);
 
-		// $listOC = $this->getListDoc(['OC'], $fltAgents)->groupBy('agente');
-		// $listXC = $this->getListDoc(['XC'], $fltAgents)->groupBy('agente');
-
-
-		$defaultDocFilter = new DocFilters();
-		$defaultDocFilter->addArrayFilter('prGroupIncl', ['A', 'B', 'D0']);
-		$defaultDocFilter->addArrayFilter('prGroupExcl', ['Z']);
-		$defaultDocFilter->addArrayFilter('agente', $fltAgents);
-		$defaultDocFilter->addBoolFilter('u_artlis&u_perslis', 1);
-		$defaultDocFilter->addBoolFilter('ommerce', 0);
-		$defaultDocFilter->addBoolFilter('filiali', 0);
-		$defaultDocFilter->addStringFilter('codicearti', 'notEql', '');
-		$defaultDocFilter->addNumFilter('quantitare', 'plus', 0);
-		$defaultDocFilter->addDateFilter('dataconseg', 'before', $this->dEndMonth);
-
-		$OCFilter = clone $defaultDocFilter;
-		$OCFilter->addArrayFilter('tipodoc', 'OC');
-		$XCFilter = clone $defaultDocFilter;
-		$XCFilter->addArrayFilter('tipodoc', 'XC');
-
-		$listOC = (new DocRowUtils($OCFilter))->getDocs();
-		$listOC = DocRowUtils::collectByAgentTipoModulo($listOC);
-		$listXC = (new DocRowUtils($XCFilter))->getDocs();
-		$listXC = DocRowUtils::collectByAgentTipoModulo($listXC);
-
-		// dd($listOC);
-
+		$listOC = $this->getListDoc(['OC'], $fltAgents)->groupBy('agente');
+		$listXC = $this->getListDoc(['XC'], $fltAgents)->groupBy('agente');
+		
 		$title = "Portafoglio";
 		$subTitle = "Dettaglio Documenti";
 		$view = '_exports.pdf.portfolioDocPdf';
@@ -438,5 +414,39 @@ class PortfolioController extends Controller
 
 		return $pdf->stream($title . '-' . $subTitle . '.pdf');
 	}
-	
+
+
+
+	// LISTA DEI DOCUMENTI
+	public function getListDoc($tipodocs, $agents = [], $evasi=false, $filiali = false)
+	{
+		$docTes = DocCli::whereIn('tipodoc', $tipodocs);
+		if(!$evasi){
+			$docTes->whereHas('docrow', function ($query) {
+				$query->where('quantitare', '>', 0)
+					->where('ommerce', 0)
+					->where('codicearti', '!=', '')
+					->whereHas('product', function ($q) {
+						$q->orWhere('u_artlis', 1)->orWhere('u_perscli', 1);
+					});
+			});
+		}
+		if(in_array("OC", $tipodocs)|| in_array("XC", $tipodocs)) {
+			$docTes->whereHas('docrow', function ($query) {
+						$query->where('dataconseg', '<=', $this->dEndMonth);;
+					})
+			->whereIn('esercizio', [(string)$this->thisYear, (string)$this->prevYear]);
+		} else {
+			$docTes->whereBetween('datadoc', [$this->dStartMonth, $this->dEndMonth]);
+		}
+		if (!$filiali && RedisUser::get('ditta_DB') == 'knet_it') {
+			$docTes->whereNotIn('codicecf', ['C00973', 'C03000', 'C07000', 'C06000', 'C01253']);
+		}
+		if (!empty($agents)) {
+			$docTes->whereIn('agente', $agents);
+		}
+		$docTes = $docTes->with(['client', 'agent'])->orderBy('codicecf')->orderBy('datadoc', 'desc')->get();
+
+		return $docTes;
+	}
 }

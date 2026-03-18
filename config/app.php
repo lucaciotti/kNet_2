@@ -165,6 +165,8 @@ return [
         PragmaRX\ZipCode\Vendor\Laravel\ServiceProvider::class,
         Rap2hpoutre\LaravelLogViewer\LaravelLogViewerServiceProvider::class,
 
+        GoogleMaps\ServiceProvider\GoogleMapsServiceProvider::class,
+
 
     ],
 
@@ -218,6 +220,8 @@ return [
         'ZipCode' => PragmaRX\ZipCode\Vendor\Laravel\Facade::class,
         'Input' => Illuminate\Support\Facades\Input::class,
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
+
+        'GoogleMaps' => GoogleMaps\Facade\GoogleMapsFacade::class,
     ],
 
 ];

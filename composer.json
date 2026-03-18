@@ -7,6 +7,7 @@
     "require": {
         "php": "^7.1.3",
         "acacha/admin-lte-template-laravel": "^6.0",
+        "alexpechkarev/google-maps": "^5.6",
         "barryvdh/laravel-snappy": "^0.4.1",
         "cornford/googlmapper": "2.*",
         "davejamesmiller/laravel-breadcrumbs": "5.x",

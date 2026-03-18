@@ -16,9 +16,9 @@
             @foreach ($agents as $agent)
             @php
                 $listOcAgent = $listOC[$agent->codice] ?? null;
-                $listOcAgent_n = $listOcAgent ? $listOcAgent->count() : 0;
+                $listOcAgent_n = $listOcAgent ? ($listOcAgent['n_doc']['O'] ?? 0) : 0;
                 $listXcAgent = $listXC[$agent->codice] ?? null;
-                $listXcAgent_n = $listXcAgent ? $listXcAgent->count() : 0;
+                $listXcAgent_n = $listXcAgent ? ($listXcAgent['n_doc']['P'] ?? 0): 0;
                 // if($listOcAgent_n>0){
                 //     $agentDet = $listOcAgent->first()->agent;
                 // } else {
@@ -41,7 +41,7 @@
                         <div class="contentTitle">List OC</div>
                     
                         @include('_exports.pdf.portfolio.tblListDoc', [
-                        'listDoc' => $listOcAgent,
+                        'listDoc' => $listOcAgent['docs']['O'],
                         'cumulativo' => $cumulativo,
                         'thisYear' => $thisYear,
                         'mese' => $mese,
@@ -59,7 +59,7 @@
                     <div class="contentTitle">List XC</div>
                 
                     @include('_exports.pdf.portfolio.tblListDoc', [
-                    'listDoc' => $listXcAgent,
+                    'listDoc' => $listXcAgent['docs']['P'],
                     'cumulativo' => $cumulativo,
                     'thisYear' => $thisYear,
                     'mese' => $mese,

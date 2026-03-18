@@ -16,19 +16,19 @@
             <th colspan="3">&nbsp;</th>
             <th style="text-align: center;">Doc.</th>
             <th style="text-align: center;">Data Doc.</th>
-            <th style="text-align: center;">Valore</th>
+            <th style="text-align: center;">Valore Residuo</th>
         </tr>
     </thead>
     <tbody>
         @foreach ($listDoc as $doc)
         <tr>
-            <td style="text-align: left;"><b>{{ $doc->client->descrizion }}</b> [<a
-                    href="{{ route('client::detail', $doc->client->codice ) }}" target="_blank">{{ $doc->client->codice }}</a>]</td>
-            <td>{{ $doc->client->detZona->descrizion }}</td>
-            <td>{{ $doc->client->detSect->descrizion }}</td>
-            <td> {{ $doc->tipodoc }} {{ $doc->numerodoc }} </td>
-            <td> {{ $doc->datadoc->format('d/m/Y') }} </td>
-            <td> {{ currency($doc->totdoc) }} </td>
+            <td style="text-align: left;"><b>{{ $doc['head']->client->descrizion }}</b> [<a
+                    href="{{ route('client::detail', $doc['head']->client->codice ) }}" target="_blank">{{ $doc['head']->client->codice }}</a>]</td>
+            <td>{{ $doc['head']->client->detZona->descrizion }}</td>
+            <td>{{ $doc['head']->client->detSect->descrizion }}</td>
+            <td> {{ $doc['head']->tipodoc }} {{ $doc['head']->numerodoc }} </td>
+            <td> {{ $doc['head']->datadoc->format('d/m/Y') }} </td>
+            <td> {{ currency($doc['rows']->sum('totRowNetPrice')) }} </td>
         </tr>
         @endforeach
     </tbody>

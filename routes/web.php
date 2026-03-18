@@ -17,6 +17,8 @@ use knet\Jobs\FetchReportToSend;
 |
 */
 
+Route::get('/maps', 'GoogleMapsController@getDirections');
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -553,6 +555,10 @@ Route::group(['as' => 'Portfolio::'], function () {
   Route::get('/portfolioAgByCustomerPDF', [
     'as' => 'portfolioAgByCustomerPDF',
     'uses' => 'PortfolioController@portfolioAgByCustomerPDF'
+  ]);
+  Route::get('/portfolioCliDocPDF', [
+    'as' => 'portfolioCliDocPDF',
+    'uses' => 'PortfolioController@portfolioCliDocPDF'
   ]);
   Route::get('/portfolioListOCandXC', [
     'as' => 'portfolioListOCandXC',
