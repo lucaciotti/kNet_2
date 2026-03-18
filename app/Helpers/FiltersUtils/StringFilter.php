@@ -11,7 +11,7 @@ class StringFilter
     private $value = null;
     public function set($op, $value)
     {
-        if (in_array($op, ['eql', 'stw', 'cnt', 'notEql'])) {
+        if (in_array($op, ['eql', 'stw', 'notStw', 'cnt', 'notEql'])) {
             $this->op = $op;
         }
         $this->value = $value;
