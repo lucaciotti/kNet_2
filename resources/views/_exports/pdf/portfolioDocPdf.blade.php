@@ -12,6 +12,11 @@
                     {{ \Carbon\Carbon::createFromDate(null, $mese, null)->format('F')}} {{ $thisYear }} --}}
                 </span>
             </div>
+            <div style="padding-left: 50px; padding-right: 50px; padding-bottom: 20px; font-size: 75%">
+                Filtri: <br>
+                OC -> { {{ $ocFilter }} }<br>
+                XC -> { {{ $xcFilter }} }<br>
+            </div>
 
             @foreach ($agents as $agent)
             @php

@@ -5,7 +5,7 @@
 @endsection
 
 @section('contentheader_title')
-Portfolio - Dettaglio Clienti
+Portfolio - Clienti
 @endsection
 
 {{-- @section('contentheader_breadcrumb')
@@ -103,35 +103,43 @@ Portfolio - Dettaglio Clienti
 
     <div class="box box-default {{-- collapsed-box --}}">
       <div class="box-header with-border">
-        <h3 class="box-title" data-widget="collapse"><i class='fa fa-cloud-download'> </i> Download</h3>
+        <h3 class="box-title" data-widget="collapse"><i class='fa fa-cloud-download'> </i> Reports PDF</h3>
         <div class="box-tools pull-right">
           <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i></button>
         </div>
       </div>
       <div class="box-body">
-        <a type="button" class="btn btn-default btn-block" target="_blank" href="{{ route('Portfolio::portfolioAgByCustomerPDF', [
-                                            'codag' => $fltAgents,
-                                            'year' => $thisYear,
-                                            'cumulativo' => $cumulativo,
-                                            'mese' => $mese,
-                                            ]) }}">PDF Portafoglio Clienti</a>
         <a type="button" class="btn btn-default btn-block" target="_blank" href="{{ route('Portfolio::portfolioListOCandXC', [
                                             'codag' => $fltAgents,
                                             'year' => $thisYear,
                                             'cumulativo' => $cumulativo,
                                             'mese' => $mese,
-                                            ]) }}">PDF Portafoglio Doc (da Evadere)</a>
+                                            ]) }}">Portafoglio Lista Doc (da Evadere)</a>
+        
+        <a type="button" class="btn btn-default btn-block" target="_blank" href="{{ route('Portfolio::portfolioCliDocPDF', [
+                                            'codag' => $fltAgents,
+                                            'year' => $thisYear,
+                                            'cumulativo' => $cumulativo,
+                                            'mese' => $mese,
+                                            ]) }}">Portafoglio Dettaglio CliDoc (da Evadere)</a>
+
+        <a type="button" class="btn btn-default btn-block" target="_blank" href="{{ route('Portfolio::portfolioAgByCustomerPDF', [
+                                            'codag' => $fltAgents,
+                                            'year' => $thisYear,
+                                            'cumulativo' => $cumulativo,
+                                            'mese' => $mese,
+                                            ]) }}">Portafoglio Lista Clienti</a>
       </div>
     </div>
 
     <div class="box box-default {{-- collapsed-box --}}">
       <div class="box-body">
-        <a type="button" class="btn btn-default btn-block" href="{{ route('Portfolio::idxAg', [
+        <a type="button" class="btn btn-info btn-block" href="{{ route('Portfolio::idxAg', [
                                             'codag' => $fltAgents,
                                             'year' => $thisYear,
                                             'cumulativo' => $cumulativo,
                                             'mese' => $mese,
-                                            ]) }}">Portfolio - Gruppo Prodotti</a>
+                                            ]) }}">Visualizza Portfolio - Gruppo Prodotti</a>
         {{-- <a type="button" class="btn btn-default btn-block" target="_blank" href="{{ route('Portfolio::portfolioAgByCustomer') }}">Portfolio - Clienti</a> --}}
       </div>
     </div>

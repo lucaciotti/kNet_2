@@ -433,6 +433,8 @@ class PortfolioController extends Controller
 			'fltAgents' => $fltAgents,
 			'listOC' => $listOC,
 			'listXC' => $listXC,
+			'xcFilter' => $XCFilter->toString(),
+			'ocFilter' => $OCFilter->toString(),
 		];
 		$pdf = PdfReport::A4Landscape($view, $data, $title, $subTitle);
 
