@@ -23,7 +23,7 @@ class BoolFilter
     }
     public function toString()
     {
-        return ($this->value) ? 'Vero' : 'Falso';
+        return ($this->value) ? 'Sì' : 'No';
     }
     public function isEnabled()
     {
