@@ -948,11 +948,11 @@ class VisitController extends Controller
         ]);
       });
 
-      foreach ($mappedVisit as $userMap => $groupUser) {
+      foreach ($mappedVisit as $userName => $groupUser) {
         $visitaFakeUser = $groupUser->first()->first()->first()['visita']->first()->user;
         $homeAddress = null;
         $homeNationAddress = null;
-        $user = User::where('id', $visitaFakeUser->id)
+        $user = User::where('name', $userName)
           ->with([
             'agent' => function ($query) {
                 $query
@@ -1011,14 +1011,14 @@ class VisitController extends Controller
               if(count($d['routes'])>0){
                 $distance = $d['routes'][0]['legs'][0]['distance']['value']/1000;
               }
-              $mappedVisit[$userMap][$periodo][$day][$key]['prev_address'] = $prevAddress;
-              $mappedVisit[$userMap][$periodo][$day][$key]['prev_nation_address'] = $prevNationAddress;
-              $mappedVisit[$userMap][$periodo][$day][$key]['distanceKm'] = $distance;
+              $mappedVisit[$userName][$periodo][$day][$key]['prev_address'] = $prevAddress;
+              $mappedVisit[$userName][$periodo][$day][$key]['prev_nation_address'] = $prevNationAddress;
+              $mappedVisit[$userName][$periodo][$day][$key]['distanceKm'] = $distance;
               if ($visitaData['formatted_address']){
               $prevAddress = $visitaData['formatted_address'];
               $prevNationAddress = $visitaData['nation_address'];
               } else {
-                $mappedVisit[$userMap][$periodo][$day][$key]['formatted_address'] = '-- INSERIRE INDIRIZZO IN ANAGRAFICA --';
+                $mappedVisit[$userName][$periodo][$day][$key]['formatted_address'] = '-- INSERIRE INDIRIZZO IN ANAGRAFICA --';
               }
             }
             # code...
