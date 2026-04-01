@@ -92,6 +92,13 @@ class PortfolioController extends Controller
 		$defaultDocFilterCAMP = clone $defaultDocFilter;
 		$defaultDocFilterCAMP->addStringFilter('codicearti', 'stw', 'CAMP');
 
+
+		// TEST
+		// print(date('m/d/Y h:i:s a', time()));
+		// $OC = (new DocRowUtils($defaultDocFilter))->getOrderToShip($this->dEndMonth, $raw=true);
+		// print(date('m/d/Y h:i:s a', time()));
+		// dd($defaultDocFilterKrona->queryCollection($OC));
+
 		// $OCKronaCls = (new DocUtils($defaultDocFilterKrona));
 		// $OCKrona = (new DocUtils($defaultDocFilterKrona))->getOrderToShip($this->dEndMonth)->sum('totValO');
 		// dd($defaultDocFilterKrona->toString());

@@ -211,7 +211,7 @@ class DocRowUtils
     }
 
     /* Restituisce tutti gli ordini che devono essere evasi in funzione di alcune condizioni*/
-    public function getOrderToShip($dEndMonth = null)
+    public function getOrderToShip($dEndMonth = null, $raw=false)
     {
         $year = Carbon::now()->year; 
         if ($dEndMonth == null) {
@@ -233,7 +233,11 @@ class DocRowUtils
         $this->docFilter->addDateFilter('dataconseg', 'before', $dEndMonth);
 
         $docs = $this->getDocs();
-        return $this->collectByClientTipoModulo($docs);
+        if (!$raw){
+            return $this->collectByClientTipoModulo($docs);
+        } else {
+            return $docs;
+        }
     }
 
     /* Restituisce tutte le bolle che devono essere fatturate in funzione di alcune condizioni*/

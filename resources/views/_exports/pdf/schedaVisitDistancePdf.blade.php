@@ -83,7 +83,7 @@
                     <td>{{ $descrizione }}</td>
                     <td>{{ $visitaData['prev_address'] }}</td>
                     <td>{{ $visitaData['formatted_address'] }}</td>
-                    <td>{{ $visitaData['distanceKm'] }} Km</td>
+                    <td>@if ($visitaData['nation_address']!=$visitaData['prev_nation_address'])** @endif{{ $visitaData['distanceKm'] }} Km</td>
                     <td>{{ $totDistanceDay }} Km</td>
                     <td>{{ $totDistancePeriodo }} Km</td>
                 </tr>

@@ -335,6 +335,10 @@ Route::group(['as' => 'visit::'], function(){
     'as' => 'reportDistancePDF',
     'uses' => 'VisitController@reportDistancePDF'
   ]);
+  Route::get('/visit_reportCompletoPDF', [
+    'as' => 'reportCompletoPDF',
+    'uses' => 'VisitController@reportCompletoPDF'
+  ]);
   Route::get('/visit_countPDF', [
     'as' => 'countPDF',
     'uses' => 'VisitController@countPDF'

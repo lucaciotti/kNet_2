@@ -39,11 +39,15 @@
       </div>
       <div class="box-body">
         <a type="button" class="btn btn-default btn-block" target="_blank"
-          href="{{ route('visit::reportPDF', $dataForReport) }}">Report PDF (Relatore)</a>
+          href="{{ route('visit::reportPDF', $dataForReport) }}">Report Visite PDF (Relatore)</a>
       </div>
       <div class="box-body">
         <a type="button" class="btn btn-default btn-block" target="_blank"
           href="{{ route('visit::reportDistancePDF', $dataForReport) }}">Report Km Percorsi PDF (Relatore)</a>
+      </div>
+      <div class="box-body">
+        <a type="button" class="btn btn-default btn-block" target="_blank"
+          href="{{ route('visit::reportCompletoPDF', $dataForReport) }}">Report Visite + Km Percorsi PDF (Relatore)</a>
       </div>
       <div class="box-body">
         <a type="button" class="btn btn-default btn-block" target="_blank"
