@@ -44,6 +44,11 @@ return [
     'eventRNC'                => 'Non Conformity',
     'eventGeneric'            => 'Generic',
 
+    'eventLastDay'            => 'Is this the Last Meet of day?',
+    'eventLastType'           => 'Overnight stay location?',
+    'eventComeBack'           => 'Back Home',
+    'eventHotel'              => 'In the area',
+
     'readMore'                => 'Read More',
 
     // Form PlaceHolder

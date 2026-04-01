@@ -41,6 +41,11 @@ return [
     'eventRNC'                => 'Producto no conforme',
     'eventGeneric'            => 'Genérico',
 
+    'eventLastDay'            => '¿Es este el último encuentro del día?',
+    'eventLastType'           => '¿Lugar de pernoctación?',
+    'eventComeBack'           => 'De vuelta a casa',
+    'eventHotel'              => 'En la zona',
+
     'readMore'                => 'Lee mas',
 
     // Form PlaceHolder

@@ -176,6 +176,62 @@
                       @endif
                     });
               </script>
+            @endpush<hr>
+            <div class="form-group">
+              @php
+              $optLastDay = !empty($visit) ? $visit->lastOfDay : 0;
+              @endphp
+              <label>{{ trans('visit.eventLastDay') }}</label>
+              <div class="radio">
+                <label>
+                  <input type="radio" name="optLastDay" id="optLastDay1" value="0" @if ($optLastDay==0) checked @endif> No
+                </label>
+                <label>
+                  <input type="radio" name="optLastDay" id="optLastDay2" value="1" @if ($optLastDay==1) checked @endif> Si
+                </label>
+              </div>
+              @php
+              $optLastType = !empty($visit) ? $visit->lastOfDayType : 0;
+              @endphp
+              <label id="labelLastType" style="display: none;">{{ trans('visit.eventLastType') }}</label>
+              <div id="lastType" class="radio" style="display: none;">
+                <label>
+                  <input type="radio" name="optLastType" id="optLastType1" value="0" @if ($optLastType==0) checked @endif> {{
+                  trans('visit.eventComeBack') }}
+                </label>
+                <label>
+                  <input type="radio" name="optLastType" id="optLastType2" value="1" @if ($optLastType==1) checked @endif> {{
+                  trans('visit.eventHotel') }}
+                </label>
+              </div>
+            </div>
+            @push('script-footer')
+            @if (!empty($visit)){
+            {{-- @php
+            $optLastDay = visit->optLastDay
+            @endphp --}}
+            <script type="text/javascript">
+              $(function () {
+                              var lastTypeVisible = {!! $visit->lastOfDay !!};
+                              if (lastTypeVisible) {
+                                $('#labelLastType').show();
+                                $('#lastType').show();
+                              }
+                          });
+            </script>
+            @endif
+            <script>
+              $(function () {                
+                            $('#optLastDay1').on('ifChecked', function(event){
+                                $('#labelLastType').hide();
+                                $('#lastType').hide();
+                            })
+                            $('#optLastDay2').on('ifChecked', function(event){
+                                $('#labelLastType').show();
+                                $('#lastType').show();
+                            })
+                            });
+            </script>
             @endpush
 
             <div>
