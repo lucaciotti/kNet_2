@@ -15,7 +15,8 @@ class wVisit extends Model
 
   protected $table = 'w_visite';
   protected $dates = ['data', 'created_at', 'updated_at'];
-  protected $fillable = ['codicecf', 'user_id', 'data', 'tipo', 'descrizione', 'note', 'rubri_id', 'persona_contatto', 'funzione_contatto', 'conclusione', 'ordine', 'data_prox'];
+  // protected $fillable = ['codicecf', 'user_id', 'data', 'tipo', 'descrizione', 'note', 'rubri_id', 'persona_contatto', 'funzione_contatto', 'conclusione', 'ordine', 'data_prox'];
+  protected $guarded = ['id'];
   protected $connection = '';
 
   public function __construct ($attributes = array())

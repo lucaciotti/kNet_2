@@ -37,6 +37,11 @@ return [
     'eventConclusion'         => 'Conclusioni',
     'eventOrd'                => 'Seguirà Ordine Cliente?',
 
+    'eventLastDay'            => 'Ultimo Incontro giornata?',
+    'eventLastType'           => 'Luogo pernottamento?',
+    'eventComeBack'           => 'Ritorno a casa',
+    'eventHotel'              => 'In zona',
+    
     'eventMeeting'            => 'Meeting',
     'eventMail'               => 'Inviata eMail',
     'eventProduct'            => 'Presentazione Prodotto',

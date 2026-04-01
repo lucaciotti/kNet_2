@@ -100,6 +100,8 @@ class VisitController extends Controller
           'persona_contatto' => $req->input('persona'),
           'funzione_contatto' => $req->input('rolePersona'),
           'ordine' => $req->input('optOrdine'),
+          'lastOfDay' => $req->input('optLastDay') ?? false,
+          'lastOfDayType' => $req->input('optLastType') ?? false,
           'data_prox' => $req->input('dateNext')!=null ? (new Carbon($req->input('dateNext'))) : null
         ]);
       } else {
@@ -115,6 +117,8 @@ class VisitController extends Controller
           'persona_contatto' => $req->input('persona'),
           'funzione_contatto' => $req->input('rolePersona'),
           'ordine' => $req->input('optOrdine'),
+          'lastOfDay' => $req->input('optLastDay') ?? false,
+          'lastOfDayType' => $req->input('optLastType') ?? false,
           'data_prox' => $req->input('dateNext')!=null ? (new Carbon($req->input('dateNext'))) : null
         ]);
       }
