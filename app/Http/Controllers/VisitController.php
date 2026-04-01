@@ -959,14 +959,18 @@ class VisitController extends Controller
           $regione = $visitaFakeUser->user->client->regione;
           $prov = $visitaFakeUser->user->client->prov;
           $geoposition = \GoogleMaps::load('geocoding')
-            ->setParam([
-              'address' => $localita . ',' . $cap . ',' . $prov . ',' . $regione . ',' . $codnazione,
+          ->setParam([
+            'address' => $localita . ',' . $cap . ',' . $prov . ',' . $regione . ',' . $codnazione,
             ])->getResponseByKey('results');
+            // dd($geoposition);
           if ($geoposition['results']) {
             foreach ($geoposition['results'][0]['address_components'] as $value) {
               if ($value['types'][0] == 'country') $homeNationAddress = $value['short_name'];
             }
             $homeAddress = $geoposition['results'][0]['formatted_address'];
+            if ($homeAddress=='PT'){
+              $homeAddress = 'P';
+            }
           }
         } 
 
@@ -996,8 +1000,12 @@ class VisitController extends Controller
               $mappedVisit[$userMap][$periodo][$day][$key]['prev_address'] = $prevAddress;
               $mappedVisit[$userMap][$periodo][$day][$key]['prev_nation_address'] = $prevNationAddress;
               $mappedVisit[$userMap][$periodo][$day][$key]['distanceKm'] = $distance;
+              if ($visitaData['formatted_address']){
               $prevAddress = $visitaData['formatted_address'];
               $prevNationAddress = $visitaData['nation_address'];
+              } else {
+                $mappedVisit[$userMap][$periodo][$day][$key]['formatted_address'] = '-- INSERIRE INDIRIZZO IN ANAGRAFICA --';
+              }
             }
             # code...
           }
