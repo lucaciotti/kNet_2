@@ -897,7 +897,7 @@ class VisitController extends Controller
                       $localita = $visita->rubri->localita;
                       $cap = $visita->rubri->cap;
                       $codnazione = $visita->rubri->codnazione;
-                      $regione = $visita->rubri->regione;
+                      // $regione = $visita->rubri->regione;
                       $prov = $visita->rubri->prov;
                     }
                     if ($visita->tipologia == 'C') {
@@ -905,7 +905,7 @@ class VisitController extends Controller
                       $localita = $visita->client->localita;
                       $cap = $visita->client->cap;
                       $codnazione = $visita->client->codnazione;
-                      $regione = $visita->client->regione;
+                      // $regione = $visita->client->regione;
                       $prov = $visita->client->prov;
                     }
                     if ($visita->tipologia == 'F') {
@@ -913,12 +913,12 @@ class VisitController extends Controller
                       $localita = $visita->supplier->localita;
                       $cap = $visita->supplier->cap;
                       $codnazione = $visita->supplier->codnazione;
-                      $regione = $visita->supplier->regione;
+                      // $regione = $visita->supplier->regione;
                       $prov = $visita->supplier->prov;
                     }
                     $geoposition = \GoogleMaps::load('geocoding')
                       ->setParam([
-                        'address' => $localita . ',' . $cap . ',' . $prov . ',' . $regione . ',' . $codnazione,
+                        'address' => $localita . ',' . $cap . ',' . $prov . ',' . $codnazione,
                       ])->getResponseByKey('results');
                     if ($geoposition['results']) {
                       // dd($geoposition['results']);
@@ -949,20 +949,34 @@ class VisitController extends Controller
       });
 
       foreach ($mappedVisit as $userMap => $groupUser) {
-        $visitaFakeUser = $groupUser->first()->first()->first()['visita'];
+        $visitaFakeUser = $groupUser->first()->first()->first()['visita']->first()->user;
         $homeAddress = null;
         $homeNationAddress = null;
-        if ($visitaFakeUser->user->agent && $visitaFakeUser->user->client){
-          $localita = $visitaFakeUser->user->client->localita;
-          $cap = $visitaFakeUser->user->client->cap;
-          $codnazione = $visitaFakeUser->user->client->codnazione;
-          $regione = $visitaFakeUser->user->client->regione;
-          $prov = $visitaFakeUser->user->client->prov;
+        $user = User::where('id', $visitaFakeUser->id)
+          ->with([
+            'agent' => function ($query) {
+                $query
+                  ->withoutGlobalScope('agent')
+                  ->withoutGlobalScope('superAgent');
+              }, 
+            'client' => function ($query) {
+              $query
+                ->withoutGlobalScope('agent')
+                ->withoutGlobalScope('superAgent')
+                ->withoutGlobalScope('client');
+            }])->first();
+        // dd($user);
+        if ($user && $user->agent && $user->client){
+          $localita = $user->client->localita;
+          $cap = $user->client->cap;
+          $codnazione = $user->client->codnazione;
+          // $regione = $visitaFakeUser->user->client->regione;
+          $prov = $user->client->prov;
           $geoposition = \GoogleMaps::load('geocoding')
           ->setParam([
-            'address' => $localita . ',' . $cap . ',' . $prov . ',' . $regione . ',' . $codnazione,
+            'address' => $localita . ',' . $cap . ',' . $prov . ',' . $codnazione,
             ])->getResponseByKey('results');
-            // dd($geoposition);
+            dd($geoposition);
           if ($geoposition['results']) {
             foreach ($geoposition['results'][0]['address_components'] as $value) {
               if ($value['types'][0] == 'country') $homeNationAddress = $value['short_name'];
