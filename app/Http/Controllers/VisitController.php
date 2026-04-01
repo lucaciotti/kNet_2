@@ -575,110 +575,120 @@ class VisitController extends Controller
 
       $visits = $visits->with(['client', 'rubri', 'supplier', 'user']);
 
-      $visits = $visits->orderBy('data', 'desc')->orderBy('id', 'desc')->get();
+      $visits = $visits->orderBy('user_id', 'desc')->orderBy('data', 'desc')->orderBy('id', 'desc')->get();
 
       // dd($visits->first());
       
-      $mappedVisit = $visits->sortBy('periodo')->groupBy('periodo')->mapWithKeys(function ($group, $periodo) {
+      $mappedVisit = $visits->sortBy('user_id')->groupBy('user_id')->mapWithKeys(function ($groupUser, $user_id) {
+        $user = $groupUser->first()->user;
+        return collect([
+          $user->name => $groupUser->sortBy('periodo')->groupBy('periodo')->mapWithKeys(function ($groupPeriodo, $periodo) {
             return collect([
-                $periodo => $group->sortByDesc(['giorno', 'id'])->groupBy('giorno')->mapWithKeys(function ($visiteData, $data) {
-                      return  collect([
-                        $data => $visiteData->map(function ($visita) {
-                            $localita = null;
-                            $cap = null;
-                            $codnazione = null;
-                            $regione = null;
-                            $prov = null;
-                            $contatto = null;
-                            if ($visita->tipologia=='PC'){
-                              $contatto = $visita->rubri;
-                              $localita = $visita->rubri->localita;
-                              $cap = $visita->rubri->cap;
-                              $codnazione = $visita->rubri->codnazione;
-                              $regione = $visita->rubri->regione;
-                              $prov = $visita->rubri->prov;
-                            }
-                            if ($visita->tipologia=='C'){
-                              $contatto = $visita->client;
-                              $localita = $visita->client->localita;
-                              $cap = $visita->client->cap;
-                              $codnazione = $visita->client->codnazione;
-                              $regione = $visita->client->regione;
-                              $prov = $visita->client->prov;
-                            }
-                            if ($visita->tipologia=='F'){
-                              $contatto = $visita->supplier;
-                              $localita = $visita->supplier->localita;
-                              $cap = $visita->supplier->cap;
-                              $codnazione = $visita->supplier->codnazione;
-                              $regione = $visita->supplier->regione;
-                              $prov = $visita->supplier->prov;
-                            }
-                            $geoposition = \GoogleMaps::load('geocoding')
-                              ->setParam([
-                                'address' => $localita.','. $cap . ','. $prov . ',' . $regione . ',' . $codnazione,
-                              ])->getResponseByKey('results');
-                              if($geoposition['results']){
-                              $formatted_address = $geoposition['results'][0]['formatted_address'];
-                            }
-                            // dd($formatted_address);
-                            return collect([
-                                'visita' => $visita,
-                                'tipoContatto' => $visita->tipologia,
-                                'contatto' => $contatto,
-                                'formatted_address' => $formatted_address,
-                                'prev_address' => '',
-                                'distanceKm' => 0,
-                            ]);
-                          }),
-                        ]);
-                    }),
+              $periodo => $groupPeriodo->sortBy(['giorno'])->groupBy('giorno')->mapWithKeys(function ($visiteData, $data) {
+                return  collect([
+                  $data => $visiteData->sortBy('id')->map(function ($visita) {
+                    $localita = null;
+                    $cap = null;
+                    $codnazione = null;
+                    $regione = null;
+                    $prov = null;
+                    $contatto = null;
+                    $formatted_address = null;
+                    if ($visita->tipologia == 'PC') {
+                      $contatto = $visita->rubri;
+                      $localita = $visita->rubri->localita;
+                      $cap = $visita->rubri->cap;
+                      $codnazione = $visita->rubri->codnazione;
+                      $regione = $visita->rubri->regione;
+                      $prov = $visita->rubri->prov;
+                    }
+                    if ($visita->tipologia == 'C') {
+                      $contatto = $visita->client;
+                      $localita = $visita->client->localita;
+                      $cap = $visita->client->cap;
+                      $codnazione = $visita->client->codnazione;
+                      $regione = $visita->client->regione;
+                      $prov = $visita->client->prov;
+                    }
+                    if ($visita->tipologia == 'F') {
+                      $contatto = $visita->supplier;
+                      $localita = $visita->supplier->localita;
+                      $cap = $visita->supplier->cap;
+                      $codnazione = $visita->supplier->codnazione;
+                      $regione = $visita->supplier->regione;
+                      $prov = $visita->supplier->prov;
+                    }
+                    $geoposition = \GoogleMaps::load('geocoding')
+                      ->setParam([
+                        'address' => $localita . ',' . $cap . ',' . $prov . ',' . $regione . ',' . $codnazione,
+                      ])->getResponseByKey('results');
+                    if ($geoposition['results']) {
+                      $formatted_address = $geoposition['results'][0]['formatted_address'];
+                    }
+                    // if ($formatted_address == null) {
+                    //   dd($formatted_address);
+                    // }
+                    return collect([
+                      'visita' => $visita,
+                      'tipoContatto' => $visita->tipologia,
+                      'contatto' => $contatto,
+                      'formatted_address' => $formatted_address,
+                      'prev_address' => '',
+                      'distanceKm' => 0,
+                    ]);
+                  }),
+                ]);
+              }),
             ]);
-        });
+          }),
+        ]);
+      });
 
       // dd($mappedVisit);
       // if($req->input('groupBy')){
       //   $visits = $visits->groupBy($req->input('groupBy'));
       // }
-      foreach ($mappedVisit as $periodo => $group) {
-        $prevAddress = null;
-        foreach ($group as $day => $visite) {
-          $nVisitOfDay = 0;
-          foreach ($visite as $key => $visitaData) {
-            $nVisitOfDay++;
-            $user = $visitaData['visita']->user;  
-            if ($nVisitOfDay==1){
-              if ($visitaData['visita']->user->agent && $visitaData['visita']->user->client){
-                $localita = $visitaData['visita']->user->client->localita;
-                $cap = $visitaData['visita']->user->client->cap;
-                $codnazione = $visitaData['visita']->user->client->codnazione;
-                $regione = $visitaData['visita']->user->client->regione;
-                $prov = $visitaData['visita']->user->client->prov;
-                $geoposition = \GoogleMaps::load('geocoding')
-                  ->setParam([
-                    'address' => $localita . ',' . $cap . ',' . $prov . ',' . $regione . ',' . $codnazione,
-                  ])->getResponseByKey('results');
-                if ($geoposition['results']) {
-                  $prevAddress = $geoposition['results'][0]['formatted_address'];
+      foreach ($mappedVisit as $userMap => $groupUser) {
+        foreach ($groupUser as $periodo => $groupPeriodo) {
+          $prevAddress = null;
+          foreach ($groupPeriodo as $day => $visite) {
+            $nVisitOfDay = 0;
+            foreach ($visite as $key => $visitaData) {
+              $nVisitOfDay++;
+              $user = $visitaData['visita']->user;  
+              if ($nVisitOfDay==1){
+                if ($visitaData['visita']->user->agent && $visitaData['visita']->user->client){
+                  $localita = $visitaData['visita']->user->client->localita;
+                  $cap = $visitaData['visita']->user->client->cap;
+                  $codnazione = $visitaData['visita']->user->client->codnazione;
+                  $regione = $visitaData['visita']->user->client->regione;
+                  $prov = $visitaData['visita']->user->client->prov;
+                  $geoposition = \GoogleMaps::load('geocoding')
+                    ->setParam([
+                      'address' => $localita . ',' . $cap . ',' . $prov . ',' . $regione . ',' . $codnazione,
+                    ])->getResponseByKey('results');
+                  if ($geoposition['results']) {
+                    $prevAddress = $geoposition['results'][0]['formatted_address'];
+                  }
+                } else {
+                  $prevAddress = null;
                 }
-              } else {
-                $prevAddress = null;
               }
+              $distance = 0;
+              $d =   \GoogleMaps::load('directions')
+                ->setParamByKey('origin', $prevAddress)
+                ->setParamByKey('destination', $visitaData['formatted_address'])
+                ->setParamByKey('mode', 'driving')
+                ->getResponseByKey('rows.elements');
+              if(count($d['routes'])>0){
+                $distance = $d['routes'][0]['legs'][0]['distance']['value']/1000;
+              }
+              $mappedVisit[$userMap][$periodo][$day][$key]['prev_address'] = $prevAddress;
+              $mappedVisit[$userMap][$periodo][$day][$key]['distanceKm'] = $distance;
+              $prevAddress = $visitaData['formatted_address'];
             }
-            $distance = 0;
-            $d =   \GoogleMaps::load('directions')
-              ->setParamByKey('origin', $prevAddress)
-              ->setParamByKey('destination', $visitaData['formatted_address'])
-              ->setParamByKey('mode', 'driving')
-              ->getResponseByKey('rows.elements');
-            if(count($d['routes'])>0){
-              $distance = $d['routes'][0]['legs'][0]['distance']['value']/1000;
-            }
-            $mappedVisit[$periodo][$day][$key]['prev_address'] = $prevAddress;
-            $mappedVisit[$periodo][$day][$key]['distanceKm'] = $distance;
-            $prevAddress = $visitaData['formatted_address'];
+            # code...
           }
-          # code...
         }
       }
       // dd($mappedVisit);
@@ -689,7 +699,7 @@ class VisitController extends Controller
       $data = [
           'visits' => $mappedVisit,
       ];
-      $pdf = PdfReport::A4Portrait($view, $data, $title, $subTitle);
+      $pdf = PdfReport::A4Landscape($view, $data, $title, $subTitle);
 
       return $pdf->stream($title.'-'.$subTitle.'.pdf');
     }
