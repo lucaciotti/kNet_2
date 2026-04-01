@@ -976,7 +976,7 @@ class VisitController extends Controller
           ->setParam([
             'address' => $localita . ',' . $cap . ',' . $prov . ',' . $codnazione,
             ])->getResponseByKey('results');
-            dd($geoposition);
+            // dd($geoposition);
           if ($geoposition['results']) {
             foreach ($geoposition['results'][0]['address_components'] as $value) {
               if ($value['types'][0] == 'country') $homeNationAddress = $value['short_name'];
