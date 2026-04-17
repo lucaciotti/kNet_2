@@ -67,7 +67,7 @@
         @if(!empty($fatList->where('tipoProd', 'KUBIKA')->first()))        
             <div class="row">
                 <div class="contentTitle">
-                    KUBICA - HINGES
+                    HINGES
                     <span class="contentSubTitle">
                         -
                         @if($pariperiodo && !$onlyMese) [Pari Periodo] {

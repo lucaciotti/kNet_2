@@ -46,7 +46,7 @@
     
     @if($fatTot_KU)
             <div class="row">
-                <div class="contentTitle">Zone Turnover Situation - KUBICA</div>
+                <div class="contentTitle">Zone Turnover Situation - HINGES</div>
 
                 @include('_exports.pdf.schedaFat.tblZone', [
                         'fatZone' => $fatZone_KU,

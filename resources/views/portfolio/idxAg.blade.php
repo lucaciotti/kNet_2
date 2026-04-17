@@ -205,6 +205,17 @@ Portfolio - Gruppo Prodotti
                   <td> {{ currency($FTPrevBonusKrona) }} </td>
                 </tr>                  
               @endif
+              @if ($thisYear > 2025)
+                  <tr>
+                    <th>Spinoff</th>
+                    <td> {{ currency($OCSpinOff) }} </td>
+                    <td> {{ currency($BOSpinOff) }} </td>
+                    <td> {{ currency($FTSpinOff) }} </td>
+                    <td> {{ currency($OCSpinOff+$BOSpinOff+$FTSpinOff) }} </td>
+                    <th colspan="1">|</th>
+                    <td> @if ($prevYear > 2025) {{ currency($FTPrevSpinOff) }} @else - @endif </td>
+                  </tr>
+              @endif
               <tr>
                 <th>Koblenz</th>
                 <td> {{ currency($OCKoblenz) }} </td>
@@ -215,7 +226,7 @@ Portfolio - Gruppo Prodotti
                 <td> {{ currency($FTPrevKoblenz) }} </td>
               </tr>
               <tr>
-                <th>Kubica</th>
+                <th>Cerniere</th>
                 <td> {{ currency($OCKubica) }} </td>
                 <td> {{ currency($BOKubica) }} </td>
                 <td> {{ currency($FTKubica) }} </td>
@@ -257,10 +268,20 @@ Portfolio - Gruppo Prodotti
             </tbody>
             <tfoot class="bg-gray">
               @php
-              $totOC = $OCKrona+$OCBonusKrona+$OCKoblenz+$OCBonusKoblenz+$OCKubica+$OCAtomika+$OCPlanet;
-              $totBO = $BOKrona+$BOKoblenz+$BOBonusKrona+$BOBonusKoblenz+$BOKubica+$BOAtomika+$BOPlanet;
-              $totFT = $FTKrona+$FTKoblenz+$FTBonusKrona+$FTBonusKoblenz+$FTKubica+$FTAtomika+$FTPlanet;
-              $totPrevFT = $FTPrevKrona+$FTPrevKoblenz+$FTPrevKubica+$FTPrevAtomika+$FTPrevPlanet+$FTPrevBonusKrona+$FTPrevBonusKoblenz;
+              if ($thisYear == 2025) {
+                $totOC = $OCKrona+$OCBonusKrona+$OCKoblenz+$OCBonusKoblenz+$OCKubica+$OCAtomika+$OCPlanet;
+                $totBO = $BOKrona+$BOKoblenz+$BOBonusKrona+$BOBonusKoblenz+$BOKubica+$BOAtomika+$BOPlanet;
+                $totFT = $FTKrona+$FTKoblenz+$FTBonusKrona+$FTBonusKoblenz+$FTKubica+$FTAtomika+$FTPlanet;
+              } else {
+                $totOC = $OCKrona+$OCBonusKrona+$OCKoblenz+$OCBonusKoblenz+$OCKubica+$OCAtomika+$OCPlanet+$OCSpinOff;
+                $totBO = $BOKrona+$BOKoblenz+$BOBonusKrona+$BOBonusKoblenz+$BOKubica+$BOAtomika+$BOPlanet+$BOSpinOff;
+                $totFT = $FTKrona+$FTKoblenz+$FTBonusKrona+$FTBonusKoblenz+$FTKubica+$FTAtomika+$FTPlanet+$FTSpinOff;
+              }
+              if ($prevYear == 2025) {
+                $totPrevFT = $FTPrevKrona+$FTPrevKoblenz+$FTPrevKubica+$FTPrevAtomika+$FTPrevPlanet+$FTPrevBonusKrona+$FTPrevBonusKoblenz;
+              } else {
+                $totPrevFT = $FTPrevKrona+$FTPrevKoblenz+$FTPrevKubica+$FTPrevAtomika+$FTPrevPlanet+$FTPrevBonusKrona+$FTPrevBonusKoblenz+$FTPrevSpinOff;
+              }
               @endphp
               <tr>
                 <th>TOTALE PORTFOLIO PRODOTTO</th>
@@ -286,6 +307,17 @@ Portfolio - Gruppo Prodotti
               <tr>
                 <th colspan="7"> <strong>&nbsp&nbsp -> Escluso da Calcolo Portfolio</strong> </th>
               </tr>
+              @if ($prevYear == 2025 || $thisYear == 2025)
+              <tr>
+                <th>Spinoff</th>
+                <td> @if ($thisYear == 2025) {{ currency($OCSpinOff) }} @else - @endif </td>
+                <td> @if ($thisYear == 2025) {{ currency($BOSpinOff) }} @else - @endif</td>
+                <td> @if ($thisYear == 2025) {{ currency($FTSpinOff) }} @else - @endif</td>
+                <td> @if ($thisYear == 2025) {{ currency($OCSpinOff+$BOSpinOff+$FTSpinOff) }} @else - @endif</td>
+                <th colspan="1">|</th>
+                <td> @if ($prevYear == 2025) {{ currency($FTPrevSpinOff) }} @else - @endif </td>
+              </tr>
+              @endif
               <tr>
                 <th>Spinoff</th>
                 <td> {{ currency($OCSpinOff) }} </td>
@@ -319,10 +351,20 @@ Portfolio - Gruppo Prodotti
             </tbody>
             <tfoot class="bg-gray">
               @php
+              if ($thisYear == 2025) {
               $totOC = $totOC+$OCDIC+$OCCAMP+$OCSpinOff;
               $totBO = $totBO+$BODIC+$BOCAMP+$BOSpinOff;
               $totFT = $totFT+$FTDIC+$FTCAMP+$FTSpinOff;
-              $totPrevFT = $totPrevFT+$FTPrevDIC+$FTPrevCAMP+$FTPrevSpinOff;
+              } else {
+                $totOC = $totOC+$OCDIC+$OCCAMP;
+                $totBO = $totBO+$BODIC+$BOCAMP;
+                $totFT = $totFT+$FTDIC+$FTCAMP;
+              }
+              if ($prevYear == 2025) {
+                $totPrevFT = $totPrevFT+$FTPrevDIC+$FTPrevCAMP+$FTPrevSpinOff;
+              } else {
+                $totPrevFT = $totPrevFT+$FTPrevDIC+$FTPrevCAMP;
+              }
               @endphp
               <tr>
                 <th>TOTALE GENERALE</th>

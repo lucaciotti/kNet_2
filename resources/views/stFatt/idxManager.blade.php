@@ -110,7 +110,7 @@
             <ul class="nav nav-tabs">
               <li class="active"><a href="#Krona" data-toggle="tab" aria-expanded="true">Krona</a></li>
               <li class=""><a href="#Koblenz" data-toggle="tab" aria-expanded="false">Koblenz</a></li>
-              <li class=""><a href="#Kubica" data-toggle="tab" aria-expanded="false">Kubica</a></li>
+              <li class=""><a href="#Kubica" data-toggle="tab" aria-expanded="false">Cerniere</a></li>
               <li class=""><a href="#Grass" data-toggle="tab" aria-expanded="false">Grass</a></li>
               <li class=""><a href="#Altro" data-toggle="tab" aria-expanded="false">{{ trans('stFatt.otherGroup') }}</a></li>
             </ul>

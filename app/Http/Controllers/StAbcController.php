@@ -79,8 +79,8 @@ class StAbcController extends Controller
       if($req->input('gruppo')) {
         $AbcProds = $AbcProds->whereIn('gruppo', $req->input('gruppo'));
       }
-      if(!empty($req->input('optTipoDoc'))) {
-        $AbcProds = $AbcProds->where('prodotto', $req->input('optTipoDoc'));
+      if(!empty($req->input('optTipoProd'))) {
+        $AbcProds = $AbcProds->where('prodotto', $req->input('optTipoProd'));
       } else {
         $AbcProds = $AbcProds->whereIn('prodotto', ['KRONA', 'KOBLENZ', 'KUBICA', 'PLANET']);
       }

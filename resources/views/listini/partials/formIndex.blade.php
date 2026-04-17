@@ -27,7 +27,7 @@
         <input type="radio" name="optTipoDoc" id="opt3" value="KOBLENZ"> Koblenz
       </label>
       <label>
-        <input type="radio" name="optTipoDoc" id="opt4" value="KUBICA"> Kubica
+        <input type="radio" name="optTipoDoc" id="opt4" value="KUBICA"> Cerniere
       </label>
       @if(RedisUser::get('ditta')=='knet_es')
         <label>

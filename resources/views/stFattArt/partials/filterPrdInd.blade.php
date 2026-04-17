@@ -26,7 +26,7 @@
                 <input type="radio" name="optTipoProd" id="opt3" value="KOBLENZ" @if(isset($optTipoProd) && $optTipoProd=="KOBLENZ") checked @endif> Koblenz
             </label>
             <label>
-                <input type="radio" name="optTipoProd" id="opt4" value="KUBIKA" @if(isset($optTipoProd) && $optTipoProd=="KUBIKA") checked @endif> Kubica
+                <input type="radio" name="optTipoProd" id="opt4" value="KUBIKA" @if(isset($optTipoProd) && $optTipoProd=="KUBIKA") checked @endif> Cerniere
             </label>
             @if(RedisUser::get('ditta')=='knet_es')
             <label>
