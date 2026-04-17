@@ -952,6 +952,7 @@ class VisitController extends Controller
         $visitaFakeUser = $groupUser->first()->first()->first()['visita']->first()->user;
         $homeAddress = null;
         $homeNationAddress = null;
+        $backHome = True;
         $user = User::where('name', $userName)
           ->with([
             'agent' => function ($query) {
@@ -998,7 +999,7 @@ class VisitController extends Controller
             foreach ($visite as $key => $visitaData) {
               $nVisitOfDay++;
               // $user = $visitaData['visita']->user;  
-              if (($nVisitOfDay==1 and $homeNationAddress == $visitaData['nation_address']) or $nVisitOfPeriodo==1){
+              if (($nVisitOfDay==1 and $homeNationAddress == $visitaData['nation_address']) or ($nVisitOfDay == 1 and $backHome) or $nVisitOfPeriodo==1){
                 $prevAddress = $homeAddress;
                 $prevNationAddress = $homeNationAddress;
               }
@@ -1020,6 +1021,7 @@ class VisitController extends Controller
               } else {
                 $mappedVisit[$userName][$periodo][$day][$key]['formatted_address'] = '-- INSERIRE INDIRIZZO IN ANAGRAFICA --';
               }
+              $backHome = !$mappedVisit[$userName][$periodo][$day][$key]['visita']->lastOfDayType;
             }
             # code...
           }
