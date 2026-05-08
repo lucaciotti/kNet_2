@@ -18,21 +18,24 @@
     <label>{{ trans('prod.masterGroup') }}</label>
     <div class="radio">
       <label>
-        <input type="radio" name="optTipoDoc" id="opt1" value="" checked> {{ trans('doc.allDocs') }}
+          <input type="radio" name="optTipoProd" id="opt1" value="" @if(!isset($optTipoProd)) checked @endif> {{ trans('doc.allDocs') }}
       </label>
       <label>
-        <input type="radio" name="optTipoDoc" id="opt2" value="KRONA"> Krona
+          <input type="radio" name="optTipoProd" id="opt2" value="KRONA" @if(isset($optTipoProd) && $optTipoProd=="KRONA") checked @endif> Krona
       </label>
       <label>
-        <input type="radio" name="optTipoDoc" id="opt3" value="KOBLENZ"> Koblenz
+          <input type="radio" name="optTipoProd" id="opt3" value="KOBLENZ" @if(isset($optTipoProd) && $optTipoProd=="KOBLENZ") checked @endif> Koblenz
       </label>
       <label>
-        <input type="radio" name="optTipoDoc" id="opt3" value="KUBIKA"> Kubika
+          <input type="radio" name="optTipoProd" id="opt4" value="KUBIKA" @if(isset($optTipoProd) && $optTipoProd=="KUBIKA") checked @endif> Cerniere
+      </label>
+      <label>
+          <input type="radio" name="optTipoProd" id="opt6" value="SPINOFF" @if(isset($optTipoProd) && $optTipoProd=="SPINOFF") checked @endif> SpinOff
       </label>
       @if(RedisUser::get('ditta')=='knet_es')
-        <label>
-          <input type="radio" name="optTipoDoc" id="opt4" value="PLANET"> Planet
-        </label>
+      <label>
+          <input type="radio" name="optTipoProd" id="opt5" value="PLANET" @if(isset($optTipoProd) && $optTipoProd=="PLANET") checked @endif> Planet
+      </label>
       @endif
     </div>
   </div>

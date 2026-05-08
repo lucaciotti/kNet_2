@@ -80,7 +80,11 @@ class StAbcController extends Controller
         $AbcProds = $AbcProds->whereIn('gruppo', $req->input('gruppo'));
       }
       if(!empty($req->input('optTipoProd'))) {
-        $AbcProds = $AbcProds->where('prodotto', $req->input('optTipoProd'));
+        if ($req->input('optTipoProd') == 'SPINOFF') {
+          $AbcProds = $AbcProds->where('gruppo', 'LIKE', 'A14%');
+        } else {
+          $AbcProds = $AbcProds->where('prodotto', $req->input('optTipoProd'));
+        }
       } else {
         $AbcProds = $AbcProds->whereIn('prodotto', ['KRONA', 'KOBLENZ', 'KUBICA', 'PLANET']);
       }
@@ -173,7 +177,11 @@ class StAbcController extends Controller
             $AbcProds = $AbcProds->where('gruppo', 'like', 'A%');
         }
       if (!empty($req->input('optTipoProd'))) {
-        $AbcProds = $AbcProds->where('prodotto', $req->input('optTipoProd'));
+        if ($req->input('optTipoProd') == 'SPINOFF') {
+          $AbcProds = $AbcProds->where('gruppo', 'LIKE', 'A14%');
+        } else {
+          $AbcProds = $AbcProds->where('prodotto', $req->input('optTipoProd'));
+        }
       } else {
         $AbcProds = $AbcProds->whereIn('prodotto', ['KRONA', 'KOBLENZ', 'KUBICA', 'PLANET']);
       }
@@ -274,7 +282,11 @@ class StAbcController extends Controller
         if(count($fltAgents)>0) $AbcProds = $AbcProds->whereIn('codag', $fltAgents);
       }
       if (!empty($req->input('optTipoProd'))) {
-        $AbcProds = $AbcProds->where('prodotto', $req->input('optTipoProd'));
+        if ($req->input('optTipoProd') == 'SPINOFF') {
+          $AbcProds = $AbcProds->where('gruppo', 'LIKE', 'A14%');
+        } else {
+          $AbcProds = $AbcProds->where('prodotto', $req->input('optTipoProd'));
+        }
       } else {
         $AbcProds = $AbcProds->whereIn('prodotto', ['KRONA', 'KOBLENZ', 'KUBICA', 'PLANET']);
       }

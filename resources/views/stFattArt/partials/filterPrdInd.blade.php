@@ -28,6 +28,9 @@
             <label>
                 <input type="radio" name="optTipoProd" id="opt4" value="KUBIKA" @if(isset($optTipoProd) && $optTipoProd=="KUBIKA") checked @endif> Cerniere
             </label>
+            <label>
+                <input type="radio" name="optTipoProd" id="opt6" value="SPINOFF" @if(isset($optTipoProd) && $optTipoProd=="SPINOFF") checked @endif> SpinOff
+            </label>
             @if(RedisUser::get('ditta')=='knet_es')
             <label>
                 <input type="radio" name="optTipoProd" id="opt5" value="PLANET" @if(isset($optTipoProd) && $optTipoProd=="PLANET") checked @endif> Planet

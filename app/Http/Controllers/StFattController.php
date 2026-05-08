@@ -90,8 +90,12 @@ class StFattController extends Controller
       if($req->input('gruppo')) {
         $fat_TY = $fat_TY->whereIn('gruppo', $req->input('gruppo'));
       }
-      if(!empty($req->input('optTipoDoc'))) {
-        $fat_TY = $fat_TY->where('prodotto', $req->input('optTipoDoc'));
+      if(!empty($req->input('optTipoProd'))) {
+        if($req->input('optTipoProd')=='SPINOFF'){
+          $fat_TY = $fat_TY->where('gruppo', 'LIKE', 'A14%');
+        } else {
+          $fat_TY = $fat_TY->where('prodotto', $req->input('optTipoProd'));
+        }
       } else {
         $fat_TY = $fat_TY->whereIn('prodotto', ['KRONA', 'KOBLENZ', 'KUBIKA', 'PLANET']);
       }          
@@ -136,8 +140,12 @@ class StFattController extends Controller
       if($req->input('gruppo')) {
         $fat_PY = $fat_PY->whereIn('gruppo', $req->input('gruppo'));
       }
-      if(!empty($req->input('optTipoDoc'))) {
-        $fat_PY = $fat_PY->where('prodotto', $req->input('optTipoDoc'));
+      if(!empty($req->input('optTipoProd'))) {
+        if($req->input('optTipoProd')=='SPINOFF'){
+          $fat_PY = $fat_PY->where('gruppo', 'LIKE', 'A14%');
+        } else {
+          $fat_PY = $fat_PY->where('prodotto', $req->input('optTipoProd'));
+        }
       } else {
         $fat_PY = $fat_PY->whereIn('prodotto', ['KRONA', 'KOBLENZ', 'KUBIKA', 'PLANET']);
       }          
@@ -256,8 +264,12 @@ class StFattController extends Controller
       if($req->input('gruppo')) {
         $fat_TY = $fat_TY->whereIn('gruppo', $req->input('gruppo'));
       }
-      if(!empty($req->input('optTipoDoc'))) {
-        $fat_TY = $fat_TY->where('prodotto', $req->input('optTipoDoc'));
+      if(!empty($req->input('optTipoProd'))) {        
+        if($req->input('optTipoProd')=='SPINOFF'){
+          $fat_TY = $fat_TY->where('gruppo', 'LIKE', 'A14%');
+        } else {
+          $fat_TY = $fat_TY->where('prodotto', $req->input('optTipoProd'));
+        }
       } else {
         $fat_TY = $fat_TY->whereIn('prodotto', ['KRONA', 'KOBLENZ', 'KUBIKA', 'PLANET']);
       }          
@@ -294,8 +306,12 @@ class StFattController extends Controller
       if($req->input('gruppo')) {
         $fat_PY = $fat_PY->whereIn('gruppo', $req->input('gruppo'));
       }
-      if(!empty($req->input('optTipoDoc'))) {
-        $fat_PY = $fat_PY->where('prodotto', $req->input('optTipoDoc'));
+      if(!empty($req->input('optTipoProd'))) {
+        if($req->input('optTipoProd')=='SPINOFF'){
+          $fat_PY = $fat_PY->where('gruppo', 'LIKE', 'A14%');
+        } else {
+          $fat_PY = $fat_PY->where('prodotto', $req->input('optTipoProd'));
+        }
       } else {
         $fat_PY = $fat_PY->whereIn('prodotto', ['KRONA', 'KOBLENZ', 'KUBIKA', 'PLANET']);
       }          
@@ -487,8 +503,12 @@ class StFattController extends Controller
       if($req->input('gruppo')) {
         $fatZone = $fatZone->whereIn('gruppo', $req->input('gruppo'));
       }
-      if(!empty($req->input('optTipoDoc'))) {
-        $fatZone = $fatZone->where('prodotto', $req->input('optTipoDoc'));
+      if(!empty($req->input('optTipoProd'))) {
+        if ($req->input('optTipoProd') == 'SPINOFF') {
+          $fatZone = $fatZone->where('gruppo', 'LIKE', 'A14%');
+        } else {
+          $fatZone = $fatZone->where('prodotto', $req->input('optTipoProd'));
+        }
       } else {
         $fatZone = $fatZone->whereIn('prodotto', ['KRONA', 'KOBLENZ', 'KUBIKA', 'PLANET']);
       }          
@@ -536,8 +556,12 @@ class StFattController extends Controller
       if($req->input('gruppo')) {
         $fatTot = $fatTot->whereIn('gruppo', $req->input('gruppo'));
       }
-      if(!empty($req->input('optTipoDoc'))) {
-        $fatTot = $fatTot->where('prodotto', $req->input('optTipoDoc'));
+      if(!empty($req->input('optTipoProd'))) {
+        if ($req->input('optTipoProd') == 'SPINOFF') {
+          $fatTot = $fatTot->where('gruppo', 'LIKE', 'A14%');
+        } else {  
+          $fatTot = $fatTot->where('prodotto', $req->input('optTipoProd'));
+        }
       } else {
         $fatTot = $fatTot->whereIn('prodotto', ['KRONA', 'KOBLENZ', 'KUBIKA', 'PLANET']);
       }          

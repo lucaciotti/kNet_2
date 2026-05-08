@@ -91,7 +91,11 @@ class SchedaFatArtController extends Controller
             $fatList->where('u_statfatt_art.gruppo', 'like', 'A%');
         }
         if (!empty($req->input('optTipoProd'))) {
-            $fatList->where('u_statfatt_art.prodotto', $req->input('optTipoProd'));
+            if ($req->input('optTipoProd') == 'SPINOFF') {
+                $fatList = $fatList->where('u_statfatt_art.gruppo', 'LIKE', 'A14%');
+            } else {
+                $fatList->where('u_statfatt_art.prodotto', $req->input('optTipoProd'));
+            }
         }
         $fatList->groupBy('codicearti');
         if($limitVal!=null) { $fatList->havingRaw('fatN >= ?', [$limitVal]); }
@@ -188,7 +192,11 @@ class SchedaFatArtController extends Controller
             $fatList->whereIn('u_statfatt_art.gruppo', $req->input('grpPrdSelected'));
         }
         if (!empty($req->input('optTipoProd'))) {
-            $fatList->where('u_statfatt_art.prodotto', $req->input('optTipoProd'));
+            if ($req->input('optTipoProd') == 'SPINOFF') {
+                $fatList = $fatList->where('u_statfatt_art.gruppo', 'LIKE', 'A14%');
+            } else {
+                $fatList->where('u_statfatt_art.prodotto', $req->input('optTipoProd'));
+            }
         }
         $fatList->groupBy('codicearti');
         if ($limitVal != null) {
@@ -288,7 +296,11 @@ class SchedaFatArtController extends Controller
             $fatList->whereIn('u_statfatt_art.gruppo', $req->input('grpPrdSelected'));
         }
         if (!empty($req->input('optTipoProd'))) {
-            $fatList->where('u_statfatt_art.prodotto', $req->input('optTipoProd'));
+            if ($req->input('optTipoProd') == 'SPINOFF') {
+                $fatList = $fatList->where('u_statfatt_art.gruppo', 'LIKE', 'A14%');
+            } else {
+                $fatList->where('u_statfatt_art.prodotto', $req->input('optTipoProd'));
+            }
         }
         $fatList->groupBy('codicearti');
         if ($limitVal != null) {
@@ -401,7 +413,11 @@ class SchedaFatArtController extends Controller
             $fatList->whereIn('u_statfatt_art.gruppo', $req->input('grpPrdSelected'));
         }
         if (!empty($req->input('optTipoProd'))) {
-            $fatList->where('u_statfatt_art.prodotto', $req->input('optTipoProd'));
+            if ($req->input('optTipoProd') == 'SPINOFF') {
+                $fatList = $fatList->where('u_statfatt_art.gruppo', 'LIKE', 'A14%');
+            } else {
+                $fatList->where('u_statfatt_art.prodotto', $req->input('optTipoProd'));
+            }
         }
         $fatList->groupBy(['codicearti', 'codicecf']);
         if ($limitVal != null) {
@@ -520,7 +536,11 @@ class SchedaFatArtController extends Controller
             $fatList->whereIn('u_statfatt_art.gruppo', $req->input('grpPrdSelected'));
         }
         if (!empty($req->input('optTipoProd'))) {
-            $fatList->where('u_statfatt_art.prodotto', $req->input('optTipoProd'));
+            if ($req->input('optTipoProd') == 'SPINOFF') {
+                $fatList = $fatList->where('u_statfatt_art.gruppo', 'LIKE', 'A14%');
+            } else {
+                $fatList->where('u_statfatt_art.prodotto', $req->input('optTipoProd'));
+            }
         }
         $fatList->groupBy('codicearti');
         if ($limitVal != null) {
@@ -591,7 +611,11 @@ class SchedaFatArtController extends Controller
             $fatList->whereIn('u_statfatt_art.gruppo', $req->input('grpPrdSelected'));
         }
         if (!empty($req->input('optTipoProd'))) {
-            $fatList->where('u_statfatt_art.prodotto', $req->input('optTipoProd'));
+            if ($req->input('optTipoProd') == 'SPINOFF') {
+                $fatList = $fatList->where('u_statfatt_art.gruppo', 'LIKE', 'A14%');
+            } else {
+                $fatList->where('u_statfatt_art.prodotto', $req->input('optTipoProd'));
+            }
         }
         $fatList->groupBy('codicecf');
         $fatList->havingRaw('fatN >= ?', [$limitVal]);
@@ -676,7 +700,11 @@ class SchedaFatArtController extends Controller
             $fatList->whereIn('u_statfatt_art.gruppo', $req->input('grpPrdSelected'));
         }
         if (!empty($req->input('optTipoProd'))) {
-            $fatList->where('u_statfatt_art.prodotto', $req->input('optTipoProd'));
+            if ($req->input('optTipoProd') == 'SPINOFF') {
+                $fatList = $fatList->where('u_statfatt_art.gruppo', 'LIKE', 'A14%');
+            } else {
+                $fatList->where('u_statfatt_art.prodotto', $req->input('optTipoProd'));
+            }
         }
         $fatList->groupBy('codicecf');
         $fatList->havingRaw('fatN >= ?', [$limitVal]);

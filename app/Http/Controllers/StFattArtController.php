@@ -92,7 +92,11 @@ class StFattArtController extends Controller
             $fatList->whereIn('u_statfatt_art.gruppo', $req->input('grpPrdSelected'));
         }
         if (!empty($req->input('optTipoProd'))) {
-            $fatList->where('u_statfatt_art.prodotto', $req->input('optTipoProd'));
+            if ($req->input('optTipoProd') == 'SPINOFF') {
+                $fatList = $fatList->where('gruppo', 'LIKE', 'A14%');
+            } else {
+                $fatList->where('u_statfatt_art.prodotto', $req->input('optTipoProd'));
+            }
         } else {
             $fatList->whereIn('u_statfatt_art.prodotto', ['KRONA', 'KOBLENZ', 'KUBIKA', 'PLANET']);
         }
