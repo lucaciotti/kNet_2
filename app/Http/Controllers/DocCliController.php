@@ -469,6 +469,10 @@ class DocCliController extends Controller
     if ($req->input('optTipoDoc')) {
       $defaultDocFilter->addArrayFilter('tipomodulo', [$req->input('optTipoDoc')]);
     }
+    if ($req->input('notEvaso')==1) {
+      $defaultDocFilter->addNumFilter('quantitare', 'plus', 0);
+    }
+    
 
     $docsUtils = (new DocRowUtils($defaultDocFilter));
     $docs = $docsUtils->getDocs();

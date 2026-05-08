@@ -84,6 +84,16 @@
                                                 'ragSoc' => $ragSoc,
                                                 'ragsocOp' => $ragsocOp,
                                                 ]) }}">CliDoc</a>
+        <hr>
+        <a type="button" class="btn btn-default btn-block" target="_blank" href="{{ route('doc::cliDocPDF', [
+                                                'fltAgents' => $fltAgents,
+                                                'startDate' => $startDate->format('d/m/Y'),
+                                                'endDate' => $endDate->format('d/m/Y'),
+                                                'optTipoDoc' => $optTipoDoc,
+                                                'ragSoc' => $ragSoc,
+                                                'ragsocOp' => $ragsocOp,
+                                                'notEvaso' => 1,
+                                                ]) }}">CliDoc (Qta Res. > 0)</a>
       </div>
     </div>
   </div>
