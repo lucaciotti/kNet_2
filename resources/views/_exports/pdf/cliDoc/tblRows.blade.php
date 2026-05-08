@@ -35,7 +35,7 @@
         <th>{{ trans('doc.datePronto_condensed') }}</th>
         <th>{{ trans('doc.dateDispach_condensed') }}</th>
         @endif
-        <th><small>Tot Res. /</small>{{ trans('doc.totPrice') }}</th>
+        <th><small>Tot Res. / </small>{{ trans('doc.totPrice') }}</th>
         @if (!in_array(RedisUser::get('role'), ['client']) && ($head->tipomodulo == 'F' || $head->tipomodulo == 'N' || $head->tipodoc == 'PP'))
         <th>Provv %</th>
         <th>Provv €</th>

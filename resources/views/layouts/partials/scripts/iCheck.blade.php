@@ -25,13 +25,28 @@
           $('.daterange-btn span').html('Seleziona Data');
           $('.daterange-btn').prop('disabled', false);
         });
+        
+        $('#toDay_Date').on('ifChecked', function(event){
+          // alert(event.type + ' callback');
+          // $('.daterange-btn span').html('');
+          $('.daterange-btn').prop('disabled', true);
+          var start = moment().subtract(1, 'days');
+          var end = moment();
+          $('.daterange-btn span').html(start.format('D/MM/YYYY') + ' - ' + end.format('D/MM/YYYY'));
+          $('input[name="startDate"]').val(start.format('D/MM/YYYY'));
+          $('input[name="endDate"]').val(end.format('D/MM/YYYY'));
+        }).on('ifUnchecked',  function(event){
+          // alert(event.type + ' callback');
+          $('.daterange-btn span').html('Seleziona Data');
+          $('.daterange-btn').prop('disabled', false);
+        });
 
         $('#yesterDay_Date').on('ifChecked', function(event){
           // alert(event.type + ' callback');
           // $('.daterange-btn span').html('');
           $('.daterange-btn').prop('disabled', true);
           var start = moment().subtract(2, 'days');
-          var end = moment();
+          var end = moment().subtract(1, 'days');
           $('.daterange-btn span').html(start.format('D/MM/YYYY') + ' - ' + end.format('D/MM/YYYY'));
           $('input[name="startDate"]').val(start.format('D/MM/YYYY'));
           $('input[name="endDate"]').val(end.format('D/MM/YYYY'));
