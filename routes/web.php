@@ -170,6 +170,11 @@ Route::group(['as' => 'doc::'], function () {
     'uses' => 'DocCliController@downloadPDF'
   ]);
 
+  Route::get('/cliDoc', [
+    'as' => 'cliDocPDF',
+    'uses' => 'DocCliController@cliDocPDF'
+  ]);
+
 });
 
 Route::group(['as' => 'prod::'], function () {

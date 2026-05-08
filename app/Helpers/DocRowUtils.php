@@ -191,8 +191,6 @@ class DocRowUtils
                     return $v;
                 });
                 return $newC;
-            } else {
-                return $c;
             }
             if ($ddtDocs->has($key)) {
                 $newC = $c->union($ddtDocs[$key])->map(function ($v, $k) use ($ddtDocs, $key) {

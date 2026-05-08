@@ -50,7 +50,7 @@
       </div>
     </div>
 
-    <div class="box box-default">
+    {{-- <div class="box box-default">
       <div class="box-header with-border">
         <h3 class="box-title" data-widget="collapse">{{ trans('doc.changeDoc') }}</h3>
         <div class="box-tools pull-right">
@@ -64,6 +64,26 @@
         <a type="button" class="btn btn-default btn-block" href="{{ route('doc::list', ['B']) }}">{{ trans('client.ddt') }}</a>
         <a type="button" class="btn btn-default btn-block" href="{{ route('doc::list', ['F']) }}">{{ trans('client.invoice') }}</a>
         <a type="button" class="btn btn-default btn-block" href="{{ route('doc::list', ['N']) }}">{{ trans('client.notecredito') }}</a>
+      </div>
+    </div> --}}
+
+    <div class="box box-default {{-- collapsed-box --}}">
+      <div class="box-header with-border">
+        <h3 class="box-title" data-widget="collapse"><i class='fa fa-cloud-download'> </i> Reports PDF</h3>
+        <div class="box-tools pull-right">
+          <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i></button>
+        </div>
+      </div>
+      <div class="box-body">    
+        {{-- @dd($this) --}}
+        <a type="button" class="btn btn-default btn-block" target="_blank" href="{{ route('doc::cliDocPDF', [
+                                                'fltAgents' => $fltAgents,
+                                                'startDate' => $startDate->format('d/m/Y'),
+                                                'endDate' => $endDate->format('d/m/Y'),
+                                                'optTipoDoc' => $optTipoDoc,
+                                                'ragSoc' => $ragSoc,
+                                                'ragsocOp' => $ragsocOp,
+                                                ]) }}">CliDoc</a>
       </div>
     </div>
   </div>

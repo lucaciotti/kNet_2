@@ -2,13 +2,13 @@
     <col width="50">
     <col width="30">
     <col width="100">
-    <col width="250">
-    <col width="100">
+    <col width="300">
+    <col width="80">
     <col width="80">
     {{-- @if($head->tipomodulo=='O')
     <col width="80">
     @endif --}}
-    <col width="80">
+    <col width="60">
     <col width="80">
     @if($head->tipomodulo=='O')
     <col width="100">
@@ -25,7 +25,7 @@
         <th>{{ trans('doc.codeArt') }}</th>
         <th>{{ trans('doc.descArt') }}</th>
         <th>{{ trans('doc.codeLot') }}</th>
-        <th>{{ trans('doc.quantity_condensed') }} / Res.</th>
+        <th><small>{{ trans('doc.quantity_condensed') }} Res. /</small> {{ trans('doc.quantity_condensed') }}</th>
         {{-- @if($head->tipomodulo=='O' || $head->tipomodulo=='B') --}}
         {{-- <th>{{ trans('doc.quantity_residual') }}</th> --}}
         {{-- @endif --}}
@@ -35,7 +35,7 @@
         <th>{{ trans('doc.datePronto_condensed') }}</th>
         <th>{{ trans('doc.dateDispach_condensed') }}</th>
         @endif
-        <th>{{ trans('doc.totPrice') }}</th>
+        <th><small>Tot Res. /</small>{{ trans('doc.totPrice') }}</th>
         @if (!in_array(RedisUser::get('role'), ['client']) && ($head->tipomodulo == 'F' || $head->tipomodulo == 'N' || $head->tipodoc == 'PP'))
         <th>Provv %</th>
         <th>Provv €</th>

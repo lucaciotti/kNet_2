@@ -18,6 +18,8 @@ use knet\ExportsXLS\DocExport;
 
 use Spatie\ArrayToXml\ArrayToXml;
 use Illuminate\Support\Facades\File;
+use knet\Helpers\DocFilters;
+use knet\Helpers\DocRowUtils;
 use knet\Helpers\PdfReport;
 use PDF;
 
@@ -80,6 +82,10 @@ class DocCliController extends Controller
       'descModulo' => $descModulo,
       'startDate' => Carbon::now()->subMonth(),
       'endDate' => Carbon::now(),
+      'optTipoDoc' => $tipomodulo,
+      'ragSoc' => '',
+      'ragsocOp' => '',
+      'fltAgents' => [],
     ]);
   }
 
@@ -167,11 +173,14 @@ class DocCliController extends Controller
 
     return view('docs.index', [
       'docs' => $docs,
-      'ragSoc' => $req->input('ragsoc'),
       'tipomodulo' => $req->input('optTipoDoc'),
       'descModulo' => $descModulo,
       'startDate' => !$req->input('noDate') ? $startDate : "",
       'endDate' => !$req->input('noDate') ? $endDate : "",
+      'optTipoDoc' => $req->input('optTipoDoc'),
+      'ragSoc' => $req->input('ragsoc'),
+      'ragsocOp' => $req->input('ragsocOp'),
+      'fltAgents' => $req->input('fltAgents'),
     ]);
   }
 
@@ -301,6 +310,7 @@ class DocCliController extends Controller
       'descModulo' => $descModulo,
       'startDate' => "",
       'endDate' => "",
+      'optTipoDoc' => $tipomodulo,
     ]);
   }
 
@@ -328,6 +338,7 @@ class DocCliController extends Controller
       'descModulo' => $descModulo,
       'startDate' => $lastMonth,
       'endDate' => Carbon::now(),
+      'optTipoDoc' => $tipomodulo,
     ]);
   }
 
@@ -360,6 +371,7 @@ class DocCliController extends Controller
       'descModulo' => $descModulo,
       'startDate' => $dStartMonth,
       'endDate' => $dEndMonth,
+      'optTipoDoc' => $tipomodulo,
     ]);
   }
 
@@ -390,6 +402,7 @@ class DocCliController extends Controller
       'descModulo' => $descModulo,
       'startDate' => $lastMonth,
       'endDate' => Carbon::now(),
+      'optTipoDoc' => $tipomodulo,
     ]);
   }
 
@@ -422,7 +435,57 @@ class DocCliController extends Controller
       'descModulo' => $descModulo,
       'startDate' => $dStartMonth,
       'endDate' => $dEndMonth,
+      'optTipoDoc' => $tipomodulo,
     ]);
+  }
+
+  public function cliDocPDF(Request $req)
+  {
+    // Costruisco i filtri
+
+    $defaultDocFilter = new DocFilters();
+    if ($req->input('fltAgents')) {
+      // $dataFineAgente = Carbon::createFromDate($this->prevYear, 1, 1);
+      // $agents = Agent::select('codice', 'descrizion', 'u_dataini')->whereNull('u_dataini')->orWhere('u_dataini', '>=', $dataFineAgente)->orderBy('codice')->get();
+      // $codAg = ($req->input('codag')) ? $req->input('codag') : $codAg;
+      $fltAgents = $req->input('fltAgents'); //$agents->pluck('codice')->toArray();
+      $fltAgents = AgentFltUtils::checkSpecialRules($fltAgents);
+      $defaultDocFilter->addArrayFilter('agente', $fltAgents);
+    }
+    // if (!$req->input('noDate')) {
+    if ($req->input('startDate')) {
+      $startDate = Carbon::createFromFormat('d/m/Y', $req->input('startDate'));
+      $endDate = Carbon::createFromFormat('d/m/Y', $req->input('endDate'));
+    } else {
+      $startDate = Carbon::now()->subMonth();
+      $endDate = Carbon::now();
+    }
+    if (!empty($startDate) && !empty($endDate)) {
+      $defaultDocFilter->addDateFilter('datadoc', 'between', $startDate, $endDate);
+    }
+    if ($req->input('ragsoc')) {
+      $defaultDocFilter->addStringFilter('ragsoc', $req->input('ragsocOp'), $req->input('ragsoc'));
+    }
+    if ($req->input('optTipoDoc')) {
+      $defaultDocFilter->addArrayFilter('tipomodulo', [$req->input('optTipoDoc')]);
+    }
+
+    $docsUtils = (new DocRowUtils($defaultDocFilter));
+    $docs = $docsUtils->getDocs();
+
+    $docs = DocRowUtils::collectByClientTipoModulo($docs);
+    // dd($portfolio['C05900']);
+
+    $title = "CliDoc";
+    $subTitle = "";
+    $view = '_exports.pdf.cliDocPdf';
+    $data = [
+      'docs' => $docs,
+      'docsFilter' => $docsUtils->getDocFilter()->toString(),
+    ];
+    $pdf = PdfReport::A4Landscape($view, $data, $title, $subTitle);
+
+    return $pdf->stream($title . '-' . $subTitle . '.pdf');
   }
 
   /////////////////////

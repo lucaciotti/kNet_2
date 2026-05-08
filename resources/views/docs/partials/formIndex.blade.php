@@ -5,9 +5,9 @@
     <div class="input-group">
       <span class="input-group-btn">
         <select type="button" class="btn btn-warning dropdown-toggle" name="ragsocOp">
-          <option value="eql">=</option>
-          <option value="stw">[]...</option>
-          <option value="cnt" selected>...[]...</option>
+          <option value="eql" @if($$ragsocOp='eql') selected @endif>=</option>
+          <option value="stw" @if($$ragsocOp='stw') selected @endif>[]...</option>
+          <option value="cnt" @if($ragsocOp=="" or $ragsocOp='cnt') selected @endif >...[]...</option>
         </select>
       </span>
       <input type="text" class="form-control" name="ragsoc" value="{{$ragSoc or ''}}">
@@ -33,16 +33,22 @@
     <label>{{ trans('doc.typeDoc') }}</label>
     <div class="radio">
       <label>
-        <input type="radio" name="optTipoDoc" id="opt1" value="" checked> {{ trans('doc.allDocs') }}
+        <input type="radio" name="optTipoDoc" id="opt1" value="" @if(!isset($optTipoDoc)) checked @endif> {{ trans('doc.allDocs') }}
       </label>
       <label>
-        <input type="radio" name="optTipoDoc" id="opt2" value="O"> {{ trans('doc.orders') }}
+        <input type="radio" name="optTipoDoc" id="opt2" value="O" @if(isset($optTipoDoc) && $optTipoDoc=="P") checked @endif> {{ trans('doc.quotes') }}
       </label>
       <label>
-        <input type="radio" name="optTipoDoc" id="opt3" value="B"> {{ trans('doc.ddt') }}
+        <input type="radio" name="optTipoDoc" id="opt2" value="O" @if(isset($optTipoDoc) && $optTipoDoc=="O") checked @endif> {{ trans('doc.orders') }}
       </label>
       <label>
-        <input type="radio" name="optTipoDoc" id="opt4" value="F"> {{ trans('doc.invoice') }}
+        <input type="radio" name="optTipoDoc" id="opt3" value="B" @if(isset($optTipoDoc) && $optTipoDoc=="B") checked @endif> {{ trans('doc.ddt') }}
+      </label>
+      <label>
+        <input type="radio" name="optTipoDoc" id="opt4" value="F" @if(isset($optTipoDoc) && $optTipoDoc=="F") checked @endif> {{ trans('doc.invoice') }}
+      </label>
+      <label>
+        <input type="radio" name="optTipoDoc" id="opt4" value="N" @if(isset($optTipoDoc) && $optTipoDoc=="N") checked @endif> {{ trans('doc.notecredito') }}
       </label>
     </div>
   </div>
