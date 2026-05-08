@@ -28,6 +28,12 @@
     <label>&nbsp;
       <input type="checkbox" name="noDate" id="noDate" value="C" @if($startDate=="") checked @endif> {{ trans('doc.anyDate') }}
     </label>
+    <label>&nbsp;
+      <input type="checkbox" name="yesterDay_Date" id="yesterDay_Date" value="C" @if($startDate=="") checked @endif> Yesterday
+    </label>
+    <label>&nbsp;
+      <input type="checkbox" name="last7days_Date" id="last7days_Date" value="C" @if($startDate=="") checked @endif> Last 7 Days
+    </label>
   </div>
   <div class="form-group">
     <label>{{ trans('doc.typeDoc') }}</label>
