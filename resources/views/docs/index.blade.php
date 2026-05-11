@@ -77,21 +77,21 @@
       <div class="box-body">    
         {{-- @dd($this) --}}
         <a type="button" class="btn btn-default btn-block" target="_blank" href="{{ route('doc::cliDocPDF', [
-                                                'fltAgents' => $fltAgents,
-                                                'startDate' => $startDate->format('d/m/Y'),
-                                                'endDate' => $endDate->format('d/m/Y'),
+                                                'fltAgents' => $fltAgents ?? [],
+                                                'startDate' => $startDate ? $startDate->format('d/m/Y') : '',
+                                                'endDate' => $endDate ? $endDate->format('d/m/Y') : '',
                                                 'optTipoDoc' => $optTipoDoc,
-                                                'ragSoc' => $ragSoc,
-                                                'ragsocOp' => $ragsocOp,
+                                                'ragSoc' => $ragSoc ?? '',
+                                                'ragsocOp' => $ragsocOp ?? 'cnt',
                                                 ]) }}">CliDoc</a>
         <hr>
         <a type="button" class="btn btn-default btn-block" target="_blank" href="{{ route('doc::cliDocPDF', [
-                                                'fltAgents' => $fltAgents,
-                                                'startDate' => $startDate->format('d/m/Y'),
-                                                'endDate' => $endDate->format('d/m/Y'),
+                                                'fltAgents' => $fltAgents ?? [],
+                                                'startDate' => $startDate ? $startDate->format('d/m/Y') : '',
+                                                'endDate' => $endDate ? $endDate->format('d/m/Y') : '',
                                                 'optTipoDoc' => $optTipoDoc,
-                                                'ragSoc' => $ragSoc,
-                                                'ragsocOp' => $ragsocOp,
+                                                'ragSoc' => $ragSoc ?? '',
+                                                'ragsocOp' => $ragsocOp ?? 'cnt',
                                                 'notEvaso' => 1,
                                                 ]) }}">CliDoc (Qta Res. > 0)</a>
       </div>

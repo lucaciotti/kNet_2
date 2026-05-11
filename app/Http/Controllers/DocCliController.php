@@ -457,8 +457,10 @@ class DocCliController extends Controller
       $startDate = Carbon::createFromFormat('d/m/Y', $req->input('startDate'));
       $endDate = Carbon::createFromFormat('d/m/Y', $req->input('endDate'));
     } else {
-      $startDate = Carbon::now()->subMonth();
-      $endDate = Carbon::now();
+      // $startDate = Carbon::now()->subMonth();
+      // $endDate = Carbon::now();
+      $startDate = null;
+      $endDate = null;
     }
     if (!empty($startDate) && !empty($endDate)) {
       $defaultDocFilter->addDateFilter('datadoc', 'between', $startDate, $endDate);

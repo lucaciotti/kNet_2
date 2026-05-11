@@ -5,9 +5,9 @@
     <div class="input-group">
       <span class="input-group-btn">
         <select type="button" class="btn btn-warning dropdown-toggle" name="ragsocOp">
-          <option value="eql" @if($$ragsocOp='eql') selected @endif>=</option>
-          <option value="stw" @if($$ragsocOp='stw') selected @endif>[]...</option>
-          <option value="cnt" @if($ragsocOp=="" or $ragsocOp='cnt') selected @endif >...[]...</option>
+          <option value="eql" @if($ragsocOp='eql') selected @endif>=</option>
+          <option value="stw" @if($ragsocOp='stw') selected @endif>[]...</option>
+          <option value="cnt" @if(!$ragsocOp or $ragsocOp=="" or $ragsocOp='cnt') selected @endif >...[]...</option>
         </select>
       </span>
       <input type="text" class="form-control" name="ragsoc" value="{{$ragSoc or ''}}">
