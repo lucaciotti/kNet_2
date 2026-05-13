@@ -97,6 +97,9 @@ class StFattArtController extends Controller
             } else {
                 $fatList->where('u_statfatt_art.prodotto', $req->input('optTipoProd'));
             }
+            if ($req->input('optTipoProd') == 'KRONA') {
+                $fatList = $fatList->where('gruppo', 'NOT LIKE', 'A14%');
+            }
         } else {
             $fatList->whereIn('u_statfatt_art.prodotto', ['KRONA', 'KOBLENZ', 'KUBIKA', 'PLANET']);
         }

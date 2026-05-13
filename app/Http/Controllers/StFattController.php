@@ -96,6 +96,9 @@ class StFattController extends Controller
         } else {
           $fat_TY = $fat_TY->where('prodotto', $req->input('optTipoProd'));
         }
+        if ($req->input('optTipoProd') == 'KRONA') {
+          $fat_TY = $fat_TY->where('gruppo', 'NOT LIKE', 'A14%');
+        }
       } else {
         $fat_TY = $fat_TY->whereIn('prodotto', ['KRONA', 'KOBLENZ', 'KUBIKA', 'PLANET']);
       }          
@@ -145,6 +148,9 @@ class StFattController extends Controller
           $fat_PY = $fat_PY->where('gruppo', 'LIKE', 'A14%');
         } else {
           $fat_PY = $fat_PY->where('prodotto', $req->input('optTipoProd'));
+        }
+        if ($req->input('optTipoProd') == 'KRONA') {
+          $fat_PY = $fat_PY->where('gruppo', 'NOT LIKE', 'A14%');
         }
       } else {
         $fat_PY = $fat_PY->whereIn('prodotto', ['KRONA', 'KOBLENZ', 'KUBIKA', 'PLANET']);
@@ -270,6 +276,9 @@ class StFattController extends Controller
         } else {
           $fat_TY = $fat_TY->where('prodotto', $req->input('optTipoProd'));
         }
+        if ($req->input('optTipoProd') == 'KRONA') {
+          $fat_TY = $fat_TY->where('gruppo', 'NOT LIKE', 'A14%');
+        }
       } else {
         $fat_TY = $fat_TY->whereIn('prodotto', ['KRONA', 'KOBLENZ', 'KUBIKA', 'PLANET']);
       }          
@@ -311,6 +320,9 @@ class StFattController extends Controller
           $fat_PY = $fat_PY->where('gruppo', 'LIKE', 'A14%');
         } else {
           $fat_PY = $fat_PY->where('prodotto', $req->input('optTipoProd'));
+        }
+        if ($req->input('optTipoProd') == 'KRONA') {
+          $fat_PY = $fat_PY->where('gruppo', 'NOT LIKE', 'A14%');
         }
       } else {
         $fat_PY = $fat_PY->whereIn('prodotto', ['KRONA', 'KOBLENZ', 'KUBIKA', 'PLANET']);
@@ -509,6 +521,9 @@ class StFattController extends Controller
         } else {
           $fatZone = $fatZone->where('prodotto', $req->input('optTipoProd'));
         }
+        if ($req->input('optTipoProd') == 'KRONA') {
+          $fatZone = $fatZone->where('gruppo', 'NOT LIKE', 'A14%');
+        }
       } else {
         $fatZone = $fatZone->whereIn('prodotto', ['KRONA', 'KOBLENZ', 'KUBIKA', 'PLANET']);
       }          
@@ -561,6 +576,9 @@ class StFattController extends Controller
           $fatTot = $fatTot->where('gruppo', 'LIKE', 'A14%');
         } else {  
           $fatTot = $fatTot->where('prodotto', $req->input('optTipoProd'));
+        }
+        if ($req->input('optTipoProd') == 'KRONA') {
+          $fatTot = $fatTot->where('gruppo', 'NOT LIKE', 'A14%');
         }
       } else {
         $fatTot = $fatTot->whereIn('prodotto', ['KRONA', 'KOBLENZ', 'KUBIKA', 'PLANET']);

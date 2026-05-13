@@ -96,6 +96,9 @@ class SchedaFatArtController extends Controller
             } else {
                 $fatList->where('u_statfatt_art.prodotto', $req->input('optTipoProd'));
             }
+            if ($req->input('optTipoProd') == 'KRONA') {
+                $fatList = $fatList->where('gruppo', 'NOT LIKE', 'A14%');
+            }
         }
         $fatList->groupBy('codicearti');
         if($limitVal!=null) { $fatList->havingRaw('fatN >= ?', [$limitVal]); }
@@ -196,6 +199,9 @@ class SchedaFatArtController extends Controller
                 $fatList = $fatList->where('u_statfatt_art.gruppo', 'LIKE', 'A14%');
             } else {
                 $fatList->where('u_statfatt_art.prodotto', $req->input('optTipoProd'));
+            }
+            if ($req->input('optTipoProd') == 'KRONA') {
+                $fatList = $fatList->where('gruppo', 'NOT LIKE', 'A14%');
             }
         }
         $fatList->groupBy('codicearti');
@@ -300,6 +306,9 @@ class SchedaFatArtController extends Controller
                 $fatList = $fatList->where('u_statfatt_art.gruppo', 'LIKE', 'A14%');
             } else {
                 $fatList->where('u_statfatt_art.prodotto', $req->input('optTipoProd'));
+            }
+            if ($req->input('optTipoProd') == 'KRONA') {
+                $fatList = $fatList->where('gruppo', 'NOT LIKE', 'A14%');
             }
         }
         $fatList->groupBy('codicearti');
@@ -417,6 +426,9 @@ class SchedaFatArtController extends Controller
                 $fatList = $fatList->where('u_statfatt_art.gruppo', 'LIKE', 'A14%');
             } else {
                 $fatList->where('u_statfatt_art.prodotto', $req->input('optTipoProd'));
+            }
+            if ($req->input('optTipoProd') == 'KRONA') {
+                $fatList = $fatList->where('gruppo', 'NOT LIKE', 'A14%');
             }
         }
         $fatList->groupBy(['codicearti', 'codicecf']);
@@ -541,6 +553,9 @@ class SchedaFatArtController extends Controller
             } else {
                 $fatList->where('u_statfatt_art.prodotto', $req->input('optTipoProd'));
             }
+            if ($req->input('optTipoProd') == 'KRONA') {
+                $fatList = $fatList->where('gruppo', 'NOT LIKE', 'A14%');
+            }
         }
         $fatList->groupBy('codicearti');
         if ($limitVal != null) {
@@ -615,6 +630,9 @@ class SchedaFatArtController extends Controller
                 $fatList = $fatList->where('u_statfatt_art.gruppo', 'LIKE', 'A14%');
             } else {
                 $fatList->where('u_statfatt_art.prodotto', $req->input('optTipoProd'));
+            }
+            if ($req->input('optTipoProd') == 'KRONA') {
+                $fatList = $fatList->where('gruppo', 'NOT LIKE', 'A14%');
             }
         }
         $fatList->groupBy('codicecf');
@@ -704,6 +722,9 @@ class SchedaFatArtController extends Controller
                 $fatList = $fatList->where('u_statfatt_art.gruppo', 'LIKE', 'A14%');
             } else {
                 $fatList->where('u_statfatt_art.prodotto', $req->input('optTipoProd'));
+            }
+            if ($req->input('optTipoProd') == 'KRONA') {
+                $fatList = $fatList->where('gruppo', 'NOT LIKE', 'A14%');
             }
         }
         $fatList->groupBy('codicecf');
