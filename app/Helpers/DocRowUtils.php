@@ -39,7 +39,12 @@ class DocRowUtils
         $docRow = DocRow::select('*')->addSelect(DB::raw('prezzoun*0 as totRowGrossPrice'))->addSelect(DB::raw('prezzoun*0 as totRowNetPrice'))
             ->with(['doccli' => function ($q) {
                 // $q->select('id', 'tipomodulo', 'codicecf', 'sconti', 'scontocass', 'numerodoc')->with('client');
-                $q->with('client', 'agent');
+                $q->with(['client' => function ($query) {
+                $query
+                    ->withoutGlobalScope('agent')
+                    ->withoutGlobalScope('superAgent')
+                    ->withoutGlobalScope('client');
+            }, 'agent']);
             }, 'product']);
         if (!empty($this->docFilter->getFilters())) {
             $docRow = $this->docFilter->queryBuilder($docRow);
