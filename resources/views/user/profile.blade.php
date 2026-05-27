@@ -109,23 +109,23 @@
                 $sum_res = 0;
                 $sum_impenage = 0;
                 $sum_prog = 0;
-                $sum_res = $ritena->massimale;
+                $sum_res = $ritena->massimale??0;
               @endphp
               <dl class="dl-horizontal">
                 <dt>Tipo Agente</dt>
                 <dd>{{ $tipoAgente }}</dd>
 
                 <dt>Minimo Imponibile</dt>
-                <dd>{{ currency($ritena->minimale) }}</dd>
+                <dd>{{ currency($ritena->minimale??0) }}</dd>
 
                 <dt>Massimo Imponibile</dt>
-                <dd>{{ currency($ritena->massimale) }}</dd>
+                <dd>{{ currency($ritena->massimale??0) }}</dd>
 
                 <dt>% a Carico Ditta</dt>
-                <dd>{{ $ritena->percditta }} %</dd>
+                <dd>{{ $ritena->percditta??0 }} %</dd>
 
                 <dt>% a Carico Agente</dt>
-                <dd>{{ $ritena->percage }} %</dd>
+                <dd>{{ $ritena->percage??0 }} %</dd>
 
                 <dt>Enasarco XLS</dt>
                 <dd><a type="button" class="btn btn-default btn-xs" target="_blank" href="{{ route('user::enasarcoXLS', [$user->id]) }}">Download</a></dd>
@@ -166,7 +166,7 @@
                       <td>{{ $mov->ftnumdoc }} </td>
                       <td>{{ currency($mov->totfattura) }}</td>
                       <td>{{ currency($mov->compensi) }}</td>
-                      @if($sum_compensi > $ritena->massimale)
+                      @if($sum_compensi > $ritena->massimale??0)
                         <td class="danger">{{ currency($sum_compensi) }}</td>
                       @else
                         <td>{{ currency($sum_compensi) }}</td>

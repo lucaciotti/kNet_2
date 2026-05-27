@@ -7,7 +7,7 @@ $sum_prog = 0;
 $sum_res = 0;
 $sum_impenage = 0;
 $sum_prog = 0;
-$sum_res = $ritena->massimale;
+$sum_res = $ritena->massimale??0;
 @endphp
 <table class="table table-hover table-striped" id="Enasarco" style="text-align: center;">
     <thead>
@@ -64,7 +64,7 @@ $sum_res = $ritena->massimale;
             <td>{{ $mov->ftnumdoc }} </td>
             <td>{{ currency($mov->totfattura) }}</td>
             <td>{{ currency($mov->compensi) }}</td>
-            @if($sum_compensi > $ritena->massimale)
+            @if($sum_compensi > $ritena->massimale??0)
             <td class="danger">{{ currency($sum_compensi) }}</td>
             @else
             <td>{{ currency($sum_compensi) }}</td>

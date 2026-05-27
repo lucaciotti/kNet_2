@@ -113,7 +113,7 @@ class UserController extends Controller
       $user->email = $req->input('email');
       $user->codag = $req->input('codag');
       $user->codcli = $req->input('codcli');
-      $user->codforn = $req->input('codforn');
+      $user->codfor = $req->input('codforn');
       $user->ditta = $req->input('ditta');
       $user->isActive = $req->input('isActive');
       $user->save();

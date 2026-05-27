@@ -13,7 +13,7 @@ class User extends Authenticatable
     use LaratrustUserTrait;
 
     protected $fillable = [
-        'name', 'nickname', 'email', 'password', 'ditta', 'codcli', 'codag', 'codforn', 'isActive'
+        'name', 'nickname', 'email', 'password', 'ditta', 'codcli', 'codag', 'codfor', 'isActive'
     ];
 
     protected $username = 'nickname';
