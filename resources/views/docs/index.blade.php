@@ -81,7 +81,7 @@
                                                 'startDate' => $startDate ? $startDate->format('d/m/Y') : '',
                                                 'endDate' => $endDate ? $endDate->format('d/m/Y') : '',
                                                 'optTipoDoc' => $optTipoDoc,
-                                                'ragSoc' => $ragSoc ?? '',
+                                                'ragsoc' => $ragSoc ?? '',
                                                 'ragsocOp' => $ragsocOp ?? 'cnt',
                                                 ]) }}">CliDoc</a>
         <hr>
@@ -90,7 +90,7 @@
                                                 'startDate' => $startDate ? $startDate->format('d/m/Y') : '',
                                                 'endDate' => $endDate ? $endDate->format('d/m/Y') : '',
                                                 'optTipoDoc' => $optTipoDoc,
-                                                'ragSoc' => $ragSoc ?? '',
+                                                'ragsoc' => $ragSoc ?? '',
                                                 'ragsocOp' => $ragsocOp ?? 'cnt',
                                                 'notEvaso' => 1,
                                                 ]) }}">CliDoc (Qta Res. > 0)</a>
