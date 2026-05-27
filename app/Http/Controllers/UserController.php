@@ -96,7 +96,12 @@ class UserController extends Controller
     }
 
     public function show(Request $req, $id){
-      $user=User::with('client', 'agent')->findOrFail($id);
+      $user=User::with(['client' => function($query) {
+        $query
+        ->withoutGlobalScope('agent')
+        ->withoutGlobalScope('superAgent')
+        ->withoutGlobalScope('client');
+      }, 'agent'])->findOrFail($id);
       $ritana=RitAna::first();
       $year = (string) Carbon::now()->year;
       $ritena=RitEnasarco::where('anno', $year)->first();

@@ -17,7 +17,7 @@
     <div class="container">
     <div class="col-lg-12">
 
-      <div class="box box-default">
+      <div class="box box-default collapsed-box">
         <div class="box-header with-border">
           <h3 class="box-title" data-widget="collapse">{{ trans('user.listUsers') }}</h3>
           <div class="box-tools pull-right">
