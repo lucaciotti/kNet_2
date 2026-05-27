@@ -20,7 +20,13 @@
   </div>
   <hr>
   <div class="row">
+
+    <form action="{{ route('user::users.update', $user->id) }}" method="POST">
+    {{ csrf_field() }}
+    {{ method_field('PUT') }}
+
     <div class="col-lg-8 col-lg-offset-2">
+
       <div class="box box-default">
         <div class="box-header with-border">
           <h3 class="box-title" data-widget="collapse">{{ trans('user.modifyUser') }}</h3>
@@ -30,9 +36,6 @@
         </div>
         <div class="box-body">
 
-          <form action="{{ route('user::users.update', $user->id) }}" method="POST">
-              {{ csrf_field() }}
-              {{ method_field('PUT') }}
             <div class="form-group">
               <label>{{ trans('user.name') }}</label>
               <input type="text" class="form-control" name="name" value="{{$user->name}}">
@@ -124,14 +127,78 @@
               </div>
             </div>
 
-            <div>
-              <button type="submit" class="btn btn-primary">{{ trans('_message.submit') }}</button>
-            </div>
-          </form>
+        </div>
+      </div>
+
+      <div class="box box-default collapsed-box">
+        <div class="box-header with-border">
+          <h3 class="box-title" data-widget="collapse">Lista dei Report Automatici (via eMail)</h3>
+          <div class="box-tools pull-right">
+            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+          </div>
+        </div>
+        <div class="box-body">
+
+          <table class="table table-hover table-condensed dtTbls_light">
+            <thead>
+              <tr>
+                <th>Nome Report</th>
+                <th>Periodicità</th>
+                <th>Attivato</th>
+              </tr>
+            </thead>
+            <tbody>
+              @foreach ($listOfreports as $report)
+              @php
+              switch ($report->period) {
+                case 'weekly':
+                  $period = 'Settimanale';
+                  break;
+                case 'monthly':
+                  $period = 'Mensilmente';
+                  break;
+                case 'quarterly':
+                  $period = 'Trimestrale';
+                  break;
+                
+                default:
+                  $period = '-';
+                  break;
+              }
+              $reportUser = $userReports->where('report_id', $report->id)->first();
+              $reportAttivo = $reportUser ? $reportUser->active : false;
+              @endphp
+              <tr>
+                <td>{{ $report->description }} </td>
+                <td>{{ $period }} </td>
+                <td>
+                  <div class="radio">
+                    <label>
+                      <input type="radio" name="{{ $report->name }}" id="opt1" value="0" @if(!$reportAttivo) checked @endif> No
+                    </label>
+                    <label>
+                      <input type="radio" name="{{ $report->name }}" id="opt2" value="1" @if($reportAttivo) checked @endif>Si
+                    </label>
+                  </div>
+                </td>
+              </tr>
+              @endforeach
+            </tbody>
+          </table>
 
         </div>
       </div>
+
+      <div class="box box-default">
+        <div class="box-body">
+          <button type="submit" class="btn btn-primary btn-block">SALVA</button>
+        </div>
+      </div>
+
     </div>
+
+    </form>
+
   </div>
 </div>
 @endsection

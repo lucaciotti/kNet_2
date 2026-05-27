@@ -24,6 +24,8 @@ use knet\ArcaModels\RitAna;
 use knet\ArcaModels\RitEnasarco;
 use knet\ArcaModels\RitMov;
 use knet\ArcaModels\Supplier;
+use knet\ReportsList;
+use knet\UserAutoReports;
 use knet\UserEvent;
 
 class UserController extends Controller
@@ -78,6 +80,9 @@ class UserController extends Controller
                   ->withoutGlobalScope('agent')
                   ->withoutGlobalScope('client')->get();
       $agents = Agent::select('codice', 'descrizion', 'u_dataini')->get();
+
+      $listOfreports = ReportsList::where('active', 1)->get();
+      $userReports = UserAutoReports::where('user_id', $id)->get();
       // dd($user->roles->contains(33));
       return view('user.edit', [
         'user' => $user,
@@ -85,6 +90,8 @@ class UserController extends Controller
         'clients' => $clients,
         'suppliers' => $suppliers,
         'agents' => $agents,
+        'listOfreports' => $listOfreports,
+        'userReports' => $userReports,
       ]);
     }
 
@@ -118,6 +125,21 @@ class UserController extends Controller
       $user->isActive = $req->input('isActive');
       $user->save();
       RedisUser::store();
+
+      $listOfreports = ReportsList::where('active', 1)->get();
+      foreach ($listOfreports as $report) {
+        $userReport = UserAutoReports::where('user_id', $id)->where('report_id', $report->id)->first();
+        if ($userReport) {
+          $userReport->active = $req->input($report->name);
+          $userReport->save();
+        } else {
+          $userReport = UserAutoReports::create([
+            'user_id' => $id,
+            'report_id' => $report->id,
+            'active' => $req->input($report->name),
+          ]);
+        }
+      }
 
       return Redirect::route('user::users.index');
     }

@@ -43,8 +43,10 @@ class FetchReportToSend implements ShouldQueue
         foreach ($listOfreports as $report) {
             $listOfUsers = UserAutoReports::where('report_id', $report->id)->where('active', 1)->get();
             foreach ($listOfUsers as $userReport) {
-                $method = 'do_'.$report->name;
-                $this->$method($userReport->user);
+                if($userReport->user && $userReport->user->isActive){
+                    $method = 'do_'.$report->name;
+                    $this->$method($userReport->user);
+                }
             }
         }
     }
