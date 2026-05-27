@@ -84,18 +84,31 @@
                 @endforeach
               </select>
             </div>
+            <div class="form-group">
+              <label>Cod. Fornitore Associato (per Enasarco)</label>
+              <select name="codforn" class="form-control select2" style="width: 100%;">
+                <option value=""> </option>
+                @foreach ($suppliers as $supplier)
+                  <option value="{{ $supplier->codice }}"
+                    @if($supplier->codice==$user->codforn)
+                        selected
+                    @endif
+                    >[{{$supplier->codice}}] {{ $supplier->descrizion }}</option>
+                @endforeach
+              </select>
+            </div>
 
             <div class="form-group">
               <label>{{ trans('user.refDitta') }}</label>
-              @if (RedisUser::get('role')=='admin')
+              {{-- @if (RedisUser::get('role')=='admin') --}}
                 <select name="ditta" class="form-control" style="width: 100%;">
                   <option value="it" @if ($user->ditta=='it') selected="selected" @endif>kNet Italia</option>
                   <option value="es" @if ($user->ditta=='es') selected="selected" @endif>kNet Spagna</option>
                   <option value="fr" @if ($user->ditta=='fr') selected="selected" @endif>kNet Francia</option>
                 </select>
-              @else
+              {{-- @else
                 <input type="text" class="form-control" name="ditta" value="kNet_{{$user->ditta}}" readonly="readonly">
-              @endif
+              @endif --}}
 
             </div>
 

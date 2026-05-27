@@ -23,6 +23,7 @@ use knet\ArcaModels\Agent;
 use knet\ArcaModels\RitAna;
 use knet\ArcaModels\RitEnasarco;
 use knet\ArcaModels\RitMov;
+use knet\ArcaModels\Supplier;
 use knet\UserEvent;
 
 class UserController extends Controller
@@ -73,12 +74,16 @@ class UserController extends Controller
                   ->withoutGlobalScope('agent')
                   ->withoutGlobalScope('superAgent')
                   ->withoutGlobalScope('client')->get();
+      $suppliers = Supplier::select('codice', 'descrizion')
+                  ->withoutGlobalScope('agent')
+                  ->withoutGlobalScope('client')->get();
       $agents = Agent::select('codice', 'descrizion', 'u_dataini')->get();
       // dd($user->roles->contains(33));
       return view('user.edit', [
         'user' => $user,
         'roles' => $roles,
         'clients' => $clients,
+        'suppliers' => $suppliers,
         'agents' => $agents,
       ]);
     }
@@ -108,6 +113,7 @@ class UserController extends Controller
       $user->email = $req->input('email');
       $user->codag = $req->input('codag');
       $user->codcli = $req->input('codcli');
+      $user->codforn = $req->input('codforn');
       $user->ditta = $req->input('ditta');
       $user->isActive = $req->input('isActive');
       $user->save();
